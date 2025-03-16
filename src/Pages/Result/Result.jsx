@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'; 
 import './Result.css'
+import axios from 'axios';
+import { API_BASE_URL } from '../../API';
 
 import Button from '../../Components/Button/Button'
 
@@ -8,12 +10,26 @@ import result from '../../Assets/img/result.jpg'
 import settings from '../../Assets/svg/settings.svg'
 import muscles from '../../Assets/svg/musclesBlack.svg'
 
-export default function Result() {
+export default function Result({ userId }) {
     const navigate = useNavigate();
-    const [quizResult, setQuizResult] = useState("Профи")
+    const [data, setData] = useState(null)
+
+useEffect(() => {
+    const fetchLevel = async () => {
+        try {
+            const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
+                params: {user_tg_id: userId}
+            });
+            setData(response.data)
+        } catch (error) {
+            console.log(`Ошибка ${error}`)
+        }
+    } 
+    fetchLevel()
+}, [userId])
     const description = {
-        "Профи": "У вас уверенный уровень подготовки,и вы готовы к интенсивным тренировкам. Наши программы помогут вам развить силу, выносливость и достичь новых спортивных целей!",
-        "Новичок": "Вы только начинаете свой путь в фитнесе. Мы подготовили для вас программы с упором на технику, постепенную адаптацию и безопасное повышение нагрузки."
+        "pro": "У вас уверенный уровень подготовки,и вы готовы к интенсивным тренировкам. Наши программы помогут вам развить силу, выносливость и достичь новых спортивных целей!",
+        "newbie": "Вы только начинаете свой путь в фитнесе. Мы подготовили для вас программы с упором на технику, постепенную адаптацию и безопасное повышение нагрузки."
     }
     return (
         <div className='resultPage'>
@@ -23,8 +39,8 @@ export default function Result() {
             <div className='resultInfo'>
                 <div className="resultText">
                     <div className="levelContainer">
-                        <h1>Ваш уровень: {quizResult}</h1>
-                        <p>{description[quizResult]}</p>
+                        <h1>Ваш уровень: {data.user_level}</h1>
+                        <p>{description[data.user_level]}</p>
                     </div>
                     <div className="clue">
                         <img src={settings} alt="Настройки" />

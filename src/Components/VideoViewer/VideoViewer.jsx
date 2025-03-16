@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './VideoViewer.css';
 import axios from 'axios';
 import { API_BASE_URL } from '../../API'; // Предполагаю, что у вас есть этот импорт
@@ -14,23 +14,24 @@ const VideoViewer = ({ videoSrc, page, userId }) => {
   const [duration, setDuration] = useState('0:00');
   const [showPlayButton, setShowPlayButton] = useState(true);
 
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  };
+  
   // Обновление прогресса и времени
-  const updateProgress = () => {
+  const updateProgress = useCallback(() => {
     if (videoRef.current) {
       const current = videoRef.current.currentTime;
       const total = videoRef.current.duration;
       const progressPercent = (current / total) * 100 || 0;
       setProgress(progressPercent);
 
-      const formatTime = (time) => {
-        const minutes = Math.floor(time / 60);
-        const seconds = Math.floor(time % 60);
-        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-      };
       setCurrentTime(formatTime(current));
       setDuration(formatTime(total));
     }
-  };
+  }, [videoRef]); // Зависимость только от videoRef
 
   // Переключение воспроизведения
   const togglePlay = () => {
@@ -58,7 +59,7 @@ const VideoViewer = ({ videoSrc, page, userId }) => {
   };
 
   // Отправка данных на сервер
-  const sendVideoUpdate = async () => {
+  const sendVideoUpdate = useCallback(async () => {
     if (!videoRef.current || !userId) return;
 
     const current = videoRef.current.currentTime;
@@ -75,7 +76,7 @@ const VideoViewer = ({ videoSrc, page, userId }) => {
     } catch (error) {
       console.error('Ошибка при обновлении видео прогресса:', error.message);
     }
-  };
+  }, [userId, page, videoRef]); // Зависимости sendVideoUpdate
 
   // Обработчики событий
   useEffect(() => {
@@ -92,7 +93,7 @@ const VideoViewer = ({ videoSrc, page, userId }) => {
         if (isPlaying) sendVideoUpdate(); // Отправляем, если видео было на паузе или воспроизводилось
       };
     }
-  }, [isPlaying, page, userId]); // Зависимости для отправки при изменении
+  }, [isPlaying, page, userId, sendVideoUpdate, updateProgress]); // Добавили sendVideoUpdate и updateProgress
 
   return (
     <div className="videoViewer">
@@ -128,11 +129,5 @@ const VideoViewer = ({ videoSrc, page, userId }) => {
   );
 };
 
-// Вспомогательная функция форматирования времени
-const formatTime = (time) => {
-  const minutes = Math.floor(time / 60);
-  const seconds = Math.floor(time % 60);
-  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-};
-
+// Вспомогательная функция форматирования времени (теперь внутри компонента не нужна отдельно)
 export default VideoViewer;

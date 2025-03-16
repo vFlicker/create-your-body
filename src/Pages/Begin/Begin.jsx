@@ -42,10 +42,10 @@ export default function Begin({ userId }) {
     require.context('../../Assets/pdf/begin/', false, /begin_pdf_\d+\.(jpe?g)$/)
   );
 
-  // const handleSelect = (index) => {
-  //   setActiveIndex(index);
-  //   setVideoView(index === 1);
-  // };
+  const handleSelect = (index) => {
+    setActiveIndex(index);
+    setVideoView(index === 1);
+  };
 
 
   return (
@@ -58,12 +58,12 @@ export default function Begin({ userId }) {
         </div>
       </div>
       <div className="botBegin">
-        {/* <Selecter
+        <Selecter
           onClick={handleSelect}
           textOne="Подготовка"
           textTwo="Видео"
           activeIndex={activeIndex}
-        /> */}
+        />
         {!videoView ?
             <PDFViewer pdf_list={pdfList} />
             :
