@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import './Dashboard.css';
 import axios from 'axios';
 import { API_BASE_URL } from '../../API';
-import { useNavigate } from 'react-router-dom';
 
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import Progress from '../../Components/Progress/Progress';
@@ -16,7 +15,6 @@ import book from '../../Assets/svg/book.svg';
 import recipes from '../../Assets/svg/recipes.svg';
 
 export default function Dashboard({ userId }) {
-  const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
 
   const pageContainersData = [
@@ -87,7 +85,7 @@ export default function Dashboard({ userId }) {
       <div className="dashTop">
         <ProfileBtn level={userData.user_level} user_photo={userData.image} />
         <div className="hello">
-          <h1>Привет, {userData?.name || 'Аркадий'}!</h1>
+          <h1>Привет, {userData?.name || 'Неизвестный'}!</h1>
           <Progress count_all={0} count_complited={0} title='Прогресс тренировок' />
         </div>
       </div>

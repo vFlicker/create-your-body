@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './Communication.css'
+import axios from 'axios';
+import { API_BASE_URL } from '../../API';
 
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 

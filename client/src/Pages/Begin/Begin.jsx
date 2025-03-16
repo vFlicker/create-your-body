@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Begin.css';
+import axios from 'axios';
+import { API_BASE_URL } from '../../API';
 
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import Selecter from '../../Components/Selecter/Selecter';
