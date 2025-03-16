@@ -1,0 +1,10 @@
+/* .app {
+  height: 100vh;
+  max-height: 100vh;
+} */
+.header {
+  position: absolute;
+  top: 16px;
+  height: 28px;
+  width: 100%;
+}
