@@ -12,7 +12,7 @@ import muscles from '../../Assets/svg/musclesBlack.svg'
 
 export default function Result({ userId }) {
     const navigate = useNavigate();
-    const [data, setData] = useState(null)
+    const [level, setLevel] = useState('pro')
 
 useEffect(() => {
     const fetchLevel = async () => {
@@ -20,7 +20,7 @@ useEffect(() => {
             const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
                 params: {user_tg_id: userId}
             });
-            setData(response.data)
+            setLevel(response.data.user_level)
         } catch (error) {
             console.log(`Ошибка ${error}`)
         }
@@ -39,8 +39,8 @@ useEffect(() => {
             <div className='resultInfo'>
                 <div className="resultText">
                     <div className="levelContainer">
-                        <h1>Ваш уровень: {data.user_level}</h1>
-                        <p>{description[data.user_level]}</p>
+                        <h1>Ваш уровень: {level}</h1>
+                        <p>{description[level]}</p>
                     </div>
                     <div className="clue">
                         <img src={settings} alt="Настройки" />

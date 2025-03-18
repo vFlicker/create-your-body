@@ -14,26 +14,25 @@ import begin from '../../Assets/video/begin.mp4'
 export default function Begin({ userId }) {
   const [videoView, setVideoView] = useState(false);
   const [activeIndex, setActiveIndex] = useState(videoView ? 1 : 0);
-  const [userData, setUserData] = useState(null);
+  const [data, setData] = useState(null);
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.setBackgroundColor('#F2F2F2');
     }
 
-    const fetchUserData = async () => {
+    const fetchdata = async () => {
       try {
-        if (!userId) throw new Error('Не удалось получить Telegram ID');
         const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
           params: { user_id: userId },
         });
-        setUserData(response.data);
+        setData(response.data);
       } catch (error) {
         console.error('Ошибка при получении данных пользователя:', error.message);
       }
     };
 
-    fetchUserData();
+    fetchdata();
   }, [userId]);
 
   // Автоматический импорт всех изображений begin*
@@ -51,7 +50,7 @@ export default function Begin({ userId }) {
   return (
     <div className="beginPage">
       <div className="topBegin">
-        <ProfileBtn level={userData.user_level} user_photo={userData.image} />
+        <ProfileBtn level={data.user_level} user_photo={data.image} />
         <div className="beginTitle">
           <img src={health} alt="Введение" />
           <h1>Введение</h1>

@@ -51,9 +51,8 @@ export default function Record({ userId }) {
   useEffect(() => {
     const fetchUserDataProfile = async () => {
       try {
-        if (!userId) throw new Error('Не удалось получить Telegram ID');
         const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-          params: { user_tg_id: userId },
+          params: { tg_id: userId },
         });
         setDataProfile(response.data);
       } catch (error) {
@@ -63,9 +62,8 @@ export default function Record({ userId }) {
 
     const fetchActiveWeek = async () => {
       try {
-        if (!userId) throw new Error('Не удалось получить Telegram ID');
         const response = await axios.get(`${API_BASE_URL}/api/v1/user/week`, {
-          params: { user_tg_id: userId },
+          params: { tg_id: userId },
         });
         const weeks = response.data;
         const active = Object.keys(weeks).find(
@@ -99,8 +97,6 @@ export default function Record({ userId }) {
 
   const handleSubmit = async () => {
     try {
-      if (!userId) throw new Error('Не удалось получить Telegram ID');
-
       const parametersData = {
         tg_id: userId,
         chest: parseFloat(formData.chest) || 0,

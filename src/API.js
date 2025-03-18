@@ -1,1 +1,1 @@
-export const API_BASE_URL = "https://my-server.com";
+export const API_BASE_URL = "https://cybapp.ru";

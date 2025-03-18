@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Quiz.css';
-import Progress from '../../Components/Progress/Progress';
-import Button from '../../Components/Button/Button';
-import ButtonBack from '../../Components/Button/ButtonBack';
 import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../../API';
 import axios from 'axios';
+
+import Progress from '../../Components/Progress/Progress';
+import Button from '../../Components/Button/Button';
+import ButtonBack from '../../Components/Button/ButtonBack';
 
 import a from '../../Assets/quiz/a.svg';
 import aa from '../../Assets/quiz/aa.svg';
@@ -42,10 +43,10 @@ export default function Quiz({ userId }) {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        if (!userId) throw new Error('Не удалось получить Telegram ID');
         const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
           params: { user_tg_id: userId },
         });
+        console.log(response.data)
         setName(response.data.name || '');
         setGen(response.data.sex || 'm');
         setTel(response.data.phone || '');
@@ -233,10 +234,9 @@ export default function Quiz({ userId }) {
 
       const sendData = async () => {
         try {
-          if (!userId) throw new Error('Не удалось получить Telegram ID');
           await axios.patch(`${API_BASE_URL}/api/v1/user`, {
             tg_id: userId,
-            name,
+            user_name:name,
             born_date: formattedBirthday,
             sex: gen === 'm' ? 'male' : 'female',
             user_level: userLevel,

@@ -46,13 +46,30 @@ const PhotoUploader = ({ label, value, onChange }) => {
     fileInputRef.current?.click();
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Проверка размера файла (2 МБ = 2 * 1024 * 1024 байт)
+      if (file.size > 2 * 1024 * 1024) {
+        // Используем Telegram.WebApp.showAlert вместо стандартного alert
+        if (window.Telegram?.WebApp) {
+          window.Telegram.WebApp.showAlert('Максимальный размер фотографии 2 МБ');
+        } else {
+          alert('Максимальный размер фотографии 2 МБ'); // Фallback для не-Telegram среды
+        }
+        return;
+      }
+      onChange(e);
+    }
+  };
+
   return (
     <div className="photoUploader" onClick={handleClick}>
       <label>{label}</label>
       <input
         type="file"
         accept="image/*"
-        onChange={onChange}
+        onChange={handleFileChange}
         ref={fileInputRef}
         style={{ display: 'none' }}
       />

@@ -1,12 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Profile.css';
+import axios from 'axios';
+import { API_BASE_URL } from '../../API';
+
+import PhotoEditor from '../../Components/PhotoEditor/PhotoEditor';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import Selecter from '../../Components/Selecter/Selecter';
 import Button from '../../Components/Button/Button';
 import ButtonEdit from '../../Components/Button/ButtonEdit';
-import axios from 'axios';
-import { API_BASE_URL } from '../../API';
 
 import settings from '../../Assets/svg/settings.svg';
 import right from '../../Assets/svg/right.svg';
@@ -14,81 +16,12 @@ import close from '../../Assets/svg/close.svg';
 import zamer from '../../Assets/img/zamer.jpeg';
 import chart from '../../Assets/svg/chart.svg';
 import img from '../../Assets/img/result.jpg';
-import edit from '../../Assets/svg/editSmall.svg';
-
-const PhotoEditor = ({ label, initialPhoto, userId, number }) => {
-  const fileInputRef = useRef(null);
-  const [photo, setPhoto] = useState(initialPhoto);
-
-  useEffect(() => {
-    const fetchPhoto = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/api/v1/user/image/two`, {
-          params: { user_tg_id: userId, number },
-          responseType: 'blob', // Получаем изображение как Blob
-        });
-        setPhoto(URL.createObjectURL(response.data));
-      } catch (error) {
-        console.error(`Ошибка при получении ${label}:`, error.message);
-        setPhoto(initialPhoto); // Используем заглушку, если фото нет
-      }
-    };
-    fetchPhoto();
-  }, [userId, number, label, initialPhoto]);
-
-  const handleEditClick = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append('image', file);
-
-      try {
-        await axios.post(`${API_BASE_URL}/api/v1/user/image/two`, formData, {
-          params: { user_tg_id: userId, number },
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
-        setPhoto(URL.createObjectURL(file));
-        console.log(`${label} успешно обновлено!`);
-      } catch (error) {
-        console.error(`Ошибка при загрузке ${label}:`, error.message);
-      }
-    }
-  };
-
-  return (
-    <div className="before">
-      <span>{label}</span>
-      <div className="forBefore">
-        <img src={photo} alt={label} />
-        <div className="forEdit">
-          <ButtonEdit
-            icon={edit}
-            size={30}
-            sizeIcon={16}
-            onClick={handleEditClick}
-          />
-        </div>
-      </div>
-      <input
-        type="file"
-        accept="image/*"
-        ref={fileInputRef}
-        style={{ display: 'none' }}
-        onChange={handleFileChange}
-      />
-    </div>
-  );
-};
 
 export default function Profile({ userId }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [data, setData] = useState(null);
+  const [dataParameters, setDataParameters] = useState(null);
   const [dataProfile, setDataProfile] = useState(null);
   const [isPressed, setIsPressed] = useState(false);
 
@@ -99,13 +32,12 @@ export default function Profile({ userId }) {
 
     const fetchUserData = async () => {
       try {
-        if (!userId) throw new Error('Не удалось получить Telegram ID');
         const response = await axios.get(`${API_BASE_URL}/api/v1/user_parametrs`, {
-          params: { user_tg_id: userId },
+          params: { tg_id: userId },
         });
         const parameters = Array.isArray(response.data) ? response.data : [response.data];
         const latestParameters = parameters[parameters.length - 1];
-        setData(latestParameters);
+        setDataParameters(latestParameters);
       } catch (err) {
         console.error('Ошибка при получении параметров:', err.message);
       }
@@ -137,14 +69,13 @@ export default function Profile({ userId }) {
     setActiveIndex(index);
     const level = index === 0 ? 'newbie' : 'pro';
     try {
-      if (!userId) throw new Error('Не удалось получить Telegram ID');
       await axios.patch(`${API_BASE_URL}/api/v1/user/level`, {
         level: level,
-        user_tg_id: userId,
+        tg_id: userId,
       });
       console.log('Уровень сложности успешно обновлён:', level);
       const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-        params: { user_tg_id: userId },
+        params: { tg_id: userId },
       });
       setDataProfile(response.data);
     } catch (error) {
@@ -155,7 +86,7 @@ export default function Profile({ userId }) {
   return (
     <div className="profilePage">
       <div className="profileContainer">
-        {data ? (
+        {dataParameters ? (
           <div className="profile" style={{ justifyContent: 'space-between' }}>
             <div className="profileData">
               <ProfileBtn level={dataProfile?.user_level} user_photo={dataProfile?.image} />
@@ -202,7 +133,7 @@ export default function Profile({ userId }) {
             />
           )}
         </div>
-        {data ? (
+        {dataParameters ? (
           <div className="dataHave">
             <div className="recordText">
               <h4>Запись прогресса</h4>
@@ -236,31 +167,31 @@ export default function Profile({ userId }) {
                 <div className="param">
                   <div className="value">
                     <span>Обхват груди</span>
-                    <p>{data.chest || 0}</p>
+                    <p>{dataParameters.chest || 0}</p>
                   </div>
                   <div className="value">
                     <span>Обхват талии</span>
-                    <p>{data.waist || 0}</p>
+                    <p>{dataParameters.waist || 0}</p>
                   </div>
                 </div>
                 <div className="param">
                   <div className="value">
                     <span>Обхват живота</span>
-                    <p>{data.abdominal_circumference || 0}</p>
+                    <p>{dataParameters.abdominal_circumference || 0}</p>
                   </div>
                   <div className="value">
                     <span>Обхват бедер</span>
-                    <p>{data.hips || 0}</p>
+                    <p>{dataParameters.hips || 0}</p>
                   </div>
                 </div>
                 <div className="param">
                   <div className="value">
                     <span>Обхват ноги</span>
-                    <p>{data.legs || 0}</p>
+                    <p>{dataParameters.legs || 0}</p>
                   </div>
                   <div className="value">
                     <span>Вес</span>
-                    <p>{data.weight || 0}</p>
+                    <p>{dataParameters.weight || 0}</p>
                   </div>
                 </div>
               </div>
@@ -292,7 +223,7 @@ export default function Profile({ userId }) {
             </div>
           </>
         )}
-        {!data && (
+        {!dataParameters && (
           <Button
             onClick={() => navigate('/parameters')}
             text="Добавить параметры"

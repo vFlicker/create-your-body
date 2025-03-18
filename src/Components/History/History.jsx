@@ -8,7 +8,9 @@ export default function History({ text, viewed = 10, view = 50, instruction = fa
   const navigate = useNavigate();
 
   const handleClick = () => {
-    if (lastVideo) {
+    if (instruction) {
+      navigate('/begin')
+    } else if (lastVideo) {
       navigate(`/${lastVideo}`); // Переход на страницу из last_video
     }
   };
@@ -19,9 +21,8 @@ export default function History({ text, viewed = 10, view = 50, instruction = fa
       style={{
         background: instruction ? '#FAFAFA' : '',
         border: instruction ? '1px solid #e6e6e6' : '',
-        cursor: lastVideo ? 'pointer' : 'default' // Курсор как ссылка, если есть lastVideo
       }}
-      onClick={lastVideo ? handleClick : null} // Обработчик клика только если есть lastVideo
+      onClick={handleClick}
     >
       <div className="historyInfo">
         <p>Продолжить</p>

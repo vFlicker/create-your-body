@@ -75,7 +75,7 @@ export default function Communication({ userId }) {
                 icon={chat}          
             />
             <TelegramLinkButton 
-                username={''}  
+                username={'zabota_CYB'}  
                 buttonText='Поддержка'
                 icon={help}          
             />

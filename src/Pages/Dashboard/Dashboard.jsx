@@ -15,7 +15,7 @@ import book from '../../Assets/svg/book.svg';
 import recipes from '../../Assets/svg/recipes.svg';
 
 export default function Dashboard({ userId }) {
-  const [userData, setUserData] = useState(null);
+  const [data, setData] = useState(null);
 
   const pageContainersData = [
     {
@@ -65,38 +65,37 @@ export default function Dashboard({ userId }) {
       window.Telegram.WebApp.setBackgroundColor('#F2F2F2');
     }
 
-    const fetchUserData = async () => {
+    const fetchdata = async () => {
       try {
-        if (!userId) throw new Error('Не удалось получить Telegram ID');
         const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
           params: { user_id: userId },
         });
-        setUserData(response.data);
+        setData(response.data);
       } catch (error) {
         console.error('Ошибка при получении данных пользователя:', error.message);
       }
     };
 
-    fetchUserData();
+    fetchdata();
   }, [userId]);
 
   return (
     <div className='dashboard'>
       <div className="dashTop">
-        <ProfileBtn level={userData.user_level} user_photo={userData.image} />
+        <ProfileBtn level={data.user_level} user_photo={data.image} />
         <div className="hello">
-          <h1>Привет, {userData?.name || 'Неизвестный'}!</h1>
+          <h1>Привет, {data?.name || 'Неизвестный'}!</h1>
           <Progress count_all={0} count_complited={0} title='Прогресс тренировок' />
         </div>
       </div>
       <div className="dashBot">
         <div className="history">
-          {userData && userData.last_video && (
+          {data.last_video && (
             <History
               text="Продолжить просмотр"
-              viewed={Math.floor((50 * 60 - Number(userData.last_video_time)) / 60)} // Переводим оставшееся время в просмотренные минуты
+              viewed={Math.floor((50 * 60 - Number(data.last_video_time)) / 60)} // Переводим оставшееся время в просмотренные минуты
               view={50} // Фиксированная длительность 50 минут
-              lastVideo={userData.last_video} // Передаём страницу для ссылки
+              lastVideo={data.last_video} // Передаём страницу для ссылки
             />
           )}
           <History text='Инструкция + Вводный урок' instruction={true} />

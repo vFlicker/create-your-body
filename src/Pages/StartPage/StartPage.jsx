@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import axios from 'axios'; 
 import './StartPage.css';
 
 import Button from '../../Components/Button/Button';
@@ -19,37 +18,9 @@ export default function StartPage() {
     }
   }, []);
 
-  const handleButtonClick = useCallback(async () => {
-    const userId = window.Telegram.WebApp.initDataUnsafe.user?.id;
-    if (!userId) {
-      console.error('User ID не доступен');
-      navigate('/quiz');
-      return;
-    }
-    // try {
-
-    //   const response = await axios.get(
-    //     `/get_difficulty?user_id=${userId}`,
-    //     {
-    //       headers: { 'Content-Type': 'application/json' },
-    //     }
-    //   );
-
-    //   const { difficulty } = response.data;
-    //   console.log(response.data)
-
-    //   if (difficulty === null || difficulty === undefined) {
-    //     navigate('/quiz');
-    //   } else {
-    //     navigate('/dashboard');
-    //   }
-    // } catch (error) {
-    //   console.error('Ошибка при запросе к бэкенду:', error);
-    // }
-
-    // console.log('Button clicked!');
+  function handleButtonClick() {
     navigate('/quiz')
-  }, [navigate]);
+  }
 
   return (
     <div className="startPage">

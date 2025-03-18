@@ -4,6 +4,7 @@ import './App.css';
 import axios from "axios";
 import { API_BASE_URL } from './API';
 
+import NoEntry from "./Pages/NoEntry/NoEntry";
 import ButtonClose from "./Components/Button/ButtonClose";
 import ButtonBack from "./Components/Button/ButtonBack";
 import Nav from "./Components/Nav/Nav";
@@ -16,6 +17,7 @@ import Profile from "./Pages/Profile/Profile";
 import Parameters from "./Pages/Profile/Parameters";
 import Record from "./Pages/Profile/Record";
 import Communication from "./Pages/Communication/Communication";
+
 
 // Функция для получения всех файлов из папки
 function importAll(r) {
@@ -43,7 +45,7 @@ function Layout() {
   const location = useLocation();
   const hiddenPathsBack = ['/', '/quiz', '/result', '/dashboard'];
   const showControlsBack = !hiddenPathsBack.includes(location.pathname);
-  const hiddenPathsNav = ['/', '/quiz', '/result'];
+  const hiddenPathsNav = ['/', '/quiz', '/result', '/noentry'];
   const showControlsNav = !hiddenPathsNav.includes(location.pathname);
 
   return (
@@ -76,16 +78,11 @@ function App() {
 
         const addUserToDatabase = async () => {
           try {
-            const userData = {
-              tg_id: telegramUser.id, 
-              name: telegramUser.first_name || 'Неизвестный', 
-              user_tarif: 0, 
-              transcation_id: 0, 
-              transcation_created_at: new Date().toISOString(),
+            const userData = { 
               image: telegramUser.photo_url
             };
 
-            const response = await axios.post(`${API_BASE_URL}/api/v1/user`, userData);
+            const response = await axios.post(`${API_BASE_URL}/api/v1/user/image`, userData);
 
             console.log('Пользователь успешно добавлен:', response.data);
           } catch (error) {
@@ -111,8 +108,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<StartPage userId={userId} />} />
+        <Route path="/" element={!userId ? <Layout /> : <NoEntry />}>
+          <Route index element={<StartPage />} />
           <Route path="quiz" element={<Quiz userId={userId} />} />
           <Route path="result" element={<Result userId={userId} />} />
           <Route path="dashboard" element={<Dashboard userId={userId} />} />
