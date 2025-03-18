@@ -83,6 +83,8 @@ function App() {
         }
       }
 
+      addUser()
+
       if (telegramUser) {
         setUserId(telegramUser.id)
         console.log("Пользователь Telegram:", telegramUser);
@@ -120,7 +122,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={userId ? <Layout /> : <NoEntry />}>
+        <Route path="/" element={userId && data ? <Layout /> : <NoEntry />}>
           <Route index element={<StartPage />} />
           <Route path="quiz" element={<Quiz userId={userId} />} />
           <Route path="result" element={<Result userId={userId} />} />
