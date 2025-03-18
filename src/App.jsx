@@ -64,6 +64,7 @@ function Layout() {
 
 function App() {
   const [userId, setUserId] = useState(null)
+  const [data, setData] = useState(null)
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
@@ -72,11 +73,22 @@ function App() {
 
       const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
 
+      const addUser = async () => {
+        try {
+          const response = await axios.get(`${API_BASE_URL}/api/v1/user`)
+          console.log(response.data)
+          setData(response.data)
+        } catch {
+          console.log('Не получилось получить данные')
+        }
+      }
+
       if (telegramUser) {
         setUserId(telegramUser.id)
         console.log("Пользователь Telegram:", telegramUser);
 
-        const addUserToDatabase = async () => {
+
+        const addPhotoUserToDatabase = async () => {
           try {
             const userData = { 
               image: telegramUser.photo_url
@@ -91,7 +103,7 @@ function App() {
         };
 
         // Вызываем функцию отправки
-        addUserToDatabase();
+        addPhotoUserToDatabase();
       } else {
         console.error('Пользователь Telegram не найден');
       }
@@ -108,7 +120,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={!userId ? <Layout /> : <NoEntry />}>
+        <Route path="/" element={userId ? <Layout /> : <NoEntry />}>
           <Route index element={<StartPage />} />
           <Route path="quiz" element={<Quiz userId={userId} />} />
           <Route path="result" element={<Result userId={userId} />} />
