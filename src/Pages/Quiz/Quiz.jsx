@@ -44,7 +44,7 @@ export default function Quiz({ userId }) {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-          params: { user_tg_id: userId },
+          body: { user_id: userId },
         });
         console.log(response.data)
         setName(response.data.name || '');
@@ -235,8 +235,7 @@ export default function Quiz({ userId }) {
       const sendData = async () => {
         try {
           await axios.patch(`${API_BASE_URL}/api/v1/user`, {
-            tg_id: userId,
-            user_name:name,
+            user_name: name,
             born_date: formattedBirthday,
             sex: gen === 'm' ? 'male' : 'female',
             user_level: userLevel,

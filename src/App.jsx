@@ -75,7 +75,9 @@ function App() {
 
       const addUser = async () => {
         try {
-          const response = await axios.get(`${API_BASE_URL}/api/v1/user`)
+          const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
+            body: {user_id: telegramUser}
+          });
           console.log(response.data)
           setData(response.data)
         } catch {
@@ -96,7 +98,9 @@ function App() {
               image: telegramUser.photo_url
             };
 
-            const response = await axios.post(`${API_BASE_URL}/api/v1/user/image`, userData);
+            const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
+              body: {userData, user_id: telegramUser}
+            });
 
             console.log('Пользователь успешно добавлен:', response.data);
           } catch (error) {
@@ -122,8 +126,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={userId && data ? <Layout /> : <NoEntry />}>
-          <Route index element={<StartPage />} />
+        <Route path="/" element={ data ? <Layout /> : <NoEntry />}>
+          <Route index element={<StartPage data={data} />} />
           <Route path="quiz" element={<Quiz userId={userId} />} />
           <Route path="result" element={<Result userId={userId} />} />
           <Route path="dashboard" element={<Dashboard userId={userId} />} />

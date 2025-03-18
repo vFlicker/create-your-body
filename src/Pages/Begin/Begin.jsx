@@ -24,7 +24,7 @@ export default function Begin({ userId }) {
     const fetchdata = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-          params: { user_id: userId },
+          body: { user_id: userId },
         });
         setData(response.data);
       } catch (error) {

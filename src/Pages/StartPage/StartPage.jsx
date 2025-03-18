@@ -9,7 +9,7 @@ import startPhoto from '../../Assets/img/start.jpg';
 import element from '../../Assets/img/element.png'
 import run from '../../Assets/svg/run.svg';
 
-export default function StartPage() {
+export default function StartPage({ data }) {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function StartPage() {
             onClick={handleButtonClick}
             bgFocus="#A799FF"
             icon={run}
-            text={'Начать'}
+            text={data.born_day ? 'Тренироваться' : 'Начать'}
           />
         </div>
       </div>

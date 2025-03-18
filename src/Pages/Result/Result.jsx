@@ -18,7 +18,7 @@ useEffect(() => {
     const fetchLevel = async () => {
         try {
             const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-                params: {user_tg_id: userId}
+                body: {user_id: userId}
             });
             setLevel(response.data.user_level)
         } catch (error) {

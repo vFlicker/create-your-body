@@ -98,7 +98,7 @@ export default function Record({ userId }) {
   const handleSubmit = async () => {
     try {
       const parametersData = {
-        tg_id: userId,
+        user_id: userId,
         chest: parseFloat(formData.chest) || 0,
         waist: parseFloat(formData.waist) || 0,
         abdominal_circumference: parseFloat(formData.abdominal_circumference) || 0,
@@ -108,7 +108,9 @@ export default function Record({ userId }) {
         created_at: new Date().toISOString(),
       };
 
-      await axios.post(`${API_BASE_URL}/api/v1/user_parametrs`, parametersData);
+      await axios.get(`${API_BASE_URL}/api/v1/user/user_parameters`, {
+        parametersData
+      });
 
       const weekNumber = activeWeek;
       await axios.post(`${API_BASE_URL}/api/v1/user/week`, {
