@@ -76,7 +76,7 @@ function App() {
       const addUser = async () => {
         try {
           const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-            body: {user_id: telegramUser}
+            body: {user_id: telegramUser.id}
           });
           console.log(response.data)
           setData(response.data)
@@ -99,7 +99,7 @@ function App() {
             };
 
             const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-              body: {userData, user_id: telegramUser}
+              body: {userData, user_id: telegramUser.id}
             });
 
             console.log('Пользователь успешно добавлен:', response.data);
