@@ -76,7 +76,7 @@ function App() {
       console.log(telegramUser.id)
       console.log(telegramUser.photo_url)
       const addImage = async () => {
-        const imageData = {user_tg_id: telegramUser.id, image: telegramUser.photo_url}
+        const imageData = {user_tg_id: telegramUser.id, image: toString(telegramUser.photo_url)}
         try {
           const response = await axios.post(`${API_BASE_URL}/api/v1/user/image`, imageData, {
             headers: {
