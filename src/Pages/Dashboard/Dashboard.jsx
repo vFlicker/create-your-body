@@ -27,7 +27,7 @@ export default function Dashboard({ data }) {
     {
       name: 'Тренировки',
       icon: muscules,
-      closed: '22 марта',
+      closed: '29 марта',
       buy: false,
       instruction: false,
       to: 'training'
@@ -35,7 +35,7 @@ export default function Dashboard({ data }) {
     {
       name: 'Питание',
       icon: food,
-      closed: '22 марта',
+      closed: '29 марта',
       buy: false,
       instruction: false,
       to: 'food'
@@ -43,7 +43,7 @@ export default function Dashboard({ data }) {
     {
       name: 'Лекции',
       icon: book,
-      closed: '22 марта',
+      closed: '29 марта',
       buy: false,
       instruction: false,
       to: 'lectures'
@@ -51,8 +51,8 @@ export default function Dashboard({ data }) {
     {
       name: 'Рецепты',
       icon: recipes,
-      closed: null,
-      buy: true,
+      closed: '29 марта',
+      buy: false,
       instruction: false,
       to: 'recipes'
     },

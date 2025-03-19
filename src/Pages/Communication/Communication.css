@@ -70,6 +70,12 @@
     border-radius: 16px 16px 0 0;
 }
 
+.hiteTgBtn {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
 .botComText {
     color: #0d0d0d;
     font-size: 16px;

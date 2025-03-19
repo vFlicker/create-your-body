@@ -4,6 +4,7 @@ import './Communication.css'
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 
 import chat from '../../Assets/nav/chat.svg'
+import channel from '../../Assets/svg/channel.svg'
 import help from '../../Assets/svg/help.svg'
 import bot from '../../Assets/svg/bot.svg'
 
@@ -50,14 +51,21 @@ export default function Communication({ data, base }) {
         </div>
         <div className="botCom">
             <p className="botComText">
-            Присоединяйтесь к нашему сообществу и задавайте вопросы. Мы здесь, чтобы помочь вам 💜
+            Присоединяйся к нашему сообществу и задавай вопросы. Мы здесь, чтобы помочь тебе 💜
             </p>
             { !base &&
+            <div className='hiteTgBtn'>
             <TelegramLinkButton 
-                username={''}  
+                username={'+C7RnSm1dKCxmMzdi'}  
                 buttonText='Чат в Telegram'
                 icon={chat}          
             />
+            <TelegramLinkButton 
+                username={'+71ht2GTsGtQ0ODI6'}  
+                buttonText='Инфо канал'
+                icon={channel}          
+            />
+            </div>
             }
             <TelegramLinkButton 
                 username={'zabota_CYB'}  
