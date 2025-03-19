@@ -76,7 +76,7 @@ function App() {
       const addUser = async () => {
         try {
           const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-            body: {user_id: telegramUser.id}
+            params: {user_id: telegramUser.id}
           });
           console.log(response.data)
           setData(response.data)
