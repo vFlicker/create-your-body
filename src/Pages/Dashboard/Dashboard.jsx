@@ -64,6 +64,19 @@ export default function Dashboard({ data }) {
     }
   }, []);
 
+  const parseTimeToSeconds = (timeStr) => {
+    if (!timeStr || typeof timeStr !== 'string') return 0; // Проверка на валидность входных данных
+  
+    // Разделяем строку на минуты и секунды
+    const [minutes, seconds] = timeStr.split(':').map(Number);
+    
+    // Проверяем, что значения корректны
+    if (isNaN(minutes) || isNaN(seconds)) return 0;
+  
+    // Преобразуем в секунды: минуты * 60 + секунды
+    return minutes * 60 + seconds;
+  };
+
   return (
     <div className='dashboard'>
       <div className="dashTop">
@@ -83,8 +96,8 @@ export default function Dashboard({ data }) {
               lastVideo={data.last_video} // Передаём страницу для ссылки
             />
           )} */}
-          {data?.last_video && 
-          <History text='Инструкция + Вводный урок' instruction={true} />
+          {data?.greet_video_time_view && 
+          <History text='Инструкция + Вводный урок' viewed={parseTimeToSeconds(data.greet_video_time_view)} view={895} instruction={true} />
           }
         </div>
         <div className="dashMenu">
