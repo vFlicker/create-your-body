@@ -92,7 +92,7 @@ const PhotoUploader = ({ label, value, onChange }) => {
   );
 };
 
-export default function Parameters({ userId }) {
+export default function Parameters({ userId, data }) {
   const [isMobile, setIsMobile] = useState(false);
   const formRef = useRef(null);
   const navigate = useNavigate();
@@ -106,30 +106,14 @@ export default function Parameters({ userId }) {
     photoBefore: null,
     photoAfter: null,
   });
-  const [userData, setUserData] = useState(null);
 
-  // Загрузка данных пользователя
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        if (!userId) throw new Error('Не удалось получить Telegram ID');
-        const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-          params: { user_tg_id: userId },
-        });
-        setUserData(response.data);
-      } catch (error) {
-        console.error('Ошибка при получении данных пользователя:', error.message);
-      }
-    };
-
     const tg = window.Telegram?.WebApp;
     if (tg) {
       const platform = tg.platform.toLowerCase();
       setIsMobile(!['tdesktop', 'macos', 'linux', 'web'].includes(platform));
     }
-
-    fetchUserData();
-  }, [userId]);
+  }, []);
 
   // Расчёт возраста из born_date
   const calculateAge = (bornDate) => {
@@ -226,18 +210,18 @@ export default function Parameters({ userId }) {
   ];
 
   const staticData = {
-    sex: userData?.sex === 'male' ? 'Мужской' : userData?.sex === 'female' ? 'Женский' : '',
-    age: calculateAge(userData?.born_date),
+    sex: data?.sex === 'male' ? 'Мужской' : data?.sex === 'female' ? 'Женский' : '',
+    age: calculateAge(data?.born_date),
   };
 
   return (
     <div className="profilePage" ref={formRef}>
       <div className="profileContainer">
         <div className="profile">
-          <ProfileBtn />
+          <ProfileBtn level={data.user_level} user_photo={data.image} />
           <div className="profileName">
-            <p>{userData?.name || 'Имя'}</p>
-            <span>{userData?.user_level || 'Уровень'}</span>
+            <p>{data?.name || 'Имя'}</p>
+            <span>{data?.user_level || 'Уровень'}</span>
           </div>
         </div>
         <div className="howSize">
