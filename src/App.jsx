@@ -72,7 +72,7 @@ function App() {
       window.Telegram.WebApp.expand();
 
       const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
-
+      setUserId(telegramUser.id)
       const addUser = async () => {
         try {
           const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
