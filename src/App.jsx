@@ -77,7 +77,7 @@ function App() {
       const addImage = async () => {
         const imageData = {user_tg_id: telegramUser.id, image: telegramUser.photo_url}
         try {
-          const response = await axios.patch(`${API_BASE_URL}/api/v1/user/image`, imageData, {
+          const response = await axios.post(`${API_BASE_URL}/api/v1/user/image`, imageData, {
             headers: {
               'Content-Type': 'application/json',
             },
