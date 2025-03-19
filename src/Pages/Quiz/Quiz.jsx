@@ -214,7 +214,7 @@ export default function Quiz({ userId }) {
       const finalAnswers = [...answers, selectedOption];
       const countOnes = finalAnswers.filter((answer) => answer === 1).length;
       const countTwos = finalAnswers.filter((answer) => answer === 2).length;
-      const userLevel = countOnes > countTwos ? 'pro' : 'newbie';
+      const userLevel = countOnes > countTwos ? 'Профи' : 'Новичок';
 
       const [day, month, year] = birthday.split('.');
       const formattedBirthday = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;

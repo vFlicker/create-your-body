@@ -47,7 +47,7 @@ export default function StartPage({ data }) {
             onClick={handleButtonClick}
             bgFocus="#A799FF"
             icon={run}
-            text={data.born_day ? 'Тренироваться' : 'Начать'}
+            text={data.born_date ? 'Тренироваться' : 'Начать'}
           />
         </div>
       </div>
