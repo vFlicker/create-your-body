@@ -8,19 +8,6 @@ import Progress from '../../Components/Progress/Progress';
 import Button from '../../Components/Button/Button';
 import ButtonBack from '../../Components/Button/ButtonBack';
 
-import a from '../../Assets/quiz/a.svg';
-import aa from '../../Assets/quiz/aa.svg';
-import b from '../../Assets/quiz/b.svg';
-import bb from '../../Assets/quiz/bb.svg';
-import c from '../../Assets/quiz/c.svg';
-import cc from '../../Assets/quiz/cc.svg';
-import d from '../../Assets/quiz/d.svg';
-import dd from '../../Assets/quiz/dd.svg';
-import e from '../../Assets/quiz/e.svg';
-import f from '../../Assets/quiz/f.svg';
-import ff from '../../Assets/quiz/ff.svg';
-import g from '../../Assets/quiz/g.svg';
-
 export default function Quiz({ userId }) {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
@@ -66,50 +53,50 @@ export default function Quiz({ userId }) {
     {
       question: 'Обладаете ли вы достаточным уровнем знаний и пониманием выполнения базовых движений?',
       options: [
-        { text: 'Да, знаю технику и выполняю уверенно', img: a, level: 1 },
-        { text: 'Нет, не уверен(а) в технике', img: aa, level: 2 },
+        { text: 'Да, знаю технику и выполняю уверенно', img: '✅', level: 1 },
+        { text: 'Нет, не уверен(а) в технике', img: '❌', level: 2 },
       ],
     },
     {
       question: 'Как часто вы тренировались в последние 3 месяца?',
       options: [
-        { text: 'Регулярно (3-5 раз в неделю)', img: b, level: 1 },
-        { text: 'Иногда (1-2 раза в неделю)', img: bb, level: 2 },
+        { text: 'Регулярно (3-5 раз в неделю)', img: '🏋️‍♀️', level: 1 },
+        { text: 'Иногда (1-2 раза в неделю)', img: '🛋️', level: 2 },
       ],
     },
     {
       question: 'Как вы оцениваете свою силу?',
       options: [
-        { text: 'Высокая', img: c, level: 1 },
-        { text: 'Средняя', img: cc, level: 2 },
+        { text: 'Высокая', img: '💪', level: 1 },
+        { text: 'Средняя', img: '🫠', level: 2 },
       ],
     },
     {
       question: 'Как оцениваете свою выносливость?',
       options: [
-        { text: 'Высокая', img: d, level: 1 },
-        { text: 'Средняя', img: dd, level: 2 },
+        { text: 'Высокая', img: '🚀', level: 1 },
+        { text: 'Средняя', img: '😓', level: 2 },
       ],
     },
     {
       question: 'Какой у вас уровень физической активности в повседневной жизни?',
       options: [
-        { text: 'Высокий', img: b, level: 1 },
-        { text: 'Средний', img: e, level: 2 },
+        { text: 'Высокий', img: '🚶‍♀️', level: 1 },
+        { text: 'Средний', img: '🛋️', level: 2 },
       ],
     },
     {
       question: 'Как вы чувствуете себя после тренировки?',
       options: [
-        { text: 'Энергичным', img: f, level: 1 },
-        { text: 'Уставшим', img: ff, level: 2 },
+        { text: 'Энергичным', img: '😌', level: 1 },
+        { text: 'Уставшим', img: '😰', level: 2 },
       ],
     },
     {
       question: 'Какой уровень сложности тренировок вам комфортен?',
       options: [
-        { text: 'Высокий', img: g, level: 1 },
-        { text: 'Средний', img: dd, level: 2 },
+        { text: 'Высокий', img: '🚀', level: 1 },
+        { text: 'Средний', img: '🥵', level: 2 },
       ],
     },
   ];
