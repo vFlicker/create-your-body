@@ -161,7 +161,6 @@ export default function Parameters({ userId, data }) {
   };
 
   const handleSubmit = async () => {
-    // Поля, которые должны быть заполнены
     const requiredFields = ['chest', 'waist', 'belly', 'hips', 'leg', 'weight'];
     const isAllFilled = requiredFields.every(field => formData[field] && formData[field].trim() !== '');
   
@@ -169,7 +168,17 @@ export default function Parameters({ userId, data }) {
       if (window.Telegram?.WebApp) {
         window.Telegram.WebApp.showAlert('Добавьте все параметры');
       } else {
-        alert('Добавьте все параметры'); // Fallback для не-Telegram среды
+        alert('Добавьте все параметры');
+      }
+      return;
+    }
+  
+    if (!userId) {
+      console.error('userId отсутствует');
+      if (window.Telegram?.WebApp) {
+        window.Telegram.WebApp.showAlert('Ошибка: отсутствует идентификатор пользователя');
+      } else {
+        alert('Ошибка: отсутствует идентификатор пользователя');
       }
       return;
     }
@@ -184,8 +193,10 @@ export default function Parameters({ userId, data }) {
         hips: parseInt(formData.hips, 10) || 0,
         legs: parseInt(formData.leg, 10) || 0,
         weight: parseInt(formData.weight, 10) || 0,
-        created_at: new Date().toISOString(), // Добавляем текущую дату
+        created_at: new Date().toISOString(),
       };
+  
+      console.log('Отправляемые параметры:', paramData);
   
       await axios.post(`${API_BASE_URL}/api/v1/user_parametrs`, paramData, {
         headers: { 'Content-Type': 'application/json' },

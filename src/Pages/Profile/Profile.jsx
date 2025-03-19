@@ -20,7 +20,7 @@ import img from '../../Assets/img/result.jpg';
 export default function Profile({ userId, data, setData }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(data.user_level === 'Новичок' ? 0 : 1);
   const [dataParameters, setDataParameters] = useState(null);
   const [isPressed, setIsPressed] = useState(false);
 
