@@ -222,6 +222,7 @@ export default function Quiz({ userId }) {
       const sendData = async () => {
         try {
           await axios.patch(`${API_BASE_URL}/api/v1/user`, {
+            tg_id: userId,
             name: name,
             born_date: formattedBirthday,
             sex: gen === 'm' ? 'male' : 'female',
