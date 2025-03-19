@@ -32,13 +32,13 @@ export default function Profile({ userId, data, setData }) {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/api/v1/user_parametrs`, {
-          params: { user_id: userId },
+          params: { user_tg_id: userId }, // Изменено с user_id на user_tg_id
         });
         const parameters = Array.isArray(response.data) ? response.data : [response.data];
         const latestParameters = parameters[parameters.length - 1];
         setDataParameters(latestParameters);
       } catch (err) {
-        console.error('Ошибка при получении параметров:', err.message);
+        console.error('Ошибка при получении параметров:', err.response ? JSON.stringify(err.response.data, null, 2) : err.message);
       }
     };
 
@@ -52,10 +52,10 @@ export default function Profile({ userId, data, setData }) {
 
   const handleSelecterClick = async (index) => {
     setActiveIndex(index);
-    const level = index === 0 ? 'newbie' : 'pro';
+    const level = index === 0 ? 'Новичок' : 'Профи';
     try {
-      await axios.patch(`${API_BASE_URL}/api/v1/user/level`, {
-        level: level,
+      await axios.patch(`${API_BASE_URL}/api/v1/user/level`, null, {
+        params: { user_tg_id: userId, level: level },
       });
       console.log('Уровень сложности успешно обновлён:', level);
       const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
@@ -63,7 +63,7 @@ export default function Profile({ userId, data, setData }) {
       });
       setData(response.data);
     } catch (error) {
-      console.error('Ошибка при обновлении уровня сложности:', error.message);
+      console.error('Ошибка при обновлении уровня сложности:', error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
     }
   };
 
