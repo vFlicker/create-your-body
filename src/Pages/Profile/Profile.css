@@ -397,15 +397,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100px; /* Можно настроить высоту */
+    height: 100%; /* Можно настроить высоту */
   }
   
   /* Стили для спиннера */
   .spinner {
     width: 50px;
     height: 50px;
-    border: 2px solid rgba(0, 0, 0, 0.1); /* Светлая часть круга */
-    border-top: 2px solid #A799FF; /* Цвет активной части, как на картинке */
+    border: 4px solid rgba(0, 0, 0, 0.1); /* Светлая часть круга */
+    border-top: 4px solid #A799FF; /* Цвет активной части, как на картинке */
     border-radius: 50%;
     animation: spin 1s linear infinite; /* Анимация вращения */
   }
