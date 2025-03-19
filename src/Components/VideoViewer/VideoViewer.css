@@ -30,7 +30,7 @@
   
   .controlsContainer {
     position: absolute;
-    bottom: 16px;
+    bottom: 32px;
     display: flex;
     align-items: center;
     flex-direction: column;
