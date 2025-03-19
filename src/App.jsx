@@ -77,15 +77,20 @@ function App() {
       console.log(telegramUser.photo_url)
       const addImage = async () => {
         const image = telegramUser.photo_url && typeof telegramUser.photo_url === 'string' 
-    ? telegramUser.photo_url 
-    : '';
-    const imageData = {
-      user_tg_id: String(telegramUser.id),
-      image: image,
-    };
+          ? telegramUser.photo_url 
+          : '';
+        const imageData = {
+          user_tg_id: String(telegramUser.id),
+          image: image,
+        };
+      
         console.log('Отправляемые данные:', imageData);
+      
+        // Формируем query-строку
+        const params = new URLSearchParams(imageData).toString();
+      
         try {
-          const response = await axios.post(`${API_BASE_URL}/api/v1/user/image?${imageData.toString()}`, null, {
+          const response = await axios.post(`${API_BASE_URL}/api/v1/user/image?${params}`, null, {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -94,7 +99,7 @@ function App() {
         } catch (error) {
           console.error('Ошибка:', error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
         }
-      }
+      };
       const addUser = async () => {
         try {
           const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
