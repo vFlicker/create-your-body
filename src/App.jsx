@@ -97,6 +97,7 @@ function App() {
           console.log('Не получилось получить данные')
         }
       }
+      addImage()
       addUser()
     } else {
       console.error('Telegram WebApp API не найден');
