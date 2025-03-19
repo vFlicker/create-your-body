@@ -177,11 +177,11 @@ export default function Parameters({ userId, data }) {
       console.error('userId отсутствует');
       if (window.Telegram?.WebApp) {
         window.Telegram.WebApp.showAlert('Ошибка: отсутствует идентификатор пользователя');
-      } else {
-        alert('Ошибка: отсутствует идентификатор пользователя');
+        } else {
+          alert('Ошибка: отсутствует идентификатор пользователя');
+        }
+        return;
       }
-      return;
-    }
   
     try {
       // Отправка параметров
@@ -205,10 +205,11 @@ export default function Parameters({ userId, data }) {
       // Отправка фотографий, если они есть
       if (formData.photoBefore || formData.photoAfter) {
         const photoData = new FormData();
+        photoData.append('user_tg_id', String(userId)); // Добавляем user_tg_id в FormData
         if (formData.photoBefore) photoData.append('image_before', formData.photoBefore, `${userId}_before.jpg`);
         if (formData.photoAfter) photoData.append('image_after', formData.photoAfter, `${userId}_after.jpg`);
   
-        await axios.post(`${API_BASE_URL}/api/v1/user/images/two?user_tg_id=${String(userId)}`, photoData, {
+        await axios.post(`${API_BASE_URL}/api/v1/user/images/two`, photoData, { // Убираем query-параметр
           headers: { 'Content-Type': 'multipart/form-data' },
         });
       }
