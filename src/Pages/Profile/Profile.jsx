@@ -147,7 +147,7 @@ export default function Profile({ userId, data, setData }) {
                   </div>
                   <div className="value">
                     <span>Пол</span>
-                    <p>{data?.sex || '-'}</p>
+                    <p>{data?.sex === 'male' ? 'Мужской' : data?.sex === 'female' ? 'Женский' : ''}</p>
                   </div>
                 </div>
                 <div className="param">
