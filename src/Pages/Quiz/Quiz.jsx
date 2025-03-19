@@ -222,27 +222,35 @@ export default function Quiz({ userId }) {
       const sendData = async () => {
         try {
           const userData = {
-            tg_id: userId,
-            name: name || '', 
-            born_date: formattedBirthday, 
+            tg_id: String(userId),
+            name: name || '',
+            born_date: formattedBirthday,
             sex: gen === 'm' ? 'male' : 'female',
             user_level: userLevel || '',
             phone: tel || '',
           };
-      
+  
+          console.log('Отправляемые данные:', userData);
+  
+          const requiredFields = ['tg_id', 'name', 'born_date', 'sex', 'user_level', 'phone'];
+          const invalidFields = requiredFields.filter((field) => !userData[field] || typeof userData[field] !== 'string');
+          if (invalidFields.length > 0) {
+            throw new Error(`Некорректные поля: ${invalidFields.join(', ')}`);
+          }
+  
           const response = await axios.patch(`${API_BASE_URL}/api/v1/user`, userData, {
             headers: {
               'Content-Type': 'application/json',
             },
           });
-      
+  
           console.log('Данные успешно обновлены:', response.data);
           navigate('/result');
         } catch (error) {
-          console.error('Ошибка при обновлении данных:', error.response ? error.response.data : error.message);
+          console.error('Ошибка при обновлении данных:', JSON.stringify(error.response.data, null, 2));
         }
       };
-
+  
       sendData();
     }
   };
