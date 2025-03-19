@@ -6,7 +6,7 @@ import { API_BASE_URL } from '../../API';
 import play from '../../Assets/svg/play.svg';
 import pause from '../../Assets/svg/pause.svg';
 
-const VideoViewer = ({ videoSrc, page, userId, instruction, lastVideo }) => {
+const VideoViewer = ({ videoSrc, page, userId, instruction, lastVideo, onVideoEnd, togglePlayRef }) => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -20,48 +20,21 @@ const VideoViewer = ({ videoSrc, page, userId, instruction, lastVideo }) => {
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
-  // Обновление прогресса и времени
+  // Update progress and time
   const updateProgress = useCallback(() => {
     if (videoRef.current) {
       const current = videoRef.current.currentTime;
       const total = videoRef.current.duration;
       const progressPercent = (current / total) * 100 || 0;
       setProgress(progressPercent);
-
       setCurrentTime(formatTime(current));
       setDuration(formatTime(total));
     }
   }, []);
 
-  // Переключение воспроизведения
-  const togglePlay = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-        sendVideoUpdate(); // Отправляем данные при паузе
-      } else {
-        videoRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-      setShowPlayButton(true);
-      setTimeout(() => setShowPlayButton(false), 5000);
-    }
-  };
-
-  // Перемотка по клику на прогресс-бар
-  const handleProgressClick = (e) => {
-    const progressBar = e.currentTarget;
-    const rect = progressBar.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const width = rect.width;
-    const newTime = (clickX / width) * (videoRef.current?.duration || 0);
-    if (videoRef.current) videoRef.current.currentTime = newTime;
-  };
-
-  // Дебаунсинг для отправки данных (раз в 5 секунд)
+  // Debounced function to send video updates (every 5 seconds)
   const debouncedSendVideoUpdate = useCallback(
     (data) => {
-      // Внутренняя функция дебаунсинга
       let timeout;
       const debounce = (func, wait) => (...args) => {
         clearTimeout(timeout);
@@ -71,16 +44,12 @@ const VideoViewer = ({ videoSrc, page, userId, instruction, lastVideo }) => {
       const sendRequest = async () => {
         try {
           if (instruction) {
-            // Запрос для приветственного видео
-            await axios.patch(`${API_BASE_URL}/api/v1/user/video/greet`, null, {
-              params: {
-                tg_id: userId,
-                duration_view: data.last_video_time,
-              },
+            await axios.patch(`${API_BASE_URL}/api/v1/user/video/greet`, {
+              tg_id: userId,
+              duration_view: data.last_video_time,
             });
-            console.log('Приветственное видео обновлено:', data.last_video_time);
+            console.log('Welcome video updated:', data.last_video_time);
           } else {
-            // Запрос для обычного видео
             await axios.patch(`${API_BASE_URL}/api/v1/user/video`, {
               user_tg_id: userId,
               last_video: lastVideo || page,
@@ -88,10 +57,10 @@ const VideoViewer = ({ videoSrc, page, userId, instruction, lastVideo }) => {
               last_video_link: videoSrc,
               last_video_duration: data.last_video_duration,
             });
-            console.log('Видео прогресс обновлен:', data);
+            console.log('Video progress updated:', data);
           }
         } catch (error) {
-          console.error('Ошибка при обновлении видео прогресса:', error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
+          console.error('Error updating video progress:', error.message);
         }
       };
 
@@ -100,7 +69,7 @@ const VideoViewer = ({ videoSrc, page, userId, instruction, lastVideo }) => {
     [userId, instruction, lastVideo, page, videoSrc]
   );
 
-  // Функция для отправки данных
+  // Function to send video update data
   const sendVideoUpdate = useCallback(() => {
     if (!videoRef.current || !userId) return;
 
@@ -115,7 +84,39 @@ const VideoViewer = ({ videoSrc, page, userId, instruction, lastVideo }) => {
     debouncedSendVideoUpdate(videoData);
   }, [userId, debouncedSendVideoUpdate]);
 
-  // Обработчики событий
+  // Toggle play/pause functionality
+  const togglePlay = useCallback(() => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+        sendVideoUpdate(); // Send update when pausing
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+      setShowPlayButton(true);
+      setTimeout(() => setShowPlayButton(false), 5000);
+    }
+  }, [isPlaying, sendVideoUpdate]);
+
+  // Bind togglePlay to ref
+  useEffect(() => {
+    if (togglePlayRef) {
+      togglePlayRef.current = togglePlay;
+    }
+  }, [togglePlayRef, togglePlay]);
+
+  // Handle progress bar click to seek
+  const handleProgressClick = (e) => {
+    const progressBar = e.currentTarget;
+    const rect = progressBar.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const width = rect.width;
+    const newTime = (clickX / width) * (videoRef.current?.duration || 0);
+    if (videoRef.current) videoRef.current.currentTime = newTime;
+  };
+
+  // Video event listeners
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
@@ -126,17 +127,17 @@ const VideoViewer = ({ videoSrc, page, userId, instruction, lastVideo }) => {
       video.addEventListener('ended', () => {
         setIsPlaying(false);
         setShowPlayButton(true);
-        sendVideoUpdate(); // Отправляем данные при завершении видео
+        sendVideoUpdate();
+        if (onVideoEnd) onVideoEnd(true);
       });
 
-      // Отправка данных при выходе из компонента
       return () => {
         video.removeEventListener('timeupdate', updateProgress);
         video.removeEventListener('ended', () => {});
-        if (isPlaying) sendVideoUpdate(); // Отправляем, если видео воспроизводилось
+        if (isPlaying) sendVideoUpdate();
       };
     }
-  }, [isPlaying, sendVideoUpdate, updateProgress]);
+  }, [isPlaying, sendVideoUpdate, updateProgress, onVideoEnd]);
 
   return (
     <div className="videoViewer">
@@ -151,7 +152,7 @@ const VideoViewer = ({ videoSrc, page, userId, instruction, lastVideo }) => {
         style={{ opacity: showPlayButton ? '1' : '0' }}
         onClick={togglePlay}
       >
-        <img src={isPlaying ? pause : play} alt="Управление воспроизведением" />
+        <img src={isPlaying ? pause : play} alt="Playback control" />
       </button>
       <div
         className="controlsContainer"
