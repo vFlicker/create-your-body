@@ -73,6 +73,7 @@ function App() {
 
       const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
       setUserId(telegramUser.id)
+      console.log(telegramUser.id)
       console.log(telegramUser.photo_url)
       const addImage = async () => {
         const imageData = {user_tg_id: telegramUser.id, image: telegramUser.photo_url}
