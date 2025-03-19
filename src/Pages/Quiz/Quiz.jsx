@@ -221,22 +221,24 @@ export default function Quiz({ userId }) {
 
       const sendData = async () => {
         try {
-          await axios.patch(`${API_BASE_URL}/api/v1/user`, {
-            tg_id: userId,
-            name: name,
-            born_date: formattedBirthday,
+          const userData = {
+            name: name, 
+            born_date: formattedBirthday, 
             sex: gen === 'm' ? 'male' : 'female',
             user_level: userLevel,
             phone: tel,
-          }, {
+          };
+      
+          const response = await axios.patch(`${API_BASE_URL}/api/v1/user`, userData, {
             headers: {
-              'Content-Type': 'application/json', // Указываем тип данных
+              'Content-Type': 'application/json',
             },
           });
-          console.log('Данные успешно обновлены');
+      
+          console.log('Данные успешно обновлены:', response.data);
           navigate('/result');
         } catch (error) {
-          console.error('Ошибка при обновлении данных:', error.message);
+          console.error('Ошибка при обновлении данных:', error.response ? error.response.data : error.message);
         }
       };
 
