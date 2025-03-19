@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import play from '../../Assets/svg/play.svg';
 
-export default function History({ text, viewed = 10, view = 50, instruction = false, lastVideo }) {
+export default function History({ text, viewed = 10, view = '50', instruction = false, lastVideo }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
