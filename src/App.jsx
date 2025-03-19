@@ -87,32 +87,32 @@ function App() {
 
       addUser()
 
-      if (telegramUser) {
-        setUserId(telegramUser.id)
-        console.log("Пользователь Telegram:", telegramUser);
+      // if (telegramUser) {
+      //   setUserId(telegramUser.id)
+      //   console.log("Пользователь Telegram:", telegramUser);
 
 
-        const addPhotoUserToDatabase = async () => {
-          try {
-            const userData = { 
-              image: telegramUser.photo_url
-            };
+      //   const addPhotoUserToDatabase = async () => {
+      //     try {
+      //       const userData = { 
+      //         image: telegramUser.photo_url
+      //       };
 
-            const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-              body: {userData, user_id: telegramUser.id}
-            });
+      //       const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
+      //         body: {userData, user_id: telegramUser.id}
+      //       });
 
-            console.log('Пользователь успешно добавлен:', response.data);
-          } catch (error) {
-            console.error('Ошибка при добавлении пользователя:', error.response ? error.response.data : error.message);
-          }
-        };
+      //       console.log('Пользователь успешно добавлен:', response.data);
+      //     } catch (error) {
+      //       console.error('Ошибка при добавлении пользователя:', error.response ? error.response.data : error.message);
+      //     }
+      //   };
 
-        // Вызываем функцию отправки
-        addPhotoUserToDatabase();
-      } else {
-        console.error('Пользователь Telegram не найден');
-      }
+      //   // Вызываем функцию отправки
+      //   addPhotoUserToDatabase();
+      // } else {
+      //   console.error('Пользователь Telegram не найден');
+      // }
     } else {
       console.error('Telegram WebApp API не найден');
     }
