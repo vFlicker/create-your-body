@@ -85,7 +85,7 @@ function App() {
     };
         console.log('Отправляемые данные:', imageData);
         try {
-          const response = await axios.post(`${API_BASE_URL}/api/v1/user/image`, imageData, {
+          const response = await axios.post(`${API_BASE_URL}/api/v1/user/image?${imageData.toString()}`, null, {
             headers: {
               'Content-Type': 'application/json',
             },
