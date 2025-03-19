@@ -65,6 +65,7 @@ function Layout() {
 function App() {
   const [userId, setUserId] = useState(null)
   const [data, setData] = useState(null)
+  const [base, setBase] = useState(false)
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
@@ -107,6 +108,10 @@ function App() {
           });
           console.log(response.data)
           setData(response.data)
+          const userTarif = response.data.user_tarif || '';
+          const isBase = userTarif.trim().includes('Base');
+          setBase(isBase);
+          console.log('Тариф:', userTarif, 'Base:', isBase);
         } catch {
           console.log('Не получилось получить данные')
         }
@@ -135,7 +140,7 @@ function App() {
           <Route path="profile" element={<Profile data={data} userId={userId} setData={setData} />} />
           <Route path="parameters" element={<Parameters data={data} userId={userId} />} />
           <Route path="record" element={<Record data={data} userId={userId} />} />
-          <Route path="communication" element={<Communication data={data} userId={userId} />} />
+          <Route path="communication" element={<Communication data={data} userId={userId} base={base} />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -34,27 +34,12 @@ const TelegramLinkButton = ({ username, icon, buttonText = 'Перейти в Te
     );
   };
 
-export default function Communication({ userId }) {
-  const [data, setData] = useState(null)
+export default function Communication({ data, base }) {
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.setBackgroundColor('#F2F2F2');
     }
-
-    const fetchUserData = async () => {
-      try {
-        if (!userId) throw new Error('Не удалось получить Telegram ID');
-        const response = await axios.get(`${API_BASE_URL}/api/v1/user_parametrs`, {
-          params: { user_tg_id: userId },
-        });
-        setData(response.data);
-      } catch (err) {
-        console.error('Ошибка при получении параметров:', err.message);
-      }
-    };
-
-    fetchUserData();
-  }, [userId]);
+  }, []);
   
   return (
     <div className='comPage'>
@@ -69,11 +54,13 @@ export default function Communication({ userId }) {
             <p className="botComText">
             Присоединяйтесь к нашему сообществу и задавайте вопросы. Мы здесь, чтобы помочь вам 💜
             </p>
+            { !base &&
             <TelegramLinkButton 
                 username={''}  
                 buttonText='Чат в Telegram'
                 icon={chat}          
             />
+            }
             <TelegramLinkButton 
                 username={'zabota_CYB'}  
                 buttonText='Поддержка'
