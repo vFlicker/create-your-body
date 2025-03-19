@@ -8,7 +8,7 @@ import { API_BASE_URL } from '../../API';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import Selecter from '../../Components/Selecter/Selecter';
 import Button from '../../Components/Button/Button';
-import ButtonEdit from '../../Components/Button/ButtonEdit';
+// import ButtonEdit from '../../Components/Button/ButtonEdit';
 
 import settings from '../../Assets/svg/settings.svg';
 import right from '../../Assets/svg/right.svg';
