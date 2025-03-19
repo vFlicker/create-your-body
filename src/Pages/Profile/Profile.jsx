@@ -4,7 +4,7 @@ import './Profile.css';
 import axios from 'axios';
 import { API_BASE_URL } from '../../API';
 
-import PhotoEditor from '../../Components/PhotoEditor/PhotoEditor';
+// import PhotoEditor from '../../Components/PhotoEditor/PhotoEditor';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import Selecter from '../../Components/Selecter/Selecter';
 import Button from '../../Components/Button/Button';
@@ -15,7 +15,7 @@ import right from '../../Assets/svg/right.svg';
 import close from '../../Assets/svg/close.svg';
 import zamer from '../../Assets/img/zamer.jpeg';
 import chart from '../../Assets/svg/chart.svg';
-import img from '../../Assets/img/result.jpg';
+// import img from '../../Assets/img/result.jpg';
 
 export default function Profile({ userId, data, setData }) {
   const navigate = useNavigate();
