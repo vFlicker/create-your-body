@@ -217,17 +217,17 @@ export default function Quiz({ userId }) {
       const userLevel = countOnes > countTwos ? 'pro' : 'newbie';
 
       const [day, month, year] = birthday.split('.');
-      const formattedBirthday = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T00:00:00.000Z`;
+      const formattedBirthday = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 
       const sendData = async () => {
         try {
           const userData = {
             tg_id: userId,
-            name: name, 
+            name: name || '', 
             born_date: formattedBirthday, 
             sex: gen === 'm' ? 'male' : 'female',
-            user_level: userLevel,
-            phone: tel,
+            user_level: userLevel || '',
+            phone: tel || '',
           };
       
           const response = await axios.patch(`${API_BASE_URL}/api/v1/user`, userData, {
