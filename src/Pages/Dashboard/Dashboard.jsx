@@ -94,8 +94,8 @@ export default function Dashboard({ data }) {
               lastVideo={data.last_video} // Передаём страницу для ссылки
             />
           )} */}
-          {data?.greet_video_time_view && parseTimeToSeconds(data.greet_video_time_view) < parseTimeToSeconds('14:55') && 
-          <History text='Инструкция + Вводный урок' viewed={parseTimeToSeconds(data.greet_video_time_view)} view={15} instruction={true} />
+          {data?.greet_video_time_view && formatTimeFromString(data.greet_video_time_view) < formatTimeFromString('14:55') && 
+          <History text='Инструкция + Вводный урок' viewed={formatTimeFromString(data.greet_video_time_view)} view={formatTimeFromString('14:55')} instruction={true} />
           }
         </div>
         <div className="dashMenu">

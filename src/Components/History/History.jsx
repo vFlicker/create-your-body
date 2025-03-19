@@ -9,9 +9,10 @@ export default function History({ text, viewed = 10, view = '50', instruction = 
 
   const handleClick = () => {
     if (instruction) {
-      navigate('/begin')
+      // Добавляем query-параметр view=video при переходе на /begin
+      navigate('/begin?view=video');
     } else if (lastVideo) {
-      navigate(`/${lastVideo}`); // Переход на страницу из last_video
+      navigate(`/${lastVideo}`);
     }
   };
 
