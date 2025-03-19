@@ -14,7 +14,7 @@ export default function PhotoEditor ({ label, initialPhoto, userId, number }) {
       const fetchPhoto = async () => {
         try {
           const response = await axios.get(`${API_BASE_URL}/api/v1/user/image/two`, {
-            body: { user_id: userId, number },
+            params: { user_id: userId, number },
             responseType: 'blob',
           });
           setPhoto(URL.createObjectURL(response.data));

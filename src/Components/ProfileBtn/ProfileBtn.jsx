@@ -10,11 +10,11 @@ export default function ProfileBtn({ level, user_photo }) {
     <button 
       className='profileBtn' 
       onClick={() => navigate('/profile')}
-      style={{borderColor: level === 'pro' ? '#A799FF' : ''}}
+      style={{borderColor: level === 'Профи' ? '#A799FF' : ''}}
     >
         <img src={user_photo ? user_photo : avatar} alt="аватар" style={{transform: user_photo ? '' : 'scale(0.7)'}}/>
         <div className="profileEllips"
-          style={{background: level === 'pro' ? '#A799FF' : ''}}
+          style={{background: level === 'Профи' ? '#A799FF' : ''}}
         ></div>
     </button>
   )
