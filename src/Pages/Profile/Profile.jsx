@@ -23,6 +23,7 @@ export default function Profile({ userId, data, setData }) {
   const [activeIndex, setActiveIndex] = useState(data.user_level === 'Новичок' ? 0 : 1);
   const [dataParameters, setDataParameters] = useState(null);
   const [isPressed, setIsPressed] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Новое состояние для загрузки
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
@@ -31,14 +32,18 @@ export default function Profile({ userId, data, setData }) {
 
     const fetchUserData = async () => {
       try {
+        setIsLoading(true); // Начинаем загрузку
         const response = await axios.get(`${API_BASE_URL}/api/v1/user_parametrs`, {
-          params: { user_tg_id: userId }, // Изменено с user_id на user_tg_id
+          params: { user_tg_id: userId },
         });
         const parameters = Array.isArray(response.data) ? response.data : [response.data];
         const latestParameters = parameters[parameters.length - 1];
         setDataParameters(latestParameters);
       } catch (err) {
         console.error('Ошибка при получении параметров:', err.response ? JSON.stringify(err.response.data, null, 2) : err.message);
+        setDataParameters(null); // Устанавливаем null в случае ошибки
+      } finally {
+        setIsLoading(false); // Завершаем загрузку
       }
     };
 
@@ -70,55 +75,50 @@ export default function Profile({ userId, data, setData }) {
   return (
     <div className="profilePage">
       <div className="profileContainer">
-        {dataParameters ? (
-          <div className="profile" style={{ justifyContent: 'space-between' }}>
-            <div className="profileData">
-              <ProfileBtn level={data?.user_level} user_photo={data?.image} />
-              <div className="profileName">
-                <p>{data?.name || 'Имя'}</p>
-                <span>{data?.user_level || 'Уровень'}</span>
-              </div>
-            </div>
-            <ButtonEdit onClick={() => navigate('/parameters')} />
+        {isLoading ? (
+          // Индикатор загрузки
+          <div className="loadingSpinner">
+            <div className="spinner"></div>
           </div>
-        ) : (
-          <div className="profile">
-            <ProfileBtn level={data?.user_level} user_photo={data?.image} />
-            <div className="profileName">
-              <p>{data?.name || 'Имя'}</p>
-              <span>{data?.user_level || 'Уровень'}</span>
-            </div>
-          </div>
-        )}
-        <div className="settings">
-          <div className="set" onClick={() => setOpen(!open)}>
-            <img src={settings} alt="Настройки" />
-            <p>Настроить уровень сложности</p>
-            <img
-              className="toggle"
-              src={right}
-              style={{ opacity: open ? '0' : '1' }}
-              alt="Настроить уровень сложности"
-            />
-            <img
-              className="toggle"
-              src={close}
-              style={{ opacity: open ? '1' : '0' }}
-              alt="Настроить уровень сложности"
-            />
-          </div>
-          {open && (
-            <Selecter
-              bg="#fff"
-              activeIndex={activeIndex}
-              textOne="Новичок"
-              textTwo="Профи"
-              onClick={handleSelecterClick}
-            />
-          )}
-        </div>
-        {dataParameters ? (
+        ) : dataParameters ? (
           <div className="dataHave">
+            <div className="profile" style={{ justifyContent: 'space-between' }}>
+              <div className="profileData">
+                <ProfileBtn level={data?.user_level} user_photo={data?.image} />
+                <div className="profileName">
+                  <p>{data?.name || 'Имя'}</p>
+                  <span>{data?.user_level || 'Уровень'}</span>
+                </div>
+              </div>
+              {/* <ButtonEdit onClick={() => navigate('/parameters')} /> */}
+            </div>
+            <div className="settings">
+              <div className="set" onClick={() => setOpen(!open)}>
+                <img src={settings} alt="Настройки" />
+                <p>Настроить уровень сложности</p>
+                <img
+                  className="toggle"
+                  src={right}
+                  style={{ opacity: open ? '0' : '1' }}
+                  alt="Настроить уровень сложности"
+                />
+                <img
+                  className="toggle"
+                  src={close}
+                  style={{ opacity: open ? '1' : '0' }}
+                  alt="Настроить уровень сложности"
+                />
+              </div>
+              {open && (
+                <Selecter
+                  bg="#fff"
+                  activeIndex={activeIndex}
+                  textOne="Новичок"
+                  textTwo="Профи"
+                  onClick={handleSelecterClick}
+                />
+              )}
+            </div>
             <div className="recordText">
               <h4>Запись прогресса</h4>
               <p>Чтобы отслеживать прогресс необходимо в конце каждой недели обновлять параметры.</p>
@@ -136,7 +136,7 @@ export default function Profile({ userId, data, setData }) {
               <img src={chart} alt="Записать прогресс" />
               <p>Записать прогресс</p>
             </button>
-           {<p className='notseven'>Следующая запись будет доступна через 7 дней</p>}
+            {<p className='notseven'>Следующая запись будет доступна через 7 дней</p>}
             <div className="parameters">
               <h3>Параметры</h3>
               <div className="parametersValues">
@@ -193,6 +193,40 @@ export default function Profile({ userId, data, setData }) {
           </div>
         ) : (
           <>
+            <div className="profile">
+              <ProfileBtn level={data?.user_level} user_photo={data?.image} />
+              <div className="profileName">
+                <p>{data?.name || 'Имя'}</p>
+                <span>{data?.user_level || 'Уровень'}</span>
+              </div>
+            </div>
+            <div className="settings">
+              <div className="set" onClick={() => setOpen(!open)}>
+                <img src={settings} alt="Настройки" />
+                <p>Настроить уровень сложности</p>
+                <img
+                  className="toggle"
+                  src={right}
+                  style={{ opacity: open ? '0' : '1' }}
+                  alt="Настроить уровень сложности"
+                />
+                <img
+                  className="toggle"
+                  src={close}
+                  style={{ opacity: open ? '1' : '0' }}
+                  alt="Настроить уровень сложности"
+                />
+              </div>
+              {open && (
+                <Selecter
+                  bg="#fff"
+                  activeIndex={activeIndex}
+                  textOne="Новичок"
+                  textTwo="Профи"
+                  onClick={handleSelecterClick}
+                />
+              )}
+            </div>
             <div className="zamer">
               <img src={zamer} alt="Важность замеров" />
             </div>
@@ -207,16 +241,14 @@ export default function Profile({ userId, data, setData }) {
                 <p>Поэтому ни с кем себя не сравниваем! Сравниваем только с собой из вчера!</p>
               </div>
             </div>
+            <Button
+              onClick={() => navigate('/parameters')}
+              text="Добавить параметры"
+              bg="#A799FF"
+              bgFocus="#776CBC"
+              color="#F2F2F2"
+            />
           </>
-        )}
-        {!dataParameters && (
-          <Button
-            onClick={() => navigate('/parameters')}
-            text="Добавить параметры"
-            bg="#A799FF"
-            bgFocus="#776CBC"
-            color="#F2F2F2"
-          />
         )}
       </div>
     </div>
