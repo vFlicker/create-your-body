@@ -327,7 +327,7 @@ export default function Quiz({ userId }) {
               className={`quizAnswer ${selectedOption === option.level ? 'active' : ''}`}
               onClick={() => setSelectedOption(option.level)}
             >
-              <img src={option.img} alt="" />
+              <p>{option.img}</p>
               <p>{option.text}</p>
             </button>
           ))}
