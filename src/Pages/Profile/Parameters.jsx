@@ -8,8 +8,8 @@ import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import Button from '../../Components/Button/Button';
 
 import example from '../../Assets/img/example.jpeg';
-import add from '../../Assets/svg/addImg.svg';
-import close from '../../Assets/svg/closeWhite.svg';
+// import add from '../../Assets/svg/addImg.svg';
+// import close from '../../Assets/svg/closeWhite.svg';
 
 const InputPair = ({ labels, values, onChange, handleBlur, handleFocus, isStatic }) => {
   return (
@@ -39,58 +39,58 @@ const InputPair = ({ labels, values, onChange, handleBlur, handleFocus, isStatic
   );
 };
 
-const PhotoUploader = ({ label, value, onChange }) => {
-  const fileInputRef = React.useRef(null);
+// const PhotoUploader = ({ label, value, onChange }) => {
+//   const fileInputRef = React.useRef(null);
 
-  const handleClick = () => {
-    fileInputRef.current?.click();
-  };
+//   const handleClick = () => {
+//     fileInputRef.current?.click();
+//   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      // Проверка размера файла (2 МБ = 2 * 1024 * 1024 байт)
-      if (file.size > 2 * 1024 * 1024) {
-        // Используем Telegram.WebApp.showAlert вместо стандартного alert
-        if (window.Telegram?.WebApp) {
-          window.Telegram.WebApp.showAlert('Максимальный размер фотографии 2 МБ');
-        } else {
-          alert('Максимальный размер фотографии 2 МБ'); // Фallback для не-Telegram среды
-        }
-        return;
-      }
-      onChange(e);
-    }
-  };
+//   const handleFileChange = (e) => {
+//     const file = e.target.files[0];
+//     if (file) {
+//       // Проверка размера файла (2 МБ = 2 * 1024 * 1024 байт)
+//       if (file.size > 2 * 1024 * 1024) {
+//         // Используем Telegram.WebApp.showAlert вместо стандартного alert
+//         if (window.Telegram?.WebApp) {
+//           window.Telegram.WebApp.showAlert('Максимальный размер фотографии 2 МБ');
+//         } else {
+//           alert('Максимальный размер фотографии 2 МБ'); // Фallback для не-Telegram среды
+//         }
+//         return;
+//       }
+//       onChange(e);
+//     }
+//   };
 
-  return (
-    <div className="photoUploader" onClick={handleClick}>
-      <label>{label}</label>
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleFileChange}
-        ref={fileInputRef}
-        style={{ display: 'none' }}
-      />
-      {value ? (
-        <div className="uploadContainer">
-          <img
-            src={typeof value === 'string' ? value : URL.createObjectURL(value)}
-            alt={label}
-            className="previewImage"
-            onClick={(e) => e.stopPropagation()}
-          />
-          <img className="closePhoto" src={close} alt="Закрыть" />
-        </div>
-      ) : (
-        <div className="uploadPlaceholderContainer">
-          <img src={add} className="uploadPlaceholder" alt="Добавить" />
-        </div>
-      )}
-    </div>
-  );
-};
+//   return (
+//     <div className="photoUploader" onClick={handleClick}>
+//       <label>{label}</label>
+//       <input
+//         type="file"
+//         accept="image/*"
+//         onChange={handleFileChange}
+//         ref={fileInputRef}
+//         style={{ display: 'none' }}
+//       />
+//       {value ? (
+//         <div className="uploadContainer">
+//           <img
+//             src={typeof value === 'string' ? value : URL.createObjectURL(value)}
+//             alt={label}
+//             className="previewImage"
+//             onClick={(e) => e.stopPropagation()}
+//           />
+//           <img className="closePhoto" src={close} alt="Закрыть" />
+//         </div>
+//       ) : (
+//         <div className="uploadPlaceholderContainer">
+//           <img src={add} className="uploadPlaceholder" alt="Добавить" />
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
 
 export default function Parameters({ userId, data }) {
   const [isMobile, setIsMobile] = useState(false);
@@ -103,8 +103,8 @@ export default function Parameters({ userId, data }) {
     hips: '',
     leg: '',
     weight: '',
-    photoBefore: null,
-    photoAfter: null,
+    // photoBefore: null,
+    // photoAfter: null,
   });
 
   useEffect(() => {
@@ -156,7 +156,7 @@ export default function Parameters({ userId, data }) {
   };
 
   const handleChange = (field, index) => (e) => {
-    const value = index === undefined ? e.target.files[0] : e.target.value;
+    const value = index === undefined ? e.target.value : e.target.value; // Убрана логика для файлов
     setFormData({ ...formData, [field]: value });
   };
 
@@ -177,11 +177,11 @@ export default function Parameters({ userId, data }) {
       console.error('userId отсутствует');
       if (window.Telegram?.WebApp) {
         window.Telegram.WebApp.showAlert('Ошибка: отсутствует идентификатор пользователя');
-        } else {
-          alert('Ошибка: отсутствует идентификатор пользователя');
-        }
-        return;
+      } else {
+        alert('Ошибка: отсутствует идентификатор пользователя');
       }
+      return;
+    }
   
     try {
       // Отправка параметров
@@ -202,17 +202,17 @@ export default function Parameters({ userId, data }) {
         headers: { 'Content-Type': 'application/json' },
       });
   
-      // Отправка фотографий, если они есть
-      if (formData.photoBefore || formData.photoAfter) {
-        const photoData = new FormData();
-        photoData.append('user_tg_id', String(userId)); // Добавляем user_tg_id в FormData
-        if (formData.photoBefore) photoData.append('image_before', formData.photoBefore, `${userId}_before.jpg`);
-        if (formData.photoAfter) photoData.append('image_after', formData.photoAfter, `${userId}_after.jpg`);
+      // // Отправка фотографий, если они есть
+      // if (formData.photoBefore || formData.photoAfter) {
+      //   const photoData = new FormData();
+      //   photoData.append('user_tg_id', String(userId));
+      //   if (formData.photoBefore) photoData.append('image_before', formData.photoBefore, `${userId}_before.jpg`);
+      //   if (formData.photoAfter) photoData.append('image_after', formData.photoAfter, `${userId}_after.jpg`);
   
-        await axios.post(`${API_BASE_URL}/api/v1/user/images/two`, photoData, { // Убираем query-параметр
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
-      }
+      //   await axios.post(`${API_BASE_URL}/api/v1/user/images/two`, photoData, {
+      //     headers: { 'Content-Type': 'multipart/form-data' },
+      //   });
+      // }
   
       console.log('Данные сохранены!');
       navigate('/profile');
@@ -277,7 +277,7 @@ export default function Parameters({ userId, data }) {
               isStatic={isStatic}
             />
           ))}
-          <div className="loadPhotos">
+          {/* <div className="loadPhotos">
             <PhotoUploader
               label="Фото до"
               value={formData.photoBefore}
@@ -288,7 +288,7 @@ export default function Parameters({ userId, data }) {
               value={formData.photoAfter}
               onChange={handleChange('photoAfter')}
             />
-          </div>
+          </div> */}
           <Button
             text="Сохранить"
             width="100%"

@@ -182,14 +182,14 @@ export default function Profile({ userId, data, setData }) {
                 </div>
               </div>
             </div>
-            <div className="photosContainerBefore">
+            {/* <div className="photosContainerBefore">
               <h3>Фотографии</h3>
               <p>До и после тренировочной недели</p>
               <div className="photosBefore">
                 <PhotoEditor label="Фото до" initialPhoto={img} userId={userId} number={0} />
                 <PhotoEditor label="Фото после" initialPhoto={img} userId={userId} number={1} />
               </div>
-            </div>
+            </div> */}
           </div>
         ) : (
           <>
