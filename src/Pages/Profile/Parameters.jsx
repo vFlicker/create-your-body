@@ -161,44 +161,57 @@ export default function Parameters({ userId, data }) {
   };
 
   const handleSubmit = async () => {
-    const data = new FormData();
-    data.append('tg_id', userId);
-    data.append('chest', formData.chest || '0');
-    data.append('waist', formData.waist || '0');
-    data.append('abdominal_circumference', formData.belly || '0');
-    data.append('hips', formData.hips || '0');
-    data.append('legs', formData.leg || '0');
-    data.append('weight', formData.weight || '0');
-    if (formData.photoBefore) data.append('photoBefore', formData.photoBefore);
-    if (formData.photoAfter) data.append('photoAfter', formData.photoAfter);
-
+    // Поля, которые должны быть заполнены
+    const requiredFields = ['chest', 'waist', 'belly', 'hips', 'leg', 'weight'];
+    const isAllFilled = requiredFields.every(field => formData[field] && formData[field].trim() !== '');
+  
+    if (!isAllFilled) {
+      if (window.Telegram?.WebApp) {
+        window.Telegram.WebApp.showAlert('Добавьте все параметры');
+      } else {
+        alert('Добавьте все параметры'); // Fallback для не-Telegram среды
+      }
+      return;
+    }
+  
     try {
       // Отправка параметров
-      await axios.post(`${API_BASE_URL}/api/v1/user_parametrs`, {
+      const paramData = {
         tg_id: userId,
-        chest: parseFloat(formData.chest) || 0,
-        waist: parseFloat(formData.waist) || 0,
-        abdominal_circumference: parseFloat(formData.belly) || 0,
-        hips: parseFloat(formData.hips) || 0,
-        legs: parseFloat(formData.leg) || 0,
-        weight: parseFloat(formData.weight) || 0,
+        chest: parseInt(formData.chest, 10) || 0,
+        waist: parseInt(formData.waist, 10) || 0,
+        abdominal_circumference: parseInt(formData.belly, 10) || 0,
+        hips: parseInt(formData.hips, 10) || 0,
+        legs: parseInt(formData.leg, 10) || 0,
+        weight: parseInt(formData.weight, 10) || 0,
+        created_at: new Date().toISOString(), // Добавляем текущую дату
+      };
+  
+      await axios.post(`${API_BASE_URL}/api/v1/user_parametrs`, paramData, {
+        headers: { 'Content-Type': 'application/json' },
       });
-
-      // Отправка фотографий
+  
+      // Отправка фотографий, если они есть
       if (formData.photoBefore || formData.photoAfter) {
         const photoData = new FormData();
         photoData.append('user_tg_id', userId);
-        if (formData.photoBefore) photoData.append('photo', formData.photoBefore, `${userId}_before.jpg`);
-        if (formData.photoAfter) photoData.append('photo', formData.photoAfter, `${userId}_after.jpg`);
-        await axios.post(`${API_BASE_URL}/api/v1/user/photos`, photoData, {
+        if (formData.photoBefore) photoData.append('image_before', formData.photoBefore, `${userId}_before.jpg`);
+        if (formData.photoAfter) photoData.append('image_after', formData.photoAfter, `${userId}_after.jpg`);
+  
+        await axios.post(`${API_BASE_URL}/api/v1/user/images/two`, photoData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
       }
-
+  
       console.log('Данные сохранены!');
       navigate('/profile');
     } catch (error) {
-      console.error('Ошибка при сохранении:', error.message);
+      console.error('Ошибка при сохранении:', error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
+      if (window.Telegram?.WebApp) {
+        window.Telegram.WebApp.showAlert('Ошибка при сохранении данных');
+      } else {
+        alert('Ошибка при сохранении данных');
+      }
     }
   };
 
