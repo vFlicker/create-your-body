@@ -182,8 +182,18 @@ export default function Quiz({ userId }) {
       tg.setBackgroundColor('#fff');
       const platform = tg.platform;
       setIsMobile(platform !== 'tdesktop' && platform !== 'macos');
+      if (step === 1) {
+        tg.BackButton.hide();
+      } else {
+        tg.BackButton.show();
+        tg.BackButton.onClick(handleBack);
+      }
+
+      return () => {
+        tg.BackButton.offClick(handleBack);
+      };
     }
-  }, []);
+  }, [step]);
 
   const handleFocus = (e) => {
     if (!isMobile) return;
