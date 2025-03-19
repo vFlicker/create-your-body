@@ -222,6 +222,7 @@ export default function Quiz({ userId }) {
       const sendData = async () => {
         try {
           const userData = {
+            tg_id: userId,
             name: name, 
             born_date: formattedBirthday, 
             sex: gen === 'm' ? 'male' : 'female',
