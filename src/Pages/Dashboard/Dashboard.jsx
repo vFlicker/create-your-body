@@ -68,7 +68,7 @@ export default function Dashboard({ userId }) {
     const fetchdata = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-          body: { user_id: userId },
+          params: { user_id: userId },
         });
         setData(response.data);
       } catch (error) {
@@ -90,7 +90,7 @@ export default function Dashboard({ userId }) {
       </div>
       <div className="dashBot">
         <div className="history">
-          {data.last_video && (
+          {data?.last_video && (
             <History
               text="Продолжить просмотр"
               viewed={Math.floor((50 * 60 - Number(data.last_video_time)) / 60)} // Переводим оставшееся время в просмотренные минуты

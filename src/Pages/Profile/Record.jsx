@@ -98,7 +98,6 @@ export default function Record({ userId }) {
   const handleSubmit = async () => {
     try {
       const parametersData = {
-        user_id: userId,
         chest: parseFloat(formData.chest) || 0,
         waist: parseFloat(formData.waist) || 0,
         abdominal_circumference: parseFloat(formData.abdominal_circumference) || 0,
@@ -109,7 +108,8 @@ export default function Record({ userId }) {
       };
 
       await axios.get(`${API_BASE_URL}/api/v1/user/user_parameters`, {
-        parametersData
+        params: {user_id: userId},
+        body: parametersData
       });
 
       const weekNumber = activeWeek;

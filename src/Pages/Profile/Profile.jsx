@@ -33,7 +33,7 @@ export default function Profile({ userId }) {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/api/v1/user_parametrs`, {
-          body: { user_id: userId },
+          params: { user_id: userId },
         });
         const parameters = Array.isArray(response.data) ? response.data : [response.data];
         const latestParameters = parameters[parameters.length - 1];
@@ -45,9 +45,8 @@ export default function Profile({ userId }) {
 
     const fetchUserDataProfile = async () => {
       try {
-        if (!userId) throw new Error('Не удалось получить Telegram ID');
         const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-          body: { user_id: userId },
+          params: { user_id: userId },
         });
         setDataProfile(response.data);
         setActiveIndex(response.data.user_level === 'pro' ? 1 : 0);
@@ -74,7 +73,7 @@ export default function Profile({ userId }) {
       });
       console.log('Уровень сложности успешно обновлён:', level);
       const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-        body: { user_id: userId },
+        params: { user_id: userId },
       });
       setDataProfile(response.data);
     } catch (error) {
