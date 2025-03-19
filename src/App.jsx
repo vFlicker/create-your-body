@@ -74,6 +74,18 @@ function App() {
       const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
       setUserId(telegramUser.id)
       console.log(telegramUser.photo_url)
+      const addImage = async () => {
+        try {
+          const response = await axios.patch(`${API_BASE_URL}/api/v1/user/image`, telegramUser.photo_url, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          console.log(response)
+        } catch (error) {
+          console.log(`Ошибка ${error}`)
+        }
+      }
       const addUser = async () => {
         try {
           const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
@@ -85,35 +97,7 @@ function App() {
           console.log('Не получилось получить данные')
         }
       }
-
       addUser()
-
-      // if (telegramUser) {
-      //   setUserId(telegramUser.id)
-      //   console.log("Пользователь Telegram:", telegramUser);
-
-
-      //   const addPhotoUserToDatabase = async () => {
-      //     try {
-      //       const userData = { 
-      //         image: telegramUser.photo_url
-      //       };
-
-      //       const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-      //         body: {userData, user_id: telegramUser.id}
-      //       });
-
-      //       console.log('Пользователь успешно добавлен:', response.data);
-      //     } catch (error) {
-      //       console.error('Ошибка при добавлении пользователя:', error.response ? error.response.data : error.message);
-      //     }
-      //   };
-
-      //   // Вызываем функцию отправки
-      //   addPhotoUserToDatabase();
-      // } else {
-      //   console.error('Пользователь Telegram не найден');
-      // }
     } else {
       console.error('Telegram WebApp API не найден');
     }
