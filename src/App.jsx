@@ -143,7 +143,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      {isLoading ? (
+      {!isLoading ? (
         // Индикатор загрузки
         <div className="loadingSpinner">
           <div className="spinner"></div>
