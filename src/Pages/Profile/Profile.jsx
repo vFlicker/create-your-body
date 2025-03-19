@@ -129,12 +129,14 @@ export default function Profile({ userId, data, setData }) {
               onMouseUp={handleMouseUp}
               onTouchStart={handleTouchStart}
               onTouchEnd={handleTouchEnd}
+              disabled={''}
               onClick={() => navigate('/record')}
               style={{ background: isPressed ? '#C0C0C0' : '', borderColor: isPressed ? '#C0C0C0' : '' }}
             >
               <img src={chart} alt="Записать прогресс" />
               <p>Записать прогресс</p>
             </button>
+           {<p className='notseven'>Следующая запись будет доступна через 7 дней</p>}
             <div className="parameters">
               <h3>Параметры</h3>
               <div className="parametersValues">

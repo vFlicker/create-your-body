@@ -205,11 +205,10 @@ export default function Parameters({ userId, data }) {
       // Отправка фотографий, если они есть
       if (formData.photoBefore || formData.photoAfter) {
         const photoData = new FormData();
-        photoData.append('user_tg_id', String(userId));
         if (formData.photoBefore) photoData.append('image_before', formData.photoBefore, `${userId}_before.jpg`);
         if (formData.photoAfter) photoData.append('image_after', formData.photoAfter, `${userId}_after.jpg`);
   
-        await axios.post(`${API_BASE_URL}/api/v1/user/images/two`, photoData, {
+        await axios.post(`${API_BASE_URL}/api/v1/user/images/two?user_tg_id=${String(userId)}`, photoData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
       }

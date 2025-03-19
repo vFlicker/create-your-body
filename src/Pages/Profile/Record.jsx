@@ -5,13 +5,13 @@ import axios from 'axios';
 import { API_BASE_URL } from '../../API';
 
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
-import Selecter from '../../Components/Selecter/Selecter';
-import ButtonEdit from '../../Components/Button/ButtonEdit';
+// import Selecter from '../../Components/Selecter/Selecter';
+// import ButtonEdit from '../../Components/Button/ButtonEdit';
 import Button from '../../Components/Button/Button';
 
-import settings from '../../Assets/svg/settings.svg';
-import right from '../../Assets/svg/right.svg';
-import close from '../../Assets/svg/close.svg';
+// import settings from '../../Assets/svg/settings.svg';
+// import right from '../../Assets/svg/right.svg';
+// import close from '../../Assets/svg/close.svg';
 
 const InputPair = ({ labels, values, onChange, handleBlur, handleFocus }) => (
   <div className="inputPair" style={{ display: 'flex' }}>
@@ -31,14 +31,13 @@ const InputPair = ({ labels, values, onChange, handleBlur, handleFocus }) => (
   </div>
 );
 
-export default function Record({ userId }) {
+export default function Record({ userId, data }) {
   const [isMobile, setIsMobile] = useState(false);
   const formRef = useRef(null);
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
+  // const [open, setOpen] = useState(false);
+  // const [activeIndex, setActiveIndex] = useState(0);
   const [activeWeek, setActiveWeek] = useState(null);
-  const [dataProfile, setDataProfile] = useState(null);
   const [formData, setFormData] = useState({
     chest: '',
     waist: '',
@@ -49,17 +48,11 @@ export default function Record({ userId }) {
   });
 
   useEffect(() => {
-    const fetchUserDataProfile = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-          params: { tg_id: userId },
-        });
-        setDataProfile(response.data);
-      } catch (error) {
-        console.error('Ошибка при получении данных пользователя:', error.message);
-      }
-    };
-
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      const platform = tg.platform.toLowerCase();
+      setIsMobile(!['tdesktop', 'macos', 'linux', 'web'].includes(platform));
+    }
     const fetchActiveWeek = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/api/v1/user/week`, {
@@ -75,21 +68,12 @@ export default function Record({ userId }) {
       }
     };
 
-    fetchUserDataProfile();
     fetchActiveWeek();
   }, [userId]);
 
-  useEffect(() => {
-    const tg = window.Telegram?.WebApp;
-    if (tg) {
-      const platform = tg.platform.toLowerCase();
-      setIsMobile(!['tdesktop', 'macos', 'linux', 'web'].includes(platform));
-    }
-  }, []);
-
-  const handleSelecterClick = (index) => {
-    setActiveIndex(index);
-  };
+  // const handleSelecterClick = (index) => {
+  //   setActiveIndex(index);
+  // };
 
   const handleChange = (field) => (e) => {
     setFormData({ ...formData, [field]: e.target.value });
@@ -107,7 +91,7 @@ export default function Record({ userId }) {
         created_at: new Date().toISOString(),
       };
 
-      await axios.get(`${API_BASE_URL}/api/v1/user/user_parameters`, {
+      await axios.post(`${API_BASE_URL}/api/v1/user/user_parameters`, {
         params: {user_id: userId},
         body: parametersData
       });
@@ -163,15 +147,15 @@ export default function Record({ userId }) {
       <div className="profileContainer">
         <div className="profile" style={{ justifyContent: 'space-between' }}>
           <div className="profileData">
-            <ProfileBtn level={dataProfile.user_level} user_photo={dataProfile.image} />
+            <ProfileBtn level={data.user_level} user_photo={data.image} />
             <div className="profileName">
-              <p>{dataProfile?.name || 'Имя'}</p>
-              <span>{dataProfile?.user_level || 'Уровень'}</span>
+              <p>{data?.name || 'Имя'}</p>
+              <span>{data?.user_level || 'Уровень'}</span>
             </div>
           </div>
-          <ButtonEdit onClick={() => navigate('/parameters')} />
+          {/* <ButtonEdit onClick={() => navigate('/parameters')} /> */}
         </div>
-        <div className="settings">
+        {/* <div className="settings">
           <div className="set" onClick={() => setOpen(!open)}>
             <img src={settings} alt="Настройки" />
             <p>Настроить уровень сложности</p>
@@ -197,7 +181,7 @@ export default function Record({ userId }) {
               onClick={handleSelecterClick}
             />
           )}
-        </div>
+        </div> */}
         <div className="recordYourProgress">
           <h3>Запишите свой прогресс</h3>
           <div className="weeksContainer">
