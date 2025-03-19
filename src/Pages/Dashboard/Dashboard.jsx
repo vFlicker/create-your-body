@@ -12,7 +12,7 @@ import food from '../../Assets/nav/food.svg';
 import book from '../../Assets/svg/book.svg';
 import recipes from '../../Assets/svg/recipes.svg';
 
-export default function Dashboard({ userId, data }) {
+export default function Dashboard({ data }) {
 
   const pageContainersData = [
     {
@@ -74,15 +74,17 @@ export default function Dashboard({ userId, data }) {
       </div>
       <div className="dashBot">
         <div className="history">
-          {data?.last_video && (
+          {/* {data?.last_video && (
             <History
               text="Продолжить просмотр"
               viewed={Math.floor((50 * 60 - Number(data.last_video_time)) / 60)} // Переводим оставшееся время в просмотренные минуты
               view={50} // Фиксированная длительность 50 минут
               lastVideo={data.last_video} // Передаём страницу для ссылки
             />
-          )}
+          )} */}
+          {data?.last_video && 
           <History text='Инструкция + Вводный урок' instruction={true} />
+          }
         </div>
         <div className="dashMenu">
           {pageContainersData.map((container, index) => (

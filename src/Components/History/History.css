@@ -6,7 +6,7 @@
     border-radius: 16px;
     background: #D3CCFF;
     padding: 0 16px;
-    gap: 12px;
+    gap: 6px;
     cursor: pointer;
 }
 
@@ -69,6 +69,22 @@
     padding: 0 8px;
     background: #F2F2F2;
     border-radius: 45px;
+}
+
+.historyActionDashboard {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 42px;
+    padding: 0 8px;
+    background: #F2F2F2;
+    border-radius: 45px;
+}
+
+.historyActionDashboard p {
+    font-size: 12px;
+    color: #0D0D0D;
+    text-wrap: nowrap;
 }
 
 .historyPlay {

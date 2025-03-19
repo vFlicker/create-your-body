@@ -34,7 +34,7 @@ export default function History({ text, viewed = 10, view = 50, instruction = fa
         <span>{text}</span>
       </div>
       <div
-        className="historyAction"
+        className="historyActionDashboard"
         style={{ background: instruction ? '#E4E1FB' : '' }}
       >
         <p>{view - viewed} мин</p>
