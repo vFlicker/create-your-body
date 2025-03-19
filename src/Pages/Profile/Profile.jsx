@@ -17,12 +17,11 @@ import zamer from '../../Assets/img/zamer.jpeg';
 import chart from '../../Assets/svg/chart.svg';
 import img from '../../Assets/img/result.jpg';
 
-export default function Profile({ userId }) {
+export default function Profile({ userId, data, setData }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [dataParameters, setDataParameters] = useState(null);
-  const [dataProfile, setDataProfile] = useState(null);
   const [isPressed, setIsPressed] = useState(false);
 
   useEffect(() => {
@@ -43,19 +42,6 @@ export default function Profile({ userId }) {
       }
     };
 
-    const fetchUserDataProfile = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-          params: { user_id: userId },
-        });
-        setDataProfile(response.data);
-        setActiveIndex(response.data.user_level === 'pro' ? 1 : 0);
-      } catch (err) {
-        console.error('Ошибка при получении данных профиля:', err.message);
-      }
-    };
-
-    fetchUserDataProfile();
     fetchUserData();
   }, [userId]);
 
@@ -75,7 +61,7 @@ export default function Profile({ userId }) {
       const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
         params: { user_id: userId },
       });
-      setDataProfile(response.data);
+      setData(response.data);
     } catch (error) {
       console.error('Ошибка при обновлении уровня сложности:', error.message);
     }
@@ -87,20 +73,20 @@ export default function Profile({ userId }) {
         {dataParameters ? (
           <div className="profile" style={{ justifyContent: 'space-between' }}>
             <div className="profileData">
-              <ProfileBtn level={dataProfile?.user_level} user_photo={dataProfile?.image} />
+              <ProfileBtn level={data?.user_level} user_photo={data?.image} />
               <div className="profileName">
-                <p>{dataProfile?.name || 'Имя'}</p>
-                <span>{dataProfile?.user_level || 'Уровень'}</span>
+                <p>{data?.name || 'Имя'}</p>
+                <span>{data?.user_level || 'Уровень'}</span>
               </div>
             </div>
             <ButtonEdit onClick={() => navigate('/parameters')} />
           </div>
         ) : (
           <div className="profile">
-            <ProfileBtn level={dataProfile?.user_level} user_photo={dataProfile?.image} />
+            <ProfileBtn level={data?.user_level} user_photo={data?.image} />
             <div className="profileName">
-              <p>{dataProfile?.name || 'Имя'}</p>
-              <span>{dataProfile?.user_level || 'Уровень'}</span>
+              <p>{data?.name || 'Имя'}</p>
+              <span>{data?.user_level || 'Уровень'}</span>
             </div>
           </div>
         )}
@@ -155,11 +141,11 @@ export default function Profile({ userId }) {
                 <div className="param">
                   <div className="value">
                     <span>Возраст</span>
-                    <p>{dataProfile?.born_date ? new Date().getFullYear() - new Date(dataProfile.born_date).getFullYear() : '-'}</p>
+                    <p>{data?.born_date ? new Date().getFullYear() - new Date(data.born_date).getFullYear() : '-'}</p>
                   </div>
                   <div className="value">
                     <span>Пол</span>
-                    <p>{dataProfile?.sex || '-'}</p>
+                    <p>{data?.sex || '-'}</p>
                   </div>
                 </div>
                 <div className="param">

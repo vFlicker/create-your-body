@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './Begin.css';
-import axios from 'axios';
-import { API_BASE_URL } from '../../API';
 
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import Selecter from '../../Components/Selecter/Selecter';
@@ -11,29 +9,16 @@ import VideoPage from '../../Components/VideoPage/VideoPage';
 import health from '../../Assets/svg/health.svg';
 import begin from '../../Assets/video/begin.mp4'
 
-export default function Begin({ userId }) {
+export default function Begin({ userId, data }) {
   const [videoView, setVideoView] = useState(false);
   const [activeIndex, setActiveIndex] = useState(videoView ? 1 : 0);
-  const [data, setData] = useState(null);
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.setBackgroundColor('#F2F2F2');
     }
 
-    const fetchdata = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-          params: { user_id: userId },
-        });
-        setData(response.data);
-      } catch (error) {
-        console.error('Ошибка при получении данных пользователя:', error.message);
-      }
-    };
-
-    fetchdata();
-  }, [userId]);
+  }, []);
 
   // Автоматический импорт всех изображений begin*
   const importAll = (context) => context.keys().map(context);

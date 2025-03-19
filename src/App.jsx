@@ -73,7 +73,7 @@ function App() {
 
       const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
       setUserId(telegramUser.id)
-      console.log(telegramUser)
+      console.log(telegramUser.photo_url)
       const addUser = async () => {
         try {
           const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
@@ -132,11 +132,11 @@ function App() {
           <Route path="quiz" element={<Quiz userId={userId} />} />
           <Route path="result" element={<Result userId={userId} />} />
           <Route path="dashboard" element={<Dashboard data={data} userId={userId} />} />
-          <Route path="begin" element={<Begin userId={userId} />} />
-          <Route path="profile" element={<Profile userId={userId} />} />
-          <Route path="parameters" element={<Parameters userId={userId} />} />
-          <Route path="record" element={<Record userId={userId} />} />
-          <Route path="communication" element={<Communication userId={userId} />} />
+          <Route path="begin" element={<Begin data={data} userId={userId} />} />
+          <Route path="profile" element={<Profile data={data} userId={userId} setData={setData} />} />
+          <Route path="parameters" element={<Parameters data={data} userId={userId} />} />
+          <Route path="record" element={<Record data={data} userId={userId} />} />
+          <Route path="communication" element={<Communication data={data} userId={userId} />} />
         </Route>
       </Routes>
     </BrowserRouter>
