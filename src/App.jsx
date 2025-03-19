@@ -130,7 +130,7 @@ function App() {
           <Route index element={<StartPage data={data} />} />
           <Route path="quiz" element={<Quiz userId={userId} />} />
           <Route path="result" element={<Result userId={userId} />} />
-          <Route path="dashboard" element={<Dashboard userId={userId} />} />
+          <Route path="dashboard" element={<Dashboard data={data} userId={userId} />} />
           <Route path="begin" element={<Begin userId={userId} />} />
           <Route path="profile" element={<Profile userId={userId} />} />
           <Route path="parameters" element={<Parameters userId={userId} />} />

@@ -19,7 +19,7 @@ export default function StartPage({ data }) {
   }, []);
 
   function handleButtonClick() {
-    if (data.born_day) {
+    if (data.born_date) {
       navigate('/dashboard')
     } else {
       navigate('/quiz')

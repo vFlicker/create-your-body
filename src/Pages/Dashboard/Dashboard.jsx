@@ -14,8 +14,7 @@ import food from '../../Assets/nav/food.svg';
 import book from '../../Assets/svg/book.svg';
 import recipes from '../../Assets/svg/recipes.svg';
 
-export default function Dashboard({ userId }) {
-  const [data, setData] = useState(null);
+export default function Dashboard({ userId, data }) {
 
   const pageContainersData = [
     {
@@ -64,20 +63,7 @@ export default function Dashboard({ userId }) {
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.setBackgroundColor('#F2F2F2');
     }
-
-    const fetchdata = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-          params: { user_id: userId },
-        });
-        setData(response.data);
-      } catch (error) {
-        console.error('Ошибка при получении данных пользователя:', error.message);
-      }
-    };
-
-    fetchdata();
-  }, [userId]);
+  }, []);
 
   return (
     <div className='dashboard'>
