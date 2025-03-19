@@ -19,6 +19,10 @@
     gap: 16px;
 }
 
+.dataHave {
+    flex: 1;
+}
+
 .profile,
 .profileData,
 .example,

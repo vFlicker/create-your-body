@@ -64,17 +64,15 @@ export default function Dashboard({ data }) {
     }
   }, []);
 
-  const parseTimeToSeconds = (timeStr) => {
-    if (!timeStr || typeof timeStr !== 'string') return 0; // Проверка на валидность входных данных
+  const formatTimeFromString = (timeStr) => {
+    if (!timeStr || typeof timeStr !== 'string') return "0:00";
   
-    // Разделяем строку на минуты и секунды
     const [minutes, seconds] = timeStr.split(':').map(Number);
-    
-    // Проверяем, что значения корректны
-    if (isNaN(minutes) || isNaN(seconds)) return 0;
+    if (isNaN(minutes) || isNaN(seconds)) return "0:00";
   
-    // Преобразуем в секунды: минуты * 60 + секунды
-    return minutes * 60 + seconds;
+    const formattedMinutes = Math.floor(minutes);
+    const formattedSeconds = Math.floor(seconds);
+    return `${formattedMinutes}:${formattedSeconds < 10 ? '0' : ''}${formattedSeconds}`;
   };
 
   return (
