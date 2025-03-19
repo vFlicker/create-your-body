@@ -5,6 +5,7 @@ import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import Progress from '../../Components/Progress/Progress';
 import History from '../../Components/History/History';
 import Container from '../../Components/Container/Container';
+// import Loader from '../../Components/Loader/Loader';
 
 import health from '../../Assets/svg/health.svg';
 import muscules from '../../Assets/svg/musclesBlack.svg';

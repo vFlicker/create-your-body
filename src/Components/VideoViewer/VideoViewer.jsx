@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './VideoViewer.css';
 import axios from 'axios';
-import { API_BASE_URL } from '../../API'; // Предполагаю, что у вас есть этот импорт
+import { API_BASE_URL } from '../../API';
 
 import play from '../../Assets/svg/play.svg';
 import pause from '../../Assets/svg/pause.svg';
 
-const VideoViewer = ({ videoSrc, page, userId }) => {
+const VideoViewer = ({ videoSrc, page, userId, instruction, lastVideo }) => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -19,7 +19,7 @@ const VideoViewer = ({ videoSrc, page, userId }) => {
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
-  
+
   // Обновление прогресса и времени
   const updateProgress = useCallback(() => {
     if (videoRef.current) {
@@ -31,7 +31,7 @@ const VideoViewer = ({ videoSrc, page, userId }) => {
       setCurrentTime(formatTime(current));
       setDuration(formatTime(total));
     }
-  }, [videoRef]); // Зависимость только от videoRef
+  }, []);
 
   // Переключение воспроизведения
   const togglePlay = () => {
@@ -58,25 +58,62 @@ const VideoViewer = ({ videoSrc, page, userId }) => {
     if (videoRef.current) videoRef.current.currentTime = newTime;
   };
 
-  // Отправка данных на сервер
-  const sendVideoUpdate = useCallback(async () => {
+  // Дебаунсинг для отправки данных (раз в 5 секунд)
+  const debouncedSendVideoUpdate = useCallback(
+    (data) => {
+      // Внутренняя функция дебаунсинга
+      let timeout;
+      const debounce = (func, wait) => (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func(...args), wait);
+      };
+
+      const sendRequest = async () => {
+        try {
+          if (instruction) {
+            // Запрос для приветственного видео
+            await axios.patch(`${API_BASE_URL}/api/v1/user/video/greet`, null, {
+              params: {
+                tg_id: userId,
+                duration_view: data.last_video_time,
+              },
+            });
+            console.log('Приветственное видео обновлено:', data.last_video_time);
+          } else {
+            // Запрос для обычного видео
+            await axios.patch(`${API_BASE_URL}/api/v1/user/video`, {
+              user_tg_id: userId,
+              last_video: lastVideo || page,
+              last_video_time: data.last_video_time,
+              last_video_link: videoSrc,
+              last_video_duration: data.last_video_duration,
+            });
+            console.log('Видео прогресс обновлен:', data);
+          }
+        } catch (error) {
+          console.error('Ошибка при обновлении видео прогресса:', error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
+        }
+      };
+
+      return debounce(sendRequest, 5000)(data);
+    },
+    [userId, instruction, lastVideo, page, videoSrc]
+  );
+
+  // Функция для отправки данных
+  const sendVideoUpdate = useCallback(() => {
     if (!videoRef.current || !userId) return;
 
     const current = videoRef.current.currentTime;
     const total = videoRef.current.duration;
-    const remainingTime = total - current; // Оставшееся время
 
-    try {
-      await axios.patch(`${API_BASE_URL}/api/v1/user/video`, {
-        user_tg_id: userId,
-        last_video: page, // Текущая страница, например '/begin'
-        last_video_time: remainingTime, // Оставшееся время в секундах
-      });
-      console.log('Видео прогресс обновлён:', { page, remainingTime });
-    } catch (error) {
-      console.error('Ошибка при обновлении видео прогресса:', error.message);
-    }
-  }, [userId, page, videoRef]); // Зависимости sendVideoUpdate
+    const videoData = {
+      last_video_time: formatTime(current),
+      last_video_duration: formatTime(total),
+    };
+
+    debouncedSendVideoUpdate(videoData);
+  }, [userId, debouncedSendVideoUpdate]);
 
   // Обработчики событий
   useEffect(() => {
@@ -86,14 +123,20 @@ const VideoViewer = ({ videoSrc, page, userId }) => {
       video.addEventListener('loadedmetadata', () => {
         setDuration(formatTime(video.duration));
       });
+      video.addEventListener('ended', () => {
+        setIsPlaying(false);
+        setShowPlayButton(true);
+        sendVideoUpdate(); // Отправляем данные при завершении видео
+      });
 
       // Отправка данных при выходе из компонента
       return () => {
         video.removeEventListener('timeupdate', updateProgress);
-        if (isPlaying) sendVideoUpdate(); // Отправляем, если видео было на паузе или воспроизводилось
+        video.removeEventListener('ended', () => {});
+        if (isPlaying) sendVideoUpdate(); // Отправляем, если видео воспроизводилось
       };
     }
-  }, [isPlaying, page, userId, sendVideoUpdate, updateProgress]); // Добавили sendVideoUpdate и updateProgress
+  }, [isPlaying, sendVideoUpdate, updateProgress]);
 
   return (
     <div className="videoViewer">
@@ -129,5 +172,4 @@ const VideoViewer = ({ videoSrc, page, userId }) => {
   );
 };
 
-// Вспомогательная функция форматирования времени (теперь внутри компонента не нужна отдельно)
 export default VideoViewer;

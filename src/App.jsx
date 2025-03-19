@@ -4,6 +4,8 @@ import './App.css';
 import axios from "axios";
 import { API_BASE_URL } from './API';
 
+import Loader from "./Components/Loader/Loader";
+
 import NoEntry from "./Pages/NoEntry/NoEntry";
 import ButtonClose from "./Components/Button/ButtonClose";
 import ButtonBack from "./Components/Button/ButtonBack";
@@ -145,9 +147,7 @@ function App() {
     <BrowserRouter>
       {isLoading ? (
         // Индикатор загрузки
-        <div className="loadingSpinner">
-          <div className="spinner"></div>
-        </div>
+        <Loader height="100vh" />
       ) : (
         <Routes>
           <Route path="/" element={data ? <Layout /> : <NoEntry />}>

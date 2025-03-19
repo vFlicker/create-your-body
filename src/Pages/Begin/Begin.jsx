@@ -51,7 +51,7 @@ export default function Begin({ userId, data }) {
         {!videoView ?
             <PDFViewer pdf_list={pdfList} />
             :
-            <VideoPage video={begin} page='/begin' userId={userId} />
+            <VideoPage video={begin} page='/begin' userId={userId} instruction={true}/>
         }
       </div>
     </div>
