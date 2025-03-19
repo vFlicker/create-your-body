@@ -44,9 +44,11 @@ const VideoViewer = ({ videoSrc, page, userId, instruction, lastVideo, onVideoEn
       const sendRequest = async () => {
         try {
           if (instruction) {
-            await axios.patch(`${API_BASE_URL}/api/v1/user/video/greet`, {
-              tg_id: userId,
-              duration_view: data.last_video_time,
+            await axios.patch(`${API_BASE_URL}/api/v1/user/video/greet`, null, {
+              params: {
+                tg_id: userId,
+                duration_view: data.last_video_time,
+              },
             });
             console.log('Welcome video updated:', data.last_video_time);
           } else {
@@ -60,7 +62,7 @@ const VideoViewer = ({ videoSrc, page, userId, instruction, lastVideo, onVideoEn
             console.log('Video progress updated:', data);
           }
         } catch (error) {
-          console.error('Error updating video progress:', error.message);
+          console.error('Error updating video progress:', error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
         }
       };
 
