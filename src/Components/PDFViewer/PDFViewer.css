@@ -32,6 +32,12 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    transition: all 0.3s;
+    opacity: 0.5;
+}
+
+.pdfButtons:hover {
+    opacity: 1;
 }
 
 .pdfButtons button {
