@@ -42,6 +42,7 @@ export default function PDFViewer({ pdf_list }) {
                     src={pdf_list[currentIndex]}
                     alt={`page-${currentIndex + 1}`}
                     className="pdfImage"
+                    loading='lazy'
                 />
             </div>
 
