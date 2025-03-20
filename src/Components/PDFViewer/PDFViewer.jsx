@@ -5,7 +5,7 @@ import Loader from '../../Components/Loader/Loader';
 import './PDFViewer.css';
 
 export default function PDFViewer({ pdf_list }) {
-    const [currentIndex, setCurrentIndex] = useState(1);
+    const [currentIndex, setCurrentIndex] = useState(0);
     const [fade, setFade] = useState(true);
     const [isPressedLeft, setIsPressedLeft] = useState(false);
     const [isPressedRight, setIsPressedRight] = useState(false);
