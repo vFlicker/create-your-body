@@ -98,7 +98,7 @@ export default function PDFViewer({ pdf_list }) {
                 ))}
             </div>
 
-            <div className="pdfButtons">
+            <div className="pdfButtons" style={{opacity: isPressedLeft || isPressedRight ? '1' : '0.7'}}>
                 {currentIndex !== 0 &&
                     <button
                         onClick={() => handleNavigation('prev')}
