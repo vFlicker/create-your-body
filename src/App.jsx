@@ -52,7 +52,7 @@ function Layout() {
   return (
     <>
       <div className="header">
-        {showControlsBack && <ButtonBack />} 
+        {showControlsBack && <ButtonBack />}
         <ButtonClose /> {/* ButtonClose всегда видна */}
       </div>
       <div className="App">
@@ -67,7 +67,7 @@ function App() {
   const [userId, setUserId] = useState(null);
   const [data, setData] = useState(null);
   const [base, setBase] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Новое состояние для загрузки
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
@@ -80,19 +80,18 @@ function App() {
       console.log(telegramUser.photo_url);
 
       const addImage = async () => {
-        const image = telegramUser.photo_url && typeof telegramUser.photo_url === 'string' 
-          ? telegramUser.photo_url 
+        const image = telegramUser.photo_url && typeof telegramUser.photo_url === 'string'
+          ? telegramUser.photo_url
           : '';
         const imageData = {
           user_tg_id: String(telegramUser.id),
           image: image,
         };
-      
+
         console.log('Отправляемые данные:', imageData);
-      
-        // Формируем query-строку
+
         const params = new URLSearchParams(imageData).toString();
-      
+
         try {
           const response = await axios.post(`${API_BASE_URL}/api/v1/user/image?${params}`, null, {
             headers: {
@@ -118,49 +117,56 @@ function App() {
           console.log('Тариф:', userTarif, 'Base:', isBase);
         } catch {
           console.log('Не получилось получить данные');
-          setData(null); // Устанавливаем null в случае ошибки
+          setData(null);
         }
       };
 
       const fetchData = async () => {
         try {
-          setIsLoading(true); // Начинаем загрузку
-          await Promise.all([addImage(), addUser()]); // Ждем оба запроса
+          setIsLoading(true);
+          await Promise.all([addImage(), addUser()]);
         } finally {
-          setIsLoading(false); // Завершаем загрузку
+          setIsLoading(false);
         }
       };
 
       fetchData();
     } else {
       console.error('Telegram WebApp API не найден');
-      setIsLoading(false); // Если Telegram API не найден, завершаем загрузку
+      setIsLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    // Предзагрузка изображений при загрузке приложения
     preloadImages();
   }, []);
+
+  // Проверка: есть ли data и data.user_tarif
+  const hasAccess = data && data.user_tarif && data.user_tarif.trim() !== '';
 
   return (
     <BrowserRouter>
       {isLoading ? (
-        // Индикатор загрузки
         <Loader height="100vh" />
       ) : (
         <Routes>
-          <Route path="/" element={data ? <Layout /> : <NoEntry />}>
-            <Route index element={<StartPage data={data} />} />
-            <Route path="quiz" element={<Quiz userId={userId} />} />
-            <Route path="result" element={<Result userId={userId} />} />
-            <Route path="dashboard" element={<Dashboard data={data} userId={userId} />} />
-            <Route path="begin" element={<Begin data={data} userId={userId} />} />
-            <Route path="profile" element={<Profile data={data} userId={userId} setData={setData} />} />
-            <Route path="parameters" element={<Parameters data={data} userId={userId} />} />
-            <Route path="record" element={<Record data={data} userId={userId} />} />
-            <Route path="communication" element={<Communication data={data} userId={userId} base={base} />} />
-          </Route>
+          {hasAccess ? (
+            // Если есть data и data.user_tarif, рендерим Layout с маршрутами
+            <Route path="/" element={<Layout />}>
+              <Route index element={<StartPage data={data} />} />
+              <Route path="quiz" element={<Quiz userId={userId} />} />
+              <Route path="result" element={<Result userId={userId} />} />
+              <Route path="dashboard" element={<Dashboard data={data} userId={userId} />} />
+              <Route path="begin" element={<Begin data={data} userId={userId} />} />
+              <Route path="profile" element={<Profile data={data} userId={userId} setData={setData} />} />
+              <Route path="parameters" element={<Parameters data={data} userId={userId} />} />
+              <Route path="record" element={<Record data={data} userId={userId} />} />
+              <Route path="communication" element={<Communication data={data} userId={userId} base={base} />} />
+            </Route>
+          ) : (
+            // Если нет data или data.user_tarif, рендерим NoEntry
+            <Route path="*" element={<NoEntry />} />
+          )}
         </Routes>
       )}
     </BrowserRouter>
