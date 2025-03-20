@@ -19,6 +19,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    position: relative;
 }
 
 .nameContainer img {
@@ -46,9 +47,25 @@
     text-align: center;
 }
 
+.containerClosed {
+    padding: 0 10px;
+}
+
+.containerClosed p {
+    text-wrap: wrap;
+}
+
 .containerBuy {
     gap: 8px;
     position: relative;
+    padding: 10px;
+}
+
+.containerBuy p {
+    font-weight: 600;
+    color: #f2f2f2;
+    font-size: 10px;
+    text-wrap: wrap;
 }
 
 .containerBuy:disabled {

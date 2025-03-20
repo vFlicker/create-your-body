@@ -43,16 +43,16 @@ export default function Dashboard({ data }) {
     {
       name: 'Лекции',
       icon: book,
-      closed: '29 марта',
-      buy: false,
+      closed: '',
+      buy: true,
       instruction: false,
       to: 'lectures'
     },
     {
       name: 'Рецепты',
       icon: recipes,
-      closed: '29 марта',
-      buy: false,
+      closed: '',
+      buy: true,
       instruction: false,
       to: 'recipes'
     },

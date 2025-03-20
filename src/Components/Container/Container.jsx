@@ -14,17 +14,20 @@ export default function Containers({ data }) {
       }}
       onClick={() => navigate(`/${data.to}`)}
       >
-        <div className="nameContainer">
+        <div className="nameContainer" style={{filter: data.buy ? 'blur(1.5px)' : ''}}>
           <img src={data.icon} alt={data.name} />
           <h2>{data.name}</h2>
         </div>
         {data.closed && 
-          <div className='containerClosed'>Откроется {data.closed}</div>
+          <div className='containerClosed'><p>Откроется {data.closed}</p></div>
         }
+        {/* {data.buy && 
+          <div className="blurContainer"></div>
+        } */}
         {data.buy &&
-          <button className='containerBuy' disabled={data.buy}>
+          <button className='containerBuy'>
             <img src={lock} alt="Купить" />
-            Купить
+            <p>Доступно в PRO</p>
           </button>
         }
     </div>
