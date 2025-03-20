@@ -5,7 +5,7 @@
 
 .pdfSlide {
     display: flex;
-    overflow-x: scroll;
+    overflow-x: hidden;
     scroll-snap-type: x mandatory;
 }
 
