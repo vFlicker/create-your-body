@@ -20,8 +20,8 @@ export default function PDFViewer({ pdf_list }) {
             const image = new Image();
             image.src = img;
             image.onload = () => {
-                setLoadedImages(prev => ({...prev, [index]: true}));
-                if(index === 0) setIsLoading(false);
+                setLoadedImages(prev => ({ ...prev, [index]: true }));
+                if (index === 0) setIsLoading(false);
             };
         });
     }, [pdf_list]);
@@ -35,7 +35,7 @@ export default function PDFViewer({ pdf_list }) {
             const image = imageRefs.current[currentIndex];
             const containerWidth = container.offsetWidth;
             const imageLeft = image.offsetLeft;
-            
+
             container.scrollTo({
                 left: imageLeft - (containerWidth - image.offsetWidth) / 2,
                 behavior: 'smooth'
@@ -45,50 +45,39 @@ export default function PDFViewer({ pdf_list }) {
         return () => clearTimeout(timer);
     }, [currentIndex]);
 
-    useEffect(() => {
-        const handleScroll = () => {
-            if (!containerRef.current || imageRefs.current.length === 0) return;
-            const container = containerRef.current;
-            const scrollLeft = container.scrollLeft;
-            const containerWidth = container.offsetWidth;
-
-            imageRefs.current.forEach((image, index) => {
-                if (!image) return;
-                const imageLeft = image.offsetLeft;
-                const imageCenter = imageLeft + image.offsetWidth / 2;
-
-                if (scrollLeft + containerWidth / 2 >= imageCenter) {
-                    setCurrentIndex(index);
-                }
-            });
-        };
+    const handleScroll = () => {
+        if (!containerRef.current) return;
 
         const container = containerRef.current;
-        if (container) {
-            container.addEventListener('scroll', handleScroll);
-        }
+        const scrollLeft = container.scrollLeft;
+        let newIndex = currentIndex;
 
-        return () => {
-            if (container) {
-                container.removeEventListener('scroll', handleScroll);
+        imageRefs.current.forEach((img, index) => {
+            if (!img) return;
+            const imageCenter = img.offsetLeft + img.offsetWidth / 2;
+            const containerCenter = scrollLeft + container.offsetWidth / 2;
+
+            if (Math.abs(containerCenter - imageCenter) < img.offsetWidth / 2) {
+                newIndex = index;
             }
-        };
-    }, []);
+        });
 
-    const handleImageLoad = (index) => {
-        setLoadedImages(prev => ({...prev, [index]: true}));
-        if(index === currentIndex) setIsLoading(false);
+        if (newIndex !== currentIndex) {
+            setCurrentIndex(newIndex);
+        }
     };
 
     const handleNavigation = (direction) => {
+        if (!containerRef.current) return;
+
         setIsLoading(true);
         const newIndex = direction === 'next' 
             ? Math.min(currentIndex + 1, pdf_list.length - 1)
             : Math.max(currentIndex - 1, 0);
 
-        if(loadedImages[newIndex]) setIsLoading(false);
-        
         setCurrentIndex(newIndex);
+
+        if (loadedImages[newIndex]) setIsLoading(false);
     };
 
     return (
@@ -98,7 +87,8 @@ export default function PDFViewer({ pdf_list }) {
             <div 
                 className={`pdfSlide ${fade ? 'fade' : ''}`} 
                 ref={containerRef}
-                style={{opacity: isLoading ? 0.5 : 1}}
+                onScroll={handleScroll}
+                style={{ opacity: isLoading ? 0.5 : 1 }}
             >
                 {pdf_list.map((img, index) => (
                     <div 
@@ -111,14 +101,14 @@ export default function PDFViewer({ pdf_list }) {
                             alt={`page-${index + 1}`}
                             className="pdfImage"
                             loading="lazy"
-                            onLoad={() => handleImageLoad(index)}
-                            style={{display: loadedImages[index] ? 'block' : 'none'}}
+                            onLoad={() => setLoadedImages(prev => ({ ...prev, [index]: true }))}
+                            style={{ display: loadedImages[index] ? 'block' : 'none' }}
                         />
                     </div>
                 ))}
             </div>
 
-            <div className="pdfButtons" style={{opacity: isPressedLeft || isPressedRight ? '1' : '0.7'}}>
+            <div className="pdfButtons" style={{ opacity: isPressedLeft || isPressedRight ? '1' : '0.7' }}>
                 {currentIndex !== 0 &&
                     <button
                         onClick={() => handleNavigation('prev')}
@@ -127,7 +117,7 @@ export default function PDFViewer({ pdf_list }) {
                         onTouchStart={() => setIsPressedLeft(true)}
                         onTouchEnd={() => setIsPressedLeft(false)}
                         disabled={isLoading}
-                        style={{background: isPressedLeft ? '#A799FF' : ''}}
+                        style={{ background: isPressedLeft ? '#A799FF' : '' }}
                     >
                         <img src={left} alt="Назад" />
                     </button>
@@ -143,7 +133,7 @@ export default function PDFViewer({ pdf_list }) {
                         onTouchStart={() => setIsPressedRight(true)}
                         onTouchEnd={() => setIsPressedRight(false)}
                         disabled={isLoading}
-                        style={{background: isPressedRight ? '#A799FF' : ''}}
+                        style={{ background: isPressedRight ? '#A799FF' : '' }}
                     >
                         <img src={right} alt="Вперед" />
                     </button>
@@ -151,4 +141,4 @@ export default function PDFViewer({ pdf_list }) {
             </div>
         </div>
     );
-};
+}

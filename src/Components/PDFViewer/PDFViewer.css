@@ -32,7 +32,7 @@
     gap: 15px;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
+    width: 75%;
     transition: all 0.3s;
     opacity: 0.7;
 }
