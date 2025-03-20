@@ -1,59 +1,112 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import left from '../../Assets/svg/left.svg';
 import right from '../../Assets/svg/right.svg';
+import Loader from '../../Components/Loader/Loader';
 import './PDFViewer.css';
 
 export default function PDFViewer({ pdf_list }) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [fade, setFade] = useState(true);
-    const [isPressedLeft, setisPressedLeft] = useState(false);
-    const [isPressedRight, setisPressedRight] = useState(false);
+    const [isPressedLeft, setIsPressedLeft] = useState(false);
+    const [isPressedRight, setIsPressedRight] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [loadedImages, setLoadedImages] = useState({});
+    
+    const containerRef = useRef(null);
+    const imageRefs = useRef([]);
 
+    // Предзагрузка изображений
+    useEffect(() => {
+        pdf_list.forEach((img, index) => {
+            const image = new Image();
+            image.src = img;
+            image.onload = () => {
+                setLoadedImages(prev => ({...prev, [index]: true}));
+                if(index === 0) setIsLoading(false);
+            };
+        });
+    }, [pdf_list]);
 
-    // Анимация перехода
+    // Анимация перехода и центровка
     useEffect(() => {
         setFade(true);
         const timer = setTimeout(() => setFade(false), 300);
+
+        if (imageRefs.current[currentIndex] && containerRef.current) {
+            const container = containerRef.current;
+            const image = imageRefs.current[currentIndex];
+            const containerWidth = container.offsetWidth;
+            const imageLeft = image.offsetLeft;
+            
+            container.scrollTo({
+                left: imageLeft - (containerWidth - image.offsetWidth) / 2,
+                behavior: 'smooth'
+            });
+        }
+
         return () => clearTimeout(timer);
     }, [currentIndex]);
 
-    const handlePrev = () => {
-        if (currentIndex > 0) setCurrentIndex(prev => prev - 1);
+    const handleImageLoad = (index) => {
+        setLoadedImages(prev => ({...prev, [index]: true}));
+        if(index === currentIndex) setIsLoading(false);
     };
 
-    const handleNext = () => {
-        if (currentIndex < pdf_list.length - 1) setCurrentIndex(prev => prev + 1);
+    const handleNavigation = (direction) => {
+        setIsLoading(true);
+        const newIndex = direction === 'next' 
+            ? Math.min(currentIndex + 1, pdf_list.length - 1)
+            : Math.max(currentIndex - 1, 0);
+
+        if(loadedImages[newIndex]) setIsLoading(false);
+        
+        setCurrentIndex(newIndex);
     };
 
-    const handleMouseDownLeft = () => setisPressedLeft(true); 
-    const handleMouseUpLeft = () => setisPressedLeft(false);  
-    const handleTouchStartLeft = () => setisPressedLeft(true); 
-    const handleTouchEndLeft = () => setisPressedLeft(false);
+    const handleMouseDown = (direction) => direction === 'left' 
+        ? setIsPressedLeft(true) 
+        : setIsPressedRight(true);
 
-    const handleMouseDownRight = () => setisPressedRight(true); 
-    const handleMouseUpRight = () => setisPressedRight(false);  
-    const handleTouchStartRight = () => setisPressedRight(true); 
-    const handleTouchEndRight = () => setisPressedRight(false);
+    const handleMouseUp = (direction) => direction === 'left' 
+        ? setIsPressedLeft(false) 
+        : setIsPressedRight(false);
 
     return (
         <div className='pdfContainer'>
-            <div className={`pdfSlide ${fade ? 'fade' : ''}`}>
-                <img
-                    src={pdf_list[currentIndex]}
-                    alt={`page-${currentIndex + 1}`}
-                    className="pdfImage"
-                    loading='lazy'
-                />
+            {isLoading && <Loader />}
+            
+            <div 
+                className={`pdfSlide ${fade ? 'fade' : ''}`} 
+                ref={containerRef}
+                style={{opacity: isLoading ? 0.5 : 1}}
+            >
+                {pdf_list.map((img, index) => (
+                    <div 
+                        key={index}
+                        ref={el => imageRefs.current[index] = el}
+                        className="pdfImageWrapper"
+                    >
+                        <img
+                            src={img}
+                            alt={`page-${index + 1}`}
+                            className="pdfImage"
+                            loading="lazy"
+                            onLoad={() => handleImageLoad(index)}
+                            style={{display: loadedImages[index] ? 'block' : 'none'}}
+                        />
+                    </div>
+                ))}
             </div>
 
             <div className="pdfButtons">
                 {currentIndex !== 0 &&
                     <button
-                        onClick={handlePrev}
-                        onMouseDown={handleMouseDownLeft}    // Для десктопа
-                        onMouseUp={handleMouseUpLeft}        // Для десктопа
-                        onTouchStart={handleTouchStartLeft}  // Для мобильных
-                        onTouchEnd={handleTouchEndLeft}
+                        onClick={() => handleNavigation('prev')}
+                        onMouseDown={() => handleMouseDown('left')}
+                        onMouseUp={() => handleMouseUp('left')}
+                        onTouchStart={() => handleMouseDown('left')}
+                        onTouchEnd={() => handleMouseUp('left')}
+                        disabled={isLoading}
                         style={{background: isPressedLeft ? '#A799FF' : ''}}
                     >
                         <img src={left} alt="Назад" />
@@ -64,15 +117,16 @@ export default function PDFViewer({ pdf_list }) {
 
                 {currentIndex !== pdf_list.length - 1 && 
                     <button
-                        onClick={handleNext}
-                        onMouseDown={handleMouseDownRight}    // Для десктопа
-                        onMouseUp={handleMouseUpRight}        // Для десктопа
-                        onTouchStart={handleTouchStartRight}  // Для мобильных
-                        onTouchEnd={handleTouchEndRight}
+                        onClick={() => handleNavigation('next')}
+                        onMouseDown={() => handleMouseDown('right')}
+                        onMouseUp={() => handleMouseUp('right')}
+                        onTouchStart={() => handleMouseDown('right')}
+                        onTouchEnd={() => handleMouseUp('right')}
+                        disabled={isLoading}
                         style={{background: isPressedRight ? '#A799FF' : ''}}
                     >
-                    <img src={right} alt="Вперед" />
-                </button>
+                        <img src={right} alt="Вперед" />
+                    </button>
                 }
             </div>
         </div>
