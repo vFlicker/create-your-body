@@ -14,7 +14,7 @@ export default function Containers({ data }) {
       }}
       onClick={() => navigate(`/${data.to}`)}
       >
-        <div className="nameContainer" style={{filter: data.buy ? 'blur(1.5px)' : ''}}>
+        <div className="nameContainer" style={{filter: data.buy ? 'blur(1px)' : ''}}>
           <img src={data.icon} alt={data.name} />
           <h2>{data.name}</h2>
         </div>
