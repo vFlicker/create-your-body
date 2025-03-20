@@ -15,7 +15,6 @@ export default function PDFViewer({ pdf_list }) {
     const containerRef = useRef(null);
     const imageRefs = useRef([]);
 
-    // Предзагрузка изображений
     useEffect(() => {
         pdf_list.forEach((img, index) => {
             const image = new Image();
@@ -27,7 +26,6 @@ export default function PDFViewer({ pdf_list }) {
         });
     }, [pdf_list]);
 
-    // Анимация перехода и центровка
     useEffect(() => {
         setFade(true);
         const timer = setTimeout(() => setFade(false), 300);
@@ -47,6 +45,36 @@ export default function PDFViewer({ pdf_list }) {
         return () => clearTimeout(timer);
     }, [currentIndex]);
 
+    useEffect(() => {
+        const handleScroll = () => {
+            if (!containerRef.current || imageRefs.current.length === 0) return;
+            const container = containerRef.current;
+            const scrollLeft = container.scrollLeft;
+            const containerWidth = container.offsetWidth;
+
+            imageRefs.current.forEach((image, index) => {
+                if (!image) return;
+                const imageLeft = image.offsetLeft;
+                const imageCenter = imageLeft + image.offsetWidth / 2;
+
+                if (scrollLeft + containerWidth / 2 >= imageCenter) {
+                    setCurrentIndex(index);
+                }
+            });
+        };
+
+        const container = containerRef.current;
+        if (container) {
+            container.addEventListener('scroll', handleScroll);
+        }
+
+        return () => {
+            if (container) {
+                container.removeEventListener('scroll', handleScroll);
+            }
+        };
+    }, []);
+
     const handleImageLoad = (index) => {
         setLoadedImages(prev => ({...prev, [index]: true}));
         if(index === currentIndex) setIsLoading(false);
@@ -62,14 +90,6 @@ export default function PDFViewer({ pdf_list }) {
         
         setCurrentIndex(newIndex);
     };
-
-    const handleMouseDown = (direction) => direction === 'left' 
-        ? setIsPressedLeft(true) 
-        : setIsPressedRight(true);
-
-    const handleMouseUp = (direction) => direction === 'left' 
-        ? setIsPressedLeft(false) 
-        : setIsPressedRight(false);
 
     return (
         <div className='pdfContainer'>
@@ -102,10 +122,10 @@ export default function PDFViewer({ pdf_list }) {
                 {currentIndex !== 0 &&
                     <button
                         onClick={() => handleNavigation('prev')}
-                        onMouseDown={() => handleMouseDown('left')}
-                        onMouseUp={() => handleMouseUp('left')}
-                        onTouchStart={() => handleMouseDown('left')}
-                        onTouchEnd={() => handleMouseUp('left')}
+                        onMouseDown={() => setIsPressedLeft(true)}
+                        onMouseUp={() => setIsPressedLeft(false)}
+                        onTouchStart={() => setIsPressedLeft(true)}
+                        onTouchEnd={() => setIsPressedLeft(false)}
                         disabled={isLoading}
                         style={{background: isPressedLeft ? '#A799FF' : ''}}
                     >
@@ -118,10 +138,10 @@ export default function PDFViewer({ pdf_list }) {
                 {currentIndex !== pdf_list.length - 1 && 
                     <button
                         onClick={() => handleNavigation('next')}
-                        onMouseDown={() => handleMouseDown('right')}
-                        onMouseUp={() => handleMouseUp('right')}
-                        onTouchStart={() => handleMouseDown('right')}
-                        onTouchEnd={() => handleMouseUp('right')}
+                        onMouseDown={() => setIsPressedRight(true)}
+                        onMouseUp={() => setIsPressedRight(false)}
+                        onTouchStart={() => setIsPressedRight(true)}
+                        onTouchEnd={() => setIsPressedRight(false)}
                         disabled={isLoading}
                         style={{background: isPressedRight ? '#A799FF' : ''}}
                     >
