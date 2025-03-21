@@ -8,7 +8,7 @@ import Progress from '../../Components/Progress/Progress';
 import Button from '../../Components/Button/Button';
 import ButtonBack from '../../Components/Button/ButtonBack';
 
-export default function Quiz({ userId }) {
+export default function Quiz({ userId, data }) {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [opacity, setOpacity] = useState(1);
@@ -16,6 +16,9 @@ export default function Quiz({ userId }) {
   const [gen, setGen] = useState('m');
   const [tel, setTel] = useState('');
   const [birthday, setBirthday] = useState('');
+  const [telError, setTelError] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [birthdayError, setBirthdayError] = useState('');
   const [answers, setAnswers] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isValid, setIsValid] = useState(false);
@@ -28,26 +31,17 @@ export default function Quiz({ userId }) {
   const birthdayRef = useRef(null);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-          params: { user_id: userId },
-        });
-        console.log(response.data)
-        setName(response.data.name || '');
-        setGen(response.data.sex || 'm');
-        setTel(response.data.phone || '');
-        setBirthday(response.data.born_date ? new Date(response.data.born_date).toLocaleDateString('ru-RU', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric',
-        }).replace(/\//g, '.') : '');
-      } catch (error) {
-        console.error('Ошибка при получении данных пользователя:', error.message);
-      }
-    };
-    fetchUserData();
-  }, [userId]);
+    if (data) {
+      setName(data.name || '');
+      setGen(data.sex || 'm');
+      setTel(data.phone ? data.phone.replace(/\s/g, '') : '');
+      setBirthday(data.born_date ? new Date(data.born_date).toLocaleDateString('ru-RU', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+      }).replace(/\//g, '.') : '');
+    }
+  }, [data]);
 
   const quizData = [
     {
@@ -115,21 +109,86 @@ export default function Quiz({ userId }) {
     return birthDate < minDate;
   };
 
+  const validatePhone = (phone) => {
+    const cleanedPhone = phone.replace(/[^\d+]/g, '');
+    
+    // Проверка на российский номер
+    if (cleanedPhone.startsWith('7') || cleanedPhone.startsWith('8')) {
+      if (cleanedPhone.length !== 11) {
+        return 'Номер телефона должен содержать 11 цифр';
+      }
+      return '';
+    }
+
+    if (cleanedPhone.startsWith('+7')) {
+      if (cleanedPhone.length !== 12) {
+        return 'Номер телефона должен содержать 12 цифр';
+      }
+      return '';
+    }
+    
+    // Проверка на международный номер
+    if (cleanedPhone.startsWith('+')) {
+      if (cleanedPhone.length < 10 || cleanedPhone.length > 15) {
+        return 'Номер телефона должен содержать от 10 до 15 символов';
+      }
+      return '';
+    }
+    
+    return 'Введите корректный номер телефона';
+  };
+
   const handlePhoneChange = (e) => {
     let value = e.target.value.replace(/[^\d+]/g, '');
+    
+    // Если номер начинается с +, разрешаем международный формат
+    if (value.startsWith('+')) {
+      if (value.length > 15) return;
+      setTel(value);
+      setTelError(validatePhone(value));
+      return;
+    }
+    
+    // Для российских номеров
     if (value.length === 1) {
       if (value === '7' || value === '+') value = '+7';
       else if (value === '8') value = '8';
       else value = `+7${value}`;
     }
+    
     const maxLength = value.startsWith('+') ? 12 : 11;
     if (value.length > maxLength) return;
 
     setTel(value);
+    setTelError(validatePhone(value));
 
     if (value.length === maxLength && telRef.current) {
       telRef.current.blur();
     }
+  };
+
+  const validateName = (name) => {
+    if (!name.trim()) {
+      return 'Введите ваше имя';
+    }
+    if (name.length < 2) {
+      return 'Имя должно содержать минимум 2 символа';
+    }
+    if (name.length > 20) {
+      return 'Имя не должно превышать 20 символов';
+    }
+    if (!/^[а-яА-Яa-zA-Z\s]+$/.test(name)) {
+      return 'Имя может содержать только буквы';
+    }
+    return '';
+  };
+
+  const handleNameChange = (e) => {
+    const value = e.target.value;
+    // Разрешаем только буквы и пробелы
+    const sanitizedValue = value.replace(/[^а-яА-Яa-zA-Z\s]/g, '');
+    setName(sanitizedValue);
+    setNameError(validateName(sanitizedValue));
   };
 
   const handleBirthdayChange = (e) => {
@@ -145,6 +204,7 @@ export default function Quiz({ userId }) {
     if (newValue.length > 10) return;
 
     setBirthday(newValue);
+    setBirthdayError(isDateValid(newValue) ? '' : 'Введите корректную дату рождения');
 
     if (newValue.length === 10 && birthdayRef.current) {
       birthdayRef.current.blur();
@@ -153,14 +213,14 @@ export default function Quiz({ userId }) {
 
   useEffect(() => {
     if (step === 1) {
-      const isNameValid = name.trim().length > 0;
-      const isTelValid = /^(\+7|7|8)\d{10}$/.test(tel.replace(/[^0-9]/g, ''));
-      const isDateValidValue = isDateValid(birthday);
+      const isNameValid = !nameError && name.trim().length > 0;
+      const isTelValid = !telError && tel.length > 0;
+      const isDateValidValue = !birthdayError && birthday.length > 0;
       setIsValid(isNameValid && isTelValid && isDateValidValue);
     } else {
       setIsValid(selectedOption !== null);
     }
-  }, [step, name, tel, birthday, selectedOption]);
+  }, [step, name, tel, birthday, selectedOption, telError, nameError, birthdayError]);
 
   useEffect(() => {
     const tg = window.Telegram?.WebApp;
@@ -277,12 +337,13 @@ export default function Quiz({ userId }) {
               type="text"
               placeholder="Введите ваше имя"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={handleNameChange}
               ref={nameRef}
               onFocus={handleFocus}
               onBlur={handleBlur}
               autoFocus={!name}
             />
+            <div className="error-message" style={{ opacity: nameError ? 1 : 0 }}>{nameError}</div>
           </div>
           <div className="name">
             <p className="titleInput">Пол</p>
@@ -313,6 +374,7 @@ export default function Quiz({ userId }) {
               onBlur={handleBlur}
               autoFocus={!tel}
             />
+            <div className="error-message" style={{ opacity: telError ? 1 : 0 }}>{telError}</div>
           </div>
           <div className="name">
             <p className="titleInput">Дата рождения</p>
@@ -326,6 +388,7 @@ export default function Quiz({ userId }) {
               onBlur={handleBlur}
               autoFocus={!birthday}
             />
+            <div className="error-message" style={{ opacity: birthdayError ? 1 : 0 }}>{birthdayError}</div>
           </div>
         </>
       );

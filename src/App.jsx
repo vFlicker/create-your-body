@@ -154,9 +154,9 @@ function App() {
             // Если есть data и data.user_tarif, рендерим Layout с маршрутами
             <Route path="/" element={<Layout />}>
               <Route index element={<StartPage data={data} />} />
-              <Route path="quiz" element={<Quiz userId={userId} />} />
+              <Route path="quiz" element={<Quiz userId={userId} data={data} />} />
               <Route path="result" element={<Result userId={userId} />} />
-              <Route path="dashboard" element={<Dashboard data={data} userId={userId} />} />
+              <Route path="dashboard" element={<Dashboard data={data} userId={userId} base={base} />} />
               <Route path="begin" element={<Begin data={data} userId={userId} />} />
               <Route path="profile" element={<Profile data={data} userId={userId} setData={setData} />} />
               <Route path="parameters" element={<Parameters data={data} userId={userId} />} />

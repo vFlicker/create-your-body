@@ -45,6 +45,7 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    position: relative;
 }
 
 .name input {
@@ -136,3 +137,12 @@
     z-index: 1000;
     box-shadow: 0 0 15px rgba(0,0,0,0.1);
   }
+
+.error-message {
+    position: absolute;
+    bottom: -16px;
+    left: 16px;
+    font-size: 12px;
+    color: #FF3B30;
+    transition: all 500ms ease-in-out;
+}

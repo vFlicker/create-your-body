@@ -3,7 +3,7 @@ import './Loader.css'
 
 export default function Loader({ height='100%', width='50px', borderWidth='4px' }) {
   return (
-    <div className="loadingSpinner">
+    <div className="loadingSpinner" style={{height: height ? height : ''}}>
       <div className="spinner"
         style={{
             width: width ? width : '',

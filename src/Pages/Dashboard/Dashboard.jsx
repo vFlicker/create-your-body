@@ -13,7 +13,7 @@ import food from '../../Assets/nav/food.svg';
 import book from '../../Assets/svg/book.svg';
 import recipes from '../../Assets/svg/recipes.svg';
 
-export default function Dashboard({ data }) {
+export default function Dashboard({ data, base }) {
 
   const pageContainersData = [
     {
@@ -43,16 +43,16 @@ export default function Dashboard({ data }) {
     {
       name: 'Лекции',
       icon: book,
-      closed: '',
-      buy: true,
+      closed: base ? '' : '29 марта',
+      buy: base ? true : false,
       instruction: false,
       to: 'lectures'
     },
     {
       name: 'Рецепты',
       icon: recipes,
-      closed: '',
-      buy: true,
+      closed: base ? '' : '29 марта',
+      buy: base ? true : false,
       instruction: false,
       to: 'recipes'
     },
