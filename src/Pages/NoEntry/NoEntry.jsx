@@ -9,7 +9,7 @@ import muscules from '../../Assets/svg/muscles.svg'
 
 export default function NoEntry() {
     const tg = window.Telegram?.WebApp;
-    const username = 'zabota_CYB' // Поддержка
+    const username = 'zabotaCYB' // Поддержка
     const link = `https://t.me/${username}`; // Формируем ссылку на Telegram-аккаунт
 
     const handleOpenTelegramLink = () => {
