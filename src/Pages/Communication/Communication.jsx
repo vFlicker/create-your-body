@@ -68,7 +68,7 @@ export default function Communication({ data, base }) {
             </div>
             }
             <TelegramLinkButton 
-                username={'zabota_CYB'}  
+                username={'zabotaCYB'}  
                 buttonText='Поддержка'
                 icon={help}          
             />
