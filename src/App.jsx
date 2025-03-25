@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { HashRouter, Routes, Route, Outlet, useLocation } from 'react-router-dom';
+import { HashRouter, Routes, Route, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import './App.css';
 import axios from "axios";
 import { API_BASE_URL } from './API';
@@ -68,6 +68,7 @@ function App() {
   const [data, setData] = useState(null);
   const [base, setBase] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const initializeApp = async () => {
@@ -82,9 +83,12 @@ function App() {
           setUserId(telegramUser.id);
 
           // Очищаем URL от параметров Telegram
-          if (window.location.hash.includes('tgWebAppData')) {
-            const cleanHash = window.location.hash.split('?')[0];
+          const currentHash = window.location.hash;
+          if (currentHash.includes('tgWebAppData')) {
+            const cleanHash = currentHash.split('?')[0];
             window.location.hash = cleanHash;
+            // Принудительно обновляем URL без параметров
+            navigate(cleanHash, { replace: true });
           }
 
           const addImage = async () => {
@@ -134,7 +138,7 @@ function App() {
     };
 
     initializeApp();
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     preloadImages();
