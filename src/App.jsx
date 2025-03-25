@@ -74,10 +74,6 @@ function App() {
       try {
         setIsLoading(true);
         
-        // Получаем параметры из URL
-        const searchParams = new URLSearchParams(window.location.search);
-        const tgWebAppData = searchParams.get('tgWebAppData');
-        
         if (window.Telegram && window.Telegram.WebApp) {
           window.Telegram.WebApp.ready();
           window.Telegram.WebApp.expand();
@@ -105,6 +101,7 @@ function App() {
                   'Content-Type': 'application/json',
                 },
               });
+              console.log('Изображение отправлено:', response.data);
             } catch (error) {
               console.error('Ошибка при отправке изображения:', error);
             }
