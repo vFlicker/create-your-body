@@ -44,9 +44,9 @@ function preloadImages() {
 
 function Layout() {
   const location = useLocation();
-  const hiddenPathsBack = ['/', '/quiz', '/result', '/dashboard'];
+  const hiddenPathsBack = ['/testerapp', '/testerapp/quiz', '/testerapp/result', '/testerapp/dashboard'];
   const showControlsBack = !hiddenPathsBack.includes(location.pathname);
-  const hiddenPathsNav = ['/', '/quiz', '/result', '/noentry'];
+  const hiddenPathsNav = ['/testerapp', '/testerapp/quiz', '/testerapp/result', '/testerapp/noentry'];
   const showControlsNav = !hiddenPathsNav.includes(location.pathname);
 
   return (
@@ -152,7 +152,7 @@ function App() {
         <Routes>
           {hasAccess ? (
             // Если есть data и data.user_tarif, рендерим Layout с маршрутами
-            <Route path="/testerapp" element={<Layout />}>
+            <Route path="testerapp" element={<Layout />}>
               <Route index element={<StartPage data={data} />} />
               <Route path="quiz" element={<Quiz userId={userId} data={data} />} />
               <Route path="result" element={<Result userId={userId} />} />
