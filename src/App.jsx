@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { HashRouter, Routes, Route, Outlet, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Outlet, useLocation } from 'react-router-dom';
 import './App.css';
 import axios from "axios";
 import { API_BASE_URL } from './API';
@@ -44,9 +44,9 @@ function preloadImages() {
 
 function Layout() {
   const location = useLocation();
-  const hiddenPathsBack = ['/testerapp', '/testerapp/quiz', '/testerapp/result', '/testerapp/dashboard'];
+  const hiddenPathsBack = ['/', '/quiz', '/result', '/dashboard'];
   const showControlsBack = !hiddenPathsBack.includes(location.pathname);
-  const hiddenPathsNav = ['/testerapp', '/testerapp/quiz', '/testerapp/result', '/testerapp/noentry'];
+  const hiddenPathsNav = ['/', '/quiz', '/result', '/noentry'];
   const showControlsNav = !hiddenPathsNav.includes(location.pathname);
 
   return (
@@ -145,18 +145,18 @@ function App() {
   const hasAccess = data && data.user_tarif && data.user_tarif.trim() !== '';
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       {isLoading ? (
         <Loader height="100vh" />
       ) : (
         <Routes>
           {hasAccess ? (
             // Если есть data и data.user_tarif, рендерим Layout с маршрутами
-            <Route path="testerapp" element={<Layout />}>
+            <Route path="/" element={<Layout />}>
               <Route index element={<StartPage data={data} />} />
-              <Route path="quiz" element={<Quiz userId={userId} data={data} />} />
+              <Route path="quiz" element={<Quiz userId={userId} />} />
               <Route path="result" element={<Result userId={userId} />} />
-              <Route path="dashboard" element={<Dashboard data={data} userId={userId} base={base} />} />
+              <Route path="dashboard" element={<Dashboard data={data} userId={userId} />} />
               <Route path="begin" element={<Begin data={data} userId={userId} />} />
               <Route path="profile" element={<Profile data={data} userId={userId} setData={setData} />} />
               <Route path="parameters" element={<Parameters data={data} userId={userId} />} />
@@ -169,7 +169,7 @@ function App() {
           )}
         </Routes>
       )}
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 
