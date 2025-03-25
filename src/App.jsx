@@ -70,78 +70,72 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Очищаем URL от параметров Telegram Web App
-    if (window.location.hash.includes('tgWebAppData')) {
-      const cleanHash = window.location.hash.split('?')[0];
-      window.history.replaceState(null, '', cleanHash);
-    }
+    const initializeApp = async () => {
+      try {
+        setIsLoading(true);
+        
+        // Получаем параметры из URL
+        const searchParams = new URLSearchParams(window.location.search);
+        const tgWebAppData = searchParams.get('tgWebAppData');
+        
+        if (window.Telegram && window.Telegram.WebApp) {
+          window.Telegram.WebApp.ready();
+          window.Telegram.WebApp.expand();
 
-    if (window.Telegram && window.Telegram.WebApp) {
-      window.Telegram.WebApp.ready();
-      window.Telegram.WebApp.expand();
+          const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
+          setUserId(telegramUser.id);
 
-      const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
-      setUserId(telegramUser.id);
-      console.log('Telegram Start Param:', window.Telegram.WebApp.initDataUnsafe.start_param);
-      console.log('Full Telegram Init Data:', window.Telegram.WebApp.initData);
-      console.log('Привет!');
+          // Очищаем URL от параметров Telegram
+          if (window.history && window.history.replaceState) {
+            window.history.replaceState({}, '', '/');
+          }
 
-      const addImage = async () => {
-        const image = telegramUser.photo_url && typeof telegramUser.photo_url === 'string'
-          ? telegramUser.photo_url
-          : '';
-        const imageData = {
-          user_tg_id: String(telegramUser.id),
-          image: image,
-        };
+          const addImage = async () => {
+            const image = telegramUser.photo_url && typeof telegramUser.photo_url === 'string'
+              ? telegramUser.photo_url
+              : '';
+            const imageData = {
+              user_tg_id: String(telegramUser.id),
+              image: image,
+            };
 
-        console.log('Отправляемые данные:', imageData);
+            try {
+              const response = await axios.post(`${API_BASE_URL}/api/v1/user/image?${new URLSearchParams(imageData).toString()}`, null, {
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              });
+            } catch (error) {
+              console.error('Ошибка при отправке изображения:', error);
+            }
+          };
 
-        const params = new URLSearchParams(imageData).toString();
+          const addUser = async () => {
+            try {
+              const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
+                params: { user_id: telegramUser.id },
+              });
+              setData(response.data);
+              const userTarif = response.data.user_tarif || '';
+              setBase(userTarif.trim().includes('Base'));
+            } catch {
+              console.log('Не удалось получить данные пользователя');
+              setData(null);
+            }
+          };
 
-        try {
-          const response = await axios.post(`${API_BASE_URL}/api/v1/user/image?${params}`, null, {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-          console.log('Ответ сервера для изображения:', response.data);
-        } catch (error) {
-          console.error('Ошибка при отправке изображения:', error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
-        }
-      };
-
-      const addUser = async () => {
-        try {
-          const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-            params: { user_id: telegramUser.id },
-          });
-          console.log('Данные пользователя:', response.data);
-          setData(response.data);
-          const userTarif = response.data.user_tarif || '';
-          const isBase = userTarif.trim().includes('Base');
-          setBase(isBase);
-          console.log('Тариф пользователя:', userTarif, 'Base:', isBase);
-        } catch {
-          console.log('Не удалось получить данные пользователя');
-          setData(null);
-        }
-      };
-
-      const fetchData = async () => {
-        try {
-          setIsLoading(true);
           await Promise.all([addImage(), addUser()]);
-        } finally {
-          setIsLoading(false);
+        } else {
+          console.error('Telegram WebApp API не найден');
         }
-      };
+      } catch (error) {
+        console.error('Ошибка инициализации:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-      fetchData();
-    } else {
-      console.error('Telegram WebApp API не найден');
-      setIsLoading(false);
-    }
+    initializeApp();
   }, []);
 
   useEffect(() => {
