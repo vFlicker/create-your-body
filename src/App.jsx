@@ -6,7 +6,7 @@ import { API_BASE_URL } from './API';
 
 import Loader from "./Components/Loader/Loader";
 
-// import NoEntry from "./Pages/NoEntry/NoEntry";
+import NoEntry from "./Pages/NoEntry/NoEntry";
 import ButtonClose from "./Components/Button/ButtonClose";
 import ButtonBack from "./Components/Button/ButtonBack";
 import Nav from "./Components/Nav/Nav";
@@ -166,7 +166,7 @@ function App() {
             </Route>
           ) : (
             // Если нет data или data.user_tarif, рендерим NoEntry
-            <Route path="*" element={<div>Маршрут не найден: {window.location.pathname}</div>} />
+            <Route path="*" element={<NoEntry />} />
           )}
         </Routes>
       )}

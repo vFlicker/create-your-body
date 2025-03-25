@@ -13,12 +13,13 @@ export default function Quiz({ userId, data }) {
   const [step, setStep] = useState(1);
   const [opacity, setOpacity] = useState(1);
   const [name, setName] = useState('');
-  const [gen, setGen] = useState('m');
+  const [gen, setGen] = useState('');
   const [tel, setTel] = useState('');
   const [birthday, setBirthday] = useState('');
   const [telError, setTelError] = useState('');
   const [nameError, setNameError] = useState('');
   const [birthdayError, setBirthdayError] = useState('');
+  const [genError, setGenError] = useState('');
   const [answers, setAnswers] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isValid, setIsValid] = useState(false);
@@ -33,7 +34,6 @@ export default function Quiz({ userId, data }) {
   useEffect(() => {
     if (data) {
       setName(data.name || '');
-      setGen(data.sex || 'm');
       setTel(data.phone ? data.phone.replace(/\s/g, '') : '');
       setBirthday(data.born_date ? new Date(data.born_date).toLocaleDateString('ru-RU', {
         day: '2-digit',
@@ -211,16 +211,29 @@ export default function Quiz({ userId, data }) {
     }
   };
 
+  const validateGen = (gen) => {
+    if (!gen) {
+      return 'Выберите ваш пол';
+    }
+    return '';
+  };
+
+  const handleGenChange = (value) => {
+    setGen(value);
+    setGenError(validateGen(value));
+  };
+
   useEffect(() => {
     if (step === 1) {
       const isNameValid = !nameError && name.trim().length > 0;
       const isTelValid = !telError && tel.length > 0;
       const isDateValidValue = !birthdayError && birthday.length > 0;
-      setIsValid(isNameValid && isTelValid && isDateValidValue);
+      const isGenValid = !genError && gen.length > 0;
+      setIsValid(isNameValid && isTelValid && isDateValidValue && isGenValid);
     } else {
       setIsValid(selectedOption !== null);
     }
-  }, [step, name, tel, birthday, selectedOption, telError, nameError, birthdayError]);
+  }, [step, name, tel, birthday, selectedOption, telError, nameError, birthdayError, gen, genError]);
 
   useEffect(() => {
     const tg = window.Telegram?.WebApp;
@@ -350,17 +363,18 @@ export default function Quiz({ userId, data }) {
             <div className="selectGender">
               <button
                 className={`genderBtn ${gen === 'm' ? 'active' : ''}`}
-                onClick={() => setGen('m')}
+                onClick={() => handleGenChange('m')}
               >
                 М
               </button>
               <button
                 className={`genderBtn ${gen === 'w' ? 'active' : ''}`}
-                onClick={() => setGen('w')}
+                onClick={() => handleGenChange('w')}
               >
                 Ж
               </button>
             </div>
+            <div className="error-message" style={{ opacity: genError ? 1 : 0 }}>{genError}</div>
           </div>
           <div className="name">
             <p className="titleInput">Номер телефона</p>
