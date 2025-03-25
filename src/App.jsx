@@ -152,7 +152,7 @@ function App() {
         <Routes>
           {hasAccess ? (
             // Если есть data и data.user_tarif, рендерим Layout с маршрутами
-            <Route path="/" element={<Layout />}>
+            <Route path="/testerapp" element={<Layout />}>
               <Route index element={<StartPage data={data} />} />
               <Route path="quiz" element={<Quiz userId={userId} />} />
               <Route path="result" element={<Result userId={userId} />} />
