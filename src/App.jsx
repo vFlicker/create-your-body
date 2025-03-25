@@ -145,7 +145,7 @@ function App() {
   const hasAccess = data && data.user_tarif && data.user_tarif.trim() !== '';
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/testerapp">
       {isLoading ? (
         <Loader height="100vh" />
       ) : (
