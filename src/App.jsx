@@ -82,8 +82,9 @@ function App() {
           setUserId(telegramUser.id);
 
           // Очищаем URL от параметров Telegram
-          if (window.history && window.history.replaceState) {
-            window.history.replaceState({}, '', '/');
+          if (window.location.hash.includes('tgWebAppData')) {
+            const cleanHash = window.location.hash.split('?')[0];
+            window.location.hash = cleanHash;
           }
 
           const addImage = async () => {
