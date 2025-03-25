@@ -78,6 +78,7 @@ function App() {
       setUserId(telegramUser.id);
       console.log('Telegram Start Param:', window.Telegram.WebApp.initDataUnsafe.start_param);
       console.log('Full Telegram Init Data:', window.Telegram.WebApp.initData);
+      console.log('Привет!');
 
       const addImage = async () => {
         const image = telegramUser.photo_url && typeof telegramUser.photo_url === 'string'
