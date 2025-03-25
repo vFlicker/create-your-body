@@ -13,7 +13,7 @@ import lock from '../../Assets/svg/lock.svg';
 // Массив с данными для навигации
 const navItems = [
   { path: '/dashboard', icon: dashboard, label: 'Меню' },
-  { path: '/training', icon: muscles, label: 'Тренировки' },
+  { path: '/train', icon: muscles, label: 'Тренировки' },
   { path: '/food', icon: food, label: 'Питание' },
   { path: '/communication', icon: chat, label: 'Общение' },
   { path: '/profile', icon: profile, label: 'Профиль' },
@@ -38,7 +38,7 @@ export default function Nav() {
   const isCurrentPathInNav = navItems.some((item) => item.path === location.pathname);
 
   // Проверяем, нужно ли отключить ссылку (для /training и /food)
-  const isLinkDisabled = (path) => path === '/training' || path === '/food';
+  const isLinkDisabled = (path) => path === '/food';
 
   // Обработчики событий для управления состоянием нажатия
   const handleMouseDown = (path) => setPressedPath(path);

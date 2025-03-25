@@ -19,7 +19,7 @@ import Profile from "./Pages/Profile/Profile";
 import Parameters from "./Pages/Profile/Parameters";
 import Record from "./Pages/Profile/Record";
 import Communication from "./Pages/Communication/Communication";
-
+import Train from "./Pages/Train/Train";
 // Функция для получения всех файлов из папки
 function importAll(r) {
   return r.keys().map(r);
@@ -161,6 +161,7 @@ function App() {
               <Route path="parameters" element={<Parameters data={data} userId={userId} />} />
               <Route path="record" element={<Record data={data} userId={userId} />} />
               <Route path="communication" element={<Communication data={data} userId={userId} base={base} />} />
+              <Route path="train" element={<Train data={data} userId={userId} />} />
             </Route>
           ) : (
             // Если нет data или data.user_tarif, рендерим NoEntry

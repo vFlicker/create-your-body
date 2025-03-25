@@ -30,7 +30,7 @@ export default function Dashboard({ data, base }) {
       closed: '29 марта',
       buy: false,
       instruction: false,
-      to: 'training'
+      to: 'train'
     },
     {
       name: 'Питание',
