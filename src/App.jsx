@@ -20,6 +20,7 @@ import Parameters from "./Pages/Profile/Parameters";
 import Record from "./Pages/Profile/Record";
 import Communication from "./Pages/Communication/Communication";
 import Train from "./Pages/Train/Train";
+
 // Функция для получения всех файлов из папки
 function importAll(r) {
   return r.keys().map(r);
@@ -53,17 +54,17 @@ function Layout() {
     <>
       <div className="header">
         {showControlsBack && <ButtonBack />}
-        <ButtonClose /> {/* ButtonClose всегда видна */}
+        <ButtonClose />
       </div>
       <div className="App">
-        <Outlet /> {/* Здесь рендерятся дочерние маршруты */}
-        {showControlsNav && <Nav />} {/* Условно показываем Nav */}
+        <Outlet />
+        {showControlsNav && <Nav />}
       </div>
     </>
   );
 }
 
-function App() {
+function AppContent() {
   const [userId, setUserId] = useState(null);
   const [data, setData] = useState(null);
   const [base, setBase] = useState(false);
@@ -147,32 +148,36 @@ function App() {
   // Проверка: есть ли data и data.user_tarif
   const hasAccess = data && data.user_tarif && data.user_tarif.trim() !== '';
 
+  if (isLoading) {
+    return <Loader height="100vh" />;
+  }
+
+  return (
+    <Routes>
+      {hasAccess ? (
+        <Route path="/" element={<Layout />}>
+          <Route index element={<StartPage data={data} />} />
+          <Route path="quiz" element={<Quiz userId={userId} />} />
+          <Route path="result" element={<Result userId={userId} />} />
+          <Route path="dashboard" element={<Dashboard data={data} userId={userId} />} />
+          <Route path="begin" element={<Begin data={data} userId={userId} />} />
+          <Route path="profile" element={<Profile data={data} userId={userId} setData={setData} />} />
+          <Route path="parameters" element={<Parameters data={data} userId={userId} />} />
+          <Route path="record" element={<Record data={data} userId={userId} />} />
+          <Route path="communication" element={<Communication data={data} userId={userId} base={base} />} />
+          <Route path="train" element={<Train data={data} userId={userId} />} />
+        </Route>
+      ) : (
+        <Route path="*" element={<NoEntry />} />
+      )}
+    </Routes>
+  );
+}
+
+function App() {
   return (
     <HashRouter>
-      {isLoading ? (
-        <Loader height="100vh" />
-      ) : (
-        <Routes>
-          {hasAccess ? (
-            // Если есть data и data.user_tarif, рендерим Layout с маршрутами
-            <Route path="/" element={<Layout />}>
-              <Route index element={<StartPage data={data} />} />
-              <Route path="quiz" element={<Quiz userId={userId} />} />
-              <Route path="result" element={<Result userId={userId} />} />
-              <Route path="dashboard" element={<Dashboard data={data} userId={userId} />} />
-              <Route path="begin" element={<Begin data={data} userId={userId} />} />
-              <Route path="profile" element={<Profile data={data} userId={userId} setData={setData} />} />
-              <Route path="parameters" element={<Parameters data={data} userId={userId} />} />
-              <Route path="record" element={<Record data={data} userId={userId} />} />
-              <Route path="communication" element={<Communication data={data} userId={userId} base={base} />} />
-              <Route path="train" element={<Train data={data} userId={userId} />} />
-            </Route>
-          ) : (
-            // Если нет data или data.user_tarif, рендерим NoEntry
-            <Route path="*" element={<NoEntry />} />
-          )}
-        </Routes>
-      )}
+      <AppContent />
     </HashRouter>
   );
 }
