@@ -4,42 +4,32 @@ import './Container.css'
 
 import lock from '../../Assets/svg/lock.svg'
 
-export default function Container({ data, onClick }) {
+export default function Containers({ data }) {
   const navigate = useNavigate()
-  
-  const handleClick = (e) => {
-    e.preventDefault();
-    if (onClick) {
-      onClick(data);
-    } else {
-      navigate(`/${data.to}`);
-    }
-  };
-
   return (
     <div 
       className={`container ${data.closed !== null || data.buy ? 'disabled' : ''}`} 
       style={{background: data.instruction ? '#D3CCFF' : '', 
               borderColor: data.instruction ? '#D3CCFF' : ''
       }}
-      onClick={handleClick}
-    >
-      <div className="nameContainer" style={{filter: data.buy ? 'blur(1px)' : ''}}>
-        <img src={data.icon} alt={data.name} />
-        <h2>{data.name}</h2>
-      </div>
-      {data.closed && 
-        <div className='containerClosed'><p>Откроется {data.closed}</p></div>
-      }
-      {/* {data.buy && 
-        <div className="blurContainer"></div>
-      } */}
-      {data.buy &&
-        <button className='containerBuy'>
-          <img src={lock} alt="Купить" />
-          <p>Доступно в PRO</p>
-        </button>
-      }
+      onClick={() => navigate(`/${data.to}`)}
+      >
+        <div className="nameContainer" style={{filter: data.buy ? 'blur(1px)' : ''}}>
+          <img src={data.icon} alt={data.name} />
+          <h2>{data.name}</h2>
+        </div>
+        {data.closed && 
+          <div className='containerClosed'><p>Откроется {data.closed}</p></div>
+        }
+        {/* {data.buy && 
+          <div className="blurContainer"></div>
+        } */}
+        {data.buy &&
+          <button className='containerBuy'>
+            <img src={lock} alt="Купить" />
+            <p>Доступно в PRO</p>
+          </button>
+        }
     </div>
   )
 }
