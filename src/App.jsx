@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, Outlet, useLocation } from 'react-router-dom';
+import { HashRouter, Routes, Route, Outlet, useLocation } from 'react-router-dom';
 import './App.css';
 import axios from "axios";
 import { API_BASE_URL } from './API';
@@ -145,7 +145,7 @@ function App() {
   const hasAccess = data && data.user_tarif && data.user_tarif.trim() !== '';
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       {isLoading ? (
         <Loader height="100vh" />
       ) : (
@@ -169,7 +169,7 @@ function App() {
           )}
         </Routes>
       )}
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
