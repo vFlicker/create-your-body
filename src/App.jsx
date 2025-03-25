@@ -70,6 +70,12 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Очищаем URL от параметров Telegram Web App
+    if (window.location.hash.includes('tgWebAppData')) {
+      const cleanHash = window.location.hash.split('?')[0];
+      window.history.replaceState(null, '', cleanHash);
+    }
+
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.ready();
       window.Telegram.WebApp.expand();

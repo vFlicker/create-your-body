@@ -19,7 +19,6 @@ export default function Quiz({ userId, data }) {
   const [telError, setTelError] = useState('');
   const [nameError, setNameError] = useState('');
   const [birthdayError, setBirthdayError] = useState('');
-  const [genError, setGenError] = useState('');
   const [answers, setAnswers] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isValid, setIsValid] = useState(false);
@@ -211,29 +210,16 @@ export default function Quiz({ userId, data }) {
     }
   };
 
-  const validateGen = (gen) => {
-    if (!gen) {
-      return 'Выберите ваш пол';
-    }
-    return '';
-  };
-
-  const handleGenChange = (value) => {
-    setGen(value);
-    setGenError(validateGen(value));
-  };
-
   useEffect(() => {
     if (step === 1) {
       const isNameValid = !nameError && name.trim().length > 0;
       const isTelValid = !telError && tel.length > 0;
       const isDateValidValue = !birthdayError && birthday.length > 0;
-      const isGenValid = !genError && gen.length > 0;
-      setIsValid(isNameValid && isTelValid && isDateValidValue && isGenValid);
+      setIsValid(isNameValid && isTelValid && isDateValidValue);
     } else {
       setIsValid(selectedOption !== null);
     }
-  }, [step, name, tel, birthday, selectedOption, telError, nameError, birthdayError, gen, genError]);
+  }, [step, name, tel, birthday, selectedOption, telError, nameError, birthdayError]);
 
   useEffect(() => {
     const tg = window.Telegram?.WebApp;
@@ -363,18 +349,17 @@ export default function Quiz({ userId, data }) {
             <div className="selectGender">
               <button
                 className={`genderBtn ${gen === 'm' ? 'active' : ''}`}
-                onClick={() => handleGenChange('m')}
+                onClick={() => setGen('m')}
               >
                 М
               </button>
               <button
                 className={`genderBtn ${gen === 'w' ? 'active' : ''}`}
-                onClick={() => handleGenChange('w')}
+                onClick={() => setGen('w')}
               >
                 Ж
               </button>
             </div>
-            <div className="error-message" style={{ opacity: genError ? 1 : 0 }}>{genError}</div>
           </div>
           <div className="name">
             <p className="titleInput">Номер телефона</p>
