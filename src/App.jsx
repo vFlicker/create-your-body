@@ -71,6 +71,22 @@ function AppContent() {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Очистка URL от параметров Telegram
+  useEffect(() => {
+    const cleanUrl = () => {
+      const currentHash = window.location.hash;
+      if (currentHash.includes('tgWebAppData')) {
+        const cleanHash = currentHash.split('?')[0];
+        if (cleanHash !== currentHash) {
+          window.location.hash = cleanHash;
+          navigate(cleanHash, { replace: true });
+        }
+      }
+    };
+
+    cleanUrl();
+  }, [navigate]);
+
   useEffect(() => {
     const initializeApp = async () => {
       try {
@@ -82,15 +98,6 @@ function AppContent() {
 
           const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
           setUserId(telegramUser.id);
-
-          // Очищаем URL от параметров Telegram
-          const currentHash = window.location.hash;
-          if (currentHash.includes('tgWebAppData')) {
-            const cleanHash = currentHash.split('?')[0];
-            window.location.hash = cleanHash;
-            // Принудительно обновляем URL без параметров
-            navigate(cleanHash, { replace: true });
-          }
 
           const addImage = async () => {
             const image = telegramUser.photo_url && typeof telegramUser.photo_url === 'string'
@@ -139,7 +146,7 @@ function AppContent() {
     };
 
     initializeApp();
-  }, [navigate]);
+  }, []);
 
   useEffect(() => {
     preloadImages();
