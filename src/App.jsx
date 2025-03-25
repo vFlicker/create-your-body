@@ -76,8 +76,8 @@ function App() {
 
       const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
       setUserId(telegramUser.id);
-      console.log(telegramUser.id);
-      console.log(telegramUser.photo_url);
+      console.log('Telegram Start Param:', window.Telegram.WebApp.initDataUnsafe.start_param);
+      console.log('Full Telegram Init Data:', window.Telegram.WebApp.initData);
 
       const addImage = async () => {
         const image = telegramUser.photo_url && typeof telegramUser.photo_url === 'string'
@@ -98,9 +98,9 @@ function App() {
               'Content-Type': 'application/json',
             },
           });
-          console.log('Ответ сервера:', response.data);
+          console.log('Ответ сервера для изображения:', response.data);
         } catch (error) {
-          console.error('Ошибка:', error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
+          console.error('Ошибка при отправке изображения:', error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
         }
       };
 
@@ -109,14 +109,14 @@ function App() {
           const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
             params: { user_id: telegramUser.id },
           });
-          console.log(response.data);
+          console.log('Данные пользователя:', response.data);
           setData(response.data);
           const userTarif = response.data.user_tarif || '';
           const isBase = userTarif.trim().includes('Base');
           setBase(isBase);
-          console.log('Тариф:', userTarif, 'Base:', isBase);
+          console.log('Тариф пользователя:', userTarif, 'Base:', isBase);
         } catch {
-          console.log('Не получилось получить данные');
+          console.log('Не удалось получить данные пользователя');
           setData(null);
         }
       };
