@@ -8,6 +8,7 @@ import { API_BASE_URL } from '../../API';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import Selecter from '../../Components/Selecter/Selecter';
 import Button from '../../Components/Button/Button';
+import Loader from '../../Components/Loader/Loader';
 // import ButtonEdit from '../../Components/Button/ButtonEdit';
 
 import settings from '../../Assets/svg/settings.svg';
@@ -73,13 +74,11 @@ export default function Profile({ userId, data, setData }) {
   };
 
   return (
-    <div className="profilePage">
-      <div className="profileContainer">
+    <div className="profilePage" style={{ height: isLoading ? 'calc(100vh - 160px)' : 'auto' }}>
+      <div className="profileContainer" style={{ height: isLoading ? '100%' : 'auto' }}>
         {isLoading ? (
           // Индикатор загрузки
-          <div className="loadingSpinner">
-            <div className="spinner"></div>
-          </div>
+          <Loader />
         ) : dataParameters ? (
           <div className="dataHave">
             <div className="profile" style={{ justifyContent: 'space-between' }}>

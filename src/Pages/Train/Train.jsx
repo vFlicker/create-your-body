@@ -73,7 +73,7 @@ export default function Train({ data }) {
                 return (
                     <div className="train-details-content" style={{ transform: `translateX(${translateX - 50}%)` }}>
                         <Selecter textOne='Разминка' textTwo='МФР' activeIndex={activeIndex} onClick={setActiveIndex} />
-                        <VideoPage activeIndex={activeIndex} />
+                        <VideoPage activeIndex={activeIndex} text={''} />
                     </div>
                 );
             case 'train':

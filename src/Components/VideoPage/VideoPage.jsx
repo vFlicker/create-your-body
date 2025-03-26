@@ -7,7 +7,7 @@ import Button from '../Button/Button';
 
 import check from '../../Assets/svg/check.svg';
 
-export default function VideoPage({ video, page, userId, instruction }) {
+export default function VideoPage({ video, page, userId, instruction, text }) {
   const navigate = useNavigate();
   const [isVideoEnded, setIsVideoEnded] = useState(false); // Состояние завершения видео
   const togglePlayRef = useRef(null); // Реф для вызова togglePlay из VideoViewer
@@ -37,7 +37,7 @@ export default function VideoPage({ video, page, userId, instruction }) {
           onVideoEnd={setIsVideoEnded} // Обновляем состояние, когда видео заканчивается
           togglePlayRef={togglePlayRef} // Передаем реф для управления воспроизведением
         />
-        <p className="beginDescription">В этом видео я расскажу как подготовиться к старту программы</p>
+        <p className="beginDescription">{instruction ? 'В этом видео я расскажу как подготовиться к старту программы' : text}</p>
       </div>
       <Button
         onClick={handleButtonClick}

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { HashRouter, Routes, Route, Outlet, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Outlet, useLocation } from 'react-router-dom';
 import './App.css';
 import axios from "axios";
 import { API_BASE_URL } from './API';
 
 import Loader from "./Components/Loader/Loader";
+// import PageTransition from "./Components/PageTransition/PageTransition";
 
 import NoEntry from "./Pages/NoEntry/NoEntry";
 import ButtonClose from "./Components/Button/ButtonClose";
@@ -32,11 +33,11 @@ function Layout() {
     <>
       <div className="header">
         {showControlsBack && <ButtonBack />}
-        <ButtonClose /> {/* ButtonClose всегда видна */}
+        <ButtonClose />
       </div>
       <div className="App">
-        <Outlet /> {/* Здесь рендерятся дочерние маршруты */}
-        {showControlsNav && <Nav />} {/* Условно показываем Nav */}
+          <Outlet />
+        {showControlsNav && <Nav />}
       </div>
     </>
   );
@@ -124,7 +125,7 @@ function App() {
   const hasAccess = data && data.user_tarif && data.user_tarif.trim() !== '';
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       {isLoading ? (
         <Loader height="100vh" />
       ) : (
@@ -147,7 +148,7 @@ function App() {
           )}
         </Routes>
       )}
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 

@@ -7,7 +7,6 @@
 
 .topTrain {
     padding: 70px 16px 32px 16px;
-    height: 30%;
     display: flex;
     flex-direction: column;
     gap: 22px;

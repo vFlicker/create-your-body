@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './StartPage.css';
 
 import Button from '../../Components/Button/Button';
 import ImageOverlay from '../../Components/ImageOverley';
+import Loader from '../../Components/Loader/Loader';
 
 import startPhoto from '../../Assets/img/start.jpg';
 import element from '../../Assets/img/element.png'
@@ -11,12 +12,41 @@ import run from '../../Assets/svg/run.svg';
 
 export default function StartPage({ data }) {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadedImages, setLoadedImages] = useState({
+    startPhoto: false,
+    element: false
+  });
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.setBackgroundColor('#fff')
     }
   }, []);
+
+  useEffect(() => {
+    const startPhotoImg = new Image();
+    const elementImg = new Image();
+    
+    startPhotoImg.src = startPhoto;
+    elementImg.src = element;
+
+    startPhotoImg.onload = () => {
+      setLoadedImages(prev => ({...prev, startPhoto: true}));
+      checkAllImagesLoaded({...loadedImages, startPhoto: true});
+    };
+
+    elementImg.onload = () => {
+      setLoadedImages(prev => ({...prev, element: true}));
+      checkAllImagesLoaded({...loadedImages, element: true});
+    };
+  }, [loadedImages]);
+
+  const checkAllImagesLoaded = (newLoadedImages) => {
+    if (newLoadedImages.startPhoto && newLoadedImages.element) {
+      setIsLoading(false);
+    }
+  };
 
   function handleButtonClick() {
     if (data.born_date) {
@@ -29,6 +59,7 @@ export default function StartPage({ data }) {
   return (
     <div className="startPage">
       <div className="imgContainer">
+        {isLoading && <Loader />}
         <img className='green' src={element} alt="Зеленый фон" />
         <ImageOverlay
           overlayImageSrc={startPhoto}
