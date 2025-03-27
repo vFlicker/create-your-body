@@ -12,6 +12,54 @@ import add from '../../Assets/svg/addImg.svg';
 import close from '../../Assets/svg/closeWhite.svg';
 
 const InputPair = ({ labels, values, onChange, handleBlur, handleFocus, type = 'text' }) => {
+  if (Array.isArray(type)) {
+    return (
+      <div className="inputPair">
+        {labels.map((label, index) => (
+          <div key={label} className="inputGroup">
+            <label>{label}</label>
+            {type[index] === 'gender' ? (
+              <div className="selectGender">
+                <button
+                  className={`genderBtn ${values[index] === 'm' ? 'active' : ''}`}
+                  onClick={() => onChange[index]('m')}
+                  style={{ height: '46px', borderRadius: '50px' }}
+                >
+                  М
+                </button>
+                <button
+                  className={`genderBtn ${values[index] === 'w' ? 'active' : ''}`}
+                  onClick={() => onChange[index]('w')}
+                  style={{ height: '46px', borderRadius: '50px' }}
+                >
+                  Ж
+                </button>
+              </div>
+            ) : type[index] === 'birthday' ? (
+              <input
+                type="text"
+                value={values[index] || ''}
+                onChange={(e) => onChange[index](e)}
+                placeholder="дд.мм.гггг"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+              />
+            ) : (
+              <input
+                type="text"
+                value={values[index] || ''}
+                onChange={(e) => onChange(index)(e)}
+                placeholder="0"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+              />
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   if (type === 'gender') {
     return (
       <div className="inputPair">
@@ -20,13 +68,15 @@ const InputPair = ({ labels, values, onChange, handleBlur, handleFocus, type = '
           <div className="selectGender">
             <button
               className={`genderBtn ${values[0] === 'm' ? 'active' : ''}`}
-              onClick={() => onChange(0)('m')}
+              onClick={() => onChange('m')}
+              style={{ height: '46px', borderRadius: '50px' }}
             >
               М
             </button>
             <button
               className={`genderBtn ${values[0] === 'w' ? 'active' : ''}`}
-              onClick={() => onChange(0)('w')}
+              onClick={() => onChange('w')}
+              style={{ height: '46px', borderRadius: '50px' }}
             >
               Ж
             </button>
@@ -100,10 +150,10 @@ const PhotoUploader = ({ label, value, onChange, onRemove }) => {
             className="previewImage"
             onClick={(e) => e.stopPropagation()}
           />
-          <img 
-            className="closePhoto" 
-            src={close} 
-            alt="Закрыть" 
+          <img
+            className="closePhoto"
+            src={close}
+            alt="Закрыть"
             onClick={(e) => {
               e.stopPropagation();
               onRemove();
@@ -158,7 +208,7 @@ export default function Parameters({ userId, data }) {
         });
         const parameters = Array.isArray(parametersResponse.data) ? parametersResponse.data : [parametersResponse.data];
         const latestParameters = parameters[parameters.length - 1];
-        
+
         if (latestParameters) {
           setHasParameters(true);
           setFormData({
@@ -174,12 +224,12 @@ export default function Parameters({ userId, data }) {
         // Проверяем наличие фотографий
         try {
           const photosResponse = await axios.get(`${API_BASE_URL}/testapi/v1/user/images/two`, {
-            data: { 
+            data: {
               tg_id: String(userId),
               number: 0 // Проверяем наличие фото "до"
             }
           });
-          
+
           if (photosResponse.data && (photosResponse.data.image_before || photosResponse.data.image_after)) {
             setHasPhotos(true);
             setFormData(prev => ({
@@ -264,7 +314,7 @@ export default function Parameters({ userId, data }) {
     setFormData({ ...formData, [field]: value });
   };
 
-  const handleGenderChange = (index) => (value) => {
+  const handleGenderChange = (value) => {
     setGen(value);
   };
 
@@ -309,7 +359,7 @@ export default function Parameters({ userId, data }) {
       const value = formData[field];
       return value !== undefined && value !== null && String(value).trim() !== '';
     });
-  
+
     if (!isAllFilled) {
       if (window.Telegram?.WebApp) {
         window.Telegram.WebApp.showAlert('Добавьте все параметры');
@@ -318,7 +368,7 @@ export default function Parameters({ userId, data }) {
       }
       return;
     }
-  
+
     if (!isDateValid(birthday)) {
       if (window.Telegram?.WebApp) {
         window.Telegram.WebApp.showAlert('Введите корректную дату рождения');
@@ -327,18 +377,18 @@ export default function Parameters({ userId, data }) {
       }
       return;
     }
-  
+
     try {
       // Обновление информации о пользователе
       const [day, month, year] = birthday.split('.');
       const formattedBirthday = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-      
+
       await axios.patch(`${API_BASE_URL}/testapi/v1/user/info`, {
         tg_id: String(userId),
         sex: gen === 'm' ? 'male' : 'female',
         born_date: formattedBirthday
       });
-  
+
       // Обновление параметров
       const parametersData = {
         tg_id: String(userId),
@@ -350,18 +400,18 @@ export default function Parameters({ userId, data }) {
         hips: parseInt(formData.hips, 10) || 0,
         weight: parseInt(formData.weight, 10) || 0
       };
-  
+
       if (hasParameters) {
         await axios.patch(`${API_BASE_URL}/testapi/v1/user/parametrs`, parametersData);
       } else {
         await axios.post(`${API_BASE_URL}/testapi/v1/user/parametrs`, parametersData);
       }
-  
+
       // Загрузка фотографий
       if (formData.photoBefore || formData.photoAfter) {
         const formDataPhotos = new FormData();
         formDataPhotos.append('user_tg_id', String(userId));
-        
+
         if (formData.photoBefore) {
           formDataPhotos.append('image_before', formData.photoBefore);
         }
@@ -385,7 +435,7 @@ export default function Parameters({ userId, data }) {
           });
         }
       }
-  
+
       console.log('Данные сохранены!');
       navigate('/profile');
     } catch (error) {
@@ -399,8 +449,12 @@ export default function Parameters({ userId, data }) {
   };
 
   const inputPairs = [
-    { labels: ['Пол', ''], values: [gen], onChange: handleGenderChange, type: 'gender' },
-    { labels: ['Дата рождения', ''], values: [birthday], onChange: (i) => handleBirthdayChange, type: 'birthday' },
+    {
+      labels: ['Дата рождения', 'Пол'],
+      values: [birthday, gen],
+      onChange: [handleBirthdayChange, (value) => handleGenderChange(value)],
+      type: ['birthday', 'gender']
+    },
     { labels: ['Обхват груди', 'Обхват талии'], values: [formData.chest, formData.waist], onChange: (i) => handleChange(['chest', 'waist'][i], i) },
     { labels: ['Обхват живота', 'Обхват бедер'], values: [formData.belly, formData.hips], onChange: (i) => handleChange(['belly', 'hips'][i], i) },
     { labels: ['Обхват ноги', 'Вес'], values: [formData.leg, formData.weight], onChange: (i) => handleChange(['leg', 'weight'][i], i) },
@@ -412,9 +466,9 @@ export default function Parameters({ userId, data }) {
       const value = formData[field];
       return value !== undefined && value !== null && String(value).trim() !== '';
     });
-    
+
     const isDateValidValue = isDateValid(birthday);
-    
+
     return isAllFilled && isDateValidValue;
   };
 
