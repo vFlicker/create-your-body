@@ -8,8 +8,8 @@ import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import Button from '../../Components/Button/Button';
 
 import example from '../../Assets/img/example.jpeg';
-// import add from '../../Assets/svg/addImg.svg';
-// import close from '../../Assets/svg/closeWhite.svg';
+import add from '../../Assets/svg/addImg.svg';
+import close from '../../Assets/svg/closeWhite.svg';
 
 const InputPair = ({ labels, values, onChange, handleBlur, handleFocus, type = 'text' }) => {
   if (type === 'gender') {
@@ -75,58 +75,49 @@ const InputPair = ({ labels, values, onChange, handleBlur, handleFocus, type = '
   );
 };
 
-// const PhotoUploader = ({ label, value, onChange }) => {
-//   const fileInputRef = React.useRef(null);
+const PhotoUploader = ({ label, value, onChange, onRemove }) => {
+  const fileInputRef = React.useRef(null);
 
-//   const handleClick = () => {
-//     fileInputRef.current?.click();
-//   };
+  const handleClick = () => {
+    fileInputRef.current?.click();
+  };
 
-//   const handleFileChange = (e) => {
-//     const file = e.target.files[0];
-//     if (file) {
-//       // Проверка размера файла (2 МБ = 2 * 1024 * 1024 байт)
-//       if (file.size > 2 * 1024 * 1024) {
-//         // Используем Telegram.WebApp.showAlert вместо стандартного alert
-//         if (window.Telegram?.WebApp) {
-//           window.Telegram.WebApp.showAlert('Максимальный размер фотографии 2 МБ');
-//         } else {
-//           alert('Максимальный размер фотографии 2 МБ'); // Фallback для не-Telegram среды
-//         }
-//         return;
-//       }
-//       onChange(e);
-//     }
-//   };
-
-//   return (
-//     <div className="photoUploader" onClick={handleClick}>
-//       <label>{label}</label>
-//       <input
-//         type="file"
-//         accept="image/*"
-//         onChange={handleFileChange}
-//         ref={fileInputRef}
-//         style={{ display: 'none' }}
-//       />
-//       {value ? (
-//         <div className="uploadContainer">
-//           <img
-//             src={typeof value === 'string' ? value : URL.createObjectURL(value)}
-//             alt={label}
-//             className="previewImage"
-//             onClick={(e) => e.stopPropagation()}
-//           />
-//           <img className="closePhoto" src={close} alt="Закрыть" />
-//         </div>
-//       ) : (
-//         <div className="uploadPlaceholderContainer">
-//           <img src={add} className="uploadPlaceholder" alt="Добавить" />
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
+  return (
+    <div className="photoUploader" onClick={handleClick}>
+      <label>{label}</label>
+      <input
+        type="file"
+        accept="image/*"
+        onChange={onChange}
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+      />
+      {value ? (
+        <div className="uploadContainer">
+          <img
+            src={typeof value === 'string' ? value : URL.createObjectURL(value)}
+            alt={label}
+            className="previewImage"
+            onClick={(e) => e.stopPropagation()}
+          />
+          <img 
+            className="closePhoto" 
+            src={close} 
+            alt="Закрыть" 
+            onClick={(e) => {
+              e.stopPropagation();
+              onRemove();
+            }}
+          />
+        </div>
+      ) : (
+        <div className="uploadPlaceholderContainer">
+          <img src={add} className="uploadPlaceholder" alt="Добавить" />
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default function Parameters({ userId, data }) {
   const [isMobile, setIsMobile] = useState(false);
@@ -139,6 +130,8 @@ export default function Parameters({ userId, data }) {
     hips: '',
     leg: '',
     weight: '',
+    photoBefore: null,
+    photoAfter: null
   });
   const [gen, setGen] = useState(data?.sex === 'male' ? 'm' : 'w');
   const [birthday, setBirthday] = useState(data?.born_date ? new Date(data.born_date).toLocaleDateString('ru-RU', {
@@ -147,6 +140,8 @@ export default function Parameters({ userId, data }) {
     year: 'numeric',
   }).replace(/\//g, '.') : '');
   const [birthdayError, setBirthdayError] = useState('');
+  const [hasParameters, setHasParameters] = useState(false);
+  const [hasPhotos, setHasPhotos] = useState(false);
 
   useEffect(() => {
     const tg = window.Telegram?.WebApp;
@@ -155,15 +150,17 @@ export default function Parameters({ userId, data }) {
       setIsMobile(!['tdesktop', 'macos', 'linux', 'web'].includes(platform));
     }
 
-    const fetchParameters = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/v1/user_parametrs`, {
+        // Получаем параметры
+        const parametersResponse = await axios.get(`${API_BASE_URL}/testapi/v1/user/parametrs`, {
           params: { user_tg_id: userId },
         });
-        const parameters = Array.isArray(response.data) ? response.data : [response.data];
+        const parameters = Array.isArray(parametersResponse.data) ? parametersResponse.data : [parametersResponse.data];
         const latestParameters = parameters[parameters.length - 1];
         
         if (latestParameters) {
+          setHasParameters(true);
           setFormData({
             chest: latestParameters.chest || '',
             waist: latestParameters.waist || '',
@@ -173,13 +170,36 @@ export default function Parameters({ userId, data }) {
             weight: latestParameters.weight || '',
           });
         }
-        console.log(parameters)
+
+        // Проверяем наличие фотографий
+        try {
+          const photosResponse = await axios.get(`${API_BASE_URL}/testapi/v1/user/images/two`, {
+            data: { 
+              tg_id: String(userId),
+              number: 0 // Проверяем наличие фото "до"
+            }
+          });
+          
+          if (photosResponse.data && (photosResponse.data.image_before || photosResponse.data.image_after)) {
+            setHasPhotos(true);
+            setFormData(prev => ({
+              ...prev,
+              photoBefore: photosResponse.data.image_before || null,
+              photoAfter: photosResponse.data.image_after || null,
+            }));
+          }
+        } catch (photoError) {
+          console.log('Фотографий нет или ошибка:', photoError.response?.status);
+          setHasPhotos(false);
+        }
       } catch (error) {
-        console.error('Ошибка при получении параметров:', error);
+        console.error('Ошибка при получении данных:', error);
+        setHasParameters(false);
+        setHasPhotos(false);
       }
     };
 
-    fetchParameters();
+    fetchData();
   }, [userId]);
 
   const isDateValid = (date) => {
@@ -248,6 +268,41 @@ export default function Parameters({ userId, data }) {
     setGen(value);
   };
 
+  const handleFileChange = (field) => (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        if (window.Telegram?.WebApp) {
+          window.Telegram.WebApp.showAlert('Максимальный размер фотографии 2 МБ');
+        } else {
+          alert('Максимальный размер фотографии 2 МБ');
+        }
+        return;
+      }
+
+      if (!file.type.startsWith('image/')) {
+        if (window.Telegram?.WebApp) {
+          window.Telegram.WebApp.showAlert('Пожалуйста, загрузите изображение');
+        } else {
+          alert('Пожалуйста, загрузите изображение');
+        }
+        return;
+      }
+
+      setFormData(prev => ({
+        ...prev,
+        [field]: file
+      }));
+    }
+  };
+
+  const handleRemovePhoto = (field) => () => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: null
+    }));
+  };
+
   const handleSubmit = async () => {
     const requiredFields = ['chest', 'waist', 'belly', 'hips', 'leg', 'weight'];
     const isAllFilled = requiredFields.every(field => {
@@ -263,7 +318,7 @@ export default function Parameters({ userId, data }) {
       }
       return;
     }
-
+  
     if (!isDateValid(birthday)) {
       if (window.Telegram?.WebApp) {
         window.Telegram.WebApp.showAlert('Введите корректную дату рождения');
@@ -278,14 +333,14 @@ export default function Parameters({ userId, data }) {
       const [day, month, year] = birthday.split('.');
       const formattedBirthday = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
       
-      await axios.patch(`${API_BASE_URL}/api/v1/user/info`, {
+      await axios.patch(`${API_BASE_URL}/testapi/v1/user/info`, {
         tg_id: String(userId),
         sex: gen === 'm' ? 'male' : 'female',
         born_date: formattedBirthday
       });
-
+  
       // Обновление параметров
-      await axios.patch(`${API_BASE_URL}/api/v1/user/parametrs`, {
+      const parametersData = {
         tg_id: String(userId),
         number: 1,
         chest: parseInt(formData.chest, 10) || 0,
@@ -294,12 +349,47 @@ export default function Parameters({ userId, data }) {
         legs: parseInt(formData.leg, 10) || 0,
         hips: parseInt(formData.hips, 10) || 0,
         weight: parseInt(formData.weight, 10) || 0
-      });
+      };
+  
+      if (hasParameters) {
+        await axios.patch(`${API_BASE_URL}/testapi/v1/user/parametrs`, parametersData);
+      } else {
+        await axios.post(`${API_BASE_URL}/testapi/v1/user/parametrs`, parametersData);
+      }
+  
+      // Загрузка фотографий
+      if (formData.photoBefore || formData.photoAfter) {
+        const formDataPhotos = new FormData();
+        formDataPhotos.append('user_tg_id', String(userId));
+        
+        if (formData.photoBefore) {
+          formDataPhotos.append('image_before', formData.photoBefore);
+        }
+        if (formData.photoAfter) {
+          formDataPhotos.append('image_after', formData.photoAfter);
+        }
+
+        if (hasPhotos) {
+          // Если фотографии уже есть (по GET-запросу), используем PATCH
+          await axios.patch(`${API_BASE_URL}/testapi/v1/user/images/two`, formDataPhotos, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+        } else {
+          // Если фотографий нет, используем POST
+          await axios.post(`${API_BASE_URL}/testapi/v1/user/images/two`, formDataPhotos, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+        }
+      }
   
       console.log('Данные сохранены!');
       navigate('/profile');
     } catch (error) {
-      console.error('Ошибка при сохранении:', error);
+      console.error('Ошибка при сохранении:', error.response?.data || error.message);
       if (window.Telegram?.WebApp) {
         window.Telegram.WebApp.showAlert('Ошибка при сохранении данных');
       } else {
@@ -317,14 +407,12 @@ export default function Parameters({ userId, data }) {
   ];
 
   const isFormValid = () => {
-    // Проверяем все числовые поля
     const requiredFields = ['chest', 'waist', 'belly', 'hips', 'leg', 'weight'];
     const isAllFilled = requiredFields.every(field => {
       const value = formData[field];
       return value !== undefined && value !== null && String(value).trim() !== '';
     });
     
-    // Проверяем дату рождения
     const isDateValidValue = isDateValid(birthday);
     
     return isAllFilled && isDateValidValue;
@@ -369,7 +457,20 @@ export default function Parameters({ userId, data }) {
               type={pair.type}
             />
           ))}
-          <div className="error-message-parameters" style={{ opacity: birthdayError ? 1 : 0 }}>{birthdayError}</div>
+          <div className="loadPhotos">
+            <PhotoUploader
+              label="Фото до"
+              value={formData.photoBefore}
+              onChange={handleFileChange('photoBefore')}
+              onRemove={handleRemovePhoto('photoBefore')}
+            />
+            <PhotoUploader
+              label="Фото после"
+              value={formData.photoAfter}
+              onChange={handleFileChange('photoAfter')}
+              onRemove={handleRemovePhoto('photoAfter')}
+            />
+          </div>
           <Button
             text="Сохранить"
             width="100%"
@@ -379,6 +480,7 @@ export default function Parameters({ userId, data }) {
             onClick={handleSubmit}
             disabled={!isFormValid()}
           />
+          <div className="error-message-parameters" style={{ opacity: birthdayError ? 1 : 0 }}>{birthdayError}</div>
         </div>
       </div>
     </div>

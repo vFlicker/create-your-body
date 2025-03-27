@@ -4,7 +4,7 @@ import './Profile.css';
 import axios from 'axios';
 import { API_BASE_URL } from '../../API';
 
-// import PhotoEditor from '../../Components/PhotoEditor/PhotoEditor';
+import PhotoEditor from '../../Components/PhotoEditor/PhotoEditor';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import Selecter from '../../Components/Selecter/Selecter';
 import Button from '../../Components/Button/Button';
@@ -16,7 +16,6 @@ import right from '../../Assets/svg/right.svg';
 import close from '../../Assets/svg/close.svg';
 import zamer from '../../Assets/img/zamer.jpeg';
 import chart from '../../Assets/svg/chart.svg';
-// import img from '../../Assets/img/result.jpg';
 
 export default function Profile({ userId, data, setData }) {
   const navigate = useNavigate();
@@ -34,7 +33,7 @@ export default function Profile({ userId, data, setData }) {
     const fetchUserData = async () => {
       try {
         setIsLoading(true); // Начинаем загрузку
-        const response = await axios.get(`${API_BASE_URL}/api/v1/user_parametrs`, {
+        const response = await axios.get(`${API_BASE_URL}/testapi/v1/user/parametrs`, {
           params: { user_tg_id: userId },
         });
         const parameters = Array.isArray(response.data) ? response.data : [response.data];
@@ -181,14 +180,14 @@ export default function Profile({ userId, data, setData }) {
                 </div>
               </div>
             </div>
-            {/* <div className="photosContainerBefore">
+            <div className="photosContainerBefore">
               <h3>Фотографии</h3>
               <p>До и после тренировочной недели</p>
               <div className="photosBefore">
-                <PhotoEditor label="Фото до" initialPhoto={img} userId={userId} number={0} />
-                <PhotoEditor label="Фото после" initialPhoto={img} userId={userId} number={1} />
+                <PhotoEditor label="Фото до" initialPhoto={''} userId={userId} number={0} />
+                <PhotoEditor label="Фото после" initialPhoto={''} userId={userId} number={1} />
               </div>
-            </div> */}
+            </div>
           </div>
         ) : (
           <>

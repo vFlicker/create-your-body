@@ -5,6 +5,7 @@ import { API_BASE_URL } from '../../API';
 import ButtonEdit from '../Button/ButtonEdit';
 
 import edit from '../../Assets/svg/editSmall.svg';
+import photoNone from '../../Assets/svg/photoNone.svg';
 
 export default function PhotoEditor ({ label, initialPhoto, userId, number }) {
     const fileInputRef = useRef(null);
@@ -13,7 +14,7 @@ export default function PhotoEditor ({ label, initialPhoto, userId, number }) {
     useEffect(() => {
       const fetchPhoto = async () => {
         try {
-          const response = await axios.get(`${API_BASE_URL}/api/v1/user/image/two`, {
+          const response = await axios.get(`${API_BASE_URL}/testapi/v1/user/image/two`, {
             params: { user_id: userId, number },
             responseType: 'blob',
           });
@@ -48,7 +49,7 @@ export default function PhotoEditor ({ label, initialPhoto, userId, number }) {
         formData.append('image', file);
   
         try {
-          await axios.post(`${API_BASE_URL}/api/v1/user/image/two`, formData, {
+          await axios.post(`${API_BASE_URL}/testapi/v1/user/image/two`, formData, {
             params: { user_tg_id: userId, number },
             headers: { 'Content-Type': 'multipart/form-data' },
           });
@@ -63,8 +64,12 @@ export default function PhotoEditor ({ label, initialPhoto, userId, number }) {
     return (
       <div className="before">
         <span>{label}</span>
-        <div className="forBefore">
-          <img src={photo} alt={label} />
+        <div className="forBefore" style={{ background: photo ? 'transparent' : 'rgb(110 110 110)' }}>
+          {photo ? 
+          <img src={photo} alt={label} /> 
+          : 
+          <img src={photoNone} alt={label} style={{ width: '50%', height: '100%', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
+          }
           <div className="forEdit">
             <ButtonEdit
               icon={edit}
