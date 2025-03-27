@@ -6,7 +6,6 @@ import avatar from '../../Assets/nav/user.svg'
 
 export default function ProfileBtn({ level, user_photo }) {
   const navigate = useNavigate()
-  console.log(level)
   return (
     <button 
       className='profileBtn' 

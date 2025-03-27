@@ -9,7 +9,7 @@ import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import Selecter from '../../Components/Selecter/Selecter';
 import Button from '../../Components/Button/Button';
 import Loader from '../../Components/Loader/Loader';
-// import ButtonEdit from '../../Components/Button/ButtonEdit';
+import ButtonEdit from '../../Components/Button/ButtonEdit';
 
 import settings from '../../Assets/svg/settings.svg';
 import right from '../../Assets/svg/right.svg';
@@ -89,7 +89,7 @@ export default function Profile({ userId, data, setData }) {
                   <span>{data?.user_level || 'Уровень'}</span>
                 </div>
               </div>
-              {/* <ButtonEdit onClick={() => navigate('/parameters')} /> */}
+              <ButtonEdit onClick={() => navigate('/parameters')} />
             </div>
             <div className="settings">
               <div className="set" onClick={() => setOpen(!open)}>
@@ -146,7 +146,7 @@ export default function Profile({ userId, data, setData }) {
                   </div>
                   <div className="value">
                     <span>Пол</span>
-                    <p>{data?.sex === 'male' ? 'Мужской' : data?.sex === 'female' ? 'Женский' : ''}</p>
+                    <p>{data?.sex === 'male' ? 'Мужской' : data?.sex === 'female' ? 'Женский' : '-'}</p>
                   </div>
                 </div>
                 <div className="param">

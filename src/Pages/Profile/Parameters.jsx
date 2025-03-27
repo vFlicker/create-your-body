@@ -11,29 +11,65 @@ import example from '../../Assets/img/example.jpeg';
 // import add from '../../Assets/svg/addImg.svg';
 // import close from '../../Assets/svg/closeWhite.svg';
 
-const InputPair = ({ labels, values, onChange, handleBlur, handleFocus, isStatic }) => {
+const InputPair = ({ labels, values, onChange, handleBlur, handleFocus, type = 'text' }) => {
+  if (type === 'gender') {
+    return (
+      <div className="inputPair">
+        <div className="inputGroup">
+          <label>{labels[0]}</label>
+          <div className="selectGender">
+            <button
+              className={`genderBtn ${values[0] === 'm' ? 'active' : ''}`}
+              onClick={() => onChange(0)('m')}
+            >
+              М
+            </button>
+            <button
+              className={`genderBtn ${values[0] === 'w' ? 'active' : ''}`}
+              onClick={() => onChange(0)('w')}
+            >
+              Ж
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (type === 'birthday') {
+    return (
+      <div className="inputPair">
+        <div className="inputGroup">
+          <label>{labels[0]}</label>
+          <input
+            type="text"
+            value={values[0] || ''}
+            onChange={(e) => onChange(0)(e)}
+            placeholder="дд.мм.гггг"
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="inputPair">
       {labels.map((label, i) => (
-        <div key={label} className="inputGroup">
-          <label>{label}</label>
-          {isStatic ? (
+        label && (
+          <div key={label} className="inputGroup">
+            <label>{label}</label>
             <input
               type="text"
               value={values[i] || ''}
-              readOnly
-            />
-          ) : (
-            <input
-              type="text"
-              value={values[i] || ''}
-              onChange={onChange(i)}
+              onChange={(e) => onChange(i)(e)}
               placeholder="0"
               onFocus={handleFocus}
               onBlur={handleBlur}
             />
-          )}
-        </div>
+          </div>
+        )
       ))}
     </div>
   );
@@ -103,9 +139,14 @@ export default function Parameters({ userId, data }) {
     hips: '',
     leg: '',
     weight: '',
-    // photoBefore: null,
-    // photoAfter: null,
   });
+  const [gen, setGen] = useState(data?.sex === 'male' ? 'm' : 'w');
+  const [birthday, setBirthday] = useState(data?.born_date ? new Date(data.born_date).toLocaleDateString('ru-RU', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  }).replace(/\//g, '.') : '');
+  const [birthdayError, setBirthdayError] = useState('');
 
   useEffect(() => {
     const tg = window.Telegram?.WebApp;
@@ -113,19 +154,62 @@ export default function Parameters({ userId, data }) {
       const platform = tg.platform.toLowerCase();
       setIsMobile(!['tdesktop', 'macos', 'linux', 'web'].includes(platform));
     }
-  }, []);
 
-  // Расчёт возраста из born_date
-  const calculateAge = (bornDate) => {
-    if (!bornDate) return '';
-    const birth = new Date(bornDate);
+    const fetchParameters = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/v1/user_parametrs`, {
+          params: { user_tg_id: userId },
+        });
+        const parameters = Array.isArray(response.data) ? response.data : [response.data];
+        const latestParameters = parameters[parameters.length - 1];
+        
+        if (latestParameters) {
+          setFormData({
+            chest: latestParameters.chest || '',
+            waist: latestParameters.waist || '',
+            belly: latestParameters.abdominal_circumference || '',
+            hips: latestParameters.hips || '',
+            leg: latestParameters.legs || '',
+            weight: latestParameters.weight || '',
+          });
+        }
+        console.log(parameters)
+      } catch (error) {
+        console.error('Ошибка при получении параметров:', error);
+      }
+    };
+
+    fetchParameters();
+  }, [userId]);
+
+  const isDateValid = (date) => {
+    if (!/^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[012])\.(19|20)\d\d$/.test(date)) return false;
+    const [day, month, year] = date.split('.').map(Number);
+    const birthDate = new Date(year, month - 1, day);
+    if (
+      birthDate.getFullYear() !== year ||
+      birthDate.getMonth() + 1 !== month ||
+      birthDate.getDate() !== day
+    ) return false;
     const today = new Date();
-    let age = today.getFullYear() - birth.getFullYear();
-    const monthDiff = today.getMonth() - birth.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-      age--;
+    const minDate = new Date(today.getFullYear() - 4, today.getMonth(), today.getDate());
+    return birthDate < minDate;
+  };
+
+  const handleBirthdayChange = (e) => {
+    let value = e.target.value.replace(/[^0-9.]/g, '');
+    const parts = value.split('.');
+    if (parts.length > 3) return;
+    let newValue = '';
+    for (let i = 0; i < value.length; i++) {
+      if (i === 2 || i === 5) newValue += '.';
+      newValue += value[i];
     }
-    return String(age);
+    newValue = newValue.replace(/\.+/g, '.');
+    if (newValue.length > 10) return;
+
+    setBirthday(newValue);
+    setBirthdayError(isDateValid(newValue) ? '' : 'Введите корректную дату рождения');
   };
 
   const handleFocus = (e) => {
@@ -156,13 +240,20 @@ export default function Parameters({ userId, data }) {
   };
 
   const handleChange = (field, index) => (e) => {
-    const value = index === undefined ? e.target.value : e.target.value; // Убрана логика для файлов
+    const value = e.target.value;
     setFormData({ ...formData, [field]: value });
+  };
+
+  const handleGenderChange = (index) => (value) => {
+    setGen(value);
   };
 
   const handleSubmit = async () => {
     const requiredFields = ['chest', 'waist', 'belly', 'hips', 'leg', 'weight'];
-    const isAllFilled = requiredFields.every(field => formData[field] && formData[field].trim() !== '');
+    const isAllFilled = requiredFields.every(field => {
+      const value = formData[field];
+      return value !== undefined && value !== null && String(value).trim() !== '';
+    });
   
     if (!isAllFilled) {
       if (window.Telegram?.WebApp) {
@@ -172,52 +263,43 @@ export default function Parameters({ userId, data }) {
       }
       return;
     }
-  
-    if (!userId) {
-      console.error('userId отсутствует');
+
+    if (!isDateValid(birthday)) {
       if (window.Telegram?.WebApp) {
-        window.Telegram.WebApp.showAlert('Ошибка: отсутствует идентификатор пользователя');
+        window.Telegram.WebApp.showAlert('Введите корректную дату рождения');
       } else {
-        alert('Ошибка: отсутствует идентификатор пользователя');
+        alert('Введите корректную дату рождения');
       }
       return;
     }
   
     try {
-      // Отправка параметров
-      const paramData = {
+      // Обновление информации о пользователе
+      const [day, month, year] = birthday.split('.');
+      const formattedBirthday = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+      
+      await axios.patch(`${API_BASE_URL}/api/v1/user/info`, {
         tg_id: String(userId),
+        sex: gen === 'm' ? 'male' : 'female',
+        born_date: formattedBirthday
+      });
+
+      // Обновление параметров
+      await axios.patch(`${API_BASE_URL}/api/v1/user/parametrs`, {
+        tg_id: String(userId),
+        number: 1,
         chest: parseInt(formData.chest, 10) || 0,
         waist: parseInt(formData.waist, 10) || 0,
         abdominal_circumference: parseInt(formData.belly, 10) || 0,
-        hips: parseInt(formData.hips, 10) || 0,
         legs: parseInt(formData.leg, 10) || 0,
-        weight: parseInt(formData.weight, 10) || 0,
-        created_at: new Date().toISOString(),
-      };
-  
-      console.log('Отправляемые параметры:', paramData);
-  
-      await axios.post(`${API_BASE_URL}/api/v1/user_parametrs`, paramData, {
-        headers: { 'Content-Type': 'application/json' },
+        hips: parseInt(formData.hips, 10) || 0,
+        weight: parseInt(formData.weight, 10) || 0
       });
-  
-      // // Отправка фотографий, если они есть
-      // if (formData.photoBefore || formData.photoAfter) {
-      //   const photoData = new FormData();
-      //   photoData.append('user_tg_id', String(userId));
-      //   if (formData.photoBefore) photoData.append('image_before', formData.photoBefore, `${userId}_before.jpg`);
-      //   if (formData.photoAfter) photoData.append('image_after', formData.photoAfter, `${userId}_after.jpg`);
-  
-      //   await axios.post(`${API_BASE_URL}/api/v1/user/images/two`, photoData, {
-      //     headers: { 'Content-Type': 'multipart/form-data' },
-      //   });
-      // }
   
       console.log('Данные сохранены!');
       navigate('/profile');
     } catch (error) {
-      console.error('Ошибка при сохранении:', error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
+      console.error('Ошибка при сохранении:', error);
       if (window.Telegram?.WebApp) {
         window.Telegram.WebApp.showAlert('Ошибка при сохранении данных');
       } else {
@@ -227,15 +309,25 @@ export default function Parameters({ userId, data }) {
   };
 
   const inputPairs = [
-    { labels: ['Пол', 'Возраст'], fields: ['sex', 'age'], isStatic: true },
-    { labels: ['Обхват груди', 'Обхват талии'], fields: ['chest', 'waist'], isStatic: false },
-    { labels: ['Обхват живота', 'Обхват бедер'], fields: ['belly', 'hips'], isStatic: false },
-    { labels: ['Обхват ноги', 'Вес'], fields: ['leg', 'weight'], isStatic: false },
+    { labels: ['Пол', ''], values: [gen], onChange: handleGenderChange, type: 'gender' },
+    { labels: ['Дата рождения', ''], values: [birthday], onChange: (i) => handleBirthdayChange, type: 'birthday' },
+    { labels: ['Обхват груди', 'Обхват талии'], values: [formData.chest, formData.waist], onChange: (i) => handleChange(['chest', 'waist'][i], i) },
+    { labels: ['Обхват живота', 'Обхват бедер'], values: [formData.belly, formData.hips], onChange: (i) => handleChange(['belly', 'hips'][i], i) },
+    { labels: ['Обхват ноги', 'Вес'], values: [formData.leg, formData.weight], onChange: (i) => handleChange(['leg', 'weight'][i], i) },
   ];
 
-  const staticData = {
-    sex: data?.sex === 'male' ? 'Мужской' : data?.sex === 'female' ? 'Женский' : '',
-    age: calculateAge(data?.born_date),
+  const isFormValid = () => {
+    // Проверяем все числовые поля
+    const requiredFields = ['chest', 'waist', 'belly', 'hips', 'leg', 'weight'];
+    const isAllFilled = requiredFields.every(field => {
+      const value = formData[field];
+      return value !== undefined && value !== null && String(value).trim() !== '';
+    });
+    
+    // Проверяем дату рождения
+    const isDateValidValue = isDateValid(birthday);
+    
+    return isAllFilled && isDateValidValue;
   };
 
   return (
@@ -266,36 +358,26 @@ export default function Parameters({ userId, data }) {
           </div>
         </div>
         <div className="inputsSection">
-          {inputPairs.map(({ labels, fields, isStatic }) => (
+          {inputPairs.map((pair, index) => (
             <InputPair
-              key={labels[0]}
-              labels={labels}
-              values={isStatic ? [staticData[fields[0]], staticData[fields[1]]] : [formData[fields[0]], formData[fields[1]]]}
-              onChange={(i) => handleChange(fields[i], i)}
+              key={index}
+              labels={pair.labels}
+              values={pair.values}
+              onChange={pair.onChange}
               handleFocus={handleFocus}
               handleBlur={handleBlur}
-              isStatic={isStatic}
+              type={pair.type}
             />
           ))}
-          {/* <div className="loadPhotos">
-            <PhotoUploader
-              label="Фото до"
-              value={formData.photoBefore}
-              onChange={handleChange('photoBefore')}
-            />
-            <PhotoUploader
-              label="Фото после"
-              value={formData.photoAfter}
-              onChange={handleChange('photoAfter')}
-            />
-          </div> */}
+          <div className="error-message-parameters" style={{ opacity: birthdayError ? 1 : 0 }}>{birthdayError}</div>
           <Button
             text="Сохранить"
             width="100%"
-            bg="#CBFF52"
+            bg={isFormValid() ? "#CBFF52" : "#EBFFBD"}
             bgFocus="#EBFFBD"
             color="#0D0D0D"
             onClick={handleSubmit}
+            disabled={!isFormValid()}
           />
         </div>
       </div>
