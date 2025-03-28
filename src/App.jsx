@@ -36,7 +36,7 @@ function Layout() {
         <ButtonClose />
       </div>
       <div className="App">
-          <Outlet />
+        <Outlet />
         {showControlsNav && <Nav />}
       </div>
     </>
@@ -134,7 +134,7 @@ function App() {
               <Route path="dashboard" element={<Dashboard data={data} userId={userId} />} />
               <Route path="begin" element={<Begin data={data} userId={userId} />} />
               <Route path="profile" element={<Profile data={data} userId={userId} setData={setData} />} />
-              <Route path="parameters" element={<Parameters data={data} userId={userId} />} />
+              <Route path="parameters" element={<Parameters data={data} userId={userId} setData={setData} />} />
               <Route path="record" element={<Record data={data} userId={userId} />} />
               <Route path="communication" element={<Communication data={data} userId={userId} base={base} />} />
               <Route path="train" element={<Train data={data} userId={userId} />} />

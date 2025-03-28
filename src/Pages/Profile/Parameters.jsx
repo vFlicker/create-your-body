@@ -44,6 +44,7 @@ const InputPair = ({ labels, values, onChange, handleBlur, handleFocus, type = '
                 placeholder="дд.мм.гггг"
                 onFocus={handleFocus}
                 onBlur={handleBlur}
+                defaultValue={values[index] || ''}
               />
             ) : (
               <input
@@ -99,6 +100,7 @@ const InputPair = ({ labels, values, onChange, handleBlur, handleFocus, type = '
             placeholder="дд.мм.гггг"
             onFocus={handleFocus}
             onBlur={handleBlur}
+            defaultValue={values[0] || ''}
           />
         </div>
       </div>
@@ -174,7 +176,7 @@ const PhotoUploader = ({ label, value, onChange, onRemove, isLoading }) => {
   );
 };
 
-export default function Parameters({ userId, data }) {
+export default function Parameters({ userId, data, setData }) {
   const [isMobile, setIsMobile] = useState(false);
   const formRef = useRef(null);
   const navigate = useNavigate();
@@ -519,6 +521,11 @@ export default function Parameters({ userId, data }) {
       }
 
       console.log('Данные сохранены!');
+      // Обновляем данные пользователя перед переходом
+      const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
+        params: { user_id: userId },
+      });
+      setData(response.data);
       navigate('/profile');
     } catch (error) {
       console.error('Ошибка при сохранении:', error.response?.data || error.message);
