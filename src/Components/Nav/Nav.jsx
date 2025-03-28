@@ -38,7 +38,7 @@ export default function Nav() {
   const isCurrentPathInNav = navItems.some((item) => item.path === location.pathname);
 
   // Проверяем, нужно ли отключить ссылку (для /training и /food)
-  const isLinkDisabled = (path) => path === '/food';
+  const isLinkDisabled = (path) => path === '/food' || path === '/train';
 
   // Обработчики событий для управления состоянием нажатия
   const handleMouseDown = (path) => setPressedPath(path);

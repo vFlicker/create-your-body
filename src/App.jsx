@@ -44,16 +44,12 @@ function Layout() {
 }
 
 function App() {
-  const [userId, setUserId] = useState('492999470'); // Тестовый ID пользователя
-  const [data, setData] = useState({
-    user_tarif: 'Base',
-    user_level: 'Профи',
-    image: 'https://t.me/i/userpic/320/0QkhXdB8sfHDQP5GgYwM2LNCW_I8H1DQpyQIZDU8ZCY.svg'
-  });
+  const [userId, setUserId] = useState(''); // Тестовый ID пользователя
+  const [data, setData] = useState(null);
   const [base, setBase] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  /* useEffect(() => {
+  useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.ready();
       window.Telegram.WebApp.expand();
@@ -119,7 +115,7 @@ function App() {
       console.error('Telegram WebApp API не найден');
       setIsLoading(false);
     }
-  }, []); */
+  }, []);
 
   // Проверка: есть ли data и data.user_tarif
   const hasAccess = data && data.user_tarif && data.user_tarif.trim() !== '';

@@ -33,7 +33,7 @@ export default function Profile({ userId, data, setData }) {
     const fetchUserData = async () => {
       try {
         setIsLoading(true); // Начинаем загрузку
-        const response = await axios.get(`${API_BASE_URL}/testapi/v1/user/parametrs`, {
+        const response = await axios.get(`${API_BASE_URL}/api/v1/user/parametrs`, {
           params: { user_tg_id: userId },
         });
         const parameters = Array.isArray(response.data) ? response.data : [response.data];

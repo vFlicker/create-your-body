@@ -3,6 +3,7 @@ import axios from 'axios';
 import { API_BASE_URL } from '../../API';
 
 import ButtonEdit from '../Button/ButtonEdit';
+import Loader from '../Loader/Loader';
 
 import edit from '../../Assets/svg/editSmall.svg';
 import photoNone from '../../Assets/svg/photoNone.svg';
@@ -10,26 +11,79 @@ import photoNone from '../../Assets/svg/photoNone.svg';
 export default function PhotoEditor({ label, initialPhoto, userId, number }) {
   const fileInputRef = useRef(null);
   const [photo, setPhoto] = useState(initialPhoto);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     const fetchPhoto = async () => {
+      setIsLoading(true);
       try {
-        const response = await axios.get(`${API_BASE_URL}/testapi/v1/user/images/two`, {
-          data: {
+        console.log('Отправка запроса на получение фото:', {
+          url: `${API_BASE_URL}/api/v1/user/images/two`,
+          userId,
+          number,
+          requestParams: {
             tg_id: String(userId),
-            number: number // 0 для фото "до", 1 для фото "после"
+            number: number
           }
         });
 
-        if (response.data) {
-          const photoUrl = number === 0 ? response.data.image_before : response.data.image_after;
-          if (photoUrl) {
-            setPhoto(photoUrl);
+        const response = await axios.get(`${API_BASE_URL}/api/v1/user/images/two`, {
+          params: {
+            tg_id: String(userId),
+            number: number
+          },
+          responseType: 'blob'
+        });
+
+        console.log('Ответ сервера:', {
+          status: response.status,
+          headers: response.headers,
+          dataType: typeof response.data,
+          dataSize: response.data?.size,
+          data: response.data
+        });
+
+        if (response.data && response.data.size > 100) {
+          try {
+            const reader = new FileReader();
+            reader.onload = () => {
+              try {
+                const jsonData = JSON.parse(reader.result);
+                console.error('Получен JSON вместо изображения:', jsonData);
+                setPhoto(initialPhoto);
+              } catch (e) {
+                const blob = new Blob([response.data], { type: response.headers['content-type'] || 'image/jpeg' });
+                const photoUrl = URL.createObjectURL(blob);
+                console.log('Созданный URL:', photoUrl);
+                setPhoto(photoUrl);
+              }
+            };
+            reader.readAsText(response.data);
+          } catch (error) {
+            console.error('Ошибка при обработке данных:', error);
+            setPhoto(initialPhoto);
           }
+        } else {
+          console.error('Получены некорректные данные:', response.data);
+          setPhoto(initialPhoto);
         }
       } catch (error) {
-        console.error(`Ошибка при получении ${label}:`, error.message);
+        console.error('Подробная информация об ошибке:', {
+          message: error.message,
+          status: error.response?.status,
+          statusText: error.response?.statusText,
+          data: error.response?.data,
+          config: {
+            url: error.config?.url,
+            method: error.config?.method,
+            headers: error.config?.headers,
+            data: error.config?.data
+          }
+        });
         setPhoto(initialPhoto);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchPhoto();
@@ -61,33 +115,30 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
       }
 
       const formData = new FormData();
-      formData.append('user_tg_id', String(userId));
-
-      if (number === 0) {
-        formData.append('image_before', file);
-      } else {
-        formData.append('image_after', file);
-      }
+      formData.append('image', file);
 
       try {
-        // Проверяем, есть ли уже фотографии
-        const checkResponse = await axios.get(`${API_BASE_URL}/testapi/v1/user/images/two`, {
-          data: {
-            tg_id: String(userId),
-            number: 0
-          }
-        });
-
-        if (checkResponse.data && (checkResponse.data.image_before || checkResponse.data.image_after)) {
-          // Если фотографии есть, используем PATCH
-          await axios.patch(`${API_BASE_URL}/testapi/v1/user/images/two`, formData, {
+        setIsUploading(true);
+        if (photo) {
+          console.log('Отправка PATCH запроса для обновления фото');
+          await axios.patch(`${API_BASE_URL}/api/v1/user/images/two`, formData, {
+            params: {
+              tg_id: String(userId),
+              number: number
+            },
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           });
         } else {
-          // Если фотографий нет, используем POST
-          await axios.post(`${API_BASE_URL}/testapi/v1/user/images/two`, formData, {
+          console.log('Отправка POST запроса для создания нового фото');
+          formData.append('tg_id', String(userId));
+          if (number === 0) {
+            formData.append('image_before', file);
+          } else {
+            formData.append('image_after', file);
+          }
+          await axios.post(`${API_BASE_URL}/api/v1/user/images/two`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
@@ -97,12 +148,25 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
         setPhoto(URL.createObjectURL(file));
         console.log(`${label} успешно обновлено!`);
       } catch (error) {
-        console.error(`Ошибка при загрузке ${label}:`, error.message);
+        console.error('Подробная информация об ошибке при загрузке:', {
+          message: error.message,
+          status: error.response?.status,
+          statusText: error.response?.statusText,
+          data: error.response?.data,
+          config: {
+            url: error.config?.url,
+            method: error.config?.method,
+            headers: error.config?.headers,
+            data: error.config?.data
+          }
+        });
         if (window.Telegram?.WebApp) {
           window.Telegram.WebApp.showAlert('Ошибка при загрузке фотографии');
         } else {
           alert('Ошибка при загрузке фотографии');
         }
+      } finally {
+        setIsUploading(false);
       }
     }
   };
@@ -111,17 +175,22 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
     <div className="before">
       <span>{label}</span>
       <div className="forBefore" style={{ background: photo ? 'transparent' : 'rgb(110 110 110)' }}>
-        {photo ?
+        {isLoading || isUploading ? (
+          <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Loader />
+          </div>
+        ) : photo ? (
           <img src={photo} alt={label} />
-          :
-          <img src={photoNone} alt={label} style={{ width: '50%', height: '100%', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
-        }
+        ) : (
+          <img src={photoNone} alt={label} style={{ width: '50%', height: '100%', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', objectFit: 'contain' }} />
+        )}
         <div className="forEdit">
           <ButtonEdit
             icon={edit}
             size={30}
             sizeIcon={16}
             onClick={handleEditClick}
+            disabled={isLoading || isUploading}
           />
         </div>
       </div>
@@ -131,6 +200,7 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
         ref={fileInputRef}
         style={{ display: 'none' }}
         onChange={handleFileChange}
+        disabled={isLoading || isUploading}
       />
     </div>
   );

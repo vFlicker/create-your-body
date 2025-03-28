@@ -27,7 +27,7 @@ export default function Dashboard({ data, base }) {
     {
       name: 'Тренировки',
       icon: muscules,
-      closed: null,
+      closed: '29 марта',
       buy: false,
       instruction: false,
       to: 'train'

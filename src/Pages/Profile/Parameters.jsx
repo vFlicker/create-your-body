@@ -6,6 +6,7 @@ import { API_BASE_URL } from '../../API';
 
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import Button from '../../Components/Button/Button';
+import Loader from '../../Components/Loader/Loader';
 
 import example from '../../Assets/img/example.jpeg';
 import add from '../../Assets/svg/addImg.svg';
@@ -125,7 +126,7 @@ const InputPair = ({ labels, values, onChange, handleBlur, handleFocus, type = '
   );
 };
 
-const PhotoUploader = ({ label, value, onChange, onRemove }) => {
+const PhotoUploader = ({ label, value, onChange, onRemove, isLoading }) => {
   const fileInputRef = React.useRef(null);
 
   const handleClick = () => {
@@ -142,7 +143,11 @@ const PhotoUploader = ({ label, value, onChange, onRemove }) => {
         ref={fileInputRef}
         style={{ display: 'none' }}
       />
-      {value ? (
+      {isLoading ? (
+        <div className="uploadContainer" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Loader width="20px" />
+        </div>
+      ) : value ? (
         <div className="uploadContainer">
           <img
             src={typeof value === 'string' ? value : URL.createObjectURL(value)}
@@ -192,6 +197,9 @@ export default function Parameters({ userId, data }) {
   const [birthdayError, setBirthdayError] = useState('');
   const [hasParameters, setHasParameters] = useState(false);
   const [hasPhotos, setHasPhotos] = useState(false);
+  const [isLoadingBefore, setIsLoadingBefore] = useState(true);
+  const [isLoadingAfter, setIsLoadingAfter] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     const tg = window.Telegram?.WebApp;
@@ -203,7 +211,7 @@ export default function Parameters({ userId, data }) {
     const fetchData = async () => {
       try {
         // Получаем параметры
-        const parametersResponse = await axios.get(`${API_BASE_URL}/testapi/v1/user/parametrs`, {
+        const parametersResponse = await axios.get(`${API_BASE_URL}/api/v1/user/parametrs`, {
           params: { user_tg_id: userId },
         });
         const parameters = Array.isArray(parametersResponse.data) ? parametersResponse.data : [parametersResponse.data];
@@ -223,21 +231,65 @@ export default function Parameters({ userId, data }) {
 
         // Проверяем наличие фотографий
         try {
-          const photosResponse = await axios.get(`${API_BASE_URL}/testapi/v1/user/images/two`, {
-            data: {
+          // Получаем фото "до"
+          const beforeResponse = await axios.get(`${API_BASE_URL}/api/v1/user/images/two`, {
+            params: {
               tg_id: String(userId),
-              number: 0 // Проверяем наличие фото "до"
-            }
+              number: 0
+            },
+            responseType: 'blob'
           });
 
-          if (photosResponse.data && (photosResponse.data.image_before || photosResponse.data.image_after)) {
-            setHasPhotos(true);
-            setFormData(prev => ({
-              ...prev,
-              photoBefore: photosResponse.data.image_before || null,
-              photoAfter: photosResponse.data.image_after || null,
-            }));
-          }
+          // Получаем фото "после"
+          const afterResponse = await axios.get(`${API_BASE_URL}/api/v1/user/images/two`, {
+            params: {
+              tg_id: String(userId),
+              number: 1
+            },
+            responseType: 'blob'
+          });
+
+          console.log('Ответ сервера для фотографий:', {
+            beforeStatus: beforeResponse.status,
+            afterStatus: afterResponse.status,
+            beforeSize: beforeResponse.data?.size,
+            afterSize: afterResponse.data?.size
+          });
+
+          const processPhoto = async (response, isBefore) => {
+            if (response.data && response.data.size > 100) {
+              try {
+                const reader = new FileReader();
+                reader.onload = () => {
+                  try {
+                    const jsonData = JSON.parse(reader.result);
+                    console.error(`Получен JSON вместо изображения ${isBefore ? 'до' : 'после'}:`, jsonData);
+                  } catch (e) {
+                    // Если это не JSON, значит это изображение
+                    const blob = new Blob([response.data], { type: response.headers['content-type'] || 'image/jpeg' });
+                    const photoUrl = URL.createObjectURL(blob);
+                    console.log(`Созданный URL для фото ${isBefore ? 'до' : 'после'}:`, photoUrl);
+                    setFormData(prev => ({
+                      ...prev,
+                      [isBefore ? 'photoBefore' : 'photoAfter']: photoUrl
+                    }));
+                    setHasPhotos(true);
+                  }
+                };
+                reader.readAsText(response.data);
+              } catch (error) {
+                console.error(`Ошибка при обработке данных фото ${isBefore ? 'до' : 'после'}:`, error);
+              }
+            } else {
+              console.error(`Получены некорректные данные фото ${isBefore ? 'до' : 'после'}:`, response.data);
+            }
+          };
+
+          await Promise.all([
+            processPhoto(beforeResponse, true),
+            processPhoto(afterResponse, false)
+          ]);
+
         } catch (photoError) {
           console.log('Фотографий нет или ошибка:', photoError.response?.status);
           setHasPhotos(false);
@@ -246,6 +298,9 @@ export default function Parameters({ userId, data }) {
         console.error('Ошибка при получении данных:', error);
         setHasParameters(false);
         setHasPhotos(false);
+      } finally {
+        setIsLoadingBefore(false);
+        setIsLoadingAfter(false);
       }
     };
 
@@ -378,12 +433,13 @@ export default function Parameters({ userId, data }) {
       return;
     }
 
+    setIsSaving(true);
     try {
       // Обновление информации о пользователе
       const [day, month, year] = birthday.split('.');
       const formattedBirthday = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 
-      await axios.patch(`${API_BASE_URL}/testapi/v1/user/info`, {
+      await axios.patch(`${API_BASE_URL}/api/v1/user/info`, {
         tg_id: String(userId),
         sex: gen === 'm' ? 'male' : 'female',
         born_date: formattedBirthday
@@ -392,7 +448,7 @@ export default function Parameters({ userId, data }) {
       // Обновление параметров
       const parametersData = {
         tg_id: String(userId),
-        number: 1,
+        number: 0,
         chest: parseInt(formData.chest, 10) || 0,
         waist: parseInt(formData.waist, 10) || 0,
         abdominal_circumference: parseInt(formData.belly, 10) || 0,
@@ -402,37 +458,63 @@ export default function Parameters({ userId, data }) {
       };
 
       if (hasParameters) {
-        await axios.patch(`${API_BASE_URL}/testapi/v1/user/parametrs`, parametersData);
+        await axios.patch(`${API_BASE_URL}/api/v1/user/parametrs`, parametersData);
       } else {
-        await axios.post(`${API_BASE_URL}/testapi/v1/user/parametrs`, parametersData);
+        await axios.post(`${API_BASE_URL}/api/v1/user/parametrs`, parametersData);
       }
 
       // Загрузка фотографий
-      if (formData.photoBefore || formData.photoAfter) {
-        const formDataPhotos = new FormData();
-        formDataPhotos.append('user_tg_id', String(userId));
+      if (formData.photoBefore instanceof File || formData.photoAfter instanceof File) {
+        if (formData.photoBefore instanceof File) {
+          const formDataBefore = new FormData();
+          formDataBefore.append('image', formData.photoBefore);
 
-        if (formData.photoBefore) {
-          formDataPhotos.append('image_before', formData.photoBefore);
-        }
-        if (formData.photoAfter) {
-          formDataPhotos.append('image_after', formData.photoAfter);
+          if (hasPhotos) {
+            await axios.patch(`${API_BASE_URL}/api/v1/user/images/two`, formDataBefore, {
+              params: {
+                tg_id: String(userId),
+                number: 0
+              },
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
+          } else {
+            const formDataPost = new FormData();
+            formDataPost.append('tg_id', String(userId));
+            formDataPost.append('image_before', formData.photoBefore);
+            await axios.post(`${API_BASE_URL}/api/v1/user/images/two`, formDataPost, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
+          }
         }
 
-        if (hasPhotos) {
-          // Если фотографии уже есть (по GET-запросу), используем PATCH
-          await axios.patch(`${API_BASE_URL}/testapi/v1/user/images/two`, formDataPhotos, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          });
-        } else {
-          // Если фотографий нет, используем POST
-          await axios.post(`${API_BASE_URL}/testapi/v1/user/images/two`, formDataPhotos, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          });
+        if (formData.photoAfter instanceof File) {
+          const formDataAfter = new FormData();
+          formDataAfter.append('image', formData.photoAfter);
+
+          if (hasPhotos) {
+            await axios.patch(`${API_BASE_URL}/api/v1/user/images/two`, formDataAfter, {
+              params: {
+                tg_id: String(userId),
+                number: 1
+              },
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
+          } else {
+            const formDataPost = new FormData();
+            formDataPost.append('tg_id', String(userId));
+            formDataPost.append('image_after', formData.photoAfter);
+            await axios.post(`${API_BASE_URL}/api/v1/user/images/two`, formDataPost, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
+          }
         }
       }
 
@@ -445,6 +527,8 @@ export default function Parameters({ userId, data }) {
       } else {
         alert('Ошибка при сохранении данных');
       }
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -517,23 +601,44 @@ export default function Parameters({ userId, data }) {
               value={formData.photoBefore}
               onChange={handleFileChange('photoBefore')}
               onRemove={handleRemovePhoto('photoBefore')}
+              isLoading={isLoadingBefore}
             />
             <PhotoUploader
               label="Фото после"
               value={formData.photoAfter}
               onChange={handleFileChange('photoAfter')}
               onRemove={handleRemovePhoto('photoAfter')}
+              isLoading={isLoadingAfter}
             />
           </div>
-          <Button
-            text="Сохранить"
-            width="100%"
-            bg={isFormValid() ? "#CBFF52" : "#EBFFBD"}
-            bgFocus="#EBFFBD"
-            color="#0D0D0D"
-            onClick={handleSubmit}
-            disabled={!isFormValid()}
-          />
+          <div style={{ position: 'relative', width: '100%' }} >
+            <Button
+              text="Сохранить"
+              width="100%"
+              bg={isFormValid() ? "#CBFF52" : "#EBFFBD"}
+              bgFocus="#EBFFBD"
+              color="#0D0D0D"
+              onClick={handleSubmit}
+              disabled={!isFormValid() || isSaving}
+            />
+            {isSaving && (
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: '50px',
+                width: '100%',
+              }}>
+                <Loader width="20px" />
+              </div>
+            )}
+          </div>
           <div className="error-message-parameters" style={{ opacity: birthdayError ? 1 : 0 }}>{birthdayError}</div>
         </div>
       </div>

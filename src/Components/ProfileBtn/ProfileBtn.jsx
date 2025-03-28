@@ -31,7 +31,7 @@ export default function ProfileBtn({ level, user_photo }) {
       style={{ borderColor: level === 'Профи' ? '#A799FF' : '' }}
     >
       {isLoading ? (
-        <Loader size={20} />
+        <Loader width={20} />
       ) : (
         <img src={user_photo ? user_photo : avatar} alt="аватар" style={{ transform: user_photo ? '' : 'scale(0.7)' }} />
       )}
