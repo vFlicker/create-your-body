@@ -6,7 +6,7 @@ import { API_BASE_URL } from '../../API'
 
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn'
 import Loader from '../../Components/Loader/Loader'
-import PdfViewer from '../../Components/PdfViewer/PdfViewer'
+import PdfViewer from '../../Components/PdfViewer/PdfViewer.jsx'
 import FoodContainer from '../../Components/Container/FoodContainer'
 
 import food from '../../Assets/nav/food.svg'
