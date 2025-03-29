@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './TrainingPage.css';
 import Button from '../Button/Button';
@@ -37,10 +37,55 @@ export default function TrainingPage({ trainingData, level, onBack, lectures }) 
         video2: true,
         video3: true
     });
+    const [currentPart, setCurrentPart] = useState(null);
+    const [isLastPart, setIsLastPart] = useState(false);
+    const [isFirstPart, setIsFirstPart] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
+    const contentRef = useRef(null);
+
+    useEffect(() => {
+        if (!trainingData || !trainingData[levelType]) {
+            setIsLoading(true);
+            return;
+        }
+
+        const currentData = trainingData[levelType];
+        const parts = Array.isArray(currentData) ? currentData : [currentData];
+
+        // Фильтруем пустые части
+        const validParts = parts.filter(part =>
+            part.videoUrl || part.text || part.videoUrl_2 || part.text_2 ||
+            part.videoUrl_3 || part.text_3 || part.super_text
+        );
+
+        if (validParts.length === 0) {
+            setIsLoading(true);
+            return;
+        }
+
+        // Проверяем, что currentPartIndex не выходит за пределы массива
+        const safeIndex = Math.max(0, Math.min(currentPartIndex, validParts.length - 1));
+        if (safeIndex !== currentPartIndex) {
+            setCurrentPartIndex(safeIndex);
+            return;
+        }
+
+        const part = validParts[safeIndex];
+        setCurrentPart(part);
+        setIsLastPart(safeIndex === validParts.length - 1);
+        setIsFirstPart(safeIndex === 0);
+        setIsLoading(false);
+    }, [trainingData, levelType, currentPartIndex]);
 
     useEffect(() => {
         setLevelType(level === 'Новичок' ? 'newbie' : 'profi');
     }, [level]);
+
+    useEffect(() => {
+        if (contentRef.current) {
+            contentRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, [currentPartIndex]);
 
     const handleVideoLoad = (videoKey) => {
         setLoadingStates(prev => ({
@@ -49,23 +94,7 @@ export default function TrainingPage({ trainingData, level, onBack, lectures }) 
         }));
     };
 
-    if (!trainingData || !trainingData[levelType]) {
-        return null;
-    }
-
-    const currentData = trainingData[levelType];
-    const parts = Array.isArray(currentData) ? currentData : [currentData];
-
-    // Фильтруем пустые части
-    const validParts = parts.filter(part =>
-        part.videoUrl || part.text || part.videoUrl_2 || part.text_2 ||
-        part.videoUrl_3 || part.text_3 || part.super_text
-    );
-
-    const currentPart = validParts[currentPartIndex];
-    const isLastPart = currentPartIndex === validParts.length - 1;
-
-    const handleNext = () => {
+    const handleNext = useCallback(() => {
         if (isLastPart) {
             onBack();
         } else {
@@ -78,13 +107,39 @@ export default function TrainingPage({ trainingData, level, onBack, lectures }) 
                 video3: true
             });
         }
-    };
+    }, [isLastPart, onBack]);
 
-    // Проверяем наличие контента
-    if (!currentPart || (!currentPart.videoUrl && !currentPart.text &&
-        !currentPart.videoUrl_2 && !currentPart.text_2 &&
-        !currentPart.videoUrl_3 && !currentPart.text_3 &&
-        !currentPart.super_text)) {
+    const handleBack = useCallback(() => {
+        if (!isFirstPart) {
+            setDirection(-1);
+            setCurrentPartIndex(prev => Math.max(0, prev - 1));
+            setLoadingStates({
+                video1: true,
+                video2: true,
+                video3: true
+            });
+        } else {
+            onBack();
+        }
+    }, [isFirstPart, onBack]);
+
+    useEffect(() => {
+        // Устанавливаем handleBack только если мы не на первом упражнении
+        if (!isFirstPart) {
+            window.handleBack = handleBack;
+            document.body.setAttribute('data-handle-back', 'true');
+        } else {
+            window.handleBack = null;
+            document.body.removeAttribute('data-handle-back');
+        }
+
+        return () => {
+            window.handleBack = null;
+            document.body.removeAttribute('data-handle-back');
+        };
+    }, [isFirstPart]);
+
+    if (isLoading || !currentPart) {
         return null;
     }
 
@@ -116,7 +171,6 @@ export default function TrainingPage({ trainingData, level, onBack, lectures }) 
                             allowFullScreen
                             title="Видео 1"
                             onLoad={() => handleVideoLoad('video1')}
-
                         />
                     </div>
                     <p>{part.text}</p>
@@ -165,7 +219,7 @@ export default function TrainingPage({ trainingData, level, onBack, lectures }) 
         <div className="training-page">
             <h1>{trainingData.title}</h1>
 
-            <div className="training-content-wrapper">
+            <div className="training-content-wrapper" ref={contentRef}>
                 <AnimatePresence initial={false} custom={direction} mode="wait">
                     <motion.div key={currentPartIndex}>
                         {renderPart(currentPart)}

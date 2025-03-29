@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './TrainContent.css';
 import '../../Pages/Train/Train.css';
@@ -62,7 +62,7 @@ const gym = [
                 ],
                 newbie: [
                     {
-                        videoUrl: 'https://kinescope.io/embed/cHEdN2puartQTL3jYsNAx3',
+                        videoUrl: 'https://kinescope.io/embed/24n6tScvAnezaChioS3Uin',
                         text: 'Приседания (резинка над коленями) 20 повторений, 3 подхода\nВремя отдыха между подходами 1-1.30 мин.\n1.Используем резинку средней жесткости или тугую. Ориентируемся на ощущения и на технику. Фиксируем резинку над коленями, стопы на шире таза, параллельны друг другу, не заваливаем стопы вовнутрь\n2.На вдох уводим таз назад, сгибаем тазобедренный и коленный сустав, колено может немного выйти за пятку, пятка прижата к полу, взгляд перед собой \n3.На выдох выталкиваем ягодицы наверх, сокращая ягодичные мышцы. При этом не выпрямляем полностью колени'
                     },
                     {
@@ -1136,32 +1136,40 @@ export default function TrainContent({ view, level }) {
 
     const handleTrainingSelect = (training) => {
         setSelectedTraining(training);
+        // Перед переходом на страницу упражнений, очищаем handleBack
+        window.handleBack = null;
+        document.body.removeAttribute('data-handle-back');
         setPage([2, 1]);
     };
 
-    const handleBack = () => {
+    const handleBack = useCallback(() => {
         if (page === 2) {
             setSelectedTraining(null);
-            setSelectedWeek(null);
-            setPage([0, -1]);
+            setPage([1, -1]);
         } else if (page === 1) {
             setSelectedWeek(null);
             setPage([0, -1]);
         } else if (page === 0) {
-            window.handleBack = null;
             window.showContent = false;
             window.dispatchEvent(new Event('showContentChange'));
         }
-    };
+    }, [page]);
 
     useEffect(() => {
-        window.handleBack = handleBack;
-        document.body.setAttribute('data-handle-back', !!handleBack);
+        // Устанавливаем handleBack только если мы не на странице упражнений
+        if (page !== 2) {
+            window.handleBack = handleBack;
+            document.body.setAttribute('data-handle-back', 'true');
+        } else {
+            window.handleBack = null;
+            document.body.removeAttribute('data-handle-back');
+        }
+
         return () => {
             window.handleBack = null;
             document.body.removeAttribute('data-handle-back');
         };
-    }, [page]);
+    }, [page]); // Убираем handleBack из зависимостей
 
     // Если view === warmup, показываем разминку
     if (view === 'warmup') {

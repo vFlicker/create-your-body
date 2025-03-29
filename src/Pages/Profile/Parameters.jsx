@@ -50,7 +50,7 @@ const InputPair = ({ labels, values, onChange, handleBlur, handleFocus, type = '
               <input
                 type="text"
                 value={values[index] || ''}
-                onChange={(e) => onChange(index)(e)}
+                onChange={(e) => onChange[index](e)}
                 placeholder="0"
                 onFocus={handleFocus}
                 onBlur={handleBlur}
@@ -96,7 +96,7 @@ const InputPair = ({ labels, values, onChange, handleBlur, handleFocus, type = '
           <input
             type="text"
             value={values[0] || ''}
-            onChange={(e) => onChange(0)(e)}
+            onChange={(e) => onChange(e)}
             placeholder="дд.мм.гггг"
             onFocus={handleFocus}
             onBlur={handleBlur}
@@ -116,7 +116,7 @@ const InputPair = ({ labels, values, onChange, handleBlur, handleFocus, type = '
             <input
               type="text"
               value={values[i] || ''}
-              onChange={(e) => onChange(i)(e)}
+              onChange={(e) => onChange[i](e)}
               placeholder="0"
               onFocus={handleFocus}
               onBlur={handleBlur}
@@ -218,6 +218,7 @@ export default function Parameters({ userId, data, setData }) {
         });
         const parameters = Array.isArray(parametersResponse.data) ? parametersResponse.data : [parametersResponse.data];
         const latestParameters = parameters[parameters.length - 1];
+        console.log(latestParameters);
 
         if (latestParameters) {
           setHasParameters(true);
@@ -367,8 +368,12 @@ export default function Parameters({ userId, data, setData }) {
   };
 
   const handleChange = (field) => (e) => {
+    if (!e || !e.target) return;
     const value = e.target.value;
-    setFormData({ ...formData, [field]: value });
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
   const handleGenderChange = (value) => {
@@ -376,7 +381,7 @@ export default function Parameters({ userId, data, setData }) {
   };
 
   const handleFileChange = (field) => (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     if (file) {
       if (file.size > 2 * 1024 * 1024) {
         if (window.Telegram?.WebApp) {
@@ -543,12 +548,24 @@ export default function Parameters({ userId, data, setData }) {
     {
       labels: ['Дата рождения', 'Пол'],
       values: [birthday, gen],
-      onChange: [handleBirthdayChange, (value) => handleGenderChange(value)],
+      onChange: [handleBirthdayChange, handleGenderChange],
       type: ['birthday', 'gender']
     },
-    { labels: ['Обхват груди', 'Обхват талии'], values: [formData.chest, formData.waist], onChange: handleChange('chest') },
-    { labels: ['Обхват живота', 'Обхват бедер'], values: [formData.belly, formData.hips], onChange: handleChange('belly') },
-    { labels: ['Обхват ноги', 'Вес'], values: [formData.leg, formData.weight], onChange: handleChange('leg') },
+    {
+      labels: ['Обхват груди', 'Обхват талии'],
+      values: [formData.chest, formData.waist],
+      onChange: [handleChange('chest'), handleChange('waist')]
+    },
+    {
+      labels: ['Обхват живота', 'Обхват бедер'],
+      values: [formData.belly, formData.hips],
+      onChange: [handleChange('belly'), handleChange('hips')]
+    },
+    {
+      labels: ['Обхват ноги', 'Вес'],
+      values: [formData.leg, formData.weight],
+      onChange: [handleChange('leg'), handleChange('weight')]
+    },
   ];
 
   const isFormValid = () => {

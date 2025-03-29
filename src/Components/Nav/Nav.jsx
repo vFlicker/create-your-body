@@ -104,6 +104,7 @@ export default function Nav() {
                 className="navLink"
                 onClick={(e) => {
                   e.preventDefault();
+                  e.stopPropagation();
                   handleClick(item.path);
                 }}
               >

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import './ProfileBtn.css'
 
 import avatar from '../../Assets/nav/user.svg'
@@ -8,6 +8,7 @@ import Loader from '../Loader/Loader'
 export default function ProfileBtn({ level, user_photo }) {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(true)
+  const location = useLocation()
 
   useEffect(() => {
     if (user_photo) {
@@ -38,6 +39,7 @@ export default function ProfileBtn({ level, user_photo }) {
       <div className="profileEllips"
         style={{ background: level === 'Профи' ? '#A799FF' : '' }}
       ></div>
+      {location.pathname !== '/profile' && <p className='profileBtnText'>Уровень: <span>{level}</span></p>}
     </button>
   )
 }
