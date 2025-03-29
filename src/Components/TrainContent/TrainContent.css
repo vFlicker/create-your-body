@@ -1,0 +1,68 @@
+.trainContent {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.weeks-screen {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  overflow-y: auto;
+}
+
+.trainings-screen {
+  overflow-y: auto;
+}
+
+.trainings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.training-details-screen {
+  overflow-y: auto;
+}
+
+.warmupContent {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.warmup-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.warmup-navigation {
+    width: 100%;
+}
+
+.warmup-videos {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.videoContent {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}

@@ -4,16 +4,17 @@ import { useLocation } from 'react-router-dom'; // Импортируем useLoc
 
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import Selecter from '../../Components/Selecter/Selecter';
-import PDFViewer from '../../Components/PDFViewer/PDFViewer';
+import PdfViewer from '../../Components/PdfViewer/PdfViewer';
 import VideoPage from '../../Components/VideoPage/VideoPage';
 
 import health from '../../Assets/svg/health.svg';
 import begin from '../../Assets/video/begin.mp4';
+import pdf from '../../Assets/pdf/begin.pdf';
 
 export default function Begin({ userId, data }) {
   // Получаем query-параметры из URL
   const location = useLocation();
-  
+
   // Парсим query-параметр view
   const queryParams = new URLSearchParams(location.search);
   const viewParam = queryParams.get('view');
@@ -27,12 +28,6 @@ export default function Begin({ userId, data }) {
       window.Telegram.WebApp.setBackgroundColor('#F2F2F2');
     }
   }, []);
-
-  // Автоматический импорт всех изображений begin*
-  const importAll = (context) => context.keys().map(context);
-  const pdfList = importAll(
-    require.context('../../Assets/pdf/begin/', false, /begin_pdf_\d+\.(jpe?g)$/)
-  );
 
   const handleSelect = (index) => {
     setActiveIndex(index);
@@ -56,7 +51,7 @@ export default function Begin({ userId, data }) {
           activeIndex={activeIndex}
         />
         {!videoView ? (
-          <PDFViewer pdf_list={pdfList} />
+          <PdfViewer pdfFile={pdf} />
         ) : (
           <VideoPage video={begin} page="/begin" userId={userId} instruction={true} />
         )}

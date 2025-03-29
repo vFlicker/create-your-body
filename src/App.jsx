@@ -21,6 +21,8 @@ import Parameters from "./Pages/Profile/Parameters";
 import Record from "./Pages/Profile/Record";
 import Communication from "./Pages/Communication/Communication";
 import Train from "./Pages/Train/Train";
+import Food from "./Pages/Food/Food";
+import Lectures from "./Pages/Lectures/Lectures";
 
 function Layout() {
   const location = useLocation();
@@ -137,7 +139,9 @@ function App() {
               <Route path="parameters" element={<Parameters data={data} userId={userId} setData={setData} />} />
               <Route path="record" element={<Record data={data} userId={userId} />} />
               <Route path="communication" element={<Communication data={data} userId={userId} base={base} />} />
-              <Route path="train" element={<Train data={data} userId={userId} />} />
+              <Route path="train" element={<Train data={data} userId={userId} level={data.user_level} />} />
+              <Route path="food" element={<Food data={data} userId={userId} />} />
+              <Route path="lectures" element={<Lectures data={data} userId={userId} />} />
             </Route>
           ) : (
             <Route path="*" element={<NoEntry />} />

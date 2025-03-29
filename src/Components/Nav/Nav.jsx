@@ -23,22 +23,43 @@ export default function Nav() {
   const location = useLocation();
   const navigate = useNavigate();
   const [pressedPath, setPressedPath] = useState(null);
-  const [prevPath, setPrevPath] = useState(null); // Хранит предыдущий путь
+  const [prevPath, setPrevPath] = useState(null);
+  const [hasHandleBack, setHasHandleBack] = useState(false);
 
   // Сохраняем предыдущий путь при изменении location
   useEffect(() => {
-    // Сохраняем текущий путь как предыдущий перед его изменением
     const currentPath = location.pathname;
     return () => {
-      setPrevPath(currentPath); // Предыдущий путь сохраняется при размонтировании эффекта
+      setPrevPath(currentPath);
     };
   }, [location]);
+
+  // Следим за изменениями window.handleBack
+  useEffect(() => {
+    const checkHandleBack = () => {
+      setHasHandleBack(!!window.handleBack);
+    };
+
+    // Проверяем начальное состояние
+    checkHandleBack();
+
+    // Создаем наблюдатель за изменениями window.handleBack
+    const observer = new MutationObserver(checkHandleBack);
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['data-handle-back']
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   // Проверяем, является ли текущий путь одним из путей в navItems
   const isCurrentPathInNav = navItems.some((item) => item.path === location.pathname);
 
   // Проверяем, нужно ли отключить ссылку (для /training и /food)
-  const isLinkDisabled = (path) => path === '/food' || path === '/train';
+  const isLinkDisabled = (path) => path === '';
 
   // Обработчики событий для управления состоянием нажатия
   const handleMouseDown = (path) => setPressedPath(path);
@@ -48,8 +69,10 @@ export default function Nav() {
 
   // Обработчик клика
   const handleClick = (path) => {
-    if (path === prevPath && !isCurrentPathInNav && window.history.length > 1) {
-      navigate(-1); // Возвращаемся на предыдущую страницу
+    if (window.handleBack && path === location.pathname) {
+      window.handleBack();
+    } else if (path === prevPath && !isCurrentPathInNav && window.history.length > 1) {
+      navigate(-1);
     }
   };
 
@@ -65,15 +88,17 @@ export default function Nav() {
             onTouchStart={() => handleTouchStart(item.path)}
             onTouchEnd={handleTouchEnd}
             onClick={(e) => {
-              if (item.path === prevPath && !isCurrentPathInNav) {
+              if ((window.handleBack && item.path === location.pathname) ||
+                (item.path === prevPath && !isCurrentPathInNav)) {
                 e.preventDefault();
                 handleClick(item.path);
               } else if (isLinkDisabled(item.path)) {
-                e.preventDefault(); // Отключаем переход для /training и /food
+                e.preventDefault();
               }
             }}
           >
-            {item.path === prevPath && !isCurrentPathInNav ? (
+            {((window.handleBack && item.path === location.pathname) ||
+              (item.path === prevPath && !isCurrentPathInNav)) ? (
               // Кнопка с иконкой возврата и другим фоном
               <div
                 className="navLink"
@@ -91,14 +116,13 @@ export default function Nav() {
               </div>
             ) : (
               <Link
-                to={isLinkDisabled(item.path) ? undefined : item.path} // Убираем to для отключенных путей
+                to={isLinkDisabled(item.path) ? undefined : item.path}
                 className="navLink"
-                style={{pointerEvents: isLinkDisabled(item.path) ? 'none' : ''}}
+                style={{ pointerEvents: isLinkDisabled(item.path) ? 'none' : '' }}
               >
                 <div
-                  className={`forIcon ${location.pathname === item.path ? 'active' : ''} ${
-                    pressedPath === item.path ? 'pressed' : ''
-                  }`}
+                  className={`forIcon ${location.pathname === item.path ? 'active' : ''} ${pressedPath === item.path ? 'pressed' : ''
+                    }`}
                   style={{
                     background: isLinkDisabled(item.path) ? 'rgb(32,32,32)' : '',
                     pointerEvents: isLinkDisabled(item.path) ? 'none' : '',

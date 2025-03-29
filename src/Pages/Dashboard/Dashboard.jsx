@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import './Dashboard.css';
 
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
-import Progress from '../../Components/Progress/Progress';
+// import Progress from '../../Components/Progress/Progress';
 import History from '../../Components/History/History';
 import Container from '../../Components/Container/Container';
 // import Loader from '../../Components/Loader/Loader';
@@ -27,7 +27,7 @@ export default function Dashboard({ data, base }) {
     {
       name: 'Тренировки',
       icon: muscules,
-      closed: '29 марта',
+      closed: null,
       buy: false,
       instruction: false,
       to: 'train'
@@ -35,7 +35,7 @@ export default function Dashboard({ data, base }) {
     {
       name: 'Питание',
       icon: food,
-      closed: '29 марта',
+      closed: null,
       buy: false,
       instruction: false,
       to: 'food'
@@ -43,7 +43,7 @@ export default function Dashboard({ data, base }) {
     {
       name: 'Лекции',
       icon: book,
-      closed: base ? '' : '29 марта',
+      closed: base ? '' : null,
       buy: base ? true : false,
       instruction: false,
       to: 'lectures'
@@ -51,7 +51,7 @@ export default function Dashboard({ data, base }) {
     {
       name: 'Рецепты',
       icon: recipes,
-      closed: base ? '' : '29 марта',
+      closed: base ? '' : '31 марта',
       buy: base ? true : false,
       instruction: false,
       to: 'recipes'
@@ -81,7 +81,7 @@ export default function Dashboard({ data, base }) {
         <ProfileBtn level={data.user_level} user_photo={data.image} />
         <div className="hello">
           <h1>Привет, {data?.name || 'Неизвестный'}!</h1>
-          <Progress count_all={0} count_complited={0} title='Прогресс тренировок' />
+          {/* <Progress count_all={0} count_complited={0} title='Прогресс тренировок' /> */}
         </div>
       </div>
       <div className="dashBot">

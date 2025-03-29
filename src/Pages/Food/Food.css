@@ -1,0 +1,86 @@
+.foodPage {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 90px);
+  overflow: hidden;
+}
+
+.topFood {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 70px 16px 32px 16px;
+}
+
+.topFoodTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.botFood {
+  background: #fff;
+  flex: 1;
+  padding-bottom: 24px;
+  padding-top: 16px;
+  border-radius: 16px 16px 0 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.content-wrapper {
+  display: flex;
+  width: 200%;
+  height: 100%;
+  transition: transform 0.3s ease-in-out;
+}
+
+.content-wrapper.slide-left {
+  transform: translateX(-50%);
+}
+
+.foodList {
+  width: calc(50% - 32px);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 0 16px;
+  overflow-y: auto;
+  transition: all 0.3s ease-in-out;
+}
+
+.pdf-wrapper {
+  width: calc(50% - 32px);
+  height: 100%;
+  padding: 0 16px;
+  position: relative;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  background: #fff;
+}
+
+.pdf-wrapper.slide-in {
+  transform: translateX(0);
+}
+
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}

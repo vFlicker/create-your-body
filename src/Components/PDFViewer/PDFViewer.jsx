@@ -1,134 +1,120 @@
-import { useState, useEffect, useRef } from 'react';
-import left from '../../Assets/svg/left.svg';
-import right from '../../Assets/svg/right.svg';
-import Loader from '../../Components/Loader/Loader';
-import './PDFViewer.css';
+import React, { useEffect, useState } from "react";
+import {
+    Worker,
+    Viewer,
+    ScrollMode,
+    SpecialZoomLevel,
+} from "@react-pdf-viewer/core";
+import "@react-pdf-viewer/core/lib/styles/index.css";
+import { pageNavigationPlugin } from "@react-pdf-viewer/page-navigation";
+import "@react-pdf-viewer/page-navigation/lib/styles/index.css";
+import axios from 'axios';
+import { API_BASE_URL } from '../../API';
 
-export default function PDFViewer({ pdf_list }) {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [fade, setFade] = useState(true);
-    const [isPressedLeft, setIsPressedLeft] = useState(false);
-    const [isPressedRight, setIsPressedRight] = useState(false);
+import right from "../../Assets/svg/right.svg";
+import left from "../../Assets/svg/left.svg";
+import Loader from "../Loader/Loader";
+
+import "./PdfViewer.css";
+
+const WORKER_URL = `https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`;
+
+export default function PdfViewer({ pdfId, pdfFile }) {
+    const [pdfUrl, setPdfUrl] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [loadedImages, setLoadedImages] = useState({});
-    
-    const containerRef = useRef(null);
-    const imageRefs = useRef([]);
 
-    // Предзагрузка изображений
+    const pageNavigationPluginInstance = pageNavigationPlugin();
+    const { jumpToNextPage, jumpToPreviousPage, CurrentPageLabel } = pageNavigationPluginInstance;
+
     useEffect(() => {
-        pdf_list.forEach((img, index) => {
-            const image = new Image();
-            image.src = img;
-            image.onload = () => {
-                setLoadedImages(prev => ({...prev, [index]: true}));
-                if(index === 0) setIsLoading(false);
-            };
-        });
-    }, [pdf_list]);
+        console.log(pdfId);
+        const setupPdf = async () => {
+            try {
+                setIsLoading(true);
+                if (pdfFile) {
+                    // Если передан прямой файл PDF
+                    const url = typeof pdfFile === 'string' ? pdfFile : URL.createObjectURL(pdfFile);
+                    setPdfUrl(url);
+                } else if (pdfId) {
+                    // Если передан ID для запроса
+                    const response = await axios.get(`${API_BASE_URL}/cms/api/nutrition/client/${pdfId}`);
+                    const pdfUrl = response.data.data.pdfUrl;
+                    const pdfResponse = await fetch(pdfUrl);
+                    const blob = await pdfResponse.blob();
+                    const url = URL.createObjectURL(blob);
+                    setPdfUrl(url);
+                }
+            } catch (err) {
+                console.error("Error setting up PDF:", err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
 
-    // Анимация перехода и центровка
-    useEffect(() => {
-        setFade(true);
-        const timer = setTimeout(() => setFade(false), 300);
+        setupPdf();
 
-        if (imageRefs.current[currentIndex] && containerRef.current) {
-            const container = containerRef.current;
-            const image = imageRefs.current[currentIndex];
-            const containerWidth = container.offsetWidth;
-            const imageLeft = image.offsetLeft;
-            
-            container.scrollTo({
-                left: imageLeft - (containerWidth - image.offsetWidth) / 2,
-                behavior: 'smooth'
-            });
-        }
-
-        return () => clearTimeout(timer);
-    }, [currentIndex]);
-
-    const handleImageLoad = (index) => {
-        setLoadedImages(prev => ({...prev, [index]: true}));
-        if(index === currentIndex) setIsLoading(false);
-    };
-
-    const handleNavigation = (direction) => {
-        setIsLoading(true);
-        const newIndex = direction === 'next' 
-            ? Math.min(currentIndex + 1, pdf_list.length - 1)
-            : Math.max(currentIndex - 1, 0);
-
-        if(loadedImages[newIndex]) setIsLoading(false);
-        
-        setCurrentIndex(newIndex);
-    };
-
-    const handleMouseDown = (direction) => direction === 'left' 
-        ? setIsPressedLeft(true) 
-        : setIsPressedRight(true);
-
-    const handleMouseUp = (direction) => direction === 'left' 
-        ? setIsPressedLeft(false) 
-        : setIsPressedRight(false);
+        return () => {
+            if (pdfUrl && pdfUrl.startsWith('blob:')) {
+                URL.revokeObjectURL(pdfUrl);
+            }
+        };
+    }, [pdfId, pdfFile]);
 
     return (
-        <div className='pdfContainer'>
+        <div className="mainPdfViewer">
             {isLoading && <Loader />}
-            
-            <div 
-                className={`pdfSlide ${fade ? 'fade' : ''}`} 
-                ref={containerRef}
-                style={{opacity: isLoading ? 0.5 : 1}}
-            >
-                {pdf_list.map((img, index) => (
-                    <div 
-                        key={index}
-                        ref={el => imageRefs.current[index] = el}
-                        className="pdfImageWrapper"
-                    >
-                        <img
-                            src={img}
-                            alt={`page-${index + 1}`}
-                            className="pdfImage"
-                            loading="lazy"
-                            onLoad={() => handleImageLoad(index)}
-                            style={{display: loadedImages[index] ? 'block' : 'none'}}
+
+            {pdfUrl && (
+                <div className="pdfViewerContainer">
+                    <Worker workerUrl={WORKER_URL}>
+                        <Viewer
+                            defaultScale={SpecialZoomLevel.PageFit}
+                            scrollMode={ScrollMode.Page}
+                            fileUrl={pdfUrl}
+                            enableSmoothScroll={false}
+                            plugins={[pageNavigationPluginInstance]}
                         />
+                    </Worker>
+
+                    <div className="pdfViewerFooter">
+                        <div className="pdfViewerFooterInner">
+                            <button className="pdfViewerButton" onClick={jumpToPreviousPage}>
+                                <img src={left} alt="previous" />
+                            </button>
+                            <CurrentPageLabel>
+                                {({ currentPage, numberOfPages }) => (
+                                    <div className="pdfViewerPages">
+                                        {currentPage + 1} / {numberOfPages}
+                                    </div>
+                                )}
+                            </CurrentPageLabel>
+                            <button className="pdfViewerButton" onClick={jumpToNextPage}>
+                                <img src={right} alt="next" />
+                            </button>
+                        </div>
                     </div>
-                ))}
-            </div>
+                </div>
+            )}
 
-            <div className="pdfButtons" style={{opacity: isPressedLeft || isPressedRight ? '1' : '0.7'}}>
-                {currentIndex !== 0 &&
-                    <button
-                        onClick={() => handleNavigation('prev')}
-                        onMouseDown={() => handleMouseDown('left')}
-                        onMouseUp={() => handleMouseUp('left')}
-                        onTouchStart={() => handleMouseDown('left')}
-                        onTouchEnd={() => handleMouseUp('left')}
-                        disabled={isLoading}
-                        style={{background: isPressedLeft ? '#A799FF' : ''}}
-                    >
-                        <img src={left} alt="Назад" />
-                    </button>
-                }
-
-                <p>{currentIndex + 1}/{pdf_list.length}</p>
-
-                {currentIndex !== pdf_list.length - 1 && 
-                    <button
-                        onClick={() => handleNavigation('next')}
-                        onMouseDown={() => handleMouseDown('right')}
-                        onMouseUp={() => handleMouseUp('right')}
-                        onTouchStart={() => handleMouseDown('right')}
-                        onTouchEnd={() => handleMouseUp('right')}
-                        disabled={isLoading}
-                        style={{background: isPressedRight ? '#A799FF' : ''}}
-                    >
-                        <img src={right} alt="Вперед" />
-                    </button>
-                }
-            </div>
+            {pdfId === '67e68b630e3f348f8806f42f' && (
+                <p>Рассчитать свою дневную калорийность можно на этих сайтах<br /><br />
+                    <a href="https://www.calc.ru/kalkulyator-kalorii.html">https://www.calc.ru/kalkulyator-kalorii.html</a><br /><br />
+                    <a href="https://www.yournutrition.ru/calories/">https://www.yournutrition.ru/calories/</a><br /><br />
+                    Как рассчитать свое КБЖУ(подробное видео)<br /><br />
+                    <a href="https://cloud.mail.ru/public/xghf/QTxissgf7">https://cloud.mail.ru/public/xghf/QTxissgf7</a>
+                </p>
+            )}
+            {pdfId === '67e68bdb0e3f348f8806f433' && (
+                <p>Как подогнать свое кбжу:<br /><br />
+                    <a href="https://cloud.mail.ru/public/WHsZ/WKY7Egu4P">https://cloud.mail.ru/public/WHsZ/WKY7Egu4P</a>
+                </p>
+            )}
+            {pdfId === '67e68b020e3f348f8806f422' && (
+                <p>Рассчитать свою дневную калорийность можно на этих сайтах<br /><br />
+                    <a href="https://www.calc.ru/kalkulyator-kalorii.html">https://www.calc.ru/kalkulyator-kalorii.html</a><br /><br />
+                    <a href="https://www.yournutrition.ru/calories/">https://www.yournutrition.ru/calories/</a>
+                </p>
+            )}
         </div>
     );
-};
+}

@@ -1,44 +1,68 @@
 .trainPage {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
 }
 
 .topTrain {
-    padding: 70px 16px 32px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
+  padding: 70px 16px 32px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
 }
 
 .trainTitle {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .botTrain {
-    background-color: #fff;
-    border-radius: 16px 16px 0 0;
-    padding: 16px;
-    flex: 1;
-    min-height: 0; /* Важно для корректной работы flex в Firefox */
-    position: relative;
-    overflow: hidden;
+  background-color: #fff;
+  border-radius: 16px 16px 0 0;
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.content-wrapper {
+  display: flex;
+  flex: 1;
+  position: relative;
+  height: 100%;
+  transition: transform 0.3s ease-in-out;
+}
+
+.content-wrapper.slide-left {
+  transform: translateX(-50%);
 }
 
 .train-content {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 12px; 
-    position: relative;
-    transition: transform 150ms linear;
+  width: 50%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  overflow: hidden;
 }
 
-.train-details-content {            
-    border-radius: 14px;
-    position: relative;
-    transition: transform 150ms linear;
-    right: -150%;
+.train-details-content {
+  width: 100%;
+  position: relative;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.train-details-content.slide-in {
+  transform: translateX(0);
 }
