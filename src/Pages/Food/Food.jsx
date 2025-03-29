@@ -11,7 +11,7 @@ import FoodContainer from '../../Components/Container/FoodContainer'
 
 import food from '../../Assets/nav/food.svg'
 
-export default function Food({ data, userId }) {
+export default function Food({ data }) {
     const [isLoading, setIsLoading] = useState(true);
     const [dataFood, setDataFood] = useState(null);
     const [selectedPdfId, setSelectedPdfId] = useState(null);

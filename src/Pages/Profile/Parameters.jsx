@@ -366,7 +366,7 @@ export default function Parameters({ userId, data, setData }) {
     container.style.transition = 'transform 150ms ease-in-out';
   };
 
-  const handleChange = (field, index) => (e) => {
+  const handleChange = (field) => (e) => {
     const value = e.target.value;
     setFormData({ ...formData, [field]: value });
   };
@@ -546,9 +546,9 @@ export default function Parameters({ userId, data, setData }) {
       onChange: [handleBirthdayChange, (value) => handleGenderChange(value)],
       type: ['birthday', 'gender']
     },
-    { labels: ['Обхват груди', 'Обхват талии'], values: [formData.chest, formData.waist], onChange: (i) => handleChange(['chest', 'waist'][i], i) },
-    { labels: ['Обхват живота', 'Обхват бедер'], values: [formData.belly, formData.hips], onChange: (i) => handleChange(['belly', 'hips'][i], i) },
-    { labels: ['Обхват ноги', 'Вес'], values: [formData.leg, formData.weight], onChange: (i) => handleChange(['leg', 'weight'][i], i) },
+    { labels: ['Обхват груди', 'Обхват талии'], values: [formData.chest, formData.waist], onChange: handleChange('chest') },
+    { labels: ['Обхват живота', 'Обхват бедер'], values: [formData.belly, formData.hips], onChange: handleChange('belly') },
+    { labels: ['Обхват ноги', 'Вес'], values: [formData.leg, formData.weight], onChange: handleChange('leg') },
   ];
 
   const isFormValid = () => {

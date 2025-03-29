@@ -114,7 +114,7 @@ const transition = {
     duration: 0.3
 };
 
-export default function Lectures({ data, userId, level, user_photo }) {
+export default function Lectures({ level, user_photo }) {
     const [[page, direction], setPage] = useState([0, 0]);
     const [selectedWeek, setSelectedWeek] = useState(null);
     const [selectedTraining, setSelectedTraining] = useState(null);
