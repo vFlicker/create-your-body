@@ -27,7 +27,6 @@ export default function PdfViewer({ pdfId, pdfFile }) {
     const { jumpToNextPage, jumpToPreviousPage, CurrentPageLabel } = pageNavigationPluginInstance;
 
     useEffect(() => {
-        console.log(pdfId);
         const setupPdf = async () => {
             try {
                 setIsLoading(true);
@@ -117,4 +116,4 @@ export default function PdfViewer({ pdfId, pdfFile }) {
             )}
         </div>
     );
-}
+} 
