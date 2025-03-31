@@ -85,6 +85,7 @@ export default function Dashboard({ data, base }) {
         </div>
       </div>
       <div className="dashBot">
+      {data.greet_video_time_view && formatTimeFromString(data.greet_video_time_view) < formatTimeFromString("14:55") && 
         <div className="history">
           {/* {data?.last_video && (
             <History
@@ -94,10 +95,10 @@ export default function Dashboard({ data, base }) {
               lastVideo={data.last_video} // Передаём страницу для ссылки
             />
           )} */}
-          {data?.greet_video_time_view && formatTimeFromString(data.greet_video_time_view) < formatTimeFromString("14:55") && 
+        
           <History text='Инструкция + Вводный урок' viewed={formatTimeFromString(data.greet_video_time_view)} view={formatTimeFromString("14:55")} instruction={true} />
-          }
         </div>
+        }
         <div className="dashMenu">
           {pageContainersData.map((container, index) => (
             <Container
