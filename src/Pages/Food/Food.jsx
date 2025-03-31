@@ -17,20 +17,21 @@ export default function Food({ data }) {
     const [selectedPdfId, setSelectedPdfId] = useState(null);
 
     useEffect(() => {
-        try {
-            setIsLoading(true);
-            const fetchData = async () => {
+        const fetchData = async () => {
+            try {
+                setIsLoading(true);
                 const response = await axios.get(`${API_BASE_URL}/cms/api/nutrition/client/category/nutrition`);
-                console.log(response.data);
                 setDataFood(response.data);
+            } catch (error) {
+                console.error('Ошибка при получении данных:', error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
+                // Можно добавить состояние для отображения ошибки пользователю
+            } finally {
+                setIsLoading(false);
             }
-            fetchData();
-        } catch (error) {
-            console.error('Ошибка при получении данных:', error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
-        } finally {
-            setIsLoading(false);
-        }
-    }, []);
+        };
+
+        fetchData();
+    }, []); // Убираем зависимость от selectedPdfId
 
     const handleBack = () => {
         setSelectedPdfId(null);
@@ -57,7 +58,7 @@ export default function Food({ data }) {
                 <ProfileBtn level={data?.user_level} user_photo={data?.image} />
                 <div className='topFoodTitle'>
                     <img src={food} alt='logo' />
-                    <h1 style={{fontSize: '24px'}}>Питание</h1>
+                    <h1 style={{ fontSize: '24px' }}>Питание</h1>
                 </div>
             </div>
             <div className='botFood'>
