@@ -5,17 +5,6 @@
   overflow: hidden;
 }
 
-.screen {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: #fff;
-  display: flex;
-  flex-direction: column;
-}
-
 .weeks-screen {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

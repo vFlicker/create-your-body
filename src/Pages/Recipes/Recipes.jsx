@@ -175,7 +175,10 @@ export default function Recipes({ data }) {
                                 transition={transition}
                                 className='botRecipesContent'
                             >
-                                {categories?.map((category, index) => (
+                                {categories?.sort((a, b) => {
+                                    const order = ['Завтраки', 'Обеды и ужины', 'Десерты'];
+                                    return order.indexOf(a.name) - order.indexOf(b.name);
+                                }).map((category, index) => (
                                     <FoodContainer
                                         key={index}
                                         title={category.name}

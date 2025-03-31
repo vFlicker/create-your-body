@@ -139,7 +139,7 @@ function App() {
               <Route path="parameters" element={<Parameters data={data} userId={userId} setData={setData} />} />
               <Route path="record" element={<Record data={data} userId={userId} />} />
               <Route path="communication" element={<Communication data={data} userId={userId} base={base} />} />
-              <Route path="train" element={<Train data={data} userId={userId} level={data.user_level} />} />
+              <Route path="train" element={<Train data={data} userId={userId} level={data.user_level} base={base} />} />
               <Route path="food" element={<Food data={data} userId={userId} />} />
               <Route path="lectures" element={<Lectures data={data} userId={userId} />} />
               <Route path="recipes" element={<Recipes data={data} userId={userId} />} />

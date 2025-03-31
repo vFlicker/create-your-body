@@ -1228,7 +1228,7 @@ const transition = {
     duration: 0.3
 };
 
-export default function TrainContent({ view, level }) {
+export default function TrainContent({ view, level, base }) {
     const [[page, direction], setPage] = useState([0, 0]);
     const [selectedWeek, setSelectedWeek] = useState(null);
     const [selectedTraining, setSelectedTraining] = useState(null);
@@ -1293,12 +1293,12 @@ export default function TrainContent({ view, level }) {
 
         return (
             <div className="warmupContent">
-                <Selecter
+                {!base && <Selecter
                     textOne='Разминка'
                     textTwo='МФР'
                     activeIndex={activeIndex}
                     onClick={handleSelect}
-                />
+                />}
                 <AnimatePresence initial={false} custom={direct} mode="wait">
                     <motion.div
                         key={activeIndex}
@@ -1333,7 +1333,7 @@ export default function TrainContent({ view, level }) {
                                         <div className="warmup-navigation">
                                             <Button
                                                 onClick={handleComplete}
-                                                text="Завершить тренировку"
+                                                text="Завершить разминку"
                                                 icon={check}
                                                 bg="#CBFF52"
                                                 bgFocus="#EBFFBD"
@@ -1358,6 +1358,17 @@ export default function TrainContent({ view, level }) {
                                         <p>{item.text}</p>
                                     </div>
                                 ))}
+                                <div className="warmup-navigation">
+                                            <Button
+                                                onClick={handleComplete}
+                                                text="Завершить МФР"
+                                                icon={check}
+                                                bg="#CBFF52"
+                                                bgFocus="#EBFFBD"
+                                                color="#0D0D0D"
+                                                width="100%"
+                                            />
+                                        </div>
                             </div>
                         )}
                     </motion.div>
@@ -1384,7 +1395,7 @@ export default function TrainContent({ view, level }) {
                 {page === 0 && (
                     <motion.div
                         key="weeks"
-                        className="screen weeks-screen"
+                        className="weeks-screen"
                         custom={direction}
                         variants={slideVariants}
                         initial="enter"
@@ -1406,7 +1417,7 @@ export default function TrainContent({ view, level }) {
                 {page === 1 && selectedWeek && (
                     <motion.div
                         key="trainings"
-                        className="screen trainings-screen"
+                        className="trainings-screen"
                         custom={direction}
                         variants={slideVariants}
                         initial="enter"
