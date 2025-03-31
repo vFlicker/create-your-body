@@ -56,12 +56,12 @@ export default function Communication({ data, base }) {
             { !base &&
             <div className='hiteTgBtn'>
             <TelegramLinkButton 
-                username={'+C7RnSm1dKCxmMzdi'}  
+                username={'+2Y3vGikRzyc2ZWQy'}  
                 buttonText='Чат в Telegram'
                 icon={chat}          
             />
             <TelegramLinkButton 
-                username={'+71ht2GTsGtQ0ODI6'}  
+                username={'+WPfyWZoeWik5ODcy'}  
                 buttonText='Инфо канал'
                 icon={channel}          
             />
