@@ -89,3 +89,16 @@
   width: 16px;
   height: 16px;
 }
+
+.bonus {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 30px;
+    border-radius: 50px;
+    background: #cbff52;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}

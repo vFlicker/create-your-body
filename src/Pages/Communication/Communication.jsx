@@ -46,7 +46,7 @@ export default function Communication({ data, base }) {
             <ProfileBtn level={data.user_level} user_photo={data.image} />
             <div className="comTitle">
                 <img src={chat} alt="Общение и поддержка" />
-                <h1>Общение и поддержка</h1>
+                <h1 style={{fontSize: '24px'}}>Общение и поддержка</h1>
             </div>
         </div>
         <div className="botCom">

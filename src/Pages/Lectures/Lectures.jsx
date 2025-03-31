@@ -159,7 +159,7 @@ export default function Lectures({ level, user_photo }) {
                 <ProfileBtn level={level} user_photo={user_photo} />
                 <div className="lecturesTitle">
                     <img src={book} alt="Лекции" />
-                    <h1>Лекции</h1>
+                    <h1 style={{fontSize: '24px'}}>Лекции</h1>
                 </div>
             </div>
             <div className="bottomLectures">

@@ -23,7 +23,7 @@ import Communication from "./Pages/Communication/Communication";
 import Train from "./Pages/Train/Train";
 import Food from "./Pages/Food/Food";
 import Lectures from "./Pages/Lectures/Lectures";
-
+import Recipes from "./Pages/Recipes/Recipes";
 function Layout() {
   const location = useLocation();
   const hiddenPathsBack = ['/', '/quiz', '/result', '/dashboard'];
@@ -133,7 +133,7 @@ function App() {
               <Route index element={<StartPage data={data} />} />
               <Route path="quiz" element={<Quiz userId={userId} />} />
               <Route path="result" element={<Result userId={userId} />} />
-              <Route path="dashboard" element={<Dashboard data={data} userId={userId} />} />
+              <Route path="dashboard" element={<Dashboard data={data} userId={userId} base={base} />} />
               <Route path="begin" element={<Begin data={data} userId={userId} />} />
               <Route path="profile" element={<Profile data={data} userId={userId} setData={setData} />} />
               <Route path="parameters" element={<Parameters data={data} userId={userId} setData={setData} />} />
@@ -142,6 +142,7 @@ function App() {
               <Route path="train" element={<Train data={data} userId={userId} level={data.user_level} />} />
               <Route path="food" element={<Food data={data} userId={userId} />} />
               <Route path="lectures" element={<Lectures data={data} userId={userId} />} />
+              <Route path="recipes" element={<Recipes data={data} userId={userId} />} />
             </Route>
           ) : (
             <Route path="*" element={<NoEntry />} />

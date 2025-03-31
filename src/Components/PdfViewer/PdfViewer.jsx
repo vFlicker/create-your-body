@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import {
     Worker,
     Viewer,
@@ -13,6 +14,8 @@ import { API_BASE_URL } from '../../API';
 
 import right from "../../Assets/svg/right.svg";
 import left from "../../Assets/svg/left.svg";
+import fullscreen from '../../Assets/svg/fullscreen.svg';
+import close from '../../Assets/svg/close.svg';
 import Loader from "../Loader/Loader";
 
 import "./PdfViewer.css";
@@ -22,9 +25,14 @@ const WORKER_URL = `https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.j
 export default function PdfViewer({ pdfId, pdfFile }) {
     const [pdfUrl, setPdfUrl] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isFullscreen, setIsFullscreen] = useState(false);
 
     const pageNavigationPluginInstance = pageNavigationPlugin();
     const { jumpToNextPage, jumpToPreviousPage, CurrentPageLabel } = pageNavigationPluginInstance;
+
+    const toggleFullscreen = () => {
+        setIsFullscreen(!isFullscreen);
+    };
 
     useEffect(() => {
         const setupPdf = async () => {
@@ -59,12 +67,13 @@ export default function PdfViewer({ pdfId, pdfFile }) {
         };
     }, [pdfId, pdfFile]);
 
-    return (
-        <div className="mainPdfViewer">
+    const renderPdfContent = () => (
+        <>
             {isLoading && <Loader />}
+            <div className={`fullscreenOverlay ${isFullscreen ? 'active' : ''}`} />
 
             {pdfUrl && (
-                <div className="pdfViewerContainer">
+                <div className={`pdfViewerContainer ${isFullscreen ? 'fullscreen' : ''}`}>
                     <Worker workerUrl={WORKER_URL}>
                         <Viewer
                             defaultScale={SpecialZoomLevel.PageFit}
@@ -74,6 +83,13 @@ export default function PdfViewer({ pdfId, pdfFile }) {
                             plugins={[pageNavigationPluginInstance]}
                         />
                     </Worker>
+
+                    <button
+                        className={`pdfViewerButton ${isFullscreen ? 'close' : 'fullscreen'}`}
+                        onClick={toggleFullscreen}
+                    >
+                        <img src={isFullscreen ? close : fullscreen} alt={isFullscreen ? "close" : "fullscreen"} />
+                    </button>
 
                     <div className="pdfViewerFooter">
                         <div className="pdfViewerFooterInner">
@@ -114,6 +130,16 @@ export default function PdfViewer({ pdfId, pdfFile }) {
                     <a href="https://www.yournutrition.ru/calories/">https://www.yournutrition.ru/calories/</a>
                 </p>
             )}
+        </>
+    );
+
+    if (isFullscreen) {
+        return createPortal(renderPdfContent(), document.body);
+    }
+
+    return (
+        <div className="mainPdfViewer">
+            {renderPdfContent()}
         </div>
     );
 } 

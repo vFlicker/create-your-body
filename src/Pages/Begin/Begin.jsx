@@ -40,7 +40,7 @@ export default function Begin({ userId, data }) {
         <ProfileBtn level={data.user_level} user_photo={data.image} />
         <div className="beginTitle">
           <img src={health} alt="Введение" />
-          <h1>Введение</h1>
+          <h1 style={{fontSize: '24px'}}>Введение</h1>
         </div>
       </div>
       <div className="botBegin">

@@ -51,7 +51,7 @@ export default function Dashboard({ data, base }) {
     {
       name: 'Рецепты',
       icon: recipes,
-      closed: base ? '' : '31 марта',
+      closed: base ? '' : null,
       buy: base ? true : false,
       instruction: false,
       to: 'recipes'

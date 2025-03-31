@@ -1,0 +1,174 @@
+.recipesPage {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 90px);
+}
+
+.topRecipes {
+  display: flex;
+  flex-direction: column;
+  padding: 70px 16px 32px 16px;
+  gap: 16px;
+}
+
+.topRecipesTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.topRecipesTitle h1 {
+    font-size: 24px;
+    color: #0D0D0D;
+}
+
+.botRecipes {
+  padding: 16px;
+  border-radius: 16px 16px 0 0;
+  background: #fff;
+  flex: 1;
+  position: relative;
+  overflow: scroll;
+}
+
+.botRecipesContent {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  height: 100%;
+  overflow: scroll;
+}
+
+.categoryContent {
+  gap: 16px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.categoryTitle {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.categoryRecipes {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.recipeItem {
+  padding: 16px;
+  background: #f2f2f2;
+  border: 1px solid #e6e6e6;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.loadMoreBtn {
+  padding: 12px;
+  background: #d4ff4d;
+  color: #0d0d0d;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.recipeContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.recipeTitle {
+  font-size: 18px;
+  color: #0d0d0d;
+}
+
+.recipeImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.recipeDescription {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.nutrition,
+.ingredients {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nutrition h3,
+.ingredients h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0d0d0d;
+}
+
+.nutrition p,
+.ingredients p {
+  font-size: 14px;
+  color: #0d0d0d;
+}
+
+.nutritionItem,
+.ingredientItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f2f2f2;
+  padding-bottom: 8px;
+}
+
+.nutritionItem span,
+.ingredientItem span {
+  font-weight: 500;
+}
+
+.nutritionItem:last-child,
+.ingredientItem:last-child {
+  border-bottom: none;
+}
+
+.recipeDescriptionText {
+  font-size: 18px;
+  font-weight: 400;
+  color: #0d0d0d;
+  text-align: center;
+}
+
+.steps {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.step span {
+    font-size: 14px;
+    font-weight: 400;
+    color: #A799FF;
+}
+
+.step p {
+    font-size: 14px;
+    color: #0D0D0D;
+}

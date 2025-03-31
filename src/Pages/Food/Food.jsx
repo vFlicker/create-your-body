@@ -57,7 +57,7 @@ export default function Food({ data }) {
                 <ProfileBtn level={data?.user_level} user_photo={data?.image} />
                 <div className='topFoodTitle'>
                     <img src={food} alt='logo' />
-                    <h1>Питание</h1>
+                    <h1 style={{fontSize: '24px'}}>Питание</h1>
                 </div>
             </div>
             <div className='botFood'>

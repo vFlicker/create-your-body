@@ -41,6 +41,7 @@ export default function TrainingPage({ trainingData, level, onBack, lectures }) 
     const [isLastPart, setIsLastPart] = useState(false);
     const [isFirstPart, setIsFirstPart] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
+    const [isBonus, setIsBonus] = useState(false);
     const contentRef = useRef(null);
 
     useEffect(() => {
@@ -49,13 +50,16 @@ export default function TrainingPage({ trainingData, level, onBack, lectures }) 
             return;
         }
 
+        if (trainingData?.bonus) {
+            setIsBonus(true);
+        }
         const currentData = trainingData[levelType];
         const parts = Array.isArray(currentData) ? currentData : [currentData];
 
         // Фильтруем пустые части
         const validParts = parts.filter(part =>
             part.videoUrl || part.text || part.videoUrl_2 || part.text_2 ||
-            part.videoUrl_3 || part.text_3 || part.super_text
+            part.videoUrl_3 || part.text_3 || part.super_text || part.super_description
         );
 
         if (validParts.length === 0) {
@@ -153,10 +157,10 @@ export default function TrainingPage({ trainingData, level, onBack, lectures }) 
             custom={direction}
             transition={transition}
         >
-            {part.super_text && (
+            {(part.super_text || part.super_description) && (
                 <div className="super-set">
-                    <h2>{part.super_text}</h2>
-                    <p>{part.super_description}</p>
+                    {part.super_text && <h2>{part.super_text}</h2>}
+                    {part.super_description && <p style={{ whiteSpace: 'pre-line' }}>{part.super_description}</p>}
                 </div>
             )}
 
@@ -217,7 +221,7 @@ export default function TrainingPage({ trainingData, level, onBack, lectures }) 
 
     return (
         <div className="training-page">
-            <h1>{trainingData.title}</h1>
+            <h1>{trainingData.title} {isBonus && 'БОНУС'}</h1>
 
             <div className="training-content-wrapper" ref={contentRef}>
                 <AnimatePresence initial={false} custom={direction} mode="wait">

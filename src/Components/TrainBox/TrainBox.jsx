@@ -4,6 +4,7 @@ import './TrainBox.css'
 import play from '../../Assets/svg/play.svg'
 import mokap from '../../Assets/img/mokap.PNG'
 import close from '../../Assets/svg/closeTrain.svg'
+import bonus from '../../Assets/svg/gift.svg';
 
 export default function TrainBox({ data, lectures, onClick, level }) {
     const [levelType, setLevelType] = useState(level);
@@ -16,6 +17,7 @@ export default function TrainBox({ data, lectures, onClick, level }) {
     const isLecture = !!lectures;
     const currentData = isLecture ? lectures : data;
     const isClosed = currentData?.closed;
+    const isBonus = currentData?.bonus;
 
     console.log('Current data:', currentData);
 
@@ -71,6 +73,9 @@ export default function TrainBox({ data, lectures, onClick, level }) {
     return (
         <div className={`trainBox ${isClosed ? 'closed' : ''}`} onClick={isClosed ? undefined : onClick}>
             {isClosed && <img src={close} alt="close" className='closeTrain'/>}
+            {isBonus && <div className='bonus'>
+                <img src={bonus} alt='Бонус' />
+            </div>}
             <div className='forTrainImg'>
                 <img src={mokap} alt="play" />
             </div>

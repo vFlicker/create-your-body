@@ -68,7 +68,7 @@ export default function Train({ data, level }) {
                 <ProfileBtn level={data?.user_level} user_photo={data.image} />
                 <div className="trainTitle">
                     <img src={muscules} alt="Тренировка" />
-                    <h1>Тренировки</h1>
+                    <h1 style={{fontSize: '24px'}}>Тренировки</h1>
                 </div>
                 {/* <Progress /> */}
             </div>
