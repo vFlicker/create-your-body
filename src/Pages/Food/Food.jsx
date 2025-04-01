@@ -6,12 +6,12 @@ import { API_BASE_URL } from '../../API'
 
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn'
 import Loader from '../../Components/Loader/Loader'
-import PdfViewer from '../../Components/PdfViewer/PdfViewer.jsx'
+import PdfViewer from '../../Components/PdfViewer/PdfViewer'
 import FoodContainer from '../../Components/Container/FoodContainer'
 
 import food from '../../Assets/nav/food.svg'
 
-export default function Food({ data }) {
+export default function Food({ data, userId }) {
     const [isLoading, setIsLoading] = useState(true);
     const [dataFood, setDataFood] = useState(null);
     const [selectedPdfId, setSelectedPdfId] = useState(null);
@@ -21,6 +21,7 @@ export default function Food({ data }) {
             try {
                 setIsLoading(true);
                 const response = await axios.get(`${API_BASE_URL}/cms/api/nutrition/client/category/nutrition`);
+                console.log('Ответ сервера на запрос питания:', response.data)
                 setDataFood(response.data);
             } catch (error) {
                 console.error('Ошибка при получении данных:', error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
@@ -83,7 +84,7 @@ export default function Food({ data }) {
                     </div>
                     {selectedPdfId && (
                         <div className={`pdf-wrapper ${selectedPdfId ? 'slide-in' : ''}`}>
-                            <PdfViewer pdfId={selectedPdfId} />
+                            <PdfViewer pdfId={selectedPdfId} userId={userId} />
                         </div>
                     )}
                 </div>

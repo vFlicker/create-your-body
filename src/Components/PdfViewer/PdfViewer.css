@@ -1,106 +1,106 @@
 .pdfViewerContainer {
-  position: relative;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 100%;
-  height: 400px;
-  transition: all 0.3s ease;
-}
-
-.pdfViewerContainer.fullscreen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1000;
-  background: #fff;
-}
-
-.pdfViewerContainer.fullscreen .rpv-core__viewer {
+    position: relative;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    width: 100%;
+    height: 400px;
     transition: all 0.3s ease;
-    background: rgb(0, 0, 0, 0.5);
-}
-
-.fullscreenOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-  z-index: 999;
-}
-
-.fullscreenOverlay.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.pdfViewerFooter {
-  position: absolute;
-  bottom: 16px;
-  width: 100%;
-}
-
-.pdfViewerFooterInner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 16px;
-  opacity: 0.7;
-}
-
-.pdfViewerButton {
-  width: 40px;
-  height: 40px;
-  border: 1px solid #e6e6e6;
-  background: #f2f2f2;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.pdfViewerButton.fullscreen {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: #cbff52;
-  border: none;
-}
-
-.pdfViewerButton.close {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: #cbff52;
-  border: none;
-  z-index: 1001;
-}
-
-.pdfViewerButton:hover {
-  transform: scale(1.05);
-}
-
-.pdfViewerButton img {
-  width: 20px;
-  height: 20px;
-}
-
-.pdfViewerPages {
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.pdfViewerContainer .rpv-core__inner-page {
-  background-color: inherit;
-}
+  }
+  
+  .pdfViewerContainer.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    background: #fff;
+  }
+  
+  .pdfViewerContainer.fullscreen .rpv-core__viewer {
+      transition: all 0.3s ease;
+      background: rgb(0, 0, 0, 0.5);
+  }
+  
+  .fullscreenOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 999;
+  }
+  
+  .fullscreenOverlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .pdfViewerFooter {
+    position: absolute;
+    bottom: 16px;
+    width: 100%;
+  }
+  
+  .pdfViewerFooterInner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    opacity: 0.7;
+  }
+  
+  .pdfViewerButton {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #e6e6e6;
+    background: #f2f2f2;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .pdfViewerButton.fullscreen {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: #cbff52;
+    border: none;
+  }
+  
+  .pdfViewerButton.close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: #cbff52;
+    border: none;
+    z-index: 1001;
+  }
+  
+  .pdfViewerButton:hover {
+    transform: scale(1.05);
+  }
+  
+  .pdfViewerButton img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .pdfViewerPages {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  
+  .pdfViewerContainer .rpv-core__inner-page {
+    background-color: inherit;
+  }

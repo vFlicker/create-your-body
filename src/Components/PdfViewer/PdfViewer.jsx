@@ -22,7 +22,7 @@ import "./PdfViewer.css";
 
 const WORKER_URL = `https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`;
 
-export default function PdfViewer({ pdfId, pdfFile }) {
+export default function PdfViewer({ pdfId, pdfFile, userId }) {
     const [pdfUrl, setPdfUrl] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isFullscreen, setIsFullscreen] = useState(false);
@@ -44,7 +44,9 @@ export default function PdfViewer({ pdfId, pdfFile }) {
                     setPdfUrl(url);
                 } else if (pdfId) {
                     // Если передан ID для запроса
-                    const response = await axios.get(`${API_BASE_URL}/cms/api/nutrition/client/${pdfId}`);
+                    const response = await axios.get(`${API_BASE_URL}/cms/api/nutrition/client/${pdfId}?tg_id=${userId}`);
+                    console.log(response)
+                    console.log('Ответ сервера на запрос pdf по id:', response.data);
                     const pdfUrl = response.data.data.pdfUrl;
                     const pdfResponse = await fetch(pdfUrl);
                     const blob = await pdfResponse.blob();
@@ -65,7 +67,7 @@ export default function PdfViewer({ pdfId, pdfFile }) {
                 URL.revokeObjectURL(pdfUrl);
             }
         };
-    }, [pdfId, pdfFile]);
+    }, [pdfId, pdfFile, userId]);
 
     const renderPdfContent = () => (
         <>

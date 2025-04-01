@@ -97,7 +97,7 @@ const gym = [
             },
             {
                 title: 'Тренировка 2',
-                profi: [ 
+                profi: [
                     {
                         videoUrl: 'https://kinescope.io/embed/7k6oCWAH5QsqQ6H1W1bCoi',
                         text: 'Вертикальная тяга широким хватом 12-15 повторений, 4 подхода\nВремя отдыха между подходами 1.30-2 мин.\n1. Беремся широким хватом, большой палец обязательно фиксируем сверху, а не снизу, чтобы не нагрузить запястье\n2. Выстраиваем ровную линию тела от макушки до крестца, лопатки направляем вниз к ягодицам\n3. На выдох, сгибаем руки в локте, тянем рукояти вниз, через лопатки, на вдох, медленно возвращаем в исходное положения, при этом не переразгибая локтевой сустав\n4. Во время движения вниз, локти всегда приводим чуть вперед',
@@ -168,7 +168,7 @@ const gym = [
             },
             {
                 title: 'Тренировка 3',
-                profi: [ 
+                profi: [
                     {
                         videoUrl: 'https://kinescope.io/embed/twgqCmyNaj9TMDuqPmMamP',
                         text: '1. Отведение бедер сидя в тренажере 15/15/15 3 подхода\nВремя отдыха между подходами 1.30-2 мин.\n1. Первое положение спина прижата, второе спина ровно, третье ровной спиной наклоняемся вперед \n2. Взгляд перед собой, за макушкой тянемся вверх\n3. Сильный живот, поясница зафиксирована \n4. На выдох, отводим бедра в сторону, на вдох медленно возвращаем в исходное положение',
@@ -1264,7 +1264,7 @@ export default function TrainContent({ view, level, base }) {
     useEffect(() => {
         // Устанавливаем handleBack только если мы не на странице упражнений
         if (page !== 2) {
-        window.handleBack = handleBack;
+            window.handleBack = handleBack;
             document.body.setAttribute('data-handle-back', 'true');
         } else {
             window.handleBack = null;
@@ -1312,35 +1312,35 @@ export default function TrainContent({ view, level, base }) {
                     >
                         {activeIndex === 0 ? (
                             <div className="warmup-content">
-                                        <div className="warmup-videos">
+                                <div className="warmup-videos">
                                     {warmup.Z.map((item, index) => (
                                         <div key={index} className="videoContent">
                                             <div className="video-section">
-                                                        <div className="videoContainer">
-                                                            <iframe
+                                                <div className="videoContainer">
+                                                    <iframe
                                                         src={item.videoUrl}
-                                                                allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
-                                                                frameBorder="0"
-                                                                allowFullScreen
-                                                                title={`Разминка ${index + 1}`}
-                                                            />
-                                                        </div>
-                                                    </div>
-                                            <p style={{ color: '#0D0D0D', fontSize: '16px' }}>{item.text}</p>
+                                                        allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
+                                                        frameBorder="0"
+                                                        allowFullScreen
+                                                        title={`Разминка ${index + 1}`}
+                                                    />
                                                 </div>
-                                            ))}
+                                            </div>
+                                            <p style={{ color: '#0D0D0D', fontSize: '16px' }}>{item.text}</p>
                                         </div>
-                                        <div className="warmup-navigation">
-                                            <Button
-                                                onClick={handleComplete}
-                                                text="Завершить разминку"
-                                                icon={check}
-                                                bg="#CBFF52"
-                                                bgFocus="#EBFFBD"
-                                                color="#0D0D0D"
-                                                width="100%"
-                                            />
-                                        </div>
+                                    ))}
+                                </div>
+                                <div className="warmup-navigation">
+                                    <Button
+                                        onClick={handleComplete}
+                                        text="Завершить разминку"
+                                        icon={check}
+                                        bg="#CBFF52"
+                                        bgFocus="#EBFFBD"
+                                        color="#0D0D0D"
+                                        width="100%"
+                                    />
+                                </div>
                             </div>
                         ) : (
                             <div className="warmup-content">
@@ -1359,16 +1359,16 @@ export default function TrainContent({ view, level, base }) {
                                     </div>
                                 ))}
                                 <div className="warmup-navigation">
-                                            <Button
-                                                onClick={handleComplete}
-                                                text="Завершить МФР"
-                                                icon={check}
-                                                bg="#CBFF52"
-                                                bgFocus="#EBFFBD"
-                                                color="#0D0D0D"
-                                                width="100%"
-                                            />
-                                        </div>
+                                    <Button
+                                        onClick={handleComplete}
+                                        text="Завершить МФР"
+                                        icon={check}
+                                        bg="#CBFF52"
+                                        bgFocus="#EBFFBD"
+                                        color="#0D0D0D"
+                                        width="100%"
+                                    />
+                                </div>
                             </div>
                         )}
                     </motion.div>
