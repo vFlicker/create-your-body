@@ -5,6 +5,7 @@ import Button from '../Button/Button';
 import Loader from '../../Components/Loader/Loader';
 
 import arrow from '../../Assets/svg/arrow.svg'
+import back from '../../Assets/svg/arrowBack.svg'
 import check from '../../Assets/svg/check.svg'
 import brain from '../../Assets/svg/brain.svg'
 const slideVariants = {
@@ -231,6 +232,15 @@ export default function TrainingPage({ trainingData, level, onBack, lectures }) 
                 </AnimatePresence>
             </div>
             <div className="training-navigation">
+                <Button 
+                    onClick={handleBack}
+                    text='Назад'
+                    icon={back}
+                    bg='#CBFF52'
+                    bgFocus='#EBFFBD'
+                    color='#0d0d0d'
+                    width='100%'
+                />
                 <Button
                     onClick={handleNext}
                     text={isLastPart ? (lectures ? "Изучено" : "Завершить") : "Продолжить"}
@@ -239,6 +249,7 @@ export default function TrainingPage({ trainingData, level, onBack, lectures }) 
                     bg={isLastPart ? "#CBFF52" : "#A799FF"}
                     bgFocus={isLastPart ? "#EBFFBD" : "#776CBC"}
                     color={isLastPart ? "#0d0d0d" : "#fff"}
+                    width='100%'
                 />
             </div>
         </div>
