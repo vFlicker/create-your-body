@@ -8,7 +8,7 @@ import channel from '../../Assets/svg/channel.svg'
 import help from '../../Assets/svg/help.svg'
 import bot from '../../Assets/svg/bot.svg'
 
-const TelegramLinkButton = ({ username, icon, buttonText = 'Перейти в Telegram', disabled }) => {
+export const TelegramLinkButton = ({ username, icon, buttonText = 'Перейти в Telegram', disabled, style }) => {
     const handleOpenTelegramLink = () => {
       const tg = window.Telegram?.WebApp;
       if (tg) {
@@ -26,6 +26,7 @@ const TelegramLinkButton = ({ username, icon, buttonText = 'Перейти в Te
         className='tgBtn'
         onClick={handleOpenTelegramLink}
         disabled={disabled}
+        style={style}
       >
         <img src={icon} alt="Перейти в телеграмм" />
         <p>{buttonText}</p>

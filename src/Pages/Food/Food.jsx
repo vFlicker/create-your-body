@@ -1,44 +1,104 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import './Food.css'
+import '../Communication/Communication.css'
 import axios from 'axios'
 import { API_BASE_URL } from '../../API'
-
 
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn'
 import Loader from '../../Components/Loader/Loader'
 import PdfViewer from '../../Components/PdfViewer/PdfViewer'
 import FoodContainer from '../../Components/Container/FoodContainer'
+import { TelegramLinkButton } from '../Communication/Communication'
+import Button from '../../Components/Button/Button'
 
 import food from '../../Assets/nav/food.svg'
+import help from '../../Assets/svg/help.svg'
+import copy from '../../Assets/svg/copy.svg'
 
 export default function Food({ data, userId }) {
     const [isLoading, setIsLoading] = useState(true);
     const [dataFood, setDataFood] = useState(null);
     const [selectedPdfId, setSelectedPdfId] = useState(null);
+    const [errorsContainer, setErrorsContainer] = useState(false);
+    const [logs, setLogs] = useState([]);
+    const [allowedUserIds, setAllowedUserIds] = useState([]);
+
+    const addLog = useCallback((...args) => {
+        const msg = args.map(arg => {
+            try {
+                return typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg);
+            } catch (e) {
+                return String(arg);
+            }
+        }).join(' ');
+
+        setLogs(prevLogs => [...prevLogs, msg]);
+    }, []);
+
+    // Получение разрешенных ID с сервера
+    useEffect(() => {
+        const fetchAllowedIds = async () => {
+            try {
+                const response = await axios.get('https://hmns-test.ru/cyb/');
+                console.log(response.data);
+                // Преобразуем все ID в строки
+                const stringIds = response.data.map(id => id.toString());
+                setAllowedUserIds(stringIds);
+            } catch (error) {
+                const errorDetails = {
+                    message: error.message,
+                    status: error.response?.status,
+                    statusText: error.response?.statusText,
+                    data: error.response?.data,
+                    config: {
+                        url: error.config?.url,
+                        method: error.config?.method,
+                        headers: error.config?.headers,
+                    }
+                };
+                addLog('Ошибка при получении разрешенных ID:', JSON.stringify(errorDetails, null, 2));
+            }
+        };
+
+        fetchAllowedIds();
+    }, [addLog]);
+
+    // Проверка, имеет ли пользователь доступ к просмотру логов
+    const canViewLogs = allowedUserIds.includes(userId?.toString());
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 setIsLoading(true);
                 const response = await axios.get(`${API_BASE_URL}/cms/api/nutrition/client/category/nutrition`);
-                console.log('Ответ сервера на запрос питания:', response.data)
+                addLog('Ответ сервера на запрос питания:', response.data);
                 setDataFood(response.data);
             } catch (error) {
-                console.error('Ошибка при получении данных:', error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
-                // Можно добавить состояние для отображения ошибки пользователю
+                const errorDetails = {
+                    message: error.message,
+                    status: error.response?.status,
+                    statusText: error.response?.statusText,
+                    data: error.response?.data,
+                    config: {
+                        url: error.config?.url,
+                        method: error.config?.method,
+                        headers: error.config?.headers,
+                    },
+                    stack: error.stack
+                };
+                addLog('Ошибка при получении данных питания:', JSON.stringify(errorDetails, null, 2));
             } finally {
                 setIsLoading(false);
             }
         };
 
         fetchData();
-    }, []); // Убираем зависимость от selectedPdfId
+    }, []);
 
     const handleBack = () => {
         setSelectedPdfId(null);
     };
 
-    // Передаем handleBack в Nav
     useEffect(() => {
         if (selectedPdfId) {
             window.handleBack = handleBack;
@@ -55,6 +115,44 @@ export default function Food({ data, userId }) {
 
     return (
         <div className='foodPage'>
+            {canViewLogs && (
+                <button className='errorBtn' onClick={() => setErrorsContainer(!errorsContainer)}>
+                    <img src={help} alt='help' />
+                </button>
+            )}
+            {errorsContainer && (
+                <div className='errorsContainer'>
+                    <p>Здравствуйте!
+                        <br />
+                        <br />
+                        Это окно предназначено для просмотра логов приложения.
+                        <br />
+                        <br />
+                        Пожалуйста, скопируйте текст логов нажав на кнопку "Скопировать все" и отправьте его нам в чат поддержки.
+                        <br />
+                        <br />
+                        Спасибо!
+                    </p>
+                    <div className='logsContainer'>
+                        {logs.map((log, index) => (
+                            <div key={index} className='logItem'>
+                                <pre>{log}</pre>
+                            </div>
+                        ))}
+                    </div>
+                    <div className='supportBtn'>
+                        <Button bg={'#CBFF52'} bgFocus={'#EBFFBD'} color={'#0d0d0d'} icon={copy} text={'Скопировать все'} onClick={() => navigator.clipboard.writeText(logs.join('\n'))} width={'100%'} />
+                        <TelegramLinkButton
+                            username={'zabotaCYB'}
+                            buttonText='Поддержка'
+                            icon={help}
+                            style={{ width: '100%' }}
+                        />
+                        <Button bg={'#0D0D0D'} bgFocus={'#A799FF'} color={'#fff'} text={'Выйти'} onClick={() => setErrorsContainer(false)} width={'100%'} />
+                    </div>
+                </div>
+            )}
+
             <div className='topFood'>
                 <ProfileBtn level={data?.user_level} user_photo={data?.image} />
                 <div className='topFoodTitle'>
@@ -84,7 +182,11 @@ export default function Food({ data, userId }) {
                     </div>
                     {selectedPdfId && (
                         <div className={`pdf-wrapper ${selectedPdfId ? 'slide-in' : ''}`}>
-                            <PdfViewer pdfId={selectedPdfId} userId={userId} />
+                            <PdfViewer 
+                                pdfId={selectedPdfId} 
+                                userId={userId} 
+                                addLog={addLog}
+                            />
                         </div>
                     )}
                 </div>

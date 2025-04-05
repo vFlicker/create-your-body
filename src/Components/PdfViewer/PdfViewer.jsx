@@ -22,7 +22,7 @@ import "./PdfViewer.css";
 
 const WORKER_URL = `https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`;
 
-export default function PdfViewer({ pdfId, pdfFile, userId }) {
+export default function PdfViewer({ pdfId, pdfFile, userId, addLog }) {
     const [pdfUrl, setPdfUrl] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isFullscreen, setIsFullscreen] = useState(false);
@@ -42,19 +42,38 @@ export default function PdfViewer({ pdfId, pdfFile, userId }) {
                     // Если передан прямой файл PDF
                     const url = typeof pdfFile === 'string' ? pdfFile : URL.createObjectURL(pdfFile);
                     setPdfUrl(url);
+                    addLog('PDF файл загружен из локального источника:', url);
                 } else if (pdfId) {
                     // Если передан ID для запроса
+                    addLog('Начало запроса PDF по ID:', pdfId);
                     const response = await axios.get(`${API_BASE_URL}/cms/api/nutrition/client/${pdfId}?tg_id=${userId}`);
-                    console.log(response)
-                    console.log('Ответ сервера на запрос pdf по id:', response.data);
+                    addLog('Ответ сервера на запрос PDF:', response.data);
+                    
                     const pdfUrl = response.data.data.pdfUrl;
+                    addLog('Получен URL PDF:', pdfUrl);
+                    
                     const pdfResponse = await fetch(pdfUrl);
+                    addLog('Статус ответа при загрузке PDF:', pdfResponse.status, pdfResponse.statusText);
+                    
                     const blob = await pdfResponse.blob();
                     const url = URL.createObjectURL(blob);
                     setPdfUrl(url);
+                    addLog('PDF успешно загружен и преобразован в blob URL:', url);
                 }
             } catch (err) {
-                console.error("Error setting up PDF:", err);
+                const errorDetails = {
+                    message: err.message,
+                    status: err.response?.status,
+                    statusText: err.response?.statusText,
+                    data: err.response?.data,
+                    config: {
+                        url: err.config?.url,
+                        method: err.config?.method,
+                        headers: err.config?.headers,
+                    },
+                    stack: err.stack
+                };
+                addLog('Ошибка при загрузке PDF:', JSON.stringify(errorDetails, null, 2));
             } finally {
                 setIsLoading(false);
             }
@@ -65,9 +84,10 @@ export default function PdfViewer({ pdfId, pdfFile, userId }) {
         return () => {
             if (pdfUrl && pdfUrl.startsWith('blob:')) {
                 URL.revokeObjectURL(pdfUrl);
+                addLog('Освобожден blob URL:', pdfUrl);
             }
         };
-    }, [pdfId, pdfFile, userId]);
+    }, [pdfId, pdfFile, userId, addLog]);
 
     const renderPdfContent = () => (
         <>
