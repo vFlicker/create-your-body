@@ -68,6 +68,7 @@ function App() {
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.ready();
       window.Telegram.WebApp.expand();
+      window.Telegram.WebApp.disableVerticalSwipes();
 
       const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
       setUserId(telegramUser.id);
