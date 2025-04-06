@@ -65,6 +65,12 @@ function App() {
   }, []);
 
   useEffect(() => {
+    addLog('Проверка окружения:');
+    addLog('window.Telegram:', !!window.Telegram, window.Telegram);
+    addLog('window.Telegram.WebApp:', !!(window.Telegram && window.Telegram.WebApp), window.Telegram.WebApp);
+    addLog('User Agent:', navigator.userAgent);
+    addLog('Платформа:', navigator.userAgentData?.platform || 'Неизвестно');
+    
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.ready();
       window.Telegram.WebApp.expand();
