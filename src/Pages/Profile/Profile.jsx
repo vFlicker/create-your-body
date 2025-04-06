@@ -15,14 +15,14 @@ import settings from '../../Assets/svg/settings.svg';
 import right from '../../Assets/svg/right.svg';
 import close from '../../Assets/svg/close.svg';
 import zamer from '../../Assets/img/zamer.jpeg';
-import chart from '../../Assets/svg/chart.svg';
+// import chart from '../../Assets/svg/chart.svg';
 
 export default function Profile({ userId, data, setData }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(data.user_level === 'Новичок' ? 0 : 1);
   const [dataParameters, setDataParameters] = useState(null);
-  const [isPressed, setIsPressed] = useState(false);
+  // const [isPressed, setIsPressed] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // Новое состояние для загрузки
 
   useEffect(() => {
@@ -50,10 +50,10 @@ export default function Profile({ userId, data, setData }) {
     fetchUserData();
   }, [userId]);
 
-  const handleMouseDown = () => setIsPressed(true);
-  const handleMouseUp = () => setIsPressed(false);
-  const handleTouchStart = () => setIsPressed(true);
-  const handleTouchEnd = () => setIsPressed(false);
+  // const handleMouseDown = () => setIsPressed(true);
+  // const handleMouseUp = () => setIsPressed(false);
+  // const handleTouchStart = () => setIsPressed(true);
+  // const handleTouchEnd = () => setIsPressed(false);
 
   const handleSelecterClick = async (index) => {
     setActiveIndex(index);
@@ -117,7 +117,7 @@ export default function Profile({ userId, data, setData }) {
                 />
               )}
             </div>
-            <div className="recordText">
+            {/* <div className="recordText">
               <h4>Запись прогресса</h4>
               <p>Чтобы отслеживать прогресс необходимо в конце каждой недели обновлять параметры.</p>
             </div>
@@ -134,14 +134,23 @@ export default function Profile({ userId, data, setData }) {
               <img src={chart} alt="Записать прогресс" />
               <p>Записать прогресс</p>
             </button>
-            {false && <p className='notseven'>Следующая запись будет доступна через 7 дней</p>}
+            {false && <p className='notseven'>Следующая запись будет доступна через 7 дней</p>} */}
             <div className="parameters">
               <h3>Параметры</h3>
               <div className="parametersValues">
                 <div className="param">
                   <div className="value">
                     <span>Возраст</span>
-                    <p>{data?.born_date ? new Date().getFullYear() - new Date(data.born_date).getFullYear() : '-'}</p>
+                    <p>{data?.born_date ? (() => {
+                      const birthDate = new Date(data.born_date);
+                      const today = new Date();
+                      let age = today.getFullYear() - birthDate.getFullYear();
+                      const monthDiff = today.getMonth() - birthDate.getMonth();
+                      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                        age--;
+                      }
+                      return age;
+                    })() : '-'}</p>
                   </div>
                   <div className="value">
                     <span>Пол</span>

@@ -6,7 +6,7 @@ import mokap from '../../Assets/img/mokap.PNG'
 import close from '../../Assets/svg/closeTrain.svg'
 import bonus from '../../Assets/svg/gift.svg';
 
-export default function TrainBox({ data, lectures, onClick, level }) {
+export default function TrainBox({ data, lectures, onClick, level, steps, isClosed, isBonus }) {
     const [levelType, setLevelType] = useState(level);
 
     useEffect(() => {
@@ -16,15 +16,14 @@ export default function TrainBox({ data, lectures, onClick, level }) {
     // Определяем, какие данные использовать
     const isLecture = !!lectures;
     const currentData = isLecture ? lectures : data;
-    const isClosed = currentData?.closed;
-    const isBonus = currentData?.bonus;
-
-    console.log('Current data:', currentData);
 
     // Получаем количество тренировок/упражнений
     const getCount = () => {
+        if (currentData?.count !== undefined) {
+            return currentData.count;
+        }
         if (currentData?.week) {
-            return currentData.trainings.length;
+            return currentData.trainings?.length || 0;
         }
         if (currentData?.title) {
             if (currentData.title.toLowerCase().includes('лекция')) {
@@ -45,27 +44,29 @@ export default function TrainBox({ data, lectures, onClick, level }) {
     };
 
     const getTitle = () => {
-        if (currentData?.week) {
-            return `Неделя ${currentData.week}`;
-        }
         if (currentData?.title) {
             return currentData.title;
         }
-        return '';
+        if (currentData?.week) {
+            return `Неделя ${currentData.week}`;
+        }
+        return 'Тренировка';
     };
 
     const getSubtitle = () => {
+        if (currentData?.subtitle) {
+            return currentData.subtitle;
+        }
         if (currentData?.week) {
             const hasLectures = currentData.trainings?.some(training =>
                 training.title.toLowerCase().includes('лекция')
             );
-            return hasLectures ? `Лекций ${getCount()}` : `Тренировок ${getCount()}`;
-        }
-        if (currentData?.title) {
-            if (currentData.title.toLowerCase().includes('лекция')) {
-                return '';
+            if (hasLectures) {
+                return `Лекций ${getCount()}`;
             }
-            return `Упражнений ${getCount()}`;
+            if (steps) {
+                return `Упражнений ${getCount()}`;
+            } else return `Тренировок ${getCount()}`;
         }
         return '';
     };
@@ -77,7 +78,7 @@ export default function TrainBox({ data, lectures, onClick, level }) {
                 <img src={bonus} alt='Бонус' />
             </div>}
             <div className='forTrainImg'>
-                <img src={mokap} alt="play" />
+                <img src={currentData?.coverUrl || mokap} alt="play" />
             </div>
             <div className='forTrainText'>
                 <div className='trainText'>

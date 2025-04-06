@@ -42,23 +42,23 @@ export default function PdfViewer({ pdfId, pdfFile, userId, addLog }) {
                     // Если передан прямой файл PDF
                     const url = typeof pdfFile === 'string' ? pdfFile : URL.createObjectURL(pdfFile);
                     setPdfUrl(url);
-                    addLog('PDF файл загружен из локального источника:', url);
+                    addLog?.('PDF файл загружен из локального источника:', url);
                 } else if (pdfId) {
                     // Если передан ID для запроса
-                    addLog('Начало запроса PDF по ID:', pdfId);
+                    addLog?.('Начало запроса PDF по ID:', pdfId);
                     const response = await axios.get(`${API_BASE_URL}/cms/api/nutrition/client/${pdfId}?tg_id=${userId}`);
-                    addLog('Ответ сервера на запрос PDF:', response.data);
+                    addLog?.('Ответ сервера на запрос PDF:', response.data);
                     
                     const pdfUrl = response.data.data.pdfUrl;
-                    addLog('Получен URL PDF:', pdfUrl);
+                    addLog?.('Получен URL PDF:', pdfUrl);
                     
                     const pdfResponse = await fetch(pdfUrl);
-                    addLog('Статус ответа при загрузке PDF:', pdfResponse.status, pdfResponse.statusText);
+                    addLog?.('Статус ответа при загрузке PDF:', pdfResponse.status, pdfResponse.statusText);
                     
                     const blob = await pdfResponse.blob();
                     const url = URL.createObjectURL(blob);
                     setPdfUrl(url);
-                    addLog('PDF успешно загружен и преобразован в blob URL:', url);
+                    addLog?.('PDF успешно загружен и преобразован в blob URL:', url);
                 }
             } catch (err) {
                 const errorDetails = {
@@ -73,7 +73,7 @@ export default function PdfViewer({ pdfId, pdfFile, userId, addLog }) {
                     },
                     stack: err.stack
                 };
-                addLog('Ошибка при загрузке PDF:', JSON.stringify(errorDetails, null, 2));
+                addLog?.('Ошибка при загрузке PDF:', JSON.stringify(errorDetails, null, 2));
             } finally {
                 setIsLoading(false);
             }
@@ -84,7 +84,7 @@ export default function PdfViewer({ pdfId, pdfFile, userId, addLog }) {
         return () => {
             if (pdfUrl && pdfUrl.startsWith('blob:')) {
                 URL.revokeObjectURL(pdfUrl);
-                addLog('Освобожден blob URL:', pdfUrl);
+                addLog?.('Освобожден blob URL:', pdfUrl);
             }
         };
     }, [pdfId, pdfFile, userId, addLog]);

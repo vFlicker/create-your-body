@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { BrowserRouter, Routes, Route, Outlet, useLocation } from 'react-router-dom';
 import './App.css';
 import axios from "axios";
@@ -50,6 +50,19 @@ function App() {
   const [data, setData] = useState(null);
   const [base, setBase] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [logs, setLogs] = useState([]);
+
+  const addLog = useCallback((...args) => {
+    const msg = args.map(arg => {
+      try {
+        return typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg);
+      } catch (e) {
+        return String(arg);
+      }
+    }).join(' ');
+
+    setLogs(prevLogs => [...prevLogs, msg]);
+  }, []);
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
@@ -58,8 +71,8 @@ function App() {
 
       const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
       setUserId(telegramUser.id);
-      console.log(telegramUser.id);
-      console.log(telegramUser.photo_url);
+      addLog('Telegram User ID:', telegramUser.id);
+      addLog('Telegram User Photo URL:', telegramUser.photo_url);
 
       const addImage = async () => {
         const image = telegramUser.photo_url && typeof telegramUser.photo_url === 'string'
@@ -70,7 +83,7 @@ function App() {
           image: image,
         };
 
-        console.log('Отправляемые данные:', imageData);
+        addLog('Отправляемые данные для изображения:', imageData);
 
         const params = new URLSearchParams(imageData).toString();
 
@@ -80,9 +93,20 @@ function App() {
               'Content-Type': 'application/json',
             },
           });
-          console.log('Ответ сервера:', response.data);
+          addLog('Ответ сервера на запрос изображения:', response.data);
         } catch (error) {
-          console.error('Ошибка:', error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
+          const errorDetails = {
+            message: error.message,
+            status: error.response?.status,
+            statusText: error.response?.statusText,
+            data: error.response?.data,
+            config: {
+              url: error.config?.url,
+              method: error.config?.method,
+              headers: error.config?.headers,
+            }
+          };
+          addLog('Ошибка при отправке изображения:', JSON.stringify(errorDetails, null, 2));
         }
       };
 
@@ -91,14 +115,25 @@ function App() {
           const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
             params: { user_id: telegramUser.id },
           });
-          console.log(response.data);
+          addLog('Ответ сервера на запрос пользователя:', response.data);
           setData(response.data);
           const userTarif = response.data.user_tarif || '';
           const isBase = userTarif.trim().includes('Base');
           setBase(isBase);
-          console.log('Тариф:', userTarif, 'Base:', isBase);
-        } catch {
-          console.log('Не получилось получить данные');
+          addLog('Тариф пользователя:', userTarif, 'Base:', isBase);
+        } catch (error) {
+          const errorDetails = {
+            message: error.message,
+            status: error.response?.status,
+            statusText: error.response?.statusText,
+            data: error.response?.data,
+            config: {
+              url: error.config?.url,
+              method: error.config?.method,
+              headers: error.config?.headers,
+            }
+          };
+          addLog('Ошибка при получении данных пользователя:', JSON.stringify(errorDetails, null, 2));
           setData(null);
         }
       };
@@ -114,13 +149,22 @@ function App() {
 
       fetchData();
     } else {
-      console.error('Telegram WebApp API не найден');
+      addLog('Telegram WebApp API не найден');
       setIsLoading(false);
     }
   }, []);
 
   // Проверка: есть ли data и data.user_tarif
   const hasAccess = data && data.user_tarif && data.user_tarif.trim() !== '';
+
+  useEffect(() => {
+    addLog('Проверка условия доступа:');
+    addLog('data:', data);
+    addLog('data.user_tarif:', data?.user_tarif);
+    addLog('data.user_tarif.trim():', data?.user_tarif?.trim());
+    addLog('data.user_tarif.trim() !== "":', data?.user_tarif?.trim() !== '');
+    addLog('Итоговое условие hasAccess:', hasAccess);
+  }, [data, hasAccess, addLog]);
 
   return (
     <BrowserRouter>
@@ -141,11 +185,11 @@ function App() {
               <Route path="communication" element={<Communication data={data} userId={userId} base={base} />} />
               <Route path="train" element={<Train data={data} userId={userId} level={data.user_level} base={base} />} />
               <Route path="food" element={<Food data={data} userId={userId} />} />
-              <Route path="lectures" element={<Lectures data={data} userId={userId} />} />
+              <Route path="lectures" element={<Lectures data={data} userId={userId} level={data.user_level}/>} />
               <Route path="recipes" element={<Recipes data={data} userId={userId} />} />
             </Route>
           ) : (
-            <Route path="*" element={<NoEntry />} />
+            <Route path="*" element={<NoEntry logs={logs} addLog={addLog} />} />
           )}
         </Routes>
       )}

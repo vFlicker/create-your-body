@@ -2,12 +2,13 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './TrainingPage.css';
 import Button from '../Button/Button';
-import Loader from '../../Components/Loader/Loader';
+// import Loader from '../../Components/Loader/Loader';
 
 import arrow from '../../Assets/svg/arrow.svg'
 import back from '../../Assets/svg/arrowBack.svg'
 import check from '../../Assets/svg/check.svg'
 import brain from '../../Assets/svg/brain.svg'
+
 const slideVariants = {
     enter: (direction) => ({
         x: direction > 0 ? '100%' : '-100%',
@@ -29,108 +30,88 @@ const transition = {
     duration: 0.3
 };
 
-export default function TrainingPage({ trainingData, level, onBack, lectures }) {
-    const [levelType, setLevelType] = useState('newbie');
-    const [currentPartIndex, setCurrentPartIndex] = useState(0);
+export default function TrainingPage({ trainingData, onBack, lectures }) {
+    const [currentStepIndex, setCurrentStepIndex] = useState(0);
     const [direction, setDirection] = useState(0);
-    const [loadingStates, setLoadingStates] = useState({
-        video1: true,
-        video2: true,
-        video3: true
-    });
-    const [currentPart, setCurrentPart] = useState(null);
-    const [isLastPart, setIsLastPart] = useState(false);
-    const [isFirstPart, setIsFirstPart] = useState(true);
-    const [isLoading, setIsLoading] = useState(true);
+    // const [loadingStates, setLoadingStates] = useState({});
+    // const [isLoading, setIsLoading] = useState(true);
     const [isBonus, setIsBonus] = useState(false);
     const contentRef = useRef(null);
+    
+    console.log(trainingData)
 
     useEffect(() => {
-        if (!trainingData || !trainingData[levelType]) {
-            setIsLoading(true);
-            return;
-        }
+        setTimeout(() => {
+            window.scrollTo(0, 0);
+        }, 100);
+    }, []);
 
-        if (trainingData?.bonus) {
+    useEffect(() => {
+        // if (!trainingData || !Array.isArray(trainingData)) {
+        //     setIsLoading(true);
+        //     return;
+        // }
+
+        if (trainingData[currentStepIndex]?.bonus) {
             setIsBonus(true);
         }
-        const currentData = trainingData[levelType];
-        const parts = Array.isArray(currentData) ? currentData : [currentData];
 
-        // Фильтруем пустые части
-        const validParts = parts.filter(part =>
-            part.videoUrl || part.text || part.videoUrl_2 || part.text_2 ||
-            part.videoUrl_3 || part.text_3 || part.super_text || part.super_description
-        );
+        // Инициализируем состояния загрузки для всех видео в текущем шаге
+        const newLoadingStates = {};
+        trainingData[currentStepIndex]?.blocks?.forEach(block => {
+            if (block.type === 'video') {
+                newLoadingStates[block._id] = true;
+            }
+        });
+        // setLoadingStates(newLoadingStates);
 
-        if (validParts.length === 0) {
-            setIsLoading(true);
-            return;
-        }
-
-        // Проверяем, что currentPartIndex не выходит за пределы массива
-        const safeIndex = Math.max(0, Math.min(currentPartIndex, validParts.length - 1));
-        if (safeIndex !== currentPartIndex) {
-            setCurrentPartIndex(safeIndex);
-            return;
-        }
-
-        const part = validParts[safeIndex];
-        setCurrentPart(part);
-        setIsLastPart(safeIndex === validParts.length - 1);
-        setIsFirstPart(safeIndex === 0);
-        setIsLoading(false);
-    }, [trainingData, levelType, currentPartIndex]);
-
-    useEffect(() => {
-        setLevelType(level === 'Новичок' ? 'newbie' : 'profi');
-    }, [level]);
+    }, [trainingData, currentStepIndex]);
 
     useEffect(() => {
         if (contentRef.current) {
             contentRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-    }, [currentPartIndex]);
+    }, [currentStepIndex]);
 
-    const handleVideoLoad = (videoKey) => {
-        setLoadingStates(prev => ({
-            ...prev,
-            [videoKey]: false
-        }));
-    };
+    
+    
 
     const handleNext = useCallback(() => {
-        if (isLastPart) {
+        if (lectures || currentStepIndex === trainingData.length - 1) {
             onBack();
         } else {
             setDirection(1);
-            setCurrentPartIndex(prev => prev + 1);
-            // Сбрасываем состояния загрузки при переходе к следующей части
-            setLoadingStates({
-                video1: true,
-                video2: true,
-                video3: true
+            setCurrentStepIndex(prev => prev + 1);
+            // Сбрасываем состояния загрузки для нового шага
+            const newLoadingStates = {};
+            trainingData[currentStepIndex + 1]?.blocks?.forEach(block => {
+                if (block.type === 'video') {
+                    newLoadingStates[block._id] = true;
+                }
             });
+            // setLoadingStates(newLoadingStates);
         }
-    }, [isLastPart, onBack]);
+    }, [currentStepIndex, trainingData, onBack, lectures]);
 
     const handleBack = useCallback(() => {
-        if (!isFirstPart) {
+        if (currentStepIndex > 0) {
             setDirection(-1);
-            setCurrentPartIndex(prev => Math.max(0, prev - 1));
-            setLoadingStates({
-                video1: true,
-                video2: true,
-                video3: true
+            setCurrentStepIndex(prev => prev - 1);
+            // Сбрасываем состояния загрузки для предыдущего шага
+            const newLoadingStates = {};
+            trainingData[currentStepIndex - 1]?.blocks?.forEach(block => {
+                if (block.type === 'video') {
+                    newLoadingStates[block._id] = true;
+                }
             });
+            // setLoadingStates(newLoadingStates);
         } else {
             onBack();
         }
-    }, [isFirstPart, onBack]);
+    }, [currentStepIndex, trainingData, onBack]);
 
     useEffect(() => {
-        // Устанавливаем handleBack только если мы не на первом упражнении
-        if (!isFirstPart) {
+        if (currentStepIndex > 0) {
             window.handleBack = handleBack;
             document.body.setAttribute('data-handle-back', 'true');
         } else {
@@ -142,95 +123,93 @@ export default function TrainingPage({ trainingData, level, onBack, lectures }) 
             window.handleBack = null;
             document.body.removeAttribute('data-handle-back');
         };
-    }, [isFirstPart]);
+    }, [currentStepIndex, handleBack]);
 
-    if (isLoading || !currentPart) {
-        return null;
-    }
+    // if (isLoading || !trainingData || !Array.isArray(trainingData) || !trainingData[currentStepIndex]) {
+    //     return null;
+    // }
 
-    const renderPart = (part) => (
-        <motion.div
-            className="training-content"
-            initial="enter"
-            animate="center"
-            exit="exit"
-            variants={slideVariants}
-            custom={direction}
-            transition={transition}
-        >
-            {(part.super_text || part.super_description) && (
-                <div className="super-set">
-                    {part.super_text && <h2>{part.super_text}</h2>}
-                    {part.super_description && <p style={{ whiteSpace: 'pre-line' }}>{part.super_description}</p>}
-                </div>
-            )}
+    const currentStep = trainingData[currentStepIndex];
+    const isLastStep = lectures ? true : currentStepIndex === trainingData.length - 1;
+    // const isFirstStep = currentStepIndex === 0;
 
-            {part.videoUrl && (
-                <div className="video-section">
-                    <div className="videoContainer">
-                        {loadingStates.video1 && <Loader />}
-                        <iframe
-                            src={part.videoUrl}
-                            allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
-                            frameBorder="0"
-                            allowFullScreen
-                            title="Видео 1"
-                            onLoad={() => handleVideoLoad('video1')}
-                        />
+    const renderBlock = (block) => {
+        switch (block.type) {
+            case 'text':
+                return (
+                    <div className="text-section" dangerouslySetInnerHTML={{ __html: block.content.text }} />
+                );
+            case 'video':
+                return (
+                    <div className="video-section">
+                        <div className="videoContainer">
+                            <div dangerouslySetInnerHTML={{ __html: block.video.embedCode }} />
+                        </div>
                     </div>
-                    <p>{part.text}</p>
-                </div>
-            )}
+                );
+            case 'divider':
+                return block.divider.showLine ? <div className="divider" /> : null;
+            default:
+                return null;
+        }
+    };
 
-            {part.videoUrl_2 && (
-                <div className="video-section">
-                    <div className="videoContainer">
-                        {loadingStates.video2 && <Loader />}
-                        <iframe
-                            src={part.videoUrl_2}
-                            allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
-                            frameBorder="0"
-                            allowFullScreen
-                            title="Видео 2"
-                            onLoad={() => handleVideoLoad('video2')}
-                            style={{ display: loadingStates.video2 ? 'none' : 'block' }}
-                        />
+    const renderLegacyContent = () => {
+        
+        if (!trainingData?.profi?.[0]) return null;
+        
+        const item = trainingData.profi[0];
+        return (
+            <div className="legacy-content">
+                {item.videoUrl && (
+                    <div className="video-section">
+                        <div className="videoContainer" style={{aspectRatio: lectures ? '16/9' : '9/16'}}>
+                            <iframe
+                                src={item.videoUrl}
+                                allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
+                                frameBorder="0"
+                                allowFullScreen
+                                title="Видео"
+                            />
+                        </div>
                     </div>
-                    <p>{part.text_2}</p>
-                </div>
-            )}
-
-            {part.videoUrl_3 && (
-                <div className="video-section">
-                    <div className="videoContainer">
-                        {loadingStates.video3 && <Loader />}
-                        <iframe
-                            src={part.videoUrl_3}
-                            allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
-                            frameBorder="0"
-                            allowFullScreen
-                            title="Видео 3"
-                            onLoad={() => handleVideoLoad('video3')}
-                            style={{ display: loadingStates.video3 ? 'none' : 'block' }}
-                        />
-                    </div>
-                    <p>{part.text_3}</p>
-                </div>
-            )}
-        </motion.div>
-    );
+                )}
+                {item.text && (
+                    <div className="text-section" dangerouslySetInnerHTML={{ __html: item.text.replace(/\n/g, '<br/>') }} />
+                )}
+            </div>
+        );
+    };
 
     return (
-        <div className="training-page">
-            <h1>{trainingData.title} {isBonus && 'БОНУС'}</h1>
+        <div className="training-page" ref={contentRef}>
+            {!lectures && <h1>{currentStep.title} {isBonus && 'БОНУС'}</h1>}
 
-            <div className="training-content-wrapper" ref={contentRef}>
+            <div className="training-content-wrapper">
                 <AnimatePresence initial={false} custom={direction} mode="wait">
-                    <motion.div key={currentPartIndex}>
-                        {renderPart(currentPart)}
+                    <motion.div
+                        key={currentStepIndex}
+                        className="training-content"
+                        custom={direction}
+                        variants={slideVariants}
+                        initial="enter"
+                        animate="center"
+                        exit="exit"
+                        transition={transition}
+                    >
+                        {lectures ? (
+                            renderLegacyContent()
+                        ) : (
+                            currentStep.blocks?.map((block, index) => (
+                                <div key={block._id || index}>
+                                    {renderBlock(block)}
+                                </div>
+                            ))
+                        )}
                     </motion.div>
                 </AnimatePresence>
             </div>
+
             <div className="training-navigation">
                 <Button 
                     onClick={handleBack}
@@ -243,12 +222,12 @@ export default function TrainingPage({ trainingData, level, onBack, lectures }) 
                 />
                 <Button
                     onClick={handleNext}
-                    text={isLastPart ? (lectures ? "Изучено" : "Завершить") : "Продолжить"}
-                    reverse={isLastPart ? false : true}
-                    icon={isLastPart ? (lectures ? brain : check) : arrow}
-                    bg={isLastPart ? "#CBFF52" : "#A799FF"}
-                    bgFocus={isLastPart ? "#EBFFBD" : "#776CBC"}
-                    color={isLastPart ? "#0d0d0d" : "#fff"}
+                    text={isLastStep ? (lectures ? "Изучено" : "Завершить") : "Продолжить"}
+                    reverse={isLastStep ? false : true}
+                    icon={isLastStep ? (lectures ? brain : check) : arrow}
+                    bg={isLastStep ? "#CBFF52" : "#A799FF"}
+                    bgFocus={isLastStep ? "#EBFFBD" : "#776CBC"}
+                    color={isLastStep ? "#0d0d0d" : "#fff"}
                     width='100%'
                 />
             </div>
