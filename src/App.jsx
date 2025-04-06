@@ -46,7 +46,7 @@ function Layout() {
 }
 
 function App() {
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState(''); // Тестовый ID пользователя
   const [data, setData] = useState(null);
   const [base, setBase] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -60,171 +60,100 @@ function App() {
         return String(arg);
       }
     }).join(' ');
+
     setLogs(prevLogs => [...prevLogs, msg]);
   }, []);
 
-  const checkEnvironment = useCallback(() => {
-    addLog('Проверка окружения:');
-    addLog('window.Telegram =', !!window.Telegram);
-    addLog('window.Telegram.WebApp =', !!(window.Telegram && window.Telegram.WebApp));
-    addLog('User Agent:', navigator.userAgent);
-    addLog('Платформа:', navigator.platform);
-    
-    const isTelegramWebApp = window.Telegram && window.Telegram.WebApp;
-    const isTelegramBrowser = /TelegramWebApp/i.test(navigator.userAgent);
-    
-    addLog('isTelegramWebApp:', isTelegramWebApp);
-    addLog('isTelegramBrowser:', isTelegramBrowser);
-    
-    if (!isTelegramWebApp || !isTelegramBrowser) {
-      addLog('Приложение должно быть открыто в Telegram');
-      return false;
-    }
-    return true;
-  }, [addLog]);
-
-  const initializeTelegramWebApp = useCallback(async () => {
-    try {
+  useEffect(() => {
+    if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.ready();
       window.Telegram.WebApp.expand();
       window.Telegram.WebApp.disableVerticalSwipes();
-      
-      const version = window.Telegram.WebApp.version;
-      const platform = window.Telegram.WebApp.platform;
-      
-      addLog('Версия Telegram WebApp:', version);
-      addLog('Платформа:', platform);
-      
-      const minVersion = '6.0';
-      if (version < minVersion) {
-        addLog(`Требуется версия Telegram ${minVersion} или выше`);
-        return false;
-      }
 
       const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
-      if (!telegramUser) {
-        addLog('Ошибка: Данные пользователя не получены');
-        return false;
-      }
-      
       setUserId(telegramUser.id);
       addLog('Telegram User ID:', telegramUser.id);
       addLog('Telegram User Photo URL:', telegramUser.photo_url);
-      
-      return telegramUser;
-    } catch (error) {
-      addLog('Ошибка инициализации Telegram WebApp:', error.message);
-      addLog('Стек ошибки:', error.stack);
-      return false;
-    }
-  }, [addLog]);
 
-  const addImage = useCallback(async (telegramUser) => {
-    try {
-      const image = telegramUser.photo_url && typeof telegramUser.photo_url === 'string'
-        ? telegramUser.photo_url
-        : '';
-      const imageData = {
-        user_tg_id: String(telegramUser.id),
-        image: image,
-      };
+      const addImage = async () => {
+        const image = telegramUser.photo_url && typeof telegramUser.photo_url === 'string'
+          ? telegramUser.photo_url
+          : '';
+        const imageData = {
+          user_tg_id: String(telegramUser.id),
+          image: image,
+        };
 
-      addLog('Отправляемые данные для изображения:', imageData);
+        addLog('Отправляемые данные для изображения:', imageData);
 
-      const params = new URLSearchParams(imageData).toString();
-      const response = await axios.post(`${API_BASE_URL}/api/v1/user/image?${params}`, null, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      addLog('Ответ сервера на запрос изображения:', response.data);
-      return true;
-    } catch (error) {
-      const errorDetails = {
-        message: error.message,
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-        data: error.response?.data,
-        config: {
-          url: error.config?.url,
-          method: error.config?.method,
-          headers: error.config?.headers,
+        const params = new URLSearchParams(imageData).toString();
+
+        try {
+          const response = await axios.post(`${API_BASE_URL}/api/v1/user/image?${params}`, null, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          addLog('Ответ сервера на запрос изображения:', response.data);
+        } catch (error) {
+          const errorDetails = {
+            message: error.message,
+            status: error.response?.status,
+            statusText: error.response?.statusText,
+            data: error.response?.data,
+            config: {
+              url: error.config?.url,
+              method: error.config?.method,
+              headers: error.config?.headers,
+            }
+          };
+          addLog('Ошибка при отправке изображения:', JSON.stringify(errorDetails, null, 2));
         }
       };
-      addLog('Ошибка при отправке изображения:', JSON.stringify(errorDetails, null, 2));
-      return false;
-    }
-  }, [addLog]);
 
-  const addUser = useCallback(async (telegramUser) => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-        params: { user_id: telegramUser.id },
-      });
-      addLog('Ответ сервера на запрос пользователя:', response.data);
-      setData(response.data);
-      const userTarif = response.data.user_tarif || '';
-      const isBase = userTarif.trim().includes('Base');
-      setBase(isBase);
-      addLog('Тариф пользователя:', userTarif, 'Base:', isBase);
-      return true;
-    } catch (error) {
-      const errorDetails = {
-        message: error.message,
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-        data: error.response?.data,
-        config: {
-          url: error.config?.url,
-          method: error.config?.method,
-          headers: error.config?.headers,
+      const addUser = async () => {
+        try {
+          const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
+            params: { user_id: telegramUser.id },
+          });
+          addLog('Ответ сервера на запрос пользователя:', response.data);
+          setData(response.data);
+          const userTarif = response.data.user_tarif || '';
+          const isBase = userTarif.trim().includes('Base');
+          setBase(isBase);
+          addLog('Тариф пользователя:', userTarif, 'Base:', isBase);
+        } catch (error) {
+          const errorDetails = {
+            message: error.message,
+            status: error.response?.status,
+            statusText: error.response?.statusText,
+            data: error.response?.data,
+            config: {
+              url: error.config?.url,
+              method: error.config?.method,
+              headers: error.config?.headers,
+            }
+          };
+          addLog('Ошибка при получении данных пользователя:', JSON.stringify(errorDetails, null, 2));
+          setData(null);
         }
       };
-      addLog('Ошибка при получении данных пользователя:', JSON.stringify(errorDetails, null, 2));
-      setData(null);
-      return false;
-    }
-  }, [addLog]);
 
-  const fetchData = useCallback(async (telegramUser) => {
-    try {
-      setIsLoading(true);
-      const [imageResult, userResult] = await Promise.all([
-        addImage(telegramUser),
-        addUser(telegramUser)
-      ]);
-      
-      if (!imageResult || !userResult) {
-        addLog('Ошибка при загрузке данных пользователя');
-        return false;
-      }
-      return true;
-    } catch (error) {
-      addLog('Ошибка при загрузке данных:', error.message);
-      return false;
-    } finally {
+      const fetchData = async () => {
+        try {
+          setIsLoading(true);
+          await Promise.all([addImage(), addUser()]);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      fetchData();
+    } else {
+      addLog('Telegram WebApp API не найден');
       setIsLoading(false);
     }
-  }, [addImage, addUser, addLog]);
-
-  useEffect(() => {
-    const initializeApp = async () => {
-      if (!checkEnvironment()) {
-        setIsLoading(false);
-        return;
-      }
-
-      const telegramUser = await initializeTelegramWebApp();
-      if (!telegramUser) {
-        setIsLoading(false);
-        return;
-      }
-
-      await fetchData(telegramUser);
-    };
-
-    initializeApp();
-  }, [checkEnvironment, initializeTelegramWebApp, fetchData]);
+  }, []);
 
   // Проверка: есть ли data и data.user_tarif
   const hasAccess = data && data.user_tarif && data.user_tarif.trim() !== '';
