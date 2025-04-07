@@ -65,14 +65,13 @@ export default function Record({ userId, data }) {
   const handleSubmit = async () => {
     try {
       await axios.post(`${API_BASE_URL}/api/v1/user/parametrs`, {
-        tg_id: userId,
-        chest: parseInt(formData.chest) || 0,
-        waist: parseInt(formData.waist) || 0,
-        abdominal_circumference: parseInt(formData.abdominal_circumference) || 0,
-        legs: parseInt(formData.legs) || 0,
-        hips: parseInt(formData.hips) || 0,
-        weight: parseInt(formData.weight) || 0,
-        created_at: new Date().toISOString()
+        tg_id: String(userId),
+        chest: parseInt(formData.chest, 10) || 0,
+        waist: parseInt(formData.waist, 10) || 0,
+        abdominal_circumference: parseInt(formData.abdominal_circumference, 10) || 0,
+        legs: parseInt(formData.legs, 10) || 0,
+        hips: parseInt(formData.hips, 10) || 0,
+        weight: parseInt(formData.weight, 10) || 0,
       });
 
       console.log('Данные сохранены', formData);
