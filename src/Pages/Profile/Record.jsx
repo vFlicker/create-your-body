@@ -37,7 +37,6 @@ export default function Record({ userId, data }) {
   const navigate = useNavigate();
   // const [open, setOpen] = useState(false);
   // const [activeIndex, setActiveIndex] = useState(0);
-  const [activeWeek, setActiveWeek] = useState(null);
   const [formData, setFormData] = useState({
     chest: '',
     waist: '',
@@ -53,23 +52,7 @@ export default function Record({ userId, data }) {
       const platform = tg.platform.toLowerCase();
       setIsMobile(!['tdesktop', 'macos', 'linux', 'web'].includes(platform));
     }
-    const fetchActiveWeek = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/api/v1/user/week`, {
-          params: { tg_id: userId },
-        });
-        const weeks = response.data;
-        const active = Object.keys(weeks).find(
-          (key) => weeks[key] === true && key !== 'tg_id' && key !== 'id'
-        );
-        setActiveWeek(active ? parseInt(active.replace('week', ''), 10) || 1 : 1); // Преобразование 'one' -> 1
-      } catch (error) {
-        console.error('Ошибка при получении активной недели:', error.message);
-      }
-    };
-
-    fetchActiveWeek();
-  }, [userId]);
+  }, []);
 
   // const handleSelecterClick = (index) => {
   //   setActiveIndex(index);
@@ -81,28 +64,18 @@ export default function Record({ userId, data }) {
 
   const handleSubmit = async () => {
     try {
-      const parametersData = {
-        chest: parseFloat(formData.chest) || 0,
-        waist: parseFloat(formData.waist) || 0,
-        abdominal_circumference: parseFloat(formData.abdominal_circumference) || 0,
-        hips: parseFloat(formData.hips) || 0,
-        legs: parseFloat(formData.legs) || 0,
-        weight: parseFloat(formData.weight) || 0,
-        created_at: new Date().toISOString(),
-      };
-
-      await axios.post(`${API_BASE_URL}/api/v1/user/user_parameters`, {
-        params: {user_id: userId},
-        body: parametersData
+      await axios.post(`${API_BASE_URL}/api/v1/user/parametrs`, {
+        tg_id: userId,
+        chest: parseInt(formData.chest) || 0,
+        waist: parseInt(formData.waist) || 0,
+        abdominal_circumference: parseInt(formData.abdominal_circumference) || 0,
+        legs: parseInt(formData.legs) || 0,
+        hips: parseInt(formData.hips) || 0,
+        weight: parseInt(formData.weight) || 0,
+        created_at: new Date().toISOString()
       });
 
-      const weekNumber = activeWeek;
-      await axios.post(`${API_BASE_URL}/api/v1/user/week`, {
-        user_tg_id: userId,
-        week_number: weekNumber,
-      });
-
-      console.log('Прогресс сохранён для недели', weekNumber);
+      console.log('Данные сохранены', formData);
       navigate('/profile');
     } catch (error) {
       console.error('Ошибка при сохранении данных:', error.message);
@@ -143,7 +116,7 @@ export default function Record({ userId, data }) {
   ];
 
   return (
-    <div className="profilePage" ref={formRef}>
+    <div className="profilePage" ref={formRef} style={{flex: '1', display: 'flex'}}>
       <div className="profileContainer">
         <div className="profile" style={{ justifyContent: 'space-between' }}>
           <div className="profileData">
@@ -184,7 +157,7 @@ export default function Record({ userId, data }) {
         </div> */}
         <div className="recordYourProgress">
           <h3>Запишите свой прогресс</h3>
-          <div className="weeksContainer">
+          {/* <div className="weeksContainer">
             <p>Неделя</p>
             <div className="weeks">
               {[1, 2, 3, 4].map((weekNumber) => (
@@ -199,7 +172,7 @@ export default function Record({ userId, data }) {
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
           <div className="inputsSection">
             {inputPairs.map(({ labels, fields }) => (
               <InputPair
@@ -211,6 +184,7 @@ export default function Record({ userId, data }) {
                 handleBlur={handleBlur}
               />
             ))}
+          </div>
             <Button
               text="Сохранить"
               width="100%"
@@ -219,7 +193,6 @@ export default function Record({ userId, data }) {
               color="#0D0D0D"
               onClick={handleSubmit}
             />
-          </div>
         </div>
       </div>
     </div>

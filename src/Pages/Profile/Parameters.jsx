@@ -455,7 +455,6 @@ export default function Parameters({ userId, data, setData }) {
       // Обновление параметров
       const parametersData = {
         tg_id: String(userId),
-        number: 0,
         chest: parseInt(formData.chest, 10) || 0,
         waist: parseInt(formData.waist, 10) || 0,
         abdominal_circumference: parseInt(formData.belly, 10) || 0,

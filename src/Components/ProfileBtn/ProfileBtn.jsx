@@ -39,7 +39,7 @@ export default function ProfileBtn({ level, user_photo }) {
       <div className="profileEllips"
         style={{ background: level === 'Профи' ? '#A799FF' : '' }}
       ></div>
-      {location.pathname !== '/profile' && <p className='profileBtnText'>Уровень: <span>{level}</span></p>}
+      {location.pathname !== '/profile' && location.pathname !== '/record' && location.pathname !== '/parameters' && <p className='profileBtnText'>Уровень: <span>{level}</span></p>}
     </button>
   )
 }

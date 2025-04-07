@@ -1,6 +1,7 @@
 .profilePage {
     padding-top: 70px;
     transition: all 150ms ease-in-out;
+    position: relative;
 }
 
 .profileContainer,
@@ -41,6 +42,7 @@
     background: #fff;
     border-radius: 16px 16px 0 0;
     padding: 16px 16px 32px 16px;
+    flex: 1;
 }
 
 .profileName,
@@ -434,4 +436,275 @@
     font-size: 12px;
     color: #FF3B30;
     transition: all 500ms ease-in-out;
+}
+
+.parameters .value p span {
+  margin-left: 8px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 120%;
+}
+
+.parameters .value p span.positive {
+  color: #547800;
+}
+
+.parameters .value p span.negative {
+  color: #A799FF;
+}
+
+.recordYourProgress {
+    flex: 1;
+    justify-content: space-between;
+}
+
+.profileHistoryContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #F2F2F2;
+    z-index: 10000;
+    overflow-y: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    animation: swipe 0.8s cubic-bezier(0.64, 0.02, 0.22, 0.96);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.profileHistoryContent {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.profileHistoryContainer h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #0D0D0D;
+    text-align: center;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profileHistoryList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.profileHistoryItem {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.historyDate {
+    background: #CBFF52;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 14px;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.historyDate p {
+    font-size: 12px;
+    color: #0D0D0D;
+    font-weight: 700;
+}
+
+.historyParameters {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: #fff;
+    padding: 8px;
+    border-radius: 14px;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+    width: 100%;
+}
+
+.historyParameter {
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+}
+
+.historyParameter p {
+    font-size: 12px;
+    color: #0D0D0D;
+    font-weight: 700;
+}
+
+.historyParameter span {
+    font-size: 12px;
+    color: #0D0D0D;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.historyParameter span span {
+    font-size: 10px;
+}
+
+.historyParameter span span.positive {
+    color: #547800;
+}
+
+.historyParameter span span.negative {
+    color: #A799FF;
+}
+
+.whiteAnimate {
+    position: absolute;
+    top: 0;
+    width: 3px;
+    height: 100%;
+    background: #0D0D0D;
+    border-radius: 50px;
+    animation: shine 2s infinite linear;
+}
+
+/* Левые элементы */
+.whiteAnimate.left-1 {
+    left: 10px;
+    animation-delay: 0s;
+}
+
+.whiteAnimate.left-2 {
+    left: 20px;
+    animation-delay: 0.2s;
+}
+
+.whiteAnimate.left-3 {
+    left: 30px;
+    animation-delay: 0.4s;
+}
+
+.whiteAnimate.left-4 {
+    left: 40px;
+    animation-delay: 0.6s;
+}
+
+.whiteAnimate.left-5 {
+    left: 50px;
+    animation-delay: 0.8s;
+}
+
+/* Правые элементы */
+.whiteAnimate.right-1 {
+    right: 10px;
+    animation-delay: 0s;
+}
+
+.whiteAnimate.right-2 {
+    right: 20px;
+    animation-delay: 0.2s;
+}
+
+.whiteAnimate.right-3 {
+    right: 30px;
+    animation-delay: 0.4s;
+}
+
+.whiteAnimate.right-4 {
+    right: 40px;
+    animation-delay: 0.6s;
+}
+
+.whiteAnimate.right-5 {
+    right: 50px;
+    animation-delay: 0.8s;
+}
+
+.exitHistory {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 24px;
+    height: 24px;
+    background: #fff;
+    border-radius: 50px;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.exitHistory img {
+    width: 22px;
+    height: 22px;
+}
+
+.exitHistoryBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50px;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+    background: #fff;
+    width: 100%;
+    gap: 4px;
+}
+
+.exitHistoryBtn p {
+    font-size: 14px;
+    color: #0D0D0D;
+    font-weight: 700;
+}
+
+.exitHistoryBtn img {
+    width: 18px;
+    height: 18px;
+}
+
+@keyframes shine {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(200%);
+    }
+}
+/* Блокировка скролла при открытом модальном окне */
+body.history-open {
+    overflow: hidden;
+}
+
+@keyframes swipe {
+    0% {
+        top: -100%;
+    }
+    100% {
+        top: 0;
+    }
+}
+
+@keyframes swipeOut {
+    0% {
+        top: 0;
+    }
+    100% {
+        top: -100%;
+    }
+}
+
+.profileHistoryContainer.closing {
+    animation: swipeOut 0.8s cubic-bezier(0.64, 0.02, 0.22, 0.96) forwards;
 }

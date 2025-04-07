@@ -15,15 +15,36 @@ import settings from '../../Assets/svg/settings.svg';
 import right from '../../Assets/svg/right.svg';
 import close from '../../Assets/svg/close.svg';
 import zamer from '../../Assets/img/zamer.jpeg';
-// import chart from '../../Assets/svg/chart.svg';
+import chart from '../../Assets/svg/chart.svg';
+import history from '../../Assets/svg/history.svg';
+import exit from '../../Assets/svg/exit.svg';
 
 export default function Profile({ userId, data, setData }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(data.user_level === 'Новичок' ? 0 : 1);
+  const [lastParameters, setLastParameters] = useState(null);
+  const [firstParameters, setFirstParameters] = useState(null);
   const [dataParameters, setDataParameters] = useState(null);
-  // const [isPressed, setIsPressed] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Новое состояние для загрузки
+  const [isPressed, setIsPressed] = useState(false);
+  const [isHistoryPressed, setIsHistoryPressed] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [historyOpen, setHistoryOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
+  };
+
+  const calculateDifference = (current, previous) => {
+    if (!previous) return null;
+    const diff = current - previous;
+    return diff > 0 ? `+${diff}` : diff;
+  };
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
@@ -32,28 +53,59 @@ export default function Profile({ userId, data, setData }) {
 
     const fetchUserData = async () => {
       try {
-        setIsLoading(true); // Начинаем загрузку
+        setIsLoading(true);
         const response = await axios.get(`${API_BASE_URL}/api/v1/user/parametrs`, {
           params: { user_tg_id: userId },
         });
         const parameters = Array.isArray(response.data) ? response.data : [response.data];
-        const latestParameters = parameters[parameters.length - 1];
-        setDataParameters(latestParameters);
+
+        // Сортируем по дате создания
+        const sortedParameters = parameters.sort((a, b) =>
+          new Date(a.created_at) - new Date(b.created_at)
+        );
+        console.log('Отсортированные параметры:', sortedParameters);
+        setDataParameters(sortedParameters);
+
+        // Сохраняем первое и последнее измерение только если есть больше одного измерения
+        if (sortedParameters.length > 1) {
+          setFirstParameters(sortedParameters[0]);
+          setLastParameters(sortedParameters[sortedParameters.length - 1]);
+        } else if (sortedParameters.length === 1) {
+          setLastParameters(sortedParameters[0]);
+          setFirstParameters(null);
+        }
       } catch (err) {
         console.error('Ошибка при получении параметров:', err.response ? JSON.stringify(err.response.data, null, 2) : err.message);
-        setDataParameters(null); // Устанавливаем null в случае ошибки
+        setLastParameters(null);
       } finally {
-        setIsLoading(false); // Завершаем загрузку
+        setIsLoading(false);
       }
     };
 
     fetchUserData();
   }, [userId]);
 
-  // const handleMouseDown = () => setIsPressed(true);
-  // const handleMouseUp = () => setIsPressed(false);
-  // const handleTouchStart = () => setIsPressed(true);
-  // const handleTouchEnd = () => setIsPressed(false);
+  useEffect(() => {
+    if (historyOpen) {
+      document.body.classList.add('history-open');
+    } else {
+      document.body.classList.remove('history-open');
+    }
+
+    return () => {
+      document.body.classList.remove('history-open');
+    };
+  }, [historyOpen]);
+
+  const handleMouseDown = () => setIsPressed(true);
+  const handleMouseUp = () => setIsPressed(false);
+  const handleTouchStart = () => setIsPressed(true);
+  const handleTouchEnd = () => setIsPressed(false);
+
+  const handleHistoryMouseDown = () => setIsHistoryPressed(true);
+  const handleHistoryMouseUp = () => setIsHistoryPressed(false);
+  const handleHistoryTouchStart = () => setIsHistoryPressed(true);
+  const handleHistoryTouchEnd = () => setIsHistoryPressed(false);
 
   const handleSelecterClick = async (index) => {
     setActiveIndex(index);
@@ -72,13 +124,112 @@ export default function Profile({ userId, data, setData }) {
     }
   };
 
+  const handleCloseHistory = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setHistoryOpen(false);
+      setIsClosing(false);
+    }, 800); // Время анимации
+  };
+
   return (
     <div className="profilePage" style={{ height: isLoading ? 'calc(100vh - 160px)' : 'auto' }}>
+      {historyOpen && (
+        <div className={`profileHistoryContainer ${isClosing ? 'closing' : ''}`}>
+          <div className="profileHistoryContent">
+            <h3>История прогресса</h3>
+            <button className="exitHistory" onClick={handleCloseHistory}>
+              <img src={exit} alt="Выйти" />
+            </button>
+            <div className="profileHistoryList">
+              {dataParameters && dataParameters.map((parameter, index) => (
+                <div key={index} className="profileHistoryItem">
+                  <div className="historyDate">
+                    <p>{formatDate(parameter.created_at)}</p>
+                  </div>
+                  <div className="historyParameters">
+                    <div className="historyParameter">
+                      <p>Обхват груди:</p>
+                      <span>
+                        {parameter.chest}
+                        {index > 0 && (
+                          <span className={parameter.chest - dataParameters[index - 1].chest > 0 ? 'positive' : 'negative'} style={{ width: 'auto' }}>
+                            {calculateDifference(parameter.chest, dataParameters[index - 1].chest)}
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                    <div className="historyParameter">
+                      <p>Обхват талии:</p>
+                      <span>
+                        {parameter.waist}
+                        {index > 0 && (
+                          <span className={parameter.waist - dataParameters[index - 1].waist > 0 ? 'positive' : 'negative'} style={{ width: 'auto' }}>
+                            {calculateDifference(parameter.waist, dataParameters[index - 1].waist)}
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                    <div className="historyParameter">
+                      <p>Обхват живота:</p>
+                      <span>
+                        {parameter.abdominal_circumference}
+                        {index > 0 && (
+                          <span className={parameter.abdominal_circumference - dataParameters[index - 1].abdominal_circumference > 0 ? 'positive' : 'negative'} style={{ width: 'auto' }}>
+                            {calculateDifference(parameter.abdominal_circumference, dataParameters[index - 1].abdominal_circumference)}
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                    <div className="historyParameter">
+                      <p>Обхват бедер:</p>
+                      <span>
+                        {parameter.hips}
+                        {index > 0 && (
+                          <span className={parameter.hips - dataParameters[index - 1].hips > 0 ? 'positive' : 'negative'} style={{ width: 'auto' }}>
+                            {calculateDifference(parameter.hips, dataParameters[index - 1].hips)}
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                    <div className="historyParameter">
+                      <p>Обхват ноги:</p>
+                      <span>
+                        {parameter.legs}
+                        {index > 0 && (
+                          <span className={parameter.legs - dataParameters[index - 1].legs > 0 ? 'positive' : 'negative'} style={{ width: 'auto' }}>
+                            {calculateDifference(parameter.legs, dataParameters[index - 1].legs)}
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                    <div className="historyParameter">
+                      <p>Вес:</p>
+                      <span>
+                        {parameter.weight}
+                        {index > 0 && (
+                          <span className={parameter.weight - dataParameters[index - 1].weight > 0 ? 'positive' : 'negative'} style={{ width: 'auto' }}>
+                            {calculateDifference(parameter.weight, dataParameters[index - 1].weight)}
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <button className="exitHistoryBtn" onClick={handleCloseHistory}>
+            <img src={exit} alt="Выйти" />
+            <p>Выйти</p>
+          </button>
+        </div>
+      )}
+
       <div className="profileContainer" style={{ height: isLoading ? '100%' : 'auto' }}>
         {isLoading ? (
-          // Индикатор загрузки
           <Loader />
-        ) : dataParameters ? (
+        ) : lastParameters ? (
           <div className="dataHave">
             <div className="profile" style={{ justifyContent: 'space-between' }}>
               <div className="profileData">
@@ -117,7 +268,7 @@ export default function Profile({ userId, data, setData }) {
                 />
               )}
             </div>
-            {/* <div className="recordText">
+            <div className="recordText">
               <h4>Запись прогресса</h4>
               <p>Чтобы отслеживать прогресс необходимо в конце каждой недели обновлять параметры.</p>
             </div>
@@ -127,14 +278,25 @@ export default function Profile({ userId, data, setData }) {
               onMouseUp={handleMouseUp}
               onTouchStart={handleTouchStart}
               onTouchEnd={handleTouchEnd}
-              disabled={true}
               onClick={() => navigate('/record')}
               style={{ background: isPressed ? '#C0C0C0' : '', borderColor: isPressed ? '#C0C0C0' : '' }}
             >
               <img src={chart} alt="Записать прогресс" />
               <p>Записать прогресс</p>
             </button>
-            {false && <p className='notseven'>Следующая запись будет доступна через 7 дней</p>} */}
+            <button
+              className="recordBtn"
+              onMouseDown={handleHistoryMouseDown}
+              onMouseUp={handleHistoryMouseUp}
+              onTouchStart={handleHistoryTouchStart}
+              onTouchEnd={handleHistoryTouchEnd}
+              onClick={() => setHistoryOpen(!historyOpen)}
+              style={{ background: isHistoryPressed ? '#C0C0C0' : '', borderColor: isHistoryPressed ? '#C0C0C0' : '' }}
+            >
+              <img src={history} alt="История прогресса" />
+              <p>История прогресса</p>
+            </button>
+
             <div className="parameters">
               <h3>Параметры</h3>
               <div className="parametersValues">
@@ -160,31 +322,73 @@ export default function Profile({ userId, data, setData }) {
                 <div className="param">
                   <div className="value">
                     <span>Обхват груди</span>
-                    <p>{dataParameters.chest || 0}</p>
+                    <p>
+                      {lastParameters?.chest}
+                      {firstParameters && lastParameters && lastParameters.chest - firstParameters.chest < 0 && (
+                        <span className="negative">
+                          {lastParameters.chest - firstParameters.chest} см
+                        </span>
+                      )}
+                    </p>
                   </div>
                   <div className="value">
                     <span>Обхват талии</span>
-                    <p>{dataParameters.waist || 0}</p>
+                    <p>
+                      {lastParameters?.waist}
+                      {firstParameters && lastParameters && lastParameters.waist - firstParameters.waist < 0 && (
+                        <span className="negative">
+                          {lastParameters.waist - firstParameters.waist} см
+                        </span>
+                      )}
+                    </p>
                   </div>
                 </div>
                 <div className="param">
                   <div className="value">
                     <span>Обхват живота</span>
-                    <p>{dataParameters.abdominal_circumference || 0}</p>
+                    <p>
+                      {lastParameters?.abdominal_circumference}
+                      {firstParameters && lastParameters && lastParameters.abdominal_circumference - firstParameters.abdominal_circumference < 0 && (
+                        <span className="negative">
+                          {lastParameters.abdominal_circumference - firstParameters.abdominal_circumference} см
+                        </span>
+                      )}
+                    </p>
                   </div>
                   <div className="value">
                     <span>Обхват бедер</span>
-                    <p>{dataParameters.hips || 0}</p>
+                    <p>
+                      {lastParameters?.hips}
+                      {firstParameters && lastParameters && lastParameters.hips - firstParameters.hips < 0 && (
+                        <span className="negative">
+                          {lastParameters.hips - firstParameters.hips} см
+                        </span>
+                      )}
+                    </p>
                   </div>
                 </div>
                 <div className="param">
                   <div className="value">
                     <span>Обхват ноги</span>
-                    <p>{dataParameters.legs || 0}</p>
+                    <p>
+                      {lastParameters?.legs}
+                      {firstParameters && lastParameters && lastParameters.legs - firstParameters.legs < 0 && (
+                        <span className="negative">
+                          {lastParameters.legs - firstParameters.legs} см
+                        </span>
+                      )}
+                    </p>
                   </div>
                   <div className="value">
                     <span>Вес</span>
-                    <p>{dataParameters.weight || 0}</p>
+                    <p>
+                      {lastParameters?.weight}
+                      {firstParameters && lastParameters && lastParameters.weight - firstParameters.weight < 0 && (
+                        <span className="negative">
+                          {lastParameters.weight - firstParameters.weight} кг
+                        </span>
+                      )}
+                    </p>
                   </div>
                 </div>
               </div>

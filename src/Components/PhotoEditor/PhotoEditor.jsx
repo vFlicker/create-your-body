@@ -18,15 +18,15 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
     const fetchPhoto = async () => {
       setIsLoading(true);
       try {
-        console.log('Отправка запроса на получение фото:', {
-          url: `${API_BASE_URL}/api/v1/user/images/two`,
-          userId,
-          number,
-          requestParams: {
-            tg_id: String(userId),
-            number: number
-          }
-        });
+        // console.log('Отправка запроса на получение фото:', {
+        //   url: `${API_BASE_URL}/api/v1/user/images/two`,
+        //   userId,
+        //   number,
+        //   requestParams: {
+        //   tg_id: String(userId),
+        //   number: number
+        //   }
+        // });
 
         const response = await axios.get(`${API_BASE_URL}/api/v1/user/images/two`, {
           params: {
@@ -36,13 +36,13 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
           responseType: 'blob'
         });
 
-        console.log('Ответ сервера:', {
-          status: response.status,
-          headers: response.headers,
-          dataType: typeof response.data,
-          dataSize: response.data?.size,
-          data: response.data
-        });
+        // console.log('Ответ сервера:', {
+        //   status: response.status,
+        //   headers: response.headers,
+        //   dataType: typeof response.data,
+        //   dataSize: response.data?.size,
+        //   data: response.data
+        // });
 
         if (response.data && response.data.size > 100) {
           try {
@@ -55,7 +55,7 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
               } catch (e) {
                 const blob = new Blob([response.data], { type: response.headers['content-type'] || 'image/jpeg' });
                 const photoUrl = URL.createObjectURL(blob);
-                console.log('Созданный URL:', photoUrl);
+                // console.log('Созданный URL:', photoUrl);
                 setPhoto(photoUrl);
               }
             };
