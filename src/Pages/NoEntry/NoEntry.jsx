@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import './NoEntry.css'
 import '../Food/Food.css'
 import Button from '../../Components/Button/Button';
+import { createPortal } from 'react-dom';
 import { TelegramLinkButton } from '../Communication/Communication';
 
 import chat from '../../Assets/nav/chat.svg'
@@ -40,7 +41,7 @@ export default function NoEntry({ logs, addLog }) {
 
   return (
     <div className='noEntryPage'>
-      {errorsContainer && (
+      {errorsContainer && createPortal(
         <div className='errorsContainer'>
           <p>Здравствуйте!
             <br />
@@ -91,7 +92,8 @@ export default function NoEntry({ logs, addLog }) {
               width={'100%'}
             />
           </div>
-        </div>
+        </div>,
+        document.body
       )}
       <h1>Доступ в приложение закрыт</h1>
       <p>Если считаешь, что это ошибка - обратись в поддержку</p>

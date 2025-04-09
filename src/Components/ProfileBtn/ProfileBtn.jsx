@@ -26,20 +26,30 @@ export default function ProfileBtn({ level, user_photo }) {
   }, [user_photo])
 
   return (
-    <button
-      className='profileBtn'
-      onClick={() => navigate('/profile')}
-      style={{ borderColor: level === 'Профи' ? '#A799FF' : '' }}
+    <div
+      className='profilePlash'
     >
-      {isLoading ? (
-        <Loader width={20} />
-      ) : (
-        <img src={user_photo ? user_photo : avatar} alt="аватар" style={{ transform: user_photo ? '' : 'scale(0.7)' }} />
-      )}
+      <button 
+        className="profileBtn"
+        onClick={() => navigate('/profile')}
+        style={{ borderColor: level === 'Профи' ? '#A799FF' : '' }}
+      >
+        {isLoading ? (
+          <Loader width={16} widthContainer='100%' />
+        ) : (
+          <img src={user_photo ? user_photo : avatar} alt="аватар" style={{ transform: user_photo ? '' : 'scale(0.7)' }} />
+        )}
       <div className="profileEllips"
         style={{ background: level === 'Профи' ? '#A799FF' : '' }}
-      ></div>
-      {location.pathname !== '/profile' && location.pathname !== '/record' && location.pathname !== '/parameters' && <p className='profileBtnText'>Уровень: <span>{level}</span></p>}
-    </button>
+      >
+      </div>
+      </button>
+      {location.pathname !== '/profile' && location.pathname !== '/record' && location.pathname !== '/parameters' && (
+        <div className='profileBtnText'>
+          <p>Уровень:</p>
+          <span>{level}</span>
+        </div>
+      )}
+    </div>
   )
 }

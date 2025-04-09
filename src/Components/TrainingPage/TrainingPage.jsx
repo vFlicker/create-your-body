@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './TrainingPage.css';
 import Button from '../Button/Button';
+
+import Notification from '../Notification/Notification';
 // import Loader from '../../Components/Loader/Loader';
 
 import arrow from '../../Assets/svg/arrow.svg'
@@ -30,13 +32,14 @@ const transition = {
     duration: 0.3
 };
 
-export default function TrainingPage({ trainingData, onBack, lectures }) {
+export default function TrainingPage({ trainingData, onBack, lectures, jcsb }) {
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
     const [direction, setDirection] = useState(0);
     // const [loadingStates, setLoadingStates] = useState({});
     // const [isLoading, setIsLoading] = useState(true);
     const [isBonus, setIsBonus] = useState(false);
     const contentRef = useRef(null);
+    const [notice, setNotice] = useState(true)
     
     console.log(trainingData)
 
@@ -68,7 +71,7 @@ export default function TrainingPage({ trainingData, onBack, lectures }) {
     }, [trainingData, currentStepIndex]);
 
     useEffect(() => {
-        if (contentRef.current) {
+        if (contentRef.current && currentStepIndex !== 0) {
             contentRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     }, [currentStepIndex]);
@@ -182,8 +185,9 @@ export default function TrainingPage({ trainingData, onBack, lectures }) {
     };
 
     return (
-        <div className="training-page" ref={contentRef}>
+        <div className="training-page" ref={contentRef} style={{justifyContent: jcsb ? 'space-between' : ''}}>
             {!lectures && <h1>{currentStep.title} {isBonus && 'БОНУС'}</h1>}
+            {(!lectures && notice) && <Notification onClose={() => setNotice(false)}><p>Когда закончишь - долистай до конца для продолжения тренировки</p></Notification>}
 
             <div className="training-content-wrapper">
                 <AnimatePresence initial={false} custom={direction} mode="wait">

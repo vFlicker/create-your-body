@@ -4,6 +4,8 @@
   flex-direction: column;
   gap: 16px;
   overflow-y: auto;
+  padding: 16px;
+  box-sizing: border-box;
 }
 
 .training-page h1 {

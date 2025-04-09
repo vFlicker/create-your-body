@@ -1,9 +1,9 @@
 import React from "react";
 import './Loader.css'
 
-export default function Loader({ height='100%', width='50px', borderWidth='4px' }) {
+export default function Loader({ height='100%', width='50px', borderWidth='4px', widthContainer='100%' }) {
   return (
-    <div className="loadingSpinner" style={{height: height ? height : ''}}>
+    <div className="loadingSpinner" style={{height: height ? height : '', width: widthContainer}}>
       <div className="spinner"
         style={{
             width: width ? width : '',

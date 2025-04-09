@@ -1,10 +1,11 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Outlet } from 'react-router-dom';
+import { motion } from 'framer-motion';
+// import { Outlet } from 'react-router-dom';
 import './PageTransition.css';
 
-export default function PageTransition() {
+const PageTransition = ({ children }) => {
   const location = useLocation();
   const [previousLocation, setPreviousLocation] = useState(location);
 
@@ -14,22 +15,24 @@ export default function PageTransition() {
     }
   }, [location]);
 
-  const direction = location.key > previousLocation.key ? 1 : -1;
+  // const direction = location.key > previousLocation.key ? 1 : -1;
 
   return (
-    <div className="page-transition-container">
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={location.pathname}
-          initial={{ x: direction * 100 + "%", opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: -direction * 100 + "%", opacity: 0 }}
-          transition={{ duration: 0.3, ease: "easeInOut" }}
-          style={{ position: 'absolute', width: '100%' }}
-        >
-          <Outlet /> {/* Используем Outlet вместо children */}
-        </motion.div>
-      </AnimatePresence>
-    </div>
+    <motion.div
+      initial={{ x: 1000, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      exit={{ x: -1000, opacity: 0 }}
+      transition={{
+        type: "spring",
+        stiffness: 100,
+        damping: 20,
+        mass: 0.5
+      }}
+      className="page-transition"
+    >
+      {children}
+    </motion.div>
   );
-}
+};
+
+export default PageTransition;

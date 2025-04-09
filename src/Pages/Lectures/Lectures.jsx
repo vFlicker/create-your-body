@@ -223,6 +223,7 @@ export default function Lectures({ level, user_photo }) {
                                 onBack={handleBack}
                                 level='Профи'
                                 lectures={true}
+                                jcsb={true}
                             />
                         </motion.div>
                     )}

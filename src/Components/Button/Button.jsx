@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Button.css';
 
-export default function Button({ onClick, bg, bgFocus = '#A799FF', icon, text, reverse, disabled, color, width}) {
+export default function Button({ onClick, bg, bgFocus = '#A799FF', icon, text, reverse, disabled, color, width, style}) {
   const [isPressed, setIsPressed] = useState(false); // Состояние нажатия
 
   const handleClick = (e) => {
@@ -21,6 +21,7 @@ export default function Button({ onClick, bg, bgFocus = '#A799FF', icon, text, r
       onTouchStart={handleTouchStart}  
       onTouchEnd={handleTouchEnd}      
       style={{
+        ...style,
         background: isPressed ? bgFocus : bg, // Меняем фон при нажатии
         flexDirection: reverse ? 'row-reverse' : 'row',
         width: width ? width : ''

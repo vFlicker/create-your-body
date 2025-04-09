@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { BrowserRouter, Routes, Route, Outlet, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import './App.css';
 import axios from "axios";
 import { API_BASE_URL } from './API';
 
 import Loader from "./Components/Loader/Loader";
-// import PageTransition from "./Components/PageTransition/PageTransition";
+import PageTransition from "./Components/PageTransition/PageTransition";
 
 import NoEntry from "./Pages/NoEntry/NoEntry";
 import ButtonClose from "./Components/Button/ButtonClose";
@@ -38,7 +39,13 @@ function Layout() {
         <ButtonClose />
       </div>
       <div className="App">
-        <Outlet />
+        <div className="page-transition-container">
+          <AnimatePresence mode="sync">
+            <PageTransition key={location.pathname}>
+              <Outlet />
+            </PageTransition>
+          </AnimatePresence>
+        </div>
         {showControlsNav && <Nav />}
       </div>
     </>
@@ -148,7 +155,9 @@ function App() {
       const fetchData = async () => {
         try {
           setIsLoading(true);
-          await Promise.all([addImage(), addUser()]);
+          await Promise.all([
+            addImage(), 
+            addUser()]);
         } finally {
           setIsLoading(false);
         }

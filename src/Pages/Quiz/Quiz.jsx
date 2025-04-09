@@ -3,15 +3,67 @@ import './Quiz.css';
 import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../../API';
 import axios from 'axios';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import Progress from '../../Components/Progress/Progress';
 import Button from '../../Components/Button/Button';
 import ButtonBack from '../../Components/Button/ButtonBack';
 
+const slideVariants = {
+  enter: (direction) => ({
+    x: direction === 'forward' ? 1000 : -1000,
+    scale: 0.8,
+    rotate: direction === 'forward' ? -5 : 5,
+  }),
+  center: {
+    x: 0,
+    scale: 1,
+    rotate: 0,
+  },
+  exit: (direction) => ({
+    x: direction === 'forward' ? -1000 : 1000,
+    scale: 0.8,
+    rotate: direction === 'forward' ? 5 : -5,
+  })
+};
+
+const transition = {
+  duration: 0.5,
+  ease: [0.43, 0.13, 0.23, 0.96],
+  scale: {
+    duration: 0.5,
+    ease: "easeOut"
+  },
+  rotate: {
+    duration: 0.5,
+    ease: "easeInOut"
+  }
+};
+
+const titleVariants = {
+  enter: (direction) => ({
+    x: direction === 'forward' ? 100 : -100,
+    opacity: 0
+  }),
+  center: {
+    x: 0,
+    opacity: 1
+  },
+  exit: (direction) => ({
+    x: direction === 'forward' ? -100 : 100,
+    opacity: 0
+  })
+};
+
+const titleTransition = {
+  duration: 0.5,
+  ease: [0.43, 0.13, 0.23, 0.96]
+};
+
 export default function Quiz({ userId, data }) {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
-  const [opacity, setOpacity] = useState(1);
+  const [direction, setDirection] = useState('forward');
   const [name, setName] = useState('');
   const [gen, setGen] = useState('');
   const [tel, setTel] = useState('');
@@ -111,7 +163,6 @@ export default function Quiz({ userId, data }) {
   const validatePhone = (phone) => {
     const cleanedPhone = phone.replace(/[^\d+]/g, '');
     
-    // Проверка на российский номер
     if (cleanedPhone.startsWith('7') || cleanedPhone.startsWith('8')) {
       if (cleanedPhone.length !== 11) {
         return 'Номер телефона должен содержать 11 цифр';
@@ -126,7 +177,6 @@ export default function Quiz({ userId, data }) {
       return '';
     }
     
-    // Проверка на международный номер
     if (cleanedPhone.startsWith('+')) {
       if (cleanedPhone.length < 10 || cleanedPhone.length > 15) {
         return 'Номер телефона должен содержать от 10 до 15 символов';
@@ -140,7 +190,6 @@ export default function Quiz({ userId, data }) {
   const handlePhoneChange = (e) => {
     let value = e.target.value.replace(/[^\d+]/g, '');
     
-    // Если номер начинается с +, разрешаем международный формат
     if (value.startsWith('+')) {
       if (value.length > 15) return;
       setTel(value);
@@ -148,7 +197,6 @@ export default function Quiz({ userId, data }) {
       return;
     }
     
-    // Для российских номеров
     if (value.length === 1) {
       if (value === '7' || value === '+') value = '+7';
       else if (value === '8') value = '8';
@@ -184,7 +232,6 @@ export default function Quiz({ userId, data }) {
 
   const handleNameChange = (e) => {
     const value = e.target.value;
-    // Разрешаем только буквы и пробелы
     const sanitizedValue = value.replace(/[^а-яА-Яa-zA-Z\s]/g, '');
     setName(sanitizedValue);
     setNameError(validateName(sanitizedValue));
@@ -262,13 +309,12 @@ export default function Quiz({ userId, data }) {
 
   const handleNext = () => {
     if (step < 8) {
+      setDirection('forward');
       setAnswers([...answers, selectedOption]);
       setSelectedOption(null);
-      setOpacity(0);
       setTimeout(() => {
         setStep(step + 1);
-        setOpacity(1);
-      }, 150);
+      }, 300);
     } else {
       const finalAnswers = [...answers, selectedOption];
       const countOnes = finalAnswers.filter((answer) => answer === 1).length;
@@ -316,120 +362,165 @@ export default function Quiz({ userId, data }) {
 
   const handleBack = () => {
     if (step > 1) {
-      setOpacity(0);
+      setDirection('backward');
       setTimeout(() => {
         setStep(step - 1);
         setSelectedOption(answers[step - 2]);
         setAnswers(answers.slice(0, -1));
-        setOpacity(1);
-      }, 150);
+      }, 300);
     }
   };
 
-  const renderQuizContent = () => {
-    if (step === 1) {
-      return (
-        <>
-          <div className="name">
-            <p className="titleInput">Имя</p>
-            <input
-              type="text"
-              placeholder="Введите ваше имя"
-              value={name}
-              onChange={handleNameChange}
-              ref={nameRef}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              autoFocus={!name}
-            />
-            <div className="error-message" style={{ opacity: nameError ? 1 : 0 }}>{nameError}</div>
-          </div>
-          <div className="name">
-            <p className="titleInput">Пол</p>
-            <div className="selectGender">
-              <button
-                className={`genderBtn ${gen === 'm' ? 'active' : ''}`}
-                onClick={() => setGen('m')}
-              >
-                М
-              </button>
-              <button
-                className={`genderBtn ${gen === 'w' ? 'active' : ''}`}
-                onClick={() => setGen('w')}
-              >
-                Ж
-              </button>
-            </div>
-          </div>
-          <div className="name">
-            <p className="titleInput">Номер телефона</p>
-            <input
-              type="tel"
-              placeholder="7 999 999 99 99"
-              value={tel}
-              onChange={handlePhoneChange}
-              ref={telRef}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              autoFocus={!tel}
-            />
-            <div className="error-message" style={{ opacity: telError ? 1 : 0 }}>{telError}</div>
-          </div>
-          <div className="name">
-            <p className="titleInput">Дата рождения</p>
-            <input
-              type="text"
-              placeholder="дд.мм.гггг"
-              value={birthday}
-              onChange={handleBirthdayChange}
-              ref={birthdayRef}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              autoFocus={!birthday}
-            />
-            <div className="error-message" style={{ opacity: birthdayError ? 1 : 0 }}>{birthdayError}</div>
-          </div>
-        </>
-      );
-    } else {
-      const currentData = quizData[step - 2];
-      return (
-        <div className="quizOptions">
-          {currentData.options.map((option, index) => (
-            <button
-              key={index}
-              className={`quizAnswer ${selectedOption === option.level ? 'active' : ''}`}
-              onClick={() => setSelectedOption(option.level)}
-            >
-              <p>{option.img}</p>
-              <p>{option.text}</p>
-            </button>
-          ))}
+  const renderStep1 = () => (
+    <motion.div
+      key="step1"
+      custom={direction}
+      variants={slideVariants}
+      initial="enter"
+      animate="center"
+      exit="exit"
+      transition={transition}
+      className='quizStep1'
+      // whileHover={{ scale: 1.02 }}
+      // whileTap={{ scale: 0.98 }}
+    >
+      <div className="name">
+        <p className="titleInput">Имя</p>
+        <input
+          type="text"
+          placeholder="Введите ваше имя"
+          value={name}
+          onChange={handleNameChange}
+          ref={nameRef}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          autoFocus={!name}
+        />
+        <div className="error-message" style={{ opacity: nameError ? 1 : 0 }}>{nameError}</div>
+      </div>
+      <div className="name">
+        <p className="titleInput">Пол</p>
+        <div className="selectGender">
+          <button
+            className={`genderBtn ${gen === 'm' ? 'active' : ''}`}
+            onClick={() => setGen('m')}
+          >
+            М
+          </button>
+          <button
+            className={`genderBtn ${gen === 'w' ? 'active' : ''}`}
+            onClick={() => setGen('w')}
+          >
+            Ж
+          </button>
         </div>
-      );
-    }
-  };
+      </div>
+      <div className="name">
+        <p className="titleInput">Номер телефона</p>
+        <input
+          type="tel"
+          placeholder="7 999 999 99 99"
+          value={tel}
+          onChange={handlePhoneChange}
+          ref={telRef}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          autoFocus={!tel}
+        />
+        <div className="error-message" style={{ opacity: telError ? 1 : 0 }}>{telError}</div>
+      </div>
+      <div className="name">
+        <p className="titleInput">Дата рождения</p>
+        <input
+          type="text"
+          placeholder="дд.мм.гггг"
+          value={birthday}
+          onChange={handleBirthdayChange}
+          ref={birthdayRef}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          autoFocus={!birthday}
+        />
+        <div className="error-message" style={{ opacity: birthdayError ? 1 : 0 }}>{birthdayError}</div>
+      </div>
+    </motion.div>
+  );
 
-  const getStepTitle = () => {
-    return step === 1 ? 'Давайте знакомиться!' : quizData[step - 2].question;
-  };
-
-  const buttonText = step === 8 ? 'Завершить' : 'Далее';
+  const renderQuizStep = () => (
+    <motion.div
+      key={`step${step}`}
+      custom={direction}
+      variants={slideVariants}
+      initial="enter"
+      animate="center"
+      exit="exit"
+      transition={transition}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      className='quizStep'
+    >
+      <div className="quizOptions">
+        {quizData[step - 2].options.map((option, index) => (
+          <button
+            key={index}
+            className={`quizAnswer ${selectedOption === option.level ? 'active' : ''}`}
+            onClick={() => setSelectedOption(option.level)}
+          >
+            <p>{option.img}</p>
+            <p>{option.text}</p>
+          </button>
+        ))}
+      </div>
+    </motion.div>
+  );
 
   return (
     <div className={`quizPage ${isFocused ? 'focused' : ''}`} ref={formRef}>
       <div className="forBack">
         {step !== 1 && <ButtonBack onClick={handleBack} />}
       </div>
-      <div className="topPage">
-        <h1>{getStepTitle()}</h1>
+      <div className={`topPage ${step > 1 ? 'expanded' : ''}`}>
+        <div className="titleContainer">
+          <AnimatePresence initial={false} mode="sync">
+            <motion.h1
+              key={step}
+              custom={direction}
+              variants={titleVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={titleTransition}
+              className="titleAnimate"
+            >
+              {step === 1 ? 'Давайте знакомиться!' : quizData[step - 2].question}
+            </motion.h1>
+          </AnimatePresence>
+        </div>
         <Progress title={'Шаг'} count_all={8} count_complited={step} />
       </div>
-      <div className="bottomPage">
-        <div className="quizContent" style={{ opacity, transition: 'opacity 150ms ease' }}>
-          {renderQuizContent()}
+      <div className={`bottomPage ${step > 1 ? 'expanded' : ''}`}>
+        <div 
+          className="quizContent"
+          style={{
+            minHeight: step > 1 ? 'auto' : ''
+          }}
+        >
+          <AnimatePresence initial={false} mode="sync">
+            {step === 1 ? renderStep1() : renderQuizStep()}
+          </AnimatePresence>
+        <Button 
+          text={step === 8 ? 'Завершить' : 'Далее'} 
+          onClick={handleNext} 
+          disabled={!isValid} 
+          width='calc(100% - 32px)'
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: '50%',
+            transform: 'translateX(-50%)'
+          }}
+        />
         </div>
-        <Button text={buttonText} onClick={handleNext} disabled={!isValid} />
       </div>
     </div>
   );

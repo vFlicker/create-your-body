@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { createPortal } from 'react-dom';
 import './Profile.css';
 import axios from 'axios';
 import { API_BASE_URL } from '../../API';
@@ -133,8 +134,8 @@ export default function Profile({ userId, data, setData }) {
   };
 
   return (
-    <div className="profilePage" style={{ height: isLoading ? 'calc(100vh - 160px)' : 'auto' }}>
-      {historyOpen && (
+    <div className="profilePage" style={{ height: isLoading ? 'calc(100vh - 160px)' : 'fit-content' }}>
+      {historyOpen && createPortal(
         <div className={`profileHistoryContainer ${isClosing ? 'closing' : ''}`}>
           <div className="profileHistoryContent">
             <h3>История прогресса</h3>
@@ -223,7 +224,8 @@ export default function Profile({ userId, data, setData }) {
             <img src={exit} alt="Выйти" />
             <p>Выйти</p>
           </button>
-        </div>
+        </div>,
+        document.body
       )}
 
       <div className="profileContainer" style={{ height: isLoading ? '100%' : 'auto' }}>

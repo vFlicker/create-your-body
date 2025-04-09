@@ -91,7 +91,6 @@ export default function PdfViewer({ pdfId, pdfFile, userId, addLog }) {
 
     const renderPdfContent = () => (
         <>
-            {isLoading && <Loader />}
             <div className={`fullscreenOverlay ${isFullscreen ? 'active' : ''}`} />
 
             {pdfUrl && (
@@ -161,7 +160,9 @@ export default function PdfViewer({ pdfId, pdfFile, userId, addLog }) {
 
     return (
         <div className="mainPdfViewer">
-            {renderPdfContent()}
+            { isLoading ? <Loader /> :
+            renderPdfContent()
+            }
         </div>
     );
 } 

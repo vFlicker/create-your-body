@@ -30,17 +30,18 @@
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 1vh;
     background: rgba(0, 0, 0, 0.5);
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: all 0.3s ease;
     z-index: 999;
   }
   
   .fullscreenOverlay.active {
     opacity: 1;
     pointer-events: auto;
+    height: 100vh;
   }
   
   .pdfViewerFooter {

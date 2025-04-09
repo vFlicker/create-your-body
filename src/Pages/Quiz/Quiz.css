@@ -6,6 +6,7 @@
     position: relative;
     overflow-y: auto;
     transition: all 0.3s ease-in-out;
+    width: 100%;
 }
 
 .topPage {
@@ -14,7 +15,13 @@
     justify-content: flex-end;
     gap: 24px;
     padding: 0 16px;
-    padding-top: 75px;
+    /* padding-top: 75px; */
+    height: 30%;
+    transition: height 0.5s ease;
+}
+
+.topPage.expanded {
+    height: 50%;
 }
 
 .topPage h1 {
@@ -22,29 +29,49 @@
     color: #03001A;
 }
 
+.titleContainer {
+    position: relative;
+    min-height: 50%;
+}
+
+.titleAnimate {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+
 .bottomPage {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items: center;
     border-radius: 16px 16px 0 0;
     background: #fff;
-    padding: 0 16px 32px 16px;
-    flex: 1;
-    gap: 12px;
+    padding-bottom: 32px;
+    height: 70%;
+    transition: height 0.5s ease;
+}
+
+.bottomPage.expanded {
+    height: 50%;
 }
 
 .quizContent {
     display: flex;
     flex-direction: column;
     gap: 24px;
-    padding-top: 16px;
-    transition: all 150ms ease-in-out;
+    padding: 16px 16px 0 16px;
+    padding-bottom: 16px;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .name {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 10px;
     position: relative;
 }
 
@@ -131,13 +158,6 @@
     top: 16px;
 }
 
-.scaled-input {
-    transform-origin: top left;
-    transition: transform 0.2s ease;
-    z-index: 1000;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
-  }
-
 .error-message {
     position: absolute;
     bottom: -16px;
@@ -145,4 +165,14 @@
     font-size: 12px;
     color: #FF3B30;
     transition: all 500ms ease-in-out;
+}
+
+.quizStep1 {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.quizStep {
+    position: absolute;
+    width: calc(100% - 32px);
 }

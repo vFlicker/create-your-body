@@ -115,7 +115,7 @@ export default function Record({ userId, data }) {
   ];
 
   return (
-    <div className="profilePage" ref={formRef} style={{flex: '1', display: 'flex'}}>
+    <div className="profilePage" ref={formRef} style={{flex: '1', display: 'flex', height: 'calc(100% - 70px)'}}>
       <div className="profileContainer">
         <div className="profile" style={{ justifyContent: 'space-between' }}>
           <div className="profileData">

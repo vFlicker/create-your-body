@@ -1,3 +1,9 @@
+.profilePlash {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+}
 .profileBtn {
     width: 40px;
     height: 40px;
@@ -18,8 +24,8 @@
 
 .profileEllips {
     position: absolute;
-    bottom: 0;
-    right: 0;
+    bottom: -1px;
+    right: -1px;
     background: #CBFF52;
     border: 1px solid #F2F2F2;
     width: 9px;

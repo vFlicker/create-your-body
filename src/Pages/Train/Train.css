@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .topTrain {
@@ -22,11 +22,10 @@
 .botTrain {
   background-color: #fff;
   border-radius: 16px 16px 0 0;
-  padding: 16px;
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 0;
+  min-height: fit-content;
   position: relative;
   overflow: hidden;
 }
@@ -35,7 +34,8 @@
   display: flex;
   flex: 1;
   position: relative;
-  height: 100%;
+  min-height: fit-content;
+  width: 200%;
   transition: transform 0.3s ease-in-out;
 }
 
@@ -45,11 +45,13 @@
 
 .train-content {
   width: 50%;
-  height: 100%;
+  height: fit-content;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
   overflow: hidden;
+  padding: 16px;
+  box-sizing: border-box;
 }
 
 .train-details-content {
@@ -61,8 +63,26 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+  height: fit-content;
 }
 
 .train-details-content.slide-in {
   transform: translateX(0);
+}
+
+.training-page ol {
+  list-style-position: inside;
+  padding-left: 0;
+  margin: 0;
+}
+
+.training-page ol li {
+  padding-left: 0;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.training-page ol li::marker {
+  color: #A799FF;
+  font-weight: bold;
 }

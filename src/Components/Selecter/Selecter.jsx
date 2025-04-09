@@ -1,11 +1,11 @@
 import React from 'react';
 import './Selecter.css'; // Добавим стили
 
-export default function Selecter({ bg, onClick, textOne, textTwo, activeIndex }) {
+export default function Selecter({ bg, onClick, textOne, textTwo, activeIndex, className }) {
 
     
     return (
-        <div className="selecterContainer" style={{background: bg ? bg : ''}}>
+        <div className={`selecterContainer ${className}`} style={{background: bg ? bg : ''}}>
             <div className="forBackground">
                 <button
                     className={`selecter ${activeIndex === 0 ? 'active' : ''}`}

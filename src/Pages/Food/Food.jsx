@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import './Food.css'
 import '../Communication/Communication.css'
+import { createPortal } from 'react-dom';
 import axios from 'axios'
 import { API_BASE_URL } from '../../API'
 
@@ -116,11 +117,11 @@ export default function Food({ data, userId }) {
     return (
         <div className='foodPage'>
             {canViewLogs && (
-                <button className='errorBtn' onClick={() => setErrorsContainer(!errorsContainer)}>
+                <button className='errorBtn' style={{bottom: 'unset', top: '100px'}} onClick={() => setErrorsContainer(!errorsContainer)}>
                     <img src={help} alt='help' />
                 </button>
             )}
-            {errorsContainer && (
+            {errorsContainer && createPortal(
                 <div className='errorsContainer'>
                     <p>Здравствуйте!
                         <br />
@@ -150,7 +151,8 @@ export default function Food({ data, userId }) {
                         />
                         <Button bg={'#0D0D0D'} bgFocus={'#A799FF'} color={'#fff'} text={'Выйти'} onClick={() => setErrorsContainer(false)} width={'100%'} />
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
 
             <div className='topFood'>
@@ -162,14 +164,14 @@ export default function Food({ data, userId }) {
             </div>
             <div className='botFood'>
                 <div
-                    className={`content-wrapper ${selectedPdfId ? 'slide-left' : ''}`}
-                    style={{ position: isLoading ? 'absolute' : '', top: isLoading ? '50%' : '', transform: isLoading ? 'translateY(-50%)' : '' }}
+                    className={`content-wrapper-food ${selectedPdfId ? 'slide-left' : ''}`}
+                    style={{ width: isLoading ? '100%' : '', height: isLoading ? '100%' : '' }}
                 >
+                    {isLoading ? <Loader /> :
                     <div className='foodList'
-                        style={{ display: isLoading ? 'flex' : '', flexDirection: isLoading ? 'column' : '', height: selectedPdfId ? '20vh' : '' }}
+                        style={{ height: selectedPdfId ? '50vh' : ''}}
                     >
-                        {isLoading ? <Loader /> :
-                            dataFood?.data?.map((item) => (
+                            {dataFood?.data?.map((item) => 
                                 <FoodContainer
                                     key={item.id}
                                     title={item.title}
@@ -178,8 +180,9 @@ export default function Food({ data, userId }) {
                                     onClick={() => setSelectedPdfId(item.id)}
                                     foodId={item.id}
                                 />
-                            ))}
+                            )}
                     </div>
+                    }
                     {selectedPdfId && (
                         <div className={`pdf-wrapper ${selectedPdfId ? 'slide-in' : ''}`}>
                             <PdfViewer 

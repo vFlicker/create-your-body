@@ -2,6 +2,9 @@
     padding-top: 70px;
     transition: all 150ms ease-in-out;
     position: relative;
+    display: flex;
+    width: 100%;
+    height: fit-content;
 }
 
 .profileContainer,
@@ -43,6 +46,7 @@
     border-radius: 16px 16px 0 0;
     padding: 16px 16px 32px 16px;
     flex: 1;
+    width: 100%;
 }
 
 .profileName,
