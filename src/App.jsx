@@ -182,57 +182,34 @@ function App() {
     addLog('Итоговое условие hasAccess:', hasAccess);
   }, [data, hasAccess, addLog]);
 
-  console.log('Текущее состояние приложения:', {
-    url: window.location.href,
-    path: window.location.pathname,
-    baseUrl: window.location.origin,
-    hasAccess,
-    isLoading,
-    API_BASE_URL,
-    userTarif: data?.user_tarif
-  });
-
   return (
-    <div>
-      <pre style={{position: 'fixed', top: 0, left: 0, background: '#000', color: '#fff', padding: '10px', zIndex: 9999}}>
-        {JSON.stringify({
-          url: window.location.href,
-          path: window.location.pathname,
-          baseUrl: window.location.origin,
-          hasAccess,
-          isLoading,
-          API_BASE_URL,
-          userTarif: data?.user_tarif
-        }, null, 2)}
-      </pre>
-      <BrowserRouter basename="/testerapp">
-        {isLoading ? (
-          <Loader height="100vh" />
-        ) : (
-          <Routes>
-            {hasAccess ? (
-              <Route path="/" element={<Layout />}>
-                <Route index element={<StartPage data={data} />} />
-                <Route path="quiz" element={<Quiz userId={userId} />} />
-                <Route path="result" element={<Result userId={userId} />} />
-                <Route path="dashboard" element={<Dashboard data={data} userId={userId} base={base} />} />
-                <Route path="begin" element={<Begin data={data} userId={userId} />} />
-                <Route path="profile" element={<Profile data={data} userId={userId} setData={setData} />} />
-                <Route path="parameters" element={<Parameters data={data} userId={userId} setData={setData} />} />
-                <Route path="record" element={<Record data={data} userId={userId} />} />
-                <Route path="communication" element={<Communication data={data} userId={userId} base={base} />} />
-                <Route path="train" element={<Train data={data} userId={userId} level={data.user_level} base={base} />} />
-                <Route path="food" element={<Food data={data} userId={userId} />} />
-                <Route path="lectures" element={<Lectures data={data} userId={userId} level={data.user_level}/>} />
-                <Route path="recipes" element={<Recipes data={data} userId={userId} />} />
-              </Route>
-            ) : (
-              <Route path="*" element={<NoEntry logs={logs} addLog={addLog} />} />
-            )}
-          </Routes>
-        )}
-      </BrowserRouter>
-    </div>
+    <BrowserRouter basename="/testerapp">
+      {isLoading ? (
+        <Loader height="100vh" />
+      ) : (
+        <Routes>
+          {hasAccess ? (
+            <Route path="/" element={<Layout />}>
+              <Route index element={<StartPage data={data} />} />
+              <Route path="quiz" element={<Quiz userId={userId} />} />
+              <Route path="result" element={<Result userId={userId} />} />
+              <Route path="dashboard" element={<Dashboard data={data} userId={userId} base={base} />} />
+              <Route path="begin" element={<Begin data={data} userId={userId} />} />
+              <Route path="profile" element={<Profile data={data} userId={userId} setData={setData} />} />
+              <Route path="parameters" element={<Parameters data={data} userId={userId} setData={setData} />} />
+              <Route path="record" element={<Record data={data} userId={userId} />} />
+              <Route path="communication" element={<Communication data={data} userId={userId} base={base} />} />
+              <Route path="train" element={<Train data={data} userId={userId} level={data.user_level} base={base} />} />
+              <Route path="food" element={<Food data={data} userId={userId} />} />
+              <Route path="lectures" element={<Lectures data={data} userId={userId} level={data.user_level}/>} />
+              <Route path="recipes" element={<Recipes data={data} userId={userId} />} />
+            </Route>
+          ) : (
+            <Route path="*" element={<NoEntry logs={logs} addLog={addLog} />} />
+          )}
+        </Routes>
+      )}
+    </BrowserRouter>
   );
 }
 
