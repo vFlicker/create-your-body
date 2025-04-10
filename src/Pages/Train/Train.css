@@ -27,7 +27,6 @@
   flex-direction: column;
   min-height: fit-content;
   position: relative;
-  overflow: hidden;
 }
 
 .content-wrapper {

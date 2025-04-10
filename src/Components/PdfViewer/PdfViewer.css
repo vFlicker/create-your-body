@@ -105,3 +105,8 @@
   .pdfViewerContainer .rpv-core__inner-page {
     background-color: inherit;
   }
+
+  .pdfViewerLink {
+    font-weight: 700;
+    color: #A799FF;
+  }

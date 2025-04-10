@@ -134,21 +134,21 @@ export default function PdfViewer({ pdfId, pdfFile, userId, addLog }) {
 
             {pdfId === '67e68b630e3f348f8806f42f' && (
                 <p>Рассчитать свою дневную калорийность можно на этих сайтах<br /><br />
-                    <a href="https://www.calc.ru/kalkulyator-kalorii.html">https://www.calc.ru/kalkulyator-kalorii.html</a><br /><br />
-                    <a href="https://www.yournutrition.ru/calories/">https://www.yournutrition.ru/calories/</a><br /><br />
+                    <a className="pdfViewerLink" href="https://www.calc.ru/kalkulyator-kalorii.html">https://www.calc.ru/kalkulyator-kalorii.html</a><br /><br />
+                    <a className="pdfViewerLink" href="https://www.yournutrition.ru/calories/">https://www.yournutrition.ru/calories/</a><br /><br />
                     Как рассчитать свое КБЖУ(подробное видео)<br /><br />
-                    <a href="https://cloud.mail.ru/public/xghf/QTxissgf7">https://cloud.mail.ru/public/xghf/QTxissgf7</a>
+                    <a className="pdfViewerLink" href="https://cloud.mail.ru/public/xghf/QTxissgf7">https://cloud.mail.ru/public/xghf/QTxissgf7</a>
                 </p>
             )}
             {pdfId === '67e68bdb0e3f348f8806f433' && (
                 <p>Как подогнать свое кбжу:<br /><br />
-                    <a href="https://cloud.mail.ru/public/WHsZ/WKY7Egu4P">https://cloud.mail.ru/public/WHsZ/WKY7Egu4P</a>
+                    <a className="pdfViewerLink" href="https://cloud.mail.ru/public/WHsZ/WKY7Egu4P">https://cloud.mail.ru/public/WHsZ/WKY7Egu4P</a>
                 </p>
             )}
             {pdfId === '67e68b020e3f348f8806f422' && (
                 <p>Рассчитать свою дневную калорийность можно на этих сайтах<br /><br />
-                    <a href="https://www.calc.ru/kalkulyator-kalorii.html">https://www.calc.ru/kalkulyator-kalorii.html</a><br /><br />
-                    <a href="https://www.yournutrition.ru/calories/">https://www.yournutrition.ru/calories/</a>
+                    <a className="pdfViewerLink" href="https://www.calc.ru/kalkulyator-kalorii.html">https://www.calc.ru/kalkulyator-kalorii.html</a><br /><br />
+                    <a className="pdfViewerLink" href="https://www.yournutrition.ru/calories/">https://www.yournutrition.ru/calories/</a>
                 </p>
             )}
         </>
