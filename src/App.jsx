@@ -53,7 +53,7 @@ function Layout() {
 }
 
 function App() {
-  const [userId, setUserId] = useState(''); // Тестовый ID пользователя
+  const [userId, setUserId] = useState('492999470'); // Тестовый ID пользователя
   const [data, setData] = useState(null);
   const [base, setBase] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -83,51 +83,51 @@ function App() {
       window.Telegram.WebApp.expand();
       window.Telegram.WebApp.disableVerticalSwipes();
 
-      const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
-      setUserId(telegramUser.id);
-      addLog('Telegram User ID:', telegramUser.id);
-      addLog('Telegram User Photo URL:', telegramUser.photo_url);
+      // const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
+      // setUserId(telegramUser.id);
+      // addLog('Telegram User ID:', telegramUser.id);
+      // addLog('Telegram User Photo URL:', telegramUser.photo_url);
 
-      const addImage = async () => {
-        const image = telegramUser.photo_url && typeof telegramUser.photo_url === 'string'
-          ? telegramUser.photo_url
-          : '';
-        const imageData = {
-          user_tg_id: String(telegramUser.id),
-          image: image,
-        };
+      // const addImage = async () => {
+      //   const image = telegramUser.photo_url && typeof telegramUser.photo_url === 'string'
+      //     ? telegramUser.photo_url
+      //     : '';
+      //   const imageData = {
+      //     user_tg_id: String(telegramUser.id),
+      //     image: image,
+      //   };
 
-        addLog('Отправляемые данные для изображения:', imageData);
+      //   addLog('Отправляемые данные для изображения:', imageData);
 
-        const params = new URLSearchParams(imageData).toString();
+      //   const params = new URLSearchParams(imageData).toString();
 
-        try {
-          const response = await axios.post(`${API_BASE_URL}/api/v1/user/image?${params}`, null, {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-          addLog('Ответ сервера на запрос изображения:', response.data);
-        } catch (error) {
-          const errorDetails = {
-            message: error.message,
-            status: error.response?.status,
-            statusText: error.response?.statusText,
-            data: error.response?.data,
-            config: {
-              url: error.config?.url,
-              method: error.config?.method,
-              headers: error.config?.headers,
-            }
-          };
-          addLog('Ошибка при отправке изображения:', JSON.stringify(errorDetails, null, 2));
-        }
-      };
+      //   try {
+      //     const response = await axios.post(`${API_BASE_URL}/api/v1/user/image?${params}`, null, {
+      //       headers: {
+      //         'Content-Type': 'application/json',
+      //       },
+      //     });
+      //     addLog('Ответ сервера на запрос изображения:', response.data);
+      //   } catch (error) {
+      //     const errorDetails = {
+      //       message: error.message,
+      //       status: error.response?.status,
+      //       statusText: error.response?.statusText,
+      //       data: error.response?.data,
+      //       config: {
+      //         url: error.config?.url,
+      //         method: error.config?.method,
+      //         headers: error.config?.headers,
+      //       }
+      //     };
+      //     addLog('Ошибка при отправке изображения:', JSON.stringify(errorDetails, null, 2));
+      //   }
+      // };
 
       const addUser = async () => {
         try {
           const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-            params: { user_id: telegramUser.id },
+            params: { user_id: userId },
           });
           addLog('Ответ сервера на запрос пользователя:', response.data);
           setData(response.data);
@@ -156,7 +156,7 @@ function App() {
         try {
           setIsLoading(true);
           await Promise.all([
-            addImage(), 
+            // addImage(), 
             addUser()]);
         } finally {
           setIsLoading(false);
@@ -183,7 +183,7 @@ function App() {
   }, [data, hasAccess, addLog]);
 
   return (
-    <BrowserRouter basename="/testerapp">
+    <BrowserRouter>
       {isLoading ? (
         <Loader height="100vh" />
       ) : (

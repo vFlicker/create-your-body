@@ -35,8 +35,6 @@ const transition = {
 export default function TrainingPage({ trainingData, onBack, lectures, jcsb }) {
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
     const [direction, setDirection] = useState(0);
-    // const [loadingStates, setLoadingStates] = useState({});
-    // const [isLoading, setIsLoading] = useState(true);
     const [isBonus, setIsBonus] = useState(false);
     const contentRef = useRef(null);
     const [notice, setNotice] = useState(true)
@@ -50,10 +48,12 @@ export default function TrainingPage({ trainingData, onBack, lectures, jcsb }) {
     }, []);
 
     useEffect(() => {
-        // if (!trainingData || !Array.isArray(trainingData)) {
-        //     setIsLoading(true);
-        //     return;
-        // }
+        if (!trainingData) return;
+
+        if (lectures) {
+            setIsBonus(false);
+            return;
+        }
 
         if (trainingData[currentStepIndex]?.bonus) {
             setIsBonus(true);
@@ -68,7 +68,7 @@ export default function TrainingPage({ trainingData, onBack, lectures, jcsb }) {
         });
         // setLoadingStates(newLoadingStates);
 
-    }, [trainingData, currentStepIndex]);
+    }, [trainingData, currentStepIndex, lectures]);
 
     useEffect(() => {
         if (contentRef.current && currentStepIndex !== 0) {
@@ -80,6 +80,8 @@ export default function TrainingPage({ trainingData, onBack, lectures, jcsb }) {
     
 
     const handleNext = useCallback(() => {
+        if (!trainingData) return;
+
         if (lectures || currentStepIndex === trainingData.length - 1) {
             onBack();
         } else {
@@ -97,6 +99,8 @@ export default function TrainingPage({ trainingData, onBack, lectures, jcsb }) {
     }, [currentStepIndex, trainingData, onBack, lectures]);
 
     const handleBack = useCallback(() => {
+        if (!trainingData) return;
+
         if (currentStepIndex > 0) {
             setDirection(-1);
             setCurrentStepIndex(prev => prev - 1);
@@ -128,11 +132,11 @@ export default function TrainingPage({ trainingData, onBack, lectures, jcsb }) {
         };
     }, [currentStepIndex, handleBack]);
 
-    // if (isLoading || !trainingData || !Array.isArray(trainingData) || !trainingData[currentStepIndex]) {
-    //     return null;
-    // }
+    if (!trainingData) {
+        return <div>Загрузка...</div>;
+    }
 
-    const currentStep = trainingData[currentStepIndex];
+    const currentStep = lectures ? trainingData.data : trainingData[currentStepIndex];
     const isLastStep = lectures ? true : currentStepIndex === trainingData.length - 1;
     // const isFirstStep = currentStepIndex === 0;
 
@@ -145,7 +149,7 @@ export default function TrainingPage({ trainingData, onBack, lectures, jcsb }) {
             case 'video':
                 return (
                     <div className="video-section">
-                        <div className="videoContainer">
+                        <div className="videoContainer" style={{aspectRatio: lectures ? '16/9' : '9/16'}}>
                             <div dangerouslySetInnerHTML={{ __html: block.video.embedCode }} />
                         </div>
                     </div>
@@ -155,33 +159,6 @@ export default function TrainingPage({ trainingData, onBack, lectures, jcsb }) {
             default:
                 return null;
         }
-    };
-
-    const renderLegacyContent = () => {
-        
-        if (!trainingData?.profi?.[0]) return null;
-        
-        const item = trainingData.profi[0];
-        return (
-            <div className="legacy-content">
-                {item.videoUrl && (
-                    <div className="video-section">
-                        <div className="videoContainer" style={{aspectRatio: lectures ? '16/9' : '9/16'}}>
-                            <iframe
-                                src={item.videoUrl}
-                                allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
-                                frameBorder="0"
-                                allowFullScreen
-                                title="Видео"
-                            />
-                        </div>
-                    </div>
-                )}
-                {item.text && (
-                    <div className="text-section" dangerouslySetInnerHTML={{ __html: item.text.replace(/\n/g, '<br/>') }} />
-                )}
-            </div>
-        );
     };
 
     return (
@@ -202,9 +179,13 @@ export default function TrainingPage({ trainingData, onBack, lectures, jcsb }) {
                         transition={transition}
                     >
                         {lectures ? (
-                            renderLegacyContent()
+                            currentStep?.blocks?.map((block, index) => (
+                                <div key={block._id || index}>
+                                    {renderBlock(block)}
+                                </div>
+                            ))
                         ) : (
-                            currentStep.blocks?.map((block, index) => (
+                            currentStep?.blocks?.map((block, index) => (
                                 <div key={block._id || index}>
                                     {renderBlock(block)}
                                 </div>

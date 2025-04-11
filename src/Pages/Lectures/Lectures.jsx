@@ -1,85 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import axios from 'axios';
+import { API_BASE_URL } from '../../API';
 import './Lectures.css';
 import '../../Pages/Train/Train.css';
 
 import TrainBox from '../../Components/TrainBox/TrainBox';
 import TrainingPage from '../../Components/TrainingPage/TrainingPage';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
+import Loader from '../../Components/Loader/Loader';
 
 import book from '../../Assets/svg/book.svg'
-
-const lectures = [
-    {
-        closed: false,
-        week: '1',
-        trainings: [
-            {
-                title: 'Лекция 1',
-                profi: [
-                    {
-                        videoUrl: 'https://kinescope.io/embed/cG3SmEWwqUKfYn22jUT1Mq',
-                        text: 'В этой лекции рассказываю о правилах питания и составлении рациона\nРассчитать свою дневную калорийность можно на этих сайтах\nhttps://www.calc.ru/kalkulyator-kalorii.html\nhttps://www.yournutrition.ru/calories/'
-                    }
-                ],
-            },
-            {
-                title: 'Лекция 2',
-                profi: [
-                    {
-                        videoUrl: 'https://kinescope.io/embed/mYBNBkzf3UbuvFzJVehPEt',
-                        text: 'Лекция про дисциплину и как она влияет на результат',
-                    }
-                ],
-            }
-        ]
-    },
-    {
-        closed: false,
-        week: '2',
-        trainings: [
-            {
-                title: 'Лекция 1',
-                profi: [
-                    {
-                        videoUrl: 'https://kinescope.io/embed/dC6eeB7mjJfqDVimbN1VYc',
-                        text: 'Лекция про срывы и переедания',
-                    }
-                ],
-            }
-        ]
-    },
-    {
-        closed: true,
-        week: '3',
-        trainings: [
-            {
-                title: 'Лекция 1',
-                profi: [
-                    {
-                        videoUrl: 'https://kinescope.io/embed/dC6eeB7mjJfqDVimbN1VYc',
-                        text: 'Лекция про срывы и переедания',text_2: 'Cгибание голени лежа 12-15 повторений, 4 подхода\n1. Настраиваем тренажер: валик, который находится ближе к стопе, фиксируем так, чтобы в момент сгибания, он не давил в пятки и не заходил на икры.\n2. На выдох, сгибаем голень, подтягиваем валик вверх, стопы расслаблены, на вдох, медленно возвращаем валик вниз, не бросая.\n3. Работаем за счет бицепса бедра (находится под ягодицей), если он не работает, нужно перенастроить тренажер.'
-                    }
-                ],
-            }
-        ]
-    },
-    {
-        closed: true,
-        week: '4',
-        trainings: [
-            {
-                title: 'Лекция 1',
-                profi: [
-                    {
-                        videoUrl: 'https://kinescope.io/embed/dC6eeB7mjJfqDVimbN1VYc',
-                        text: 'Лекция про срывы и переедания',text_2: 'Cгибание голени лежа 12-15 повторений, 4 подхода\n1. Настраиваем тренажер: валик, который находится ближе к стопе, фиксируем так, чтобы в момент сгибания, он не давил в пятки и не заходил на икры.\n2. На выдох, сгибаем голень, подтягиваем валик вверх, стопы расслаблены, на вдох, медленно возвращаем валик вниз, не бросая.\n3. Работаем за счет бицепса бедра (находится под ягодицей), если он не работает, нужно перенастроить тренажер.'
-                    }
-                ],
-            }
-        ]
-    }
-];
 
 const slideVariants = {
     enter: (direction) => ({
@@ -105,21 +36,94 @@ const transition = {
 export default function Lectures({ level, user_photo }) {
     const [[page, direction], setPage] = useState([0, 0]);
     const [selectedWeek, setSelectedWeek] = useState(null);
-    const [selectedTraining, setSelectedTraining] = useState(null);
+    const [selectedLecture, setSelectedLecture] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [weeksData, setWeeksData] = useState(null);
+    const [lecturesData, setLecturesData] = useState(null);
+    const [lecture, setLecture] = useState(null);
+    const [isLoadingLectures, setIsLoadingLectures] = useState(false);
 
-    const handleWeekSelect = (weekData) => {
-        setSelectedWeek(weekData);
+    useEffect(() => {
+        const fetchData = async () => {
+            
+            setIsLoading(true);
+            try {
+                // Получаем список недель
+                const weeksResponse = await axios.get(`${API_BASE_URL}/cms/api/lectures/client-weeks`);
+                const weeks = weeksResponse.data.data || [];
+                console.log('Все недели:', weeks);
+                setWeeksData(weeks);
+
+            } catch (error) {
+                console.error('Ошибка при загрузке данных:', error.message);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [level]);
+
+    // Получение данных тренировок для выбранной недели
+    useEffect(() => {
+        const fetchWeekLectures = async () => {
+            if (!selectedWeek || page !== 1) return;
+
+            setIsLoadingLectures(true);
+            try {
+                const response = await axios.get(
+                    `${API_BASE_URL}/cms/api/lectures/client-week/${selectedWeek}`
+                );
+                
+                setLecturesData(response.data)
+                console.log(`Получены лекции для недели ${selectedWeek}:`, response.data);
+                
+            } catch (error) {
+                console.error(`Ошибка при получении лекций для недели ${selectedWeek.week}:`, error.message);
+            } finally {
+                setIsLoadingLectures(false);
+            }
+        };
+
+        fetchWeekLectures();
+    }, [selectedWeek, page, level]);
+
+    useEffect(() => {
+        const fetchWeekLectures = async () => {
+            if (!selectedLecture) return;
+
+            setIsLoadingLectures(true);
+            try {
+                const response = await axios.get(
+                    `${API_BASE_URL}/cms/api/lectures/client/${selectedLecture}`
+                );
+                
+                setLecture(response.data)
+                console.log(`Получили лекцию:`, response.data);
+                
+            } catch (error) {
+                console.error(`Ошибка при получении лекции`, error.message);
+            } finally {
+                setIsLoadingLectures(false);
+            }
+        };
+
+        fetchWeekLectures();
+    }, [selectedLecture])
+
+    const handleWeekSelect = (week) => {
+        setSelectedWeek(week);
         setPage([1, 1]);
     };
 
-    const handleTrainingSelect = (training) => {
-        setSelectedTraining(training);
+    const handleLectureSelect = (lectureId) => {
+        setSelectedLecture(lectureId);
         setPage([2, 1]);
     };
 
     const handleBack = () => {
         if (page === 2) {
-            setSelectedTraining(null);
+            setSelectedLecture(null);
             setSelectedWeek(null);
             setPage([0, -1]);
         } else if (page === 1) {
@@ -151,9 +155,9 @@ export default function Lectures({ level, user_photo }) {
                 </div>
             </div>
             <div className="bottomLectures">
-                <AnimatePresence initial={false} custom={direction}>
-                    {page === 0 && (
-                        <motion.div
+                    <AnimatePresence initial={false} custom={direction}>
+                        {page === 0 && (
+                            <motion.div
                             key="weeks"
                             className="weeksScreen"
                             custom={direction}
@@ -163,17 +167,20 @@ export default function Lectures({ level, user_photo }) {
                             exit="exit"
                             transition={transition}
                         >
-                            {lectures?.map((item, index) => {
+                            {isLoading ? <Loader /> :
+                            Array.from({ length: 4 }).map((_, index) => {
+                                const weekData = weeksData?.find(item => item.week === index + 1);
                                 return (
                                     <TrainBox
                                         key={index}
-                                        lectures={item}
-                                        train_count={item.trainings?.length}
-                                        onClick={() => handleWeekSelect(item)}
-                                        isClosed={index >= 2}
+                                        lectures={weekData || { week: index + 1 }}
+                                        train_count={weekData?.count}
+                                        onClick={() => weekData && handleWeekSelect(weekData.week)}
+                                        isClosed={!weekData || index >= 2}
                                     />
                                 );
-                            })}
+                            })
+                            }
                         </motion.div>
                     )}
 
@@ -188,26 +195,24 @@ export default function Lectures({ level, user_photo }) {
                             exit="exit"
                             transition={transition}
                         >
+                            {isLoadingLectures ? <Loader /> :
                             <div className="trainingsGrid">
-                                {selectedWeek.trainings.map((training, index) => {
-                                    console.log('Training item before TrainBox:', {
-                                        title: training.title,
-                                        profiCount: training.profi?.length,
-                                        profi: training.profi
-                                    });
+                                {lecturesData?.data?.map((lecture, index) => {
                                     return (
                                         <TrainBox
                                             key={index}
-                                            lectures={training}
-                                            onClick={() => handleTrainingSelect(training)}
+                                            lectures={lecture}
+                                            onClick={() => handleLectureSelect(lecture._id)}
+                                            train_count={0}
                                         />
                                     );
                                 })}
                             </div>
+                            }
                         </motion.div>
                     )}
 
-                    {page === 2 && selectedTraining && (
+                    {page === 2 && selectedLecture && (
                         <motion.div
                             key="trainingDetails"
                             className="trainingDetailsScreen"
@@ -219,7 +224,7 @@ export default function Lectures({ level, user_photo }) {
                             transition={transition}
                         >
                             <TrainingPage
-                                trainingData={selectedTraining}
+                                trainingData={lecture}
                                 onBack={handleBack}
                                 level='Профи'
                                 lectures={true}
@@ -228,6 +233,7 @@ export default function Lectures({ level, user_photo }) {
                         </motion.div>
                     )}
                 </AnimatePresence>
+
             </div>
         </div>
     );
