@@ -176,7 +176,7 @@ export default function Lectures({ level, user_photo }) {
                                         lectures={weekData || { week: index + 1 }}
                                         train_count={weekData?.count}
                                         onClick={() => weekData && handleWeekSelect(weekData.week)}
-                                        isClosed={!weekData || index >= 2}
+                                        isClosed={!weekData}
                                     />
                                 );
                             })
