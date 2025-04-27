@@ -5,7 +5,8 @@ import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
-import { API_BASE_URL } from '../../API';
+import { BASE_API_URL } from '~/shared/api';
+
 import book from '../../Assets/svg/book.svg';
 import Loader from '../../Components/Loader/Loader';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
@@ -49,7 +50,7 @@ export default function Lectures({ level, user_photo }) {
       try {
         // Получаем список недель
         const weeksResponse = await axios.get(
-          `${API_BASE_URL}/cms/api/lectures/client-weeks`,
+          `${BASE_API_URL}/cms/api/lectures/client-weeks`,
         );
         const weeks = weeksResponse.data.data || [];
         console.log('Все недели:', weeks);
@@ -72,7 +73,7 @@ export default function Lectures({ level, user_photo }) {
       setIsLoadingLectures(true);
       try {
         const response = await axios.get(
-          `${API_BASE_URL}/cms/api/lectures/client-week/${selectedWeek}`,
+          `${BASE_API_URL}/cms/api/lectures/client-week/${selectedWeek}`,
         );
 
         setLecturesData(response.data);
@@ -100,7 +101,7 @@ export default function Lectures({ level, user_photo }) {
       setIsLoadingLectures(true);
       try {
         const response = await axios.get(
-          `${API_BASE_URL}/cms/api/lectures/client/${selectedLecture}`,
+          `${BASE_API_URL}/cms/api/lectures/client/${selectedLecture}`,
         );
 
         setLecture(response.data);

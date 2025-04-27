@@ -5,7 +5,8 @@ import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import { API_BASE_URL } from '../../API';
+import { BASE_API_URL } from '~/shared/api';
+
 import food from '../../Assets/nav/food.svg';
 import copy from '../../Assets/svg/copy.svg';
 import help from '../../Assets/svg/help.svg';
@@ -79,7 +80,7 @@ export default function Food({ data, userId }) {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          `${API_BASE_URL}/cms/api/nutrition/client/category/nutrition`,
+          `${BASE_API_URL}/cms/api/nutrition/client/category/nutrition`,
         );
         addLog('Ответ сервера на запрос питания:', response.data);
         setDataFood(response.data);

@@ -3,7 +3,8 @@ import './VideoViewer.css';
 import axios from 'axios';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { API_BASE_URL } from '../../API';
+import { BASE_API_URL } from '~/shared/api';
+
 import pause from '../../Assets/svg/pause.svg';
 import play from '../../Assets/svg/play.svg';
 
@@ -55,7 +56,7 @@ const VideoViewer = ({
       const sendRequest = async () => {
         try {
           if (instruction) {
-            await axios.patch(`${API_BASE_URL}/api/v1/user/video/greet`, null, {
+            await axios.patch(`${BASE_API_URL}/api/v1/user/video/greet`, null, {
               params: {
                 tg_id: userId,
                 duration_view: data.last_video_time,
@@ -63,7 +64,7 @@ const VideoViewer = ({
             });
             console.log('Welcome video updated:', data.last_video_time);
           } else {
-            await axios.patch(`${API_BASE_URL}/api/v1/user/video`, {
+            await axios.patch(`${BASE_API_URL}/api/v1/user/video`, {
               user_tg_id: userId,
               last_video: lastVideo || page,
               last_video_time: data.last_video_time,

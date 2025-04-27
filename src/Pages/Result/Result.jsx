@@ -4,7 +4,8 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { API_BASE_URL } from '../../API';
+import { BASE_API_URL } from '~/shared/api';
+
 import result from '../../Assets/img/result.jpg';
 import muscles from '../../Assets/svg/musclesBlack.svg';
 import settings from '../../Assets/svg/settings.svg';
@@ -17,7 +18,7 @@ export default function Result({ userId }) {
   useEffect(() => {
     const fetchLevel = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
+        const response = await axios.get(`${BASE_API_URL}/api/v1/user`, {
           params: { user_id: userId },
         });
         setLevel(response.data.user_level);

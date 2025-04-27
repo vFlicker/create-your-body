@@ -5,7 +5,8 @@ import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 
-import { API_BASE_URL } from '../../API';
+import { BASE_API_URL } from '~/shared/api';
+
 import pdf from '../../Assets/pdf/trane.pdf';
 import check from '../../Assets/svg/check.svg';
 import Button from '../../Components/Button/Button';
@@ -96,7 +97,7 @@ export default function TrainContent({ view, level, base }) {
       try {
         // Получаем список недель
         const weeksResponse = await axios.get(
-          `${API_BASE_URL}/cms/api/workouts/client-weeks`,
+          `${BASE_API_URL}/cms/api/workouts/client-weeks`,
         );
         const weeks = weeksResponse.data.data || [];
         console.log('Получен список недель:', weeks.length);
@@ -108,7 +109,7 @@ export default function TrainContent({ view, level, base }) {
         for (const week of weeks) {
           try {
             const response = await axios.get(
-              `${API_BASE_URL}/cms/api/workouts/client-week/${week.week}?level=${mappedLevel}&type=${view}`,
+              `${BASE_API_URL}/cms/api/workouts/client-week/${week.week}?level=${mappedLevel}&type=${view}`,
             );
 
             const filteredTrainings = response.data.data.filter(
@@ -149,7 +150,7 @@ export default function TrainContent({ view, level, base }) {
       try {
         const mappedLevel = level === 'Новичок' ? 'noob' : 'pro';
         const response = await axios.get(
-          `${API_BASE_URL}/cms/api/workouts/client-week/${selectedWeek.week}?level=${mappedLevel}&type=${view}`,
+          `${BASE_API_URL}/cms/api/workouts/client-week/${selectedWeek.week}?level=${mappedLevel}&type=${view}`,
         );
 
         const filteredTrainings = response.data.data.filter(
@@ -167,7 +168,7 @@ export default function TrainContent({ view, level, base }) {
         for (const training of filteredTrainings) {
           try {
             const detailResponse = await axios.get(
-              `${API_BASE_URL}/cms/api/workouts/client/${training._id}`,
+              `${BASE_API_URL}/cms/api/workouts/client/${training._id}`,
             );
             details[training._id] = {
               stepsCount: detailResponse.data.data.steps?.length || 0,
@@ -213,7 +214,7 @@ export default function TrainContent({ view, level, base }) {
   const handleTrainingSelect = async (training) => {
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/cms/api/workouts/client/${training._id}`,
+        `${BASE_API_URL}/cms/api/workouts/client/${training._id}`,
       );
       setOriginalTrainingData(response.data.data);
       window.handleBack = null;

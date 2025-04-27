@@ -4,7 +4,8 @@ import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { API_BASE_URL } from '../../API';
+import { BASE_API_URL } from '~/shared/api';
+
 // import Selecter from '../../Components/Selecter/Selecter';
 // import ButtonEdit from '../../Components/Button/ButtonEdit';
 import Button from '../../Components/Button/Button';
@@ -65,7 +66,7 @@ export default function Record({ userId, data }) {
 
   const handleSubmit = async () => {
     try {
-      await axios.post(`${API_BASE_URL}/api/v1/user/parametrs`, {
+      await axios.post(`${BASE_API_URL}/api/v1/user/parametrs`, {
         tg_id: String(userId),
         chest: parseInt(formData.chest, 10) || 0,
         waist: parseInt(formData.waist, 10) || 0,

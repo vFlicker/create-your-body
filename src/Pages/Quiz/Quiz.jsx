@@ -5,7 +5,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { API_BASE_URL } from '../../API';
+import { BASE_API_URL } from '~/shared/api';
+
 import Button from '../../Components/Button/Button';
 import ButtonBack from '../../Components/Button/ButtonBack';
 import Progress from '../../Components/Progress/Progress';
@@ -380,7 +381,7 @@ export default function Quiz({ userId, data }) {
           }
 
           const response = await axios.patch(
-            `${API_BASE_URL}/api/v1/user`,
+            `${BASE_API_URL}/api/v1/user`,
             userData,
             {
               headers: {

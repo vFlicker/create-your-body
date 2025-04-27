@@ -1,3 +1,4 @@
+import './index.css';
 import './App.css';
 
 import axios from 'axios';
@@ -11,26 +12,28 @@ import {
   useLocation,
 } from 'react-router-dom';
 
-import { API_BASE_URL } from './API';
-import ButtonBack from './Components/Button/ButtonBack';
-import ButtonClose from './Components/Button/ButtonClose';
-import Loader from './Components/Loader/Loader';
-import Nav from './Components/Nav/Nav';
-import PageTransition from './Components/PageTransition/PageTransition';
-import Begin from './Pages/Begin/Begin';
-import Communication from './Pages/Communication/Communication';
-import Dashboard from './Pages/Dashboard/Dashboard';
-import Food from './Pages/Food/Food';
-import Lectures from './Pages/Lectures/Lectures';
-import NoEntry from './Pages/NoEntry/NoEntry';
-import Parameters from './Pages/Profile/Parameters';
-import Profile from './Pages/Profile/Profile';
-import Record from './Pages/Profile/Record';
-import Quiz from './Pages/Quiz/Quiz';
-import Recipes from './Pages/Recipes/Recipes';
-import Result from './Pages/Result/Result';
-import StartPage from './Pages/StartPage/StartPage';
-import Train from './Pages/Train/Train';
+import { BASE_API_URL } from '~/shared/api';
+
+import ButtonBack from '../Components/Button/ButtonBack';
+import ButtonClose from '../Components/Button/ButtonClose';
+import Loader from '../Components/Loader/Loader';
+import Nav from '../Components/Nav/Nav';
+import PageTransition from '../Components/PageTransition/PageTransition';
+import Begin from '../Pages/Begin/Begin';
+import Communication from '../Pages/Communication/Communication';
+import Dashboard from '../Pages/Dashboard/Dashboard';
+import Food from '../Pages/Food/Food';
+import Lectures from '../Pages/Lectures/Lectures';
+import NoEntry from '../Pages/NoEntry/NoEntry';
+import Parameters from '../Pages/Profile/Parameters';
+import Profile from '../Pages/Profile/Profile';
+import Record from '../Pages/Profile/Record';
+import Quiz from '../Pages/Quiz/Quiz';
+import Recipes from '../Pages/Recipes/Recipes';
+import Result from '../Pages/Result/Result';
+import StartPage from '../Pages/StartPage/StartPage';
+import Train from '../Pages/Train/Train';
+
 function Layout() {
   const location = useLocation();
   const hiddenPathsBack = ['/', '/quiz', '/result', '/dashboard'];
@@ -58,8 +61,8 @@ function Layout() {
   );
 }
 
-function App() {
-  const [userId, setUserId] = useState(''); // Тестовый ID пользователя
+export function AppDev() {
+  const [userId, setUserId] = useState('5003100894'); // Тестовый ID пользователя
   const [data, setData] = useState(null);
   const [base, setBase] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -97,8 +100,9 @@ function App() {
       window.Telegram.WebApp.expand();
       window.Telegram.WebApp.disableVerticalSwipes();
 
-      const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
-      setUserId(telegramUser.id);
+      const telegramUser =
+        window.Telegram.WebApp.initDataUnsafe.user || '5003100894';
+      setUserId(telegramUser.id || '5003100894');
       addLog('Telegram User ID:', telegramUser.id);
       addLog('Telegram User Photo URL:', telegramUser.photo_url);
 
@@ -118,7 +122,7 @@ function App() {
 
         try {
           const response = await axios.post(
-            `${API_BASE_URL}/api/v1/user/image?${params}`,
+            `${BASE_API_URL}/api/v1/user/image?${params}`,
             null,
             {
               headers: {
@@ -148,8 +152,8 @@ function App() {
 
       const addUser = async () => {
         try {
-          const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
-            params: { user_id: telegramUser.id },
+          const response = await axios.get(`${BASE_API_URL}/api/v1/user`, {
+            params: { user_id: telegramUser.id || '5003100894' },
           });
           addLog('Ответ сервера на запрос пользователя:', response.data);
           setData(response.data);
@@ -284,5 +288,3 @@ function App() {
     </BrowserRouter>
   );
 }
-
-export default App;

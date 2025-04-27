@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 
-import { API_BASE_URL } from '../../API';
+import { BASE_API_URL } from '~/shared/api';
+
 import zamer from '../../Assets/img/zamer.jpeg';
 import chart from '../../Assets/svg/chart.svg';
 import close from '../../Assets/svg/close.svg';
@@ -58,7 +59,7 @@ export default function Profile({ userId, data, setData }) {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          `${API_BASE_URL}/api/v1/user/parametrs`,
+          `${BASE_API_URL}/api/v1/user/parametrs`,
           {
             params: { user_tg_id: userId },
           },
@@ -124,11 +125,11 @@ export default function Profile({ userId, data, setData }) {
     setActiveIndex(index);
     const level = index === 0 ? 'Новичок' : 'Профи';
     try {
-      await axios.patch(`${API_BASE_URL}/api/v1/user/level`, null, {
+      await axios.patch(`${BASE_API_URL}/api/v1/user/level`, null, {
         params: { user_tg_id: userId, level: level },
       });
       console.log('Уровень сложности успешно обновлён:', level);
-      const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
+      const response = await axios.get(`${BASE_API_URL}/api/v1/user`, {
         params: { user_id: userId },
       });
       setData(response.data);

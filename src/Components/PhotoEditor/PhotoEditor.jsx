@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 
-import { API_BASE_URL } from '../../API';
+import { BASE_API_URL } from '~/shared/api';
+
 import edit from '../../Assets/svg/editSmall.svg';
 import photoNone from '../../Assets/svg/photoNone.svg';
 import ButtonEdit from '../Button/ButtonEdit';
@@ -18,7 +19,7 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
       setIsLoading(true);
       try {
         // console.log('Отправка запроса на получение фото:', {
-        //   url: `${API_BASE_URL}/api/v1/user/images/two`,
+        //   url: `${BASE_API_URL}/api/v1/user/images/two`,
         //   userId,
         //   number,
         //   requestParams: {
@@ -28,7 +29,7 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
         // });
 
         const response = await axios.get(
-          `${API_BASE_URL}/api/v1/user/images/two`,
+          `${BASE_API_URL}/api/v1/user/images/two`,
           {
             params: {
               tg_id: String(userId),
@@ -128,7 +129,7 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
         if (photo) {
           console.log('Отправка PATCH запроса для обновления фото');
           await axios.patch(
-            `${API_BASE_URL}/api/v1/user/images/two`,
+            `${BASE_API_URL}/api/v1/user/images/two`,
             formData,
             {
               params: {
@@ -148,7 +149,7 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
           } else {
             formData.append('image_after', file);
           }
-          await axios.post(`${API_BASE_URL}/api/v1/user/images/two`, formData, {
+          await axios.post(`${BASE_API_URL}/api/v1/user/images/two`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },

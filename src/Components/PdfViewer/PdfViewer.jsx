@@ -13,7 +13,8 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import { API_BASE_URL } from '../../API';
+import { BASE_API_URL } from '~/shared/api';
+
 import close from '../../Assets/svg/close.svg';
 import fullscreen from '../../Assets/svg/fullscreen.svg';
 import left from '../../Assets/svg/left.svg';
@@ -51,7 +52,7 @@ export default function PdfViewer({ pdfId, pdfFile, userId, addLog }) {
           // Если передан ID для запроса
           addLog?.('Начало запроса PDF по ID:', pdfId);
           const response = await axios.get(
-            `${API_BASE_URL}/cms/api/nutrition/client/${pdfId}?tg_id=${userId}`,
+            `${BASE_API_URL}/cms/api/nutrition/client/${pdfId}?tg_id=${userId}`,
           );
           addLog?.('Ответ сервера на запрос PDF:', response.data);
 

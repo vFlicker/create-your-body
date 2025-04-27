@@ -4,7 +4,8 @@ import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 
-import { API_BASE_URL } from '../../API';
+import { BASE_API_URL } from '~/shared/api';
+
 import breakfast from '../../Assets/svg/avocado.svg';
 import dessert from '../../Assets/svg/croissant.svg';
 import dinner from '../../Assets/svg/meat.svg';
@@ -63,7 +64,7 @@ export default function Recipes({ data }) {
     setIsLoadingRecipe(true);
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/cms/api/recipes/client/${recipe.id}`,
+        `${BASE_API_URL}/cms/api/recipes/client/${recipe.id}`,
       );
       setSelectedRecipe(response.data.data);
       console.log(response.data);
@@ -108,7 +109,7 @@ export default function Recipes({ data }) {
       setIsLoading(true);
       try {
         const response = await axios.get(
-          `${API_BASE_URL}/cms/api/recipes/client/categories`,
+          `${BASE_API_URL}/cms/api/recipes/client/categories`,
         );
         setCategories(response.data.data);
       } catch (error) {
@@ -123,7 +124,7 @@ export default function Recipes({ data }) {
   const fetchCategoryRecipes = async (categoryName, page = 1) => {
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/cms/api/recipes/client/category/${categoryName}?page=${page}`,
+        `${BASE_API_URL}/cms/api/recipes/client/category/${categoryName}?page=${page}`,
       );
       const { data, meta } = response.data;
       console.log(response.data);

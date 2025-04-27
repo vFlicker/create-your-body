@@ -4,7 +4,8 @@ import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { API_BASE_URL } from '../../API';
+import { BASE_API_URL } from '~/shared/api';
+
 import example from '../../Assets/img/example.jpeg';
 import add from '../../Assets/svg/addImg.svg';
 import close from '../../Assets/svg/closeWhite.svg';
@@ -235,7 +236,7 @@ export default function Parameters({ userId, data, setData }) {
       try {
         // Получаем параметры
         const parametersResponse = await axios.get(
-          `${API_BASE_URL}/api/v1/user/parametrs`,
+          `${BASE_API_URL}/api/v1/user/parametrs`,
           {
             params: { user_tg_id: userId },
           },
@@ -262,7 +263,7 @@ export default function Parameters({ userId, data, setData }) {
         try {
           // Получаем фото "до"
           const beforeResponse = await axios.get(
-            `${API_BASE_URL}/api/v1/user/images/two`,
+            `${BASE_API_URL}/api/v1/user/images/two`,
             {
               params: {
                 tg_id: String(userId),
@@ -274,7 +275,7 @@ export default function Parameters({ userId, data, setData }) {
 
           // Получаем фото "после"
           const afterResponse = await axios.get(
-            `${API_BASE_URL}/api/v1/user/images/two`,
+            `${BASE_API_URL}/api/v1/user/images/two`,
             {
               params: {
                 tg_id: String(userId),
@@ -507,7 +508,7 @@ export default function Parameters({ userId, data, setData }) {
       const [day, month, year] = birthday.split('.');
       const formattedBirthday = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 
-      await axios.patch(`${API_BASE_URL}/api/v1/user/info`, {
+      await axios.patch(`${BASE_API_URL}/api/v1/user/info`, {
         tg_id: String(userId),
         sex: gen === 'm' ? 'male' : 'female',
         born_date: formattedBirthday,
@@ -526,12 +527,12 @@ export default function Parameters({ userId, data, setData }) {
 
       if (hasParameters) {
         await axios.patch(
-          `${API_BASE_URL}/api/v1/user/parametrs`,
+          `${BASE_API_URL}/api/v1/user/parametrs`,
           parametersData,
         );
       } else {
         await axios.post(
-          `${API_BASE_URL}/api/v1/user/parametrs`,
+          `${BASE_API_URL}/api/v1/user/parametrs`,
           parametersData,
         );
       }
@@ -547,7 +548,7 @@ export default function Parameters({ userId, data, setData }) {
 
           if (hasPhotos) {
             await axios.patch(
-              `${API_BASE_URL}/api/v1/user/images/two`,
+              `${BASE_API_URL}/api/v1/user/images/two`,
               formDataBefore,
               {
                 params: {
@@ -564,7 +565,7 @@ export default function Parameters({ userId, data, setData }) {
             formDataPost.append('tg_id', String(userId));
             formDataPost.append('image_before', formData.photoBefore);
             await axios.post(
-              `${API_BASE_URL}/api/v1/user/images/two`,
+              `${BASE_API_URL}/api/v1/user/images/two`,
               formDataPost,
               {
                 headers: {
@@ -581,7 +582,7 @@ export default function Parameters({ userId, data, setData }) {
 
           if (hasPhotos) {
             await axios.patch(
-              `${API_BASE_URL}/api/v1/user/images/two`,
+              `${BASE_API_URL}/api/v1/user/images/two`,
               formDataAfter,
               {
                 params: {
@@ -598,7 +599,7 @@ export default function Parameters({ userId, data, setData }) {
             formDataPost.append('tg_id', String(userId));
             formDataPost.append('image_after', formData.photoAfter);
             await axios.post(
-              `${API_BASE_URL}/api/v1/user/images/two`,
+              `${BASE_API_URL}/api/v1/user/images/two`,
               formDataPost,
               {
                 headers: {
@@ -612,7 +613,7 @@ export default function Parameters({ userId, data, setData }) {
 
       console.log('Данные сохранены!');
       // Обновляем данные пользователя перед переходом
-      const response = await axios.get(`${API_BASE_URL}/api/v1/user`, {
+      const response = await axios.get(`${BASE_API_URL}/api/v1/user`, {
         params: { user_id: userId },
       });
       setData(response.data);
