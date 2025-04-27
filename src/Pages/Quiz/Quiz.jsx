@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
 import './Quiz.css';
-import { useNavigate } from 'react-router-dom';
-import { API_BASE_URL } from '../../API';
-import axios from 'axios';
-import { motion, AnimatePresence } from 'framer-motion';
 
-import Progress from '../../Components/Progress/Progress';
+import axios from 'axios';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { API_BASE_URL } from '../../API';
 import Button from '../../Components/Button/Button';
 import ButtonBack from '../../Components/Button/ButtonBack';
+import Progress from '../../Components/Progress/Progress';
 
 const slideVariants = {
   enter: (direction) => ({
@@ -24,7 +25,7 @@ const slideVariants = {
     x: direction === 'forward' ? -1000 : 1000,
     scale: 0.8,
     rotate: direction === 'forward' ? 5 : -5,
-  })
+  }),
 };
 
 const transition = {
@@ -32,32 +33,32 @@ const transition = {
   ease: [0.43, 0.13, 0.23, 0.96],
   scale: {
     duration: 0.5,
-    ease: "easeOut"
+    ease: 'easeOut',
   },
   rotate: {
     duration: 0.5,
-    ease: "easeInOut"
-  }
+    ease: 'easeInOut',
+  },
 };
 
 const titleVariants = {
   enter: (direction) => ({
     x: direction === 'forward' ? 100 : -100,
-    opacity: 0
+    opacity: 0,
   }),
   center: {
     x: 0,
-    opacity: 1
+    opacity: 1,
   },
   exit: (direction) => ({
     x: direction === 'forward' ? -100 : 100,
-    opacity: 0
-  })
+    opacity: 0,
+  }),
 };
 
 const titleTransition = {
   duration: 0.5,
-  ease: [0.43, 0.13, 0.23, 0.96]
+  ease: [0.43, 0.13, 0.23, 0.96],
 };
 
 export default function Quiz({ userId, data }) {
@@ -86,17 +87,24 @@ export default function Quiz({ userId, data }) {
     if (data) {
       setName(data.name || '');
       setTel(data.phone ? data.phone.replace(/\s/g, '') : '');
-      setBirthday(data.born_date ? new Date(data.born_date).toLocaleDateString('ru-RU', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-      }).replace(/\//g, '.') : '');
+      setBirthday(
+        data.born_date
+          ? new Date(data.born_date)
+              .toLocaleDateString('ru-RU', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+              })
+              .replace(/\//g, '.')
+          : '',
+      );
     }
   }, [data]);
 
   const quizData = [
     {
-      question: 'Обладаете ли вы достаточным уровнем знаний и пониманием выполнения базовых движений?',
+      question:
+        'Обладаете ли вы достаточным уровнем знаний и пониманием выполнения базовых движений?',
       options: [
         { text: 'Да, знаю технику и выполняю уверенно', img: '✅', level: 1 },
         { text: 'Нет, не уверен(а) в технике', img: '❌', level: 2 },
@@ -124,7 +132,8 @@ export default function Quiz({ userId, data }) {
       ],
     },
     {
-      question: 'Какой у вас уровень физической активности в повседневной жизни?',
+      question:
+        'Какой у вас уровень физической активности в повседневной жизни?',
       options: [
         { text: 'Высокий', img: '🚶‍♀️', level: 1 },
         { text: 'Средний', img: '🛋️', level: 2 },
@@ -147,22 +156,28 @@ export default function Quiz({ userId, data }) {
   ];
 
   const isDateValid = (date) => {
-    if (!/^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[012])\.(19|20)\d\d$/.test(date)) return false;
+    if (!/^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[012])\.(19|20)\d\d$/.test(date))
+      return false;
     const [day, month, year] = date.split('.').map(Number);
     const birthDate = new Date(year, month - 1, day);
     if (
       birthDate.getFullYear() !== year ||
       birthDate.getMonth() + 1 !== month ||
       birthDate.getDate() !== day
-    ) return false;
+    )
+      return false;
     const today = new Date();
-    const minDate = new Date(today.getFullYear() - 4, today.getMonth(), today.getDate());
+    const minDate = new Date(
+      today.getFullYear() - 4,
+      today.getMonth(),
+      today.getDate(),
+    );
     return birthDate < minDate;
   };
 
   const validatePhone = (phone) => {
     const cleanedPhone = phone.replace(/[^\d+]/g, '');
-    
+
     if (cleanedPhone.startsWith('7') || cleanedPhone.startsWith('8')) {
       if (cleanedPhone.length !== 11) {
         return 'Номер телефона должен содержать 11 цифр';
@@ -176,33 +191,33 @@ export default function Quiz({ userId, data }) {
       }
       return '';
     }
-    
+
     if (cleanedPhone.startsWith('+')) {
       if (cleanedPhone.length < 10 || cleanedPhone.length > 15) {
         return 'Номер телефона должен содержать от 10 до 15 символов';
       }
       return '';
     }
-    
+
     return 'Введите корректный номер телефона';
   };
 
   const handlePhoneChange = (e) => {
     let value = e.target.value.replace(/[^\d+]/g, '');
-    
+
     if (value.startsWith('+')) {
       if (value.length > 15) return;
       setTel(value);
       setTelError(validatePhone(value));
       return;
     }
-    
+
     if (value.length === 1) {
       if (value === '7' || value === '+') value = '+7';
       else if (value === '8') value = '8';
       else value = `+7${value}`;
     }
-    
+
     const maxLength = value.startsWith('+') ? 12 : 11;
     if (value.length > maxLength) return;
 
@@ -250,7 +265,9 @@ export default function Quiz({ userId, data }) {
     if (newValue.length > 10) return;
 
     setBirthday(newValue);
-    setBirthdayError(isDateValid(newValue) ? '' : 'Введите корректную дату рождения');
+    setBirthdayError(
+      isDateValid(newValue) ? '' : 'Введите корректную дату рождения',
+    );
 
     if (newValue.length === 10 && birthdayRef.current) {
       birthdayRef.current.blur();
@@ -266,7 +283,16 @@ export default function Quiz({ userId, data }) {
     } else {
       setIsValid(selectedOption !== null);
     }
-  }, [step, name, tel, birthday, selectedOption, telError, nameError, birthdayError]);
+  }, [
+    step,
+    name,
+    tel,
+    birthday,
+    selectedOption,
+    telError,
+    nameError,
+    birthdayError,
+  ]);
 
   useEffect(() => {
     const tg = window.Telegram?.WebApp;
@@ -292,7 +318,8 @@ export default function Quiz({ userId, data }) {
     container.style.transformOrigin = `${originX}% ${originY}%`;
     container.style.transform = `scale(1.3)`;
     container.style.transition = 'transform 0.3s ease';
-    const scrollOffset = inputRect.top - containerRect.top - (containerRect.height * 0.3);
+    const scrollOffset =
+      inputRect.top - containerRect.top - containerRect.height * 0.3;
     container.scrollTo({
       top: container.scrollTop + scrollOffset,
       behavior: 'smooth',
@@ -334,28 +361,44 @@ export default function Quiz({ userId, data }) {
             user_level: userLevel || '',
             phone: tel || '',
           };
-  
+
           console.log('Отправляемые данные:', userData);
-  
-          const requiredFields = ['tg_id', 'name', 'born_date', 'sex', 'user_level', 'phone'];
-          const invalidFields = requiredFields.filter((field) => !userData[field] || typeof userData[field] !== 'string');
+
+          const requiredFields = [
+            'tg_id',
+            'name',
+            'born_date',
+            'sex',
+            'user_level',
+            'phone',
+          ];
+          const invalidFields = requiredFields.filter(
+            (field) => !userData[field] || typeof userData[field] !== 'string',
+          );
           if (invalidFields.length > 0) {
             throw new Error(`Некорректные поля: ${invalidFields.join(', ')}`);
           }
-  
-          const response = await axios.patch(`${API_BASE_URL}/api/v1/user`, userData, {
-            headers: {
-              'Content-Type': 'application/json',
+
+          const response = await axios.patch(
+            `${API_BASE_URL}/api/v1/user`,
+            userData,
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
             },
-          });
-  
+          );
+
           console.log('Данные успешно обновлены:', response.data);
           navigate('/result');
         } catch (error) {
-          console.error('Ошибка при обновлении данных:', JSON.stringify(error.response.data, null, 2));
+          console.error(
+            'Ошибка при обновлении данных:',
+            JSON.stringify(error.response.data, null, 2),
+          );
         }
       };
-  
+
       sendData();
     }
   };
@@ -380,7 +423,7 @@ export default function Quiz({ userId, data }) {
       animate="center"
       exit="exit"
       transition={transition}
-      className='quizStep1'
+      className="quizStep1"
       // whileHover={{ scale: 1.02 }}
       // whileTap={{ scale: 0.98 }}
     >
@@ -396,7 +439,9 @@ export default function Quiz({ userId, data }) {
           onBlur={handleBlur}
           autoFocus={!name}
         />
-        <div className="error-message" style={{ opacity: nameError ? 1 : 0 }}>{nameError}</div>
+        <div className="error-message" style={{ opacity: nameError ? 1 : 0 }}>
+          {nameError}
+        </div>
       </div>
       <div className="name">
         <p className="titleInput">Пол</p>
@@ -427,7 +472,9 @@ export default function Quiz({ userId, data }) {
           onBlur={handleBlur}
           autoFocus={!tel}
         />
-        <div className="error-message" style={{ opacity: telError ? 1 : 0 }}>{telError}</div>
+        <div className="error-message" style={{ opacity: telError ? 1 : 0 }}>
+          {telError}
+        </div>
       </div>
       <div className="name">
         <p className="titleInput">Дата рождения</p>
@@ -441,7 +488,12 @@ export default function Quiz({ userId, data }) {
           onBlur={handleBlur}
           autoFocus={!birthday}
         />
-        <div className="error-message" style={{ opacity: birthdayError ? 1 : 0 }}>{birthdayError}</div>
+        <div
+          className="error-message"
+          style={{ opacity: birthdayError ? 1 : 0 }}
+        >
+          {birthdayError}
+        </div>
       </div>
     </motion.div>
   );
@@ -457,7 +509,7 @@ export default function Quiz({ userId, data }) {
       transition={transition}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      className='quizStep'
+      className="quizStep"
     >
       <div className="quizOptions">
         {quizData[step - 2].options.map((option, index) => (
@@ -492,34 +544,36 @@ export default function Quiz({ userId, data }) {
               transition={titleTransition}
               className="titleAnimate"
             >
-              {step === 1 ? 'Давайте знакомиться!' : quizData[step - 2].question}
+              {step === 1
+                ? 'Давайте знакомиться!'
+                : quizData[step - 2].question}
             </motion.h1>
           </AnimatePresence>
         </div>
         <Progress title={'Шаг'} count_all={8} count_complited={step} />
       </div>
       <div className={`bottomPage ${step > 1 ? 'expanded' : ''}`}>
-        <div 
+        <div
           className="quizContent"
           style={{
-            minHeight: step > 1 ? 'auto' : ''
+            minHeight: step > 1 ? 'auto' : '',
           }}
         >
           <AnimatePresence initial={false} mode="sync">
             {step === 1 ? renderStep1() : renderQuizStep()}
           </AnimatePresence>
-        <Button 
-          text={step === 8 ? 'Завершить' : 'Далее'} 
-          onClick={handleNext} 
-          disabled={!isValid} 
-          width='calc(100% - 32px)'
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: '50%',
-            transform: 'translateX(-50%)'
-          }}
-        />
+          <Button
+            text={step === 8 ? 'Завершить' : 'Далее'}
+            onClick={handleNext}
+            disabled={!isValid}
+            width="calc(100% - 32px)"
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: '50%',
+              transform: 'translateX(-50%)',
+            }}
+          />
         </div>
       </div>
     </div>

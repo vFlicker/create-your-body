@@ -1,44 +1,44 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './StartPage.css';
 
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import element from '../../Assets/img/element.png';
+import startPhoto from '../../Assets/img/start.jpg';
+import run from '../../Assets/svg/run.svg';
 import Button from '../../Components/Button/Button';
 import ImageOverlay from '../../Components/ImageOverley';
 import Loader from '../../Components/Loader/Loader';
-
-import startPhoto from '../../Assets/img/start.jpg';
-import element from '../../Assets/img/element.png'
-import run from '../../Assets/svg/run.svg';
 
 export default function StartPage({ data }) {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [loadedImages, setLoadedImages] = useState({
     startPhoto: false,
-    element: false
+    element: false,
   });
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
-      window.Telegram.WebApp.setBackgroundColor('#fff')
+      window.Telegram.WebApp.setBackgroundColor('#fff');
     }
   }, []);
 
   useEffect(() => {
     const startPhotoImg = new Image();
     const elementImg = new Image();
-    
+
     startPhotoImg.src = startPhoto;
     elementImg.src = element;
 
     startPhotoImg.onload = () => {
-      setLoadedImages(prev => ({...prev, startPhoto: true}));
-      checkAllImagesLoaded({...loadedImages, startPhoto: true});
+      setLoadedImages((prev) => ({ ...prev, startPhoto: true }));
+      checkAllImagesLoaded({ ...loadedImages, startPhoto: true });
     };
 
     elementImg.onload = () => {
-      setLoadedImages(prev => ({...prev, element: true}));
-      checkAllImagesLoaded({...loadedImages, element: true});
+      setLoadedImages((prev) => ({ ...prev, element: true }));
+      checkAllImagesLoaded({ ...loadedImages, element: true });
     };
   }, [loadedImages]);
 
@@ -50,9 +50,9 @@ export default function StartPage({ data }) {
 
   function handleButtonClick() {
     if (data.born_date) {
-      navigate('/dashboard')
+      navigate('/dashboard');
     } else {
-      navigate('/quiz')
+      navigate('/quiz');
     }
   }
 
@@ -60,17 +60,16 @@ export default function StartPage({ data }) {
     <div className="startPage">
       <div className="imgContainer">
         {isLoading && <Loader />}
-        <img className='green' src={element} alt="Зеленый фон" />
-        <ImageOverlay
-          overlayImageSrc={startPhoto}
-          maskImageSrc={element}
-        />
+        <img className="green" src={element} alt="Зеленый фон" />
+        <ImageOverlay overlayImageSrc={startPhoto} maskImageSrc={element} />
       </div>
       <div className="startDown">
         <div className="startPadding">
           <div className="startText">
             <h1>
-              CREATE<br />YOUR <span>BODY</span>
+              CREATE
+              <br />
+              YOUR <span>BODY</span>
             </h1>
             <p>Построй тело своей мечты</p>
           </div>

@@ -1,11 +1,11 @@
-import React, { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './VideoPage.css';
 
-import VideoViewer from '../VideoViewer/VideoViewer';
-import Button from '../Button/Button';
+import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import check from '../../Assets/svg/check.svg';
+import Button from '../Button/Button';
+import VideoViewer from '../VideoViewer/VideoViewer';
 
 export default function VideoPage({ video, page, userId, instruction, text }) {
   const navigate = useNavigate();
@@ -37,7 +37,11 @@ export default function VideoPage({ video, page, userId, instruction, text }) {
           onVideoEnd={setIsVideoEnded} // Обновляем состояние, когда видео заканчивается
           togglePlayRef={togglePlayRef} // Передаем реф для управления воспроизведением
         />
-        <p className="beginDescription">{instruction ? 'В этом видео я расскажу как подготовиться к старту программы' : text}</p>
+        <p className="beginDescription">
+          {instruction
+            ? 'В этом видео я расскажу как подготовиться к старту программы'
+            : text}
+        </p>
       </div>
       <Button
         onClick={handleButtonClick}

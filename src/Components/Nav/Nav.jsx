@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
 import './Nav.css';
+
+import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import dashboard from '../../Assets/nav/dashboard.svg';
-import muscles from '../../Assets/nav/musclesBlack.svg';
-import food from '../../Assets/nav/food.svg';
-import chat from '../../Assets/nav/chat.svg';
-import profile from '../../Assets/nav/user.svg';
 import back from '../../Assets/nav/back.svg';
+import chat from '../../Assets/nav/chat.svg';
+import dashboard from '../../Assets/nav/dashboard.svg';
+import food from '../../Assets/nav/food.svg';
+import muscles from '../../Assets/nav/musclesBlack.svg';
+import profile from '../../Assets/nav/user.svg';
 import lock from '../../Assets/svg/lock.svg';
 
 // Массив с данными для навигации
@@ -24,7 +25,7 @@ export default function Nav() {
   const navigate = useNavigate();
   const [pressedPath, setPressedPath] = useState(null);
   const [prevPath, setPrevPath] = useState(null);
-  const [hasHandleBack, setHasHandleBack] = useState(false);
+  const [_hasHandleBack, setHasHandleBack] = useState(false);
 
   // Сохраняем предыдущий путь при изменении location
   useEffect(() => {
@@ -47,7 +48,7 @@ export default function Nav() {
     const observer = new MutationObserver(checkHandleBack);
     observer.observe(document.body, {
       attributes: true,
-      attributeFilter: ['data-handle-back']
+      attributeFilter: ['data-handle-back'],
     });
 
     return () => {
@@ -56,7 +57,9 @@ export default function Nav() {
   }, []);
 
   // Проверяем, является ли текущий путь одним из путей в navItems
-  const isCurrentPathInNav = navItems.some((item) => item.path === location.pathname);
+  const isCurrentPathInNav = navItems.some(
+    (item) => item.path === location.pathname,
+  );
 
   // Проверяем, нужно ли отключить ссылку (для /training и /food)
   const isLinkDisabled = (path) => path === '';
@@ -71,7 +74,11 @@ export default function Nav() {
   const handleClick = (path) => {
     if (window.handleBack && path === location.pathname) {
       window.handleBack();
-    } else if (path === prevPath && !isCurrentPathInNav && window.history.length > 1) {
+    } else if (
+      path === prevPath &&
+      !isCurrentPathInNav &&
+      window.history.length > 1
+    ) {
       navigate(-1);
     }
   };
@@ -88,8 +95,10 @@ export default function Nav() {
             onTouchStart={() => handleTouchStart(item.path)}
             onTouchEnd={handleTouchEnd}
             onClick={(e) => {
-              if ((window.handleBack && item.path === location.pathname) ||
-                (item.path === prevPath && !isCurrentPathInNav)) {
+              if (
+                (window.handleBack && item.path === location.pathname) ||
+                (item.path === prevPath && !isCurrentPathInNav)
+              ) {
                 e.preventDefault();
                 handleClick(item.path);
               } else if (isLinkDisabled(item.path)) {
@@ -97,8 +106,8 @@ export default function Nav() {
               }
             }}
           >
-            {((window.handleBack && item.path === location.pathname) ||
-              (item.path === prevPath && !isCurrentPathInNav)) ? (
+            {(window.handleBack && item.path === location.pathname) ||
+            (item.path === prevPath && !isCurrentPathInNav) ? (
               // Кнопка с иконкой возврата и другим фоном
               <div
                 className="navLink"
@@ -119,13 +128,18 @@ export default function Nav() {
               <Link
                 to={isLinkDisabled(item.path) ? undefined : item.path}
                 className="navLink"
-                style={{ pointerEvents: isLinkDisabled(item.path) ? 'none' : '' }}
+                style={{
+                  pointerEvents: isLinkDisabled(item.path) ? 'none' : '',
+                }}
               >
                 <div
-                  className={`forIcon ${location.pathname === item.path ? 'active' : ''} ${pressedPath === item.path ? 'pressed' : ''
-                    }`}
+                  className={`forIcon ${location.pathname === item.path ? 'active' : ''} ${
+                    pressedPath === item.path ? 'pressed' : ''
+                  }`}
                   style={{
-                    background: isLinkDisabled(item.path) ? 'rgb(32,32,32)' : '',
+                    background: isLinkDisabled(item.path)
+                      ? 'rgb(32,32,32)'
+                      : '',
                     pointerEvents: isLinkDisabled(item.path) ? 'none' : '',
                   }}
                 >

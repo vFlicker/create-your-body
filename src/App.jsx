@@ -1,30 +1,36 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { BrowserRouter, Routes, Route, Outlet, useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
 import './App.css';
-import axios from "axios";
+
+import axios from 'axios';
+import { AnimatePresence } from 'framer-motion';
+import { useCallback, useEffect, useState } from 'react';
+import {
+  BrowserRouter,
+  Outlet,
+  Route,
+  Routes,
+  useLocation,
+} from 'react-router-dom';
+
 import { API_BASE_URL } from './API';
-
-import Loader from "./Components/Loader/Loader";
-import PageTransition from "./Components/PageTransition/PageTransition";
-
-import NoEntry from "./Pages/NoEntry/NoEntry";
-import ButtonClose from "./Components/Button/ButtonClose";
-import ButtonBack from "./Components/Button/ButtonBack";
-import Nav from "./Components/Nav/Nav";
-import StartPage from "./Pages/StartPage/StartPage";
-import Quiz from "./Pages/Quiz/Quiz";
-import Result from "./Pages/Result/Result";
-import Dashboard from "./Pages/Dashboard/Dashboard";
-import Begin from "./Pages/Begin/Begin";
-import Profile from "./Pages/Profile/Profile";
-import Parameters from "./Pages/Profile/Parameters";
-import Record from "./Pages/Profile/Record";
-import Communication from "./Pages/Communication/Communication";
-import Train from "./Pages/Train/Train";
-import Food from "./Pages/Food/Food";
-import Lectures from "./Pages/Lectures/Lectures";
-import Recipes from "./Pages/Recipes/Recipes";
+import ButtonBack from './Components/Button/ButtonBack';
+import ButtonClose from './Components/Button/ButtonClose';
+import Loader from './Components/Loader/Loader';
+import Nav from './Components/Nav/Nav';
+import PageTransition from './Components/PageTransition/PageTransition';
+import Begin from './Pages/Begin/Begin';
+import Communication from './Pages/Communication/Communication';
+import Dashboard from './Pages/Dashboard/Dashboard';
+import Food from './Pages/Food/Food';
+import Lectures from './Pages/Lectures/Lectures';
+import NoEntry from './Pages/NoEntry/NoEntry';
+import Parameters from './Pages/Profile/Parameters';
+import Profile from './Pages/Profile/Profile';
+import Record from './Pages/Profile/Record';
+import Quiz from './Pages/Quiz/Quiz';
+import Recipes from './Pages/Recipes/Recipes';
+import Result from './Pages/Result/Result';
+import StartPage from './Pages/StartPage/StartPage';
+import Train from './Pages/Train/Train';
 function Layout() {
   const location = useLocation();
   const hiddenPathsBack = ['/', '/quiz', '/result', '/dashboard'];
@@ -60,24 +66,32 @@ function App() {
   const [logs, setLogs] = useState([]);
 
   const addLog = useCallback((...args) => {
-    const msg = args.map(arg => {
-      try {
-        return typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg);
-      } catch (e) {
-        return String(arg);
-      }
-    }).join(' ');
+    const msg = args
+      .map((arg) => {
+        try {
+          return typeof arg === 'object'
+            ? JSON.stringify(arg, null, 2)
+            : String(arg);
+        } catch {
+          return String(arg);
+        }
+      })
+      .join(' ');
 
-    setLogs(prevLogs => [...prevLogs, msg]);
+    setLogs((prevLogs) => [...prevLogs, msg]);
   }, []);
 
   useEffect(() => {
     addLog('Проверка окружения:');
     addLog('window.Telegram:', !!window.Telegram, window.Telegram);
-    addLog('window.Telegram.WebApp:', !!(window.Telegram && window.Telegram.WebApp), window.Telegram.WebApp);
+    addLog(
+      'window.Telegram.WebApp:',
+      !!(window.Telegram && window.Telegram.WebApp),
+      window.Telegram.WebApp,
+    );
     addLog('User Agent:', navigator.userAgent);
     addLog('Платформа:', navigator.userAgentData?.platform || 'Неизвестно');
-    
+
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.ready();
       window.Telegram.WebApp.expand();
@@ -89,9 +103,10 @@ function App() {
       addLog('Telegram User Photo URL:', telegramUser.photo_url);
 
       const addImage = async () => {
-        const image = telegramUser.photo_url && typeof telegramUser.photo_url === 'string'
-          ? telegramUser.photo_url
-          : '';
+        const image =
+          telegramUser.photo_url && typeof telegramUser.photo_url === 'string'
+            ? telegramUser.photo_url
+            : '';
         const imageData = {
           user_tg_id: String(telegramUser.id),
           image: image,
@@ -102,11 +117,15 @@ function App() {
         const params = new URLSearchParams(imageData).toString();
 
         try {
-          const response = await axios.post(`${API_BASE_URL}/api/v1/user/image?${params}`, null, {
-            headers: {
-              'Content-Type': 'application/json',
+          const response = await axios.post(
+            `${API_BASE_URL}/api/v1/user/image?${params}`,
+            null,
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
             },
-          });
+          );
           addLog('Ответ сервера на запрос изображения:', response.data);
         } catch (error) {
           const errorDetails = {
@@ -118,9 +137,12 @@ function App() {
               url: error.config?.url,
               method: error.config?.method,
               headers: error.config?.headers,
-            }
+            },
           };
-          addLog('Ошибка при отправке изображения:', JSON.stringify(errorDetails, null, 2));
+          addLog(
+            'Ошибка при отправке изображения:',
+            JSON.stringify(errorDetails, null, 2),
+          );
         }
       };
 
@@ -145,9 +167,12 @@ function App() {
               url: error.config?.url,
               method: error.config?.method,
               headers: error.config?.headers,
-            }
+            },
           };
-          addLog('Ошибка при получении данных пользователя:', JSON.stringify(errorDetails, null, 2));
+          addLog(
+            'Ошибка при получении данных пользователя:',
+            JSON.stringify(errorDetails, null, 2),
+          );
           setData(null);
         }
       };
@@ -155,9 +180,7 @@ function App() {
       const fetchData = async () => {
         try {
           setIsLoading(true);
-          await Promise.all([
-            addImage(), 
-            addUser()]);
+          await Promise.all([addImage(), addUser()]);
         } finally {
           setIsLoading(false);
         }
@@ -193,16 +216,65 @@ function App() {
               <Route index element={<StartPage data={data} />} />
               <Route path="quiz" element={<Quiz userId={userId} />} />
               <Route path="result" element={<Result userId={userId} />} />
-              <Route path="dashboard" element={<Dashboard data={data} userId={userId} base={base} />} />
-              <Route path="begin" element={<Begin data={data} userId={userId} />} />
-              <Route path="profile" element={<Profile data={data} userId={userId} setData={setData} />} />
-              <Route path="parameters" element={<Parameters data={data} userId={userId} setData={setData} />} />
-              <Route path="record" element={<Record data={data} userId={userId} />} />
-              <Route path="communication" element={<Communication data={data} userId={userId} base={base} />} />
-              <Route path="train" element={<Train data={data} userId={userId} level={data.user_level} base={base} />} />
-              <Route path="food" element={<Food data={data} userId={userId} />} />
-              <Route path="lectures" element={<Lectures data={data} userId={userId} level={data.user_level}/>} />
-              <Route path="recipes" element={<Recipes data={data} userId={userId} />} />
+              <Route
+                path="dashboard"
+                element={<Dashboard data={data} userId={userId} base={base} />}
+              />
+              <Route
+                path="begin"
+                element={<Begin data={data} userId={userId} />}
+              />
+              <Route
+                path="profile"
+                element={
+                  <Profile data={data} userId={userId} setData={setData} />
+                }
+              />
+              <Route
+                path="parameters"
+                element={
+                  <Parameters data={data} userId={userId} setData={setData} />
+                }
+              />
+              <Route
+                path="record"
+                element={<Record data={data} userId={userId} />}
+              />
+              <Route
+                path="communication"
+                element={
+                  <Communication data={data} userId={userId} base={base} />
+                }
+              />
+              <Route
+                path="train"
+                element={
+                  <Train
+                    data={data}
+                    userId={userId}
+                    level={data.user_level}
+                    base={base}
+                  />
+                }
+              />
+              <Route
+                path="food"
+                element={<Food data={data} userId={userId} />}
+              />
+              <Route
+                path="lectures"
+                element={
+                  <Lectures
+                    data={data}
+                    userId={userId}
+                    level={data.user_level}
+                  />
+                }
+              />
+              <Route
+                path="recipes"
+                element={<Recipes data={data} userId={userId} />}
+              />
             </Route>
           ) : (
             <Route path="*" element={<NoEntry logs={logs} addLog={addLog} />} />

@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './Profile.css';
-import axios from 'axios';
-import { API_BASE_URL } from '../../API';
 
-import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
+import axios from 'axios';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { API_BASE_URL } from '../../API';
 // import Selecter from '../../Components/Selecter/Selecter';
 // import ButtonEdit from '../../Components/Button/ButtonEdit';
 import Button from '../../Components/Button/Button';
+import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 
 // import settings from '../../Assets/svg/settings.svg';
 // import right from '../../Assets/svg/right.svg';
@@ -68,7 +69,8 @@ export default function Record({ userId, data }) {
         tg_id: String(userId),
         chest: parseInt(formData.chest, 10) || 0,
         waist: parseInt(formData.waist, 10) || 0,
-        abdominal_circumference: parseInt(formData.abdominal_circumference, 10) || 0,
+        abdominal_circumference:
+          parseInt(formData.abdominal_circumference, 10) || 0,
         legs: parseInt(formData.legs, 10) || 0,
         hips: parseInt(formData.hips, 10) || 0,
         weight: parseInt(formData.weight, 10) || 0,
@@ -94,7 +96,8 @@ export default function Record({ userId, data }) {
     container.style.transformOrigin = `${originX}% ${originY}%`;
     container.style.transform = `scale(1.5)`;
     container.style.transition = 'transform 150ms ease-in-out';
-    const scrollOffset = inputRect.top - containerRect.top - containerRect.height * 0.3;
+    const scrollOffset =
+      inputRect.top - containerRect.top - containerRect.height * 0.3;
     container.scrollTo({
       top: container.scrollTop + scrollOffset,
       behavior: 'smooth',
@@ -110,12 +113,19 @@ export default function Record({ userId, data }) {
 
   const inputPairs = [
     { labels: ['Обхват груди', 'Обхват талии'], fields: ['chest', 'waist'] },
-    { labels: ['Обхват живота', 'Обхват бедер'], fields: ['abdominal_circumference', 'hips'] },
+    {
+      labels: ['Обхват живота', 'Обхват бедер'],
+      fields: ['abdominal_circumference', 'hips'],
+    },
     { labels: ['Обхват ноги', 'Вес'], fields: ['legs', 'weight'] },
   ];
 
   return (
-    <div className="profilePage" ref={formRef} style={{flex: '1', display: 'flex', height: 'calc(100% - 70px)'}}>
+    <div
+      className="profilePage"
+      ref={formRef}
+      style={{ flex: '1', display: 'flex', height: 'calc(100% - 70px)' }}
+    >
       <div className="profileContainer">
         <div className="profile" style={{ justifyContent: 'space-between' }}>
           <div className="profileData">
@@ -184,14 +194,14 @@ export default function Record({ userId, data }) {
               />
             ))}
           </div>
-            <Button
-              text="Сохранить"
-              width="100%"
-              bg="#CBFF52"
-              bgFocus="#EBFFBD"
-              color="#0D0D0D"
-              onClick={handleSubmit}
-            />
+          <Button
+            text="Сохранить"
+            width="100%"
+            bg="#CBFF52"
+            bgFocus="#EBFFBD"
+            color="#0D0D0D"
+            onClick={handleSubmit}
+          />
         </div>
       </div>
     </div>

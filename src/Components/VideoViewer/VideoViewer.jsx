@@ -1,12 +1,21 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './VideoViewer.css';
+
 import axios from 'axios';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 import { API_BASE_URL } from '../../API';
-
-import play from '../../Assets/svg/play.svg';
 import pause from '../../Assets/svg/pause.svg';
+import play from '../../Assets/svg/play.svg';
 
-const VideoViewer = ({ videoSrc, page, userId, instruction, lastVideo, onVideoEnd, togglePlayRef }) => {
+const VideoViewer = ({
+  videoSrc,
+  page,
+  userId,
+  instruction,
+  lastVideo,
+  onVideoEnd,
+  togglePlayRef,
+}) => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -36,10 +45,12 @@ const VideoViewer = ({ videoSrc, page, userId, instruction, lastVideo, onVideoEn
   const debouncedSendVideoUpdate = useCallback(
     (data) => {
       let timeout;
-      const debounce = (func, wait) => (...args) => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func(...args), wait);
-      };
+      const debounce =
+        (func, wait) =>
+        (...args) => {
+          clearTimeout(timeout);
+          timeout = setTimeout(() => func(...args), wait);
+        };
 
       const sendRequest = async () => {
         try {
@@ -62,13 +73,18 @@ const VideoViewer = ({ videoSrc, page, userId, instruction, lastVideo, onVideoEn
             console.log('Video progress updated:', data);
           }
         } catch (error) {
-          console.error('Error updating video progress:', error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
+          console.error(
+            'Error updating video progress:',
+            error.response
+              ? JSON.stringify(error.response.data, null, 2)
+              : error.message,
+          );
         }
       };
 
       return debounce(sendRequest, 5000)(data);
     },
-    [userId, instruction, lastVideo, page, videoSrc]
+    [userId, instruction, lastVideo, page, videoSrc],
   );
 
   // Function to send video update data
@@ -165,10 +181,7 @@ const VideoViewer = ({ videoSrc, page, userId, instruction, lastVideo, onVideoEn
           <p>{duration}</p>
         </div>
         <div className="progressBar" onClick={handleProgressClick}>
-          <div
-            className="progressFill"
-            style={{ width: `${progress}%` }}
-          />
+          <div className="progressFill" style={{ width: `${progress}%` }} />
         </div>
       </div>
     </div>

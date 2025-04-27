@@ -1,10 +1,16 @@
-import React from 'react';
 import './History.css';
+
 import { useNavigate } from 'react-router-dom';
 
 import play from '../../Assets/svg/play.svg';
 
-export default function History({ text, viewed = 10, view = '50', instruction = false, lastVideo }) {
+export default function History({
+  text,
+  viewed = 10,
+  view = '50',
+  instruction = false,
+  lastVideo,
+}) {
   const navigate = useNavigate();
 
   // Функция для преобразования времени из формата MM:SS в секунды (number)
@@ -39,7 +45,7 @@ export default function History({ text, viewed = 10, view = '50', instruction = 
 
   return (
     <div
-      className='historyContainer'
+      className="historyContainer"
       style={{
         background: instruction ? '#FAFAFA' : '',
         border: instruction ? '1px solid #e6e6e6' : '',
@@ -51,7 +57,7 @@ export default function History({ text, viewed = 10, view = '50', instruction = 
         <progress
           className={`historyProgress ${instruction ? 'instruction' : ''}`}
           value={viewedInSeconds} // Теперь это число в секундах
-          max={viewInSeconds}     // Теперь это число в секундах
+          max={viewInSeconds} // Теперь это число в секундах
         />
         <span>{text}</span>
       </div>
@@ -61,7 +67,7 @@ export default function History({ text, viewed = 10, view = '50', instruction = 
       >
         <p>{remainingMinutes} мин</p>
         <button
-          className='historyPlay'
+          className="historyPlay"
           style={{ background: instruction ? '#A799FF' : '' }}
         >
           <img src={play} alt="Продолжить просмотр" />

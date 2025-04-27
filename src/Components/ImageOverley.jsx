@@ -1,4 +1,3 @@
-import React from 'react';
 import './ImageOverlay.css';
 
 const ImageOverlay = ({ overlayImageSrc, maskImageSrc }) => {

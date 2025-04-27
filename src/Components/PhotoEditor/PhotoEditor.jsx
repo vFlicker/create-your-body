@@ -1,12 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react'
 import axios from 'axios';
+import { useEffect, useRef, useState } from 'react';
+
 import { API_BASE_URL } from '../../API';
-
-import ButtonEdit from '../Button/ButtonEdit';
-import Loader from '../Loader/Loader';
-
 import edit from '../../Assets/svg/editSmall.svg';
 import photoNone from '../../Assets/svg/photoNone.svg';
+import ButtonEdit from '../Button/ButtonEdit';
+import Loader from '../Loader/Loader';
 
 export default function PhotoEditor({ label, initialPhoto, userId, number }) {
   const fileInputRef = useRef(null);
@@ -28,13 +27,16 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
         //   }
         // });
 
-        const response = await axios.get(`${API_BASE_URL}/api/v1/user/images/two`, {
-          params: {
-            tg_id: String(userId),
-            number: number
+        const response = await axios.get(
+          `${API_BASE_URL}/api/v1/user/images/two`,
+          {
+            params: {
+              tg_id: String(userId),
+              number: number,
+            },
+            responseType: 'blob',
           },
-          responseType: 'blob'
-        });
+        );
 
         // console.log('Ответ сервера:', {
         //   status: response.status,
@@ -52,8 +54,10 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
                 const jsonData = JSON.parse(reader.result);
                 console.error('Получен JSON вместо изображения:', jsonData);
                 setPhoto(initialPhoto);
-              } catch (e) {
-                const blob = new Blob([response.data], { type: response.headers['content-type'] || 'image/jpeg' });
+              } catch {
+                const blob = new Blob([response.data], {
+                  type: response.headers['content-type'] || 'image/jpeg',
+                });
                 const photoUrl = URL.createObjectURL(blob);
                 // console.log('Созданный URL:', photoUrl);
                 setPhoto(photoUrl);
@@ -78,8 +82,8 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
             url: error.config?.url,
             method: error.config?.method,
             headers: error.config?.headers,
-            data: error.config?.data
-          }
+            data: error.config?.data,
+          },
         });
         setPhoto(initialPhoto);
       } finally {
@@ -98,7 +102,9 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
     if (file) {
       if (file.size > 2 * 1024 * 1024) {
         if (window.Telegram?.WebApp) {
-          window.Telegram.WebApp.showAlert('Максимальный размер фотографии 2 МБ');
+          window.Telegram.WebApp.showAlert(
+            'Максимальный размер фотографии 2 МБ',
+          );
         } else {
           alert('Максимальный размер фотографии 2 МБ');
         }
@@ -121,15 +127,19 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
         setIsUploading(true);
         if (photo) {
           console.log('Отправка PATCH запроса для обновления фото');
-          await axios.patch(`${API_BASE_URL}/api/v1/user/images/two`, formData, {
-            params: {
-              tg_id: String(userId),
-              number: number
+          await axios.patch(
+            `${API_BASE_URL}/api/v1/user/images/two`,
+            formData,
+            {
+              params: {
+                tg_id: String(userId),
+                number: number,
+              },
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
             },
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          });
+          );
         } else {
           console.log('Отправка POST запроса для создания нового фото');
           formData.append('tg_id', String(userId));
@@ -157,8 +167,8 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
             url: error.config?.url,
             method: error.config?.method,
             headers: error.config?.headers,
-            data: error.config?.data
-          }
+            data: error.config?.data,
+          },
         });
         if (window.Telegram?.WebApp) {
           window.Telegram.WebApp.showAlert('Ошибка при загрузке фотографии');
@@ -174,15 +184,38 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
   return (
     <div className="before">
       <span>{label}</span>
-      <div className="forBefore" style={{ background: photo ? 'transparent' : 'rgb(110 110 110)' }}>
+      <div
+        className="forBefore"
+        style={{ background: photo ? 'transparent' : 'rgb(110 110 110)' }}
+      >
         {isLoading || isUploading ? (
-          <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <div
+            style={{
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
             <Loader />
           </div>
         ) : photo ? (
           <img src={photo} alt={label} />
         ) : (
-          <img src={photoNone} alt={label} style={{ width: '50%', height: '100%', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', objectFit: 'contain' }} />
+          <img
+            src={photoNone}
+            alt={label}
+            style={{
+              width: '50%',
+              height: '100%',
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              objectFit: 'contain',
+            }}
+          />
         )}
         <div className="forEdit">
           <ButtonEdit
@@ -204,4 +237,4 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
       />
     </div>
   );
-};
+}

@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
 import './Begin.css';
+
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom'; // Импортируем useLocation
 
-import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
-import Selecter from '../../Components/Selecter/Selecter';
-import PdfViewer from '../../Components/PdfViewer/PdfViewer';
-import VideoPage from '../../Components/VideoPage/VideoPage';
-
+import pdf from '../../Assets/pdf/begin.pdf';
 import health from '../../Assets/svg/health.svg';
 import begin from '../../Assets/video/begin.mp4';
-import pdf from '../../Assets/pdf/begin.pdf';
+import PdfViewer from '../../Components/PdfViewer/PdfViewer';
+import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
+import Selecter from '../../Components/Selecter/Selecter';
+import VideoPage from '../../Components/VideoPage/VideoPage';
 
 export default function Begin({ userId, data }) {
   // Получаем query-параметры из URL
@@ -53,7 +53,12 @@ export default function Begin({ userId, data }) {
         {!videoView ? (
           <PdfViewer pdfFile={pdf} />
         ) : (
-          <VideoPage video={begin} page="/begin" userId={userId} instruction={true} />
+          <VideoPage
+            video={begin}
+            page="/begin"
+            userId={userId}
+            instruction={true}
+          />
         )}
       </div>
     </div>

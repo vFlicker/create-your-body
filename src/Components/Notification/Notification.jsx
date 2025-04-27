@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import './Notification.css'
+import './Notification.css';
+
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+
 import exit from '../../Assets/svg/exit.svg';
 
 const Notification = ({ children, onClose, duration = 5000 }) => {
@@ -20,11 +22,11 @@ const Notification = ({ children, onClose, duration = 5000 }) => {
   return createPortal(
     <div className="notification">
       {children}
-      <button className='noticeCloseBtn' onClick={onClose}>
+      <button className="noticeCloseBtn" onClick={onClose}>
         <img src={exit} alt="Убрать сообщение" />
       </button>
-    </div>, 
-    document.body
+    </div>,
+    document.body,
   );
 };
 

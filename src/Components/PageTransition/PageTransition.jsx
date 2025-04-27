@@ -1,9 +1,9 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
 // import { Outlet } from 'react-router-dom';
 import './PageTransition.css';
+
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const PageTransition = ({ children }) => {
   const location = useLocation();
@@ -23,10 +23,10 @@ const PageTransition = ({ children }) => {
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: -1000, opacity: 0 }}
       transition={{
-        type: "spring",
+        type: 'spring',
         stiffness: 100,
         damping: 20,
-        mass: 0.5
+        mass: 0.5,
       }}
       className="page-transition"
     >
