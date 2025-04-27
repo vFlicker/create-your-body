@@ -1,4 +1,4 @@
-import './Result.css';
+import './ResultPage.css';
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -11,7 +11,7 @@ import settings from '~/shared/assets/svg/settings.svg';
 
 import Button from '../../Components/Button/Button';
 
-export default function Result({ userId }) {
+export function ResultPage({ userId }) {
   const navigate = useNavigate();
   const [level, setLevel] = useState('pro');
 

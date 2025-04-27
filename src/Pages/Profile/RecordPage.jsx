@@ -1,4 +1,4 @@
-import './Profile.css';
+import './profile.css';
 
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
@@ -33,7 +33,7 @@ const InputPair = ({ labels, values, onChange, handleBlur, handleFocus }) => (
   </div>
 );
 
-export default function Record({ userId, data }) {
+export function RecordPage({ userId, data }) {
   const [isMobile, setIsMobile] = useState(false);
   const formRef = useRef(null);
   const navigate = useNavigate();

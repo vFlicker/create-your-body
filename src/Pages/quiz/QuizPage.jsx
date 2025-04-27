@@ -1,4 +1,4 @@
-import './Quiz.css';
+import './QuizPage.css';
 
 import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -62,7 +62,7 @@ const titleTransition = {
   ease: [0.43, 0.13, 0.23, 0.96],
 };
 
-export default function Quiz({ userId, data }) {
+export function QuizPage({ userId, data }) {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [direction, setDirection] = useState('forward');

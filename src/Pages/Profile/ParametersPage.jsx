@@ -1,4 +1,4 @@
-import './Profile.css';
+import './profile.css';
 
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
@@ -192,7 +192,7 @@ const PhotoUploader = ({ label, value, onChange, onRemove, isLoading }) => {
   );
 };
 
-export default function Parameters({ userId, data, setData }) {
+export function ParametersPage({ userId, data, setData }) {
   const [isMobile, setIsMobile] = useState(false);
   const formRef = useRef(null);
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
-import './NoEntry.css';
-import '../Food/Food.css';
+import './NoEntryPage.css';
+import '../food/FoodPage.css';
 
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -10,9 +10,9 @@ import help from '~/shared/assets/svg/help.svg';
 import muscules from '~/shared/assets/svg/muscles.svg';
 
 import Button from '../../Components/Button/Button';
-import { TelegramLinkButton } from '../Communication/Communication';
+import { TelegramLinkButton } from '../communication/CommunicationPage';
 
-export default function NoEntry({ logs, addLog }) {
+export function NoEntryPage({ logs, addLog }) {
   const [errorsContainer, setErrorsContainer] = useState(false);
   const tg = window.Telegram?.WebApp;
   const username = 'zabotaCYB';

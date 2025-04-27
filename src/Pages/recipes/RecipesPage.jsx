@@ -1,4 +1,4 @@
-import './Recipes.css';
+import './RecipesPage.css';
 
 import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -41,7 +41,7 @@ const transition = {
   duration: 0.3,
 };
 
-export default function Recipes({ data }) {
+export function RecipesPage({ data }) {
   const [categories, setCategories] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [[page, direction], setPage] = useState([0, 0]);

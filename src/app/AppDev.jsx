@@ -12,6 +12,18 @@ import {
   useLocation,
 } from 'react-router-dom';
 
+import { BeginPage } from '~/pages/begin';
+import { CommunicationPage } from '~/pages/communication';
+import { DashboardPage } from '~/pages/dashboard';
+import { FoodPage } from '~/pages/food';
+import { LecturesPage } from '~/pages/lectures';
+import { NoEntryPage } from '~/pages/noEntry';
+import { ParametersPage, ProfilePage, RecordPage } from '~/pages/profile';
+import { QuizPage } from '~/pages/quiz';
+import { RecipesPage } from '~/pages/recipes';
+import { ResultPage } from '~/pages/result';
+import { StartPage } from '~/pages/start';
+import { TrainPage } from '~/pages/train';
 import { BASE_API_URL } from '~/shared/api';
 
 import ButtonBack from '../Components/Button/ButtonBack';
@@ -19,20 +31,6 @@ import ButtonClose from '../Components/Button/ButtonClose';
 import Loader from '../Components/Loader/Loader';
 import Nav from '../Components/Nav/Nav';
 import PageTransition from '../Components/PageTransition/PageTransition';
-import Begin from '../Pages/Begin/Begin';
-import Communication from '../Pages/Communication/Communication';
-import Dashboard from '../Pages/Dashboard/Dashboard';
-import Food from '../Pages/Food/Food';
-import Lectures from '../Pages/Lectures/Lectures';
-import NoEntry from '../Pages/NoEntry/NoEntry';
-import Parameters from '../Pages/Profile/Parameters';
-import Profile from '../Pages/Profile/Profile';
-import Record from '../Pages/Profile/Record';
-import Quiz from '../Pages/Quiz/Quiz';
-import Recipes from '../Pages/Recipes/Recipes';
-import Result from '../Pages/Result/Result';
-import StartPage from '../Pages/StartPage/StartPage';
-import Train from '../Pages/Train/Train';
 
 function Layout() {
   const location = useLocation();
@@ -218,42 +216,48 @@ export function AppDev() {
           {hasAccess ? (
             <Route path="/" element={<Layout />}>
               <Route index element={<StartPage data={data} />} />
-              <Route path="quiz" element={<Quiz userId={userId} />} />
-              <Route path="result" element={<Result userId={userId} />} />
+              <Route path="quiz" element={<QuizPage userId={userId} />} />
+              <Route path="result" element={<ResultPage userId={userId} />} />
               <Route
                 path="dashboard"
-                element={<Dashboard data={data} userId={userId} base={base} />}
+                element={
+                  <DashboardPage data={data} userId={userId} base={base} />
+                }
               />
               <Route
                 path="begin"
-                element={<Begin data={data} userId={userId} />}
+                element={<BeginPage data={data} userId={userId} />}
               />
               <Route
                 path="profile"
                 element={
-                  <Profile data={data} userId={userId} setData={setData} />
+                  <ProfilePage data={data} userId={userId} setData={setData} />
                 }
               />
               <Route
                 path="parameters"
                 element={
-                  <Parameters data={data} userId={userId} setData={setData} />
+                  <ParametersPage
+                    data={data}
+                    userId={userId}
+                    setData={setData}
+                  />
                 }
               />
               <Route
                 path="record"
-                element={<Record data={data} userId={userId} />}
+                element={<RecordPage data={data} userId={userId} />}
               />
               <Route
                 path="communication"
                 element={
-                  <Communication data={data} userId={userId} base={base} />
+                  <CommunicationPage data={data} userId={userId} base={base} />
                 }
               />
               <Route
                 path="train"
                 element={
-                  <Train
+                  <TrainPage
                     data={data}
                     userId={userId}
                     level={data.user_level}
@@ -263,12 +267,12 @@ export function AppDev() {
               />
               <Route
                 path="food"
-                element={<Food data={data} userId={userId} />}
+                element={<FoodPage data={data} userId={userId} />}
               />
               <Route
                 path="lectures"
                 element={
-                  <Lectures
+                  <LecturesPage
                     data={data}
                     userId={userId}
                     level={data.user_level}
@@ -277,11 +281,14 @@ export function AppDev() {
               />
               <Route
                 path="recipes"
-                element={<Recipes data={data} userId={userId} />}
+                element={<RecipesPage data={data} userId={userId} />}
               />
             </Route>
           ) : (
-            <Route path="*" element={<NoEntry logs={logs} addLog={addLog} />} />
+            <Route
+              path="*"
+              element={<NoEntryPage logs={logs} addLog={addLog} />}
+            />
           )}
         </Routes>
       )}

@@ -1,5 +1,5 @@
-import './Lectures.css';
-import '../../Pages/Train/Train.css';
+import './LecturesPage.css';
+import '../train/TrainPage.css';
 
 import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -34,7 +34,7 @@ const transition = {
   duration: 0.3,
 };
 
-export default function Lectures({ level, user_photo }) {
+export function LecturesPage({ level, user_photo }) {
   const [[page, direction], setPage] = useState([0, 0]);
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [selectedLecture, setSelectedLecture] = useState(null);

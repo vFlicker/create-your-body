@@ -1,5 +1,5 @@
 import './TrainContent.css';
-import '../../Pages/Train/Train.css';
+import '~/pages/train/TrainPage.css';
 
 import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';

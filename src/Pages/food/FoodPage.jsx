@@ -1,5 +1,5 @@
-import './Food.css';
-import '../Communication/Communication.css';
+import './FoodPage.css';
+import '../communication/CommunicationPage.css';
 
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
@@ -15,9 +15,9 @@ import FoodContainer from '../../Components/Container/FoodContainer';
 import Loader from '../../Components/Loader/Loader';
 import PdfViewer from '../../Components/PdfViewer/PdfViewer';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
-import { TelegramLinkButton } from '../Communication/Communication';
+import { TelegramLinkButton } from '../communication/CommunicationPage';
 
-export default function Food({ data, userId }) {
+export function FoodPage({ data, userId }) {
   const [isLoading, setIsLoading] = useState(true);
   const [dataFood, setDataFood] = useState(null);
   const [selectedPdfId, setSelectedPdfId] = useState(null);

@@ -1,4 +1,4 @@
-import './Train.css';
+import './TrainPage.css';
 
 import { useEffect, useState } from 'react';
 
@@ -36,7 +36,7 @@ const pageContainersData = [
   },
 ];
 
-export default function Train({ data, level, base }) {
+export function TrainPage({ data, level, base }) {
   const [showContent, setShowContent] = useState(false);
   const [selectedView, setSelectedView] = useState(null);
 

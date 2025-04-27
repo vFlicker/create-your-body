@@ -1,4 +1,4 @@
-import './Dashboard.css';
+import './DashboardPage.css';
 
 import { useEffect } from 'react';
 
@@ -14,7 +14,7 @@ import Container from '../../Components/Container/Container';
 import History from '../../Components/History/History';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 
-export default function Dashboard({ data, base }) {
+export function DashboardPage({ data, base }) {
   const pageContainersData = [
     {
       name: 'Введение',

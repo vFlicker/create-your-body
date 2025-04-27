@@ -1,4 +1,4 @@
-import './Communication.css';
+import './CommunicationPage.css';
 
 import { useEffect } from 'react';
 
@@ -42,7 +42,7 @@ export const TelegramLinkButton = ({
   );
 };
 
-export default function Communication({ data, base }) {
+export function CommunicationPage({ data, base }) {
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.setBackgroundColor('#F2F2F2');

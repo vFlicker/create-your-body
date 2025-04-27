@@ -11,7 +11,7 @@ import Button from '../../Components/Button/Button';
 import ImageOverlay from '../../Components/ImageOverley';
 import Loader from '../../Components/Loader/Loader';
 
-export default function StartPage({ data }) {
+export function StartPage({ data }) {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [loadedImages, setLoadedImages] = useState({

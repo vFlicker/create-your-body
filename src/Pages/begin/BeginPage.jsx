@@ -1,4 +1,4 @@
-import './Begin.css';
+import './BeginPage.css';
 
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom'; // Импортируем useLocation
@@ -12,7 +12,7 @@ import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import Selecter from '../../Components/Selecter/Selecter';
 import VideoPage from '../../Components/VideoPage/VideoPage';
 
-export default function Begin({ userId, data }) {
+export function BeginPage({ userId, data }) {
   // Получаем query-параметры из URL
   const location = useLocation();
 

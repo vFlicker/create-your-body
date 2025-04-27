@@ -1,0 +1,1 @@
+export { BeginPage } from './BeginPage';

@@ -1,4 +1,4 @@
-import './Profile.css';
+import './profile.css';
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -21,7 +21,7 @@ import PhotoEditor from '../../Components/PhotoEditor/PhotoEditor';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import Selecter from '../../Components/Selecter/Selecter';
 
-export default function Profile({ userId, data, setData }) {
+export function ProfilePage({ userId, data, setData }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(
