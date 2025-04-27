@@ -2,7 +2,7 @@ import './History.css';
 
 import { useNavigate } from 'react-router-dom';
 
-import play from '../../Assets/svg/play.svg';
+import play from '~/shared/assets/svg/play.svg';
 
 export default function History({
   text,

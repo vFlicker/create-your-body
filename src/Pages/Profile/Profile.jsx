@@ -6,14 +6,14 @@ import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 
 import { BASE_API_URL } from '~/shared/api';
+import zamer from '~/shared/assets/img/zamer.jpeg';
+import chart from '~/shared/assets/svg/chart.svg';
+import close from '~/shared/assets/svg/close.svg';
+import exit from '~/shared/assets/svg/exit.svg';
+import history from '~/shared/assets/svg/history.svg';
+import right from '~/shared/assets/svg/right.svg';
+import settings from '~/shared/assets/svg/settings.svg';
 
-import zamer from '../../Assets/img/zamer.jpeg';
-import chart from '../../Assets/svg/chart.svg';
-import close from '../../Assets/svg/close.svg';
-import exit from '../../Assets/svg/exit.svg';
-import history from '../../Assets/svg/history.svg';
-import right from '../../Assets/svg/right.svg';
-import settings from '../../Assets/svg/settings.svg';
 import Button from '../../Components/Button/Button';
 import ButtonEdit from '../../Components/Button/ButtonEdit';
 import Loader from '../../Components/Loader/Loader';

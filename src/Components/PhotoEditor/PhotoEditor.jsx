@@ -2,9 +2,9 @@ import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 
 import { BASE_API_URL } from '~/shared/api';
+import edit from '~/shared/assets/svg/editSmall.svg';
+import photoNone from '~/shared/assets/svg/photoNone.svg';
 
-import edit from '../../Assets/svg/editSmall.svg';
-import photoNone from '../../Assets/svg/photoNone.svg';
 import ButtonEdit from '../Button/ButtonEdit';
 import Loader from '../Loader/Loader';
 

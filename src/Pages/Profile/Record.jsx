@@ -11,9 +11,9 @@ import { BASE_API_URL } from '~/shared/api';
 import Button from '../../Components/Button/Button';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 
-// import settings from '../../Assets/svg/settings.svg';
-// import right from '../../Assets/svg/right.svg';
-// import close from '../../Assets/svg/close.svg';
+// import settings from '~/shared/assets/svg/settings.svg';
+// import right from '~/shared/assets/svg/right.svg';
+// import close from '~/shared/assets/svg/close.svg';
 
 const InputPair = ({ labels, values, onChange, handleBlur, handleFocus }) => (
   <div className="inputPair" style={{ display: 'flex' }}>

@@ -3,7 +3,7 @@ import './Button.css';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import back from '../../Assets/svg/back.svg';
+import back from '~/shared/assets/svg/back.svg';
 
 export default function ButtonBack({ text = 'Назад', onClick }) {
   const navigate = useNavigate();

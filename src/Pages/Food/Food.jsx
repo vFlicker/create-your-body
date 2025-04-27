@@ -6,10 +6,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { BASE_API_URL } from '~/shared/api';
+import food from '~/shared/assets/nav/food.svg';
+import copy from '~/shared/assets/svg/copy.svg';
+import help from '~/shared/assets/svg/help.svg';
 
-import food from '../../Assets/nav/food.svg';
-import copy from '../../Assets/svg/copy.svg';
-import help from '../../Assets/svg/help.svg';
 import Button from '../../Components/Button/Button';
 import FoodContainer from '../../Components/Container/FoodContainer';
 import Loader from '../../Components/Loader/Loader';

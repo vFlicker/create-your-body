@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import edit from '../../Assets/svg/edit.svg';
+import edit from '~/shared/assets/svg/edit.svg';
 
 export default function ButtonEdit({ onClick, icon, size, sizeIcon }) {
   const [isPressed, setIsPressed] = useState(false);

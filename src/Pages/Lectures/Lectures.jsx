@@ -6,8 +6,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 import { BASE_API_URL } from '~/shared/api';
+import book from '~/shared/assets/svg/book.svg';
 
-import book from '../../Assets/svg/book.svg';
 import Loader from '../../Components/Loader/Loader';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import TrainBox from '../../Components/TrainBox/TrainBox';

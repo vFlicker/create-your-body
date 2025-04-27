@@ -4,10 +4,11 @@ import '../Food/Food.css';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import chat from '../../Assets/nav/chat.svg';
-import copy from '../../Assets/svg/copy.svg';
-import help from '../../Assets/svg/help.svg';
-import muscules from '../../Assets/svg/muscles.svg';
+import chat from '~/shared/assets/nav/chat.svg';
+import copy from '~/shared/assets/svg/copy.svg';
+import help from '~/shared/assets/svg/help.svg';
+import muscules from '~/shared/assets/svg/muscles.svg';
+
 import Button from '../../Components/Button/Button';
 import { TelegramLinkButton } from '../Communication/Communication';
 

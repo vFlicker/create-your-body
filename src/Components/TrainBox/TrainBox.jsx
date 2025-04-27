@@ -2,10 +2,10 @@ import './TrainBox.css';
 
 import { useEffect, useState } from 'react';
 
-import mokap from '../../Assets/img/mokap.PNG';
-import close from '../../Assets/svg/closeTrain.svg';
-import bonus from '../../Assets/svg/gift.svg';
-import play from '../../Assets/svg/play.svg';
+import mokap from '~/shared/assets/img/mokap.PNG';
+import close from '~/shared/assets/svg/closeTrain.svg';
+import bonus from '~/shared/assets/svg/gift.svg';
+import play from '~/shared/assets/svg/play.svg';
 
 export default function TrainBox({
   data,

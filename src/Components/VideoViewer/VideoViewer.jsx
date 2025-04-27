@@ -4,9 +4,8 @@ import axios from 'axios';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { BASE_API_URL } from '~/shared/api';
-
-import pause from '../../Assets/svg/pause.svg';
-import play from '../../Assets/svg/play.svg';
+import pause from '~/shared/assets/svg/pause.svg';
+import play from '~/shared/assets/svg/play.svg';
 
 const VideoViewer = ({
   videoSrc,

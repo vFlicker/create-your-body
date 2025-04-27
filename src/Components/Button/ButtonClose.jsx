@@ -2,8 +2,8 @@ import './Button.css';
 
 import { useLocation } from 'react-router-dom';
 
-import close from '../../Assets/svg/close.svg';
-import closeStart from '../../Assets/svg/closeWhite.svg';
+import close from '~/shared/assets/svg/close.svg';
+import closeStart from '~/shared/assets/svg/closeWhite.svg';
 
 export default function ButtonClose() {
   const location = useLocation();

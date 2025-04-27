@@ -6,9 +6,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 
 import { BASE_API_URL } from '~/shared/api';
+import pdf from '~/shared/assets/pdf/trane.pdf';
+import check from '~/shared/assets/svg/check.svg';
 
-import pdf from '../../Assets/pdf/trane.pdf';
-import check from '../../Assets/svg/check.svg';
 import Button from '../../Components/Button/Button';
 import Loader from '../../Components/Loader/Loader';
 import PdfViewer from '../PdfViewer/PdfViewer.jsx';

@@ -3,11 +3,12 @@ import './Train.css';
 import { useEffect, useState } from 'react';
 
 // import Progress from '../../Components/Progress/Progress';
-import muscules from '../../Assets/svg/musclesBlack.svg';
-import back from '../../Assets/train/back.svg';
-import dumbbells from '../../Assets/train/dumbbells.svg';
-import question from '../../Assets/train/question.svg';
-import sport from '../../Assets/train/sport.svg';
+import muscules from '~/shared/assets/svg/musclesBlack.svg';
+import back from '~/shared/assets/train/back.svg';
+import dumbbells from '~/shared/assets/train/dumbbells.svg';
+import question from '~/shared/assets/train/question.svg';
+import sport from '~/shared/assets/train/sport.svg';
+
 import TrainContainer from '../../Components/Container/TrainContainer';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import TrainContent from '../../Components/TrainContent/TrainContent';

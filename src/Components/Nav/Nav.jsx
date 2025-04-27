@@ -3,13 +3,13 @@ import './Nav.css';
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import back from '../../Assets/nav/back.svg';
-import chat from '../../Assets/nav/chat.svg';
-import dashboard from '../../Assets/nav/dashboard.svg';
-import food from '../../Assets/nav/food.svg';
-import muscles from '../../Assets/nav/musclesBlack.svg';
-import profile from '../../Assets/nav/user.svg';
-import lock from '../../Assets/svg/lock.svg';
+import back from '~/shared/assets/nav/back.svg';
+import chat from '~/shared/assets/nav/chat.svg';
+import dashboard from '~/shared/assets/nav/dashboard.svg';
+import food from '~/shared/assets/nav/food.svg';
+import muscles from '~/shared/assets/nav/musclesBlack.svg';
+import profile from '~/shared/assets/nav/user.svg';
+import lock from '~/shared/assets/svg/lock.svg';
 
 // Массив с данными для навигации
 const navItems = [

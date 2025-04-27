@@ -4,10 +4,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 // import Loader from '../../Components/Loader/Loader';
-import arrow from '../../Assets/svg/arrow.svg';
-import back from '../../Assets/svg/arrowBack.svg';
-import brain from '../../Assets/svg/brain.svg';
-import check from '../../Assets/svg/check.svg';
+import arrow from '~/shared/assets/svg/arrow.svg';
+import back from '~/shared/assets/svg/arrowBack.svg';
+import brain from '~/shared/assets/svg/brain.svg';
+import check from '~/shared/assets/svg/check.svg';
+
 import Button from '../Button/Button';
 import Notification from '../Notification/Notification';
 

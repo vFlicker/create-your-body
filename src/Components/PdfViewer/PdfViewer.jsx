@@ -14,11 +14,11 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { BASE_API_URL } from '~/shared/api';
+import close from '~/shared/assets/svg/close.svg';
+import fullscreen from '~/shared/assets/svg/fullscreen.svg';
+import left from '~/shared/assets/svg/left.svg';
+import right from '~/shared/assets/svg/right.svg';
 
-import close from '../../Assets/svg/close.svg';
-import fullscreen from '../../Assets/svg/fullscreen.svg';
-import left from '../../Assets/svg/left.svg';
-import right from '../../Assets/svg/right.svg';
 import Loader from '../Loader/Loader';
 
 const WORKER_URL = `https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`;

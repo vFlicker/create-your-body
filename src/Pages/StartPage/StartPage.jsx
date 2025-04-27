@@ -3,9 +3,10 @@ import './StartPage.css';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import element from '../../Assets/img/element.png';
-import startPhoto from '../../Assets/img/start.jpg';
-import run from '../../Assets/svg/run.svg';
+import element from '~/shared/assets/img/element.png';
+import startPhoto from '~/shared/assets/img/start.jpg';
+import run from '~/shared/assets/svg/run.svg';
+
 import Button from '../../Components/Button/Button';
 import ImageOverlay from '../../Components/ImageOverley';
 import Loader from '../../Components/Loader/Loader';

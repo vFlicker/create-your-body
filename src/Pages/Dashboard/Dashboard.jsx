@@ -2,12 +2,13 @@ import './Dashboard.css';
 
 import { useEffect } from 'react';
 
-import food from '../../Assets/nav/food.svg';
-import book from '../../Assets/svg/book.svg';
+import food from '~/shared/assets/nav/food.svg';
+import book from '~/shared/assets/svg/book.svg';
 // import Loader from '../../Components/Loader/Loader';
-import health from '../../Assets/svg/health.svg';
-import muscules from '../../Assets/svg/musclesBlack.svg';
-import recipes from '../../Assets/svg/recipes.svg';
+import health from '~/shared/assets/svg/health.svg';
+import muscules from '~/shared/assets/svg/musclesBlack.svg';
+import recipes from '~/shared/assets/svg/recipes.svg';
+
 import Container from '../../Components/Container/Container';
 // import Progress from '../../Components/Progress/Progress';
 import History from '../../Components/History/History';

@@ -5,10 +5,10 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { BASE_API_URL } from '~/shared/api';
+import example from '~/shared/assets/img/example.jpeg';
+import add from '~/shared/assets/svg/addImg.svg';
+import close from '~/shared/assets/svg/closeWhite.svg';
 
-import example from '../../Assets/img/example.jpeg';
-import add from '../../Assets/svg/addImg.svg';
-import close from '../../Assets/svg/closeWhite.svg';
 import Button from '../../Components/Button/Button';
 import Loader from '../../Components/Loader/Loader';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';

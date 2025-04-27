@@ -3,9 +3,10 @@ import './Begin.css';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom'; // Импортируем useLocation
 
-import pdf from '../../Assets/pdf/begin.pdf';
-import health from '../../Assets/svg/health.svg';
-import begin from '../../Assets/video/begin.mp4';
+import pdf from '~/shared/assets/pdf/begin.pdf';
+import health from '~/shared/assets/svg/health.svg';
+import begin from '~/shared/assets/video/begin.mp4';
+
 import PdfViewer from '../../Components/PdfViewer/PdfViewer';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import Selecter from '../../Components/Selecter/Selecter';

@@ -5,10 +5,10 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { BASE_API_URL } from '~/shared/api';
+import result from '~/shared/assets/img/result.jpg';
+import muscles from '~/shared/assets/svg/musclesBlack.svg';
+import settings from '~/shared/assets/svg/settings.svg';
 
-import result from '../../Assets/img/result.jpg';
-import muscles from '../../Assets/svg/musclesBlack.svg';
-import settings from '../../Assets/svg/settings.svg';
 import Button from '../../Components/Button/Button';
 
 export default function Result({ userId }) {

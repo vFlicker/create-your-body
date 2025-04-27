@@ -2,7 +2,7 @@ import './Container.css';
 
 import { useNavigate } from 'react-router-dom';
 
-import lock from '../../Assets/svg/lock.svg';
+import lock from '~/shared/assets/svg/lock.svg';
 
 export default function Containers({ data }) {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ export default function Containers({ data }) {
           <p>Откроется {data.closed}</p>
         </div>
       )}
-      {/* {data.buy && 
+      {/* {data.buy &&
           <div className="blurContainer"></div>
         } */}
       {data.buy && (

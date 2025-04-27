@@ -2,10 +2,11 @@ import './Communication.css';
 
 import { useEffect } from 'react';
 
-import chat from '../../Assets/nav/chat.svg';
-import bot from '../../Assets/svg/bot.svg';
-import channel from '../../Assets/svg/channel.svg';
-import help from '../../Assets/svg/help.svg';
+import chat from '~/shared/assets/nav/chat.svg';
+import bot from '~/shared/assets/svg/bot.svg';
+import channel from '~/shared/assets/svg/channel.svg';
+import help from '~/shared/assets/svg/help.svg';
+
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 
 export const TelegramLinkButton = ({

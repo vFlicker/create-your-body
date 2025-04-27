@@ -3,7 +3,8 @@ import './ProfileBtn.css';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import avatar from '../../Assets/nav/user.svg';
+import avatar from '~/shared/assets/nav/user.svg';
+
 import Loader from '../Loader/Loader';
 
 export default function ProfileBtn({ level, user_photo }) {

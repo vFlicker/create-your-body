@@ -3,7 +3,7 @@ import './Notification.css';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import exit from '../../Assets/svg/exit.svg';
+import exit from '~/shared/assets/svg/exit.svg';
 
 const Notification = ({ children, onClose, duration = 5000 }) => {
   const [isVisible, setIsVisible] = useState(true);

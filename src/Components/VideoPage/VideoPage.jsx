@@ -3,7 +3,8 @@ import './VideoPage.css';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import check from '../../Assets/svg/check.svg';
+import check from '~/shared/assets/svg/check.svg';
+
 import Button from '../Button/Button';
 import VideoViewer from '../VideoViewer/VideoViewer';
 

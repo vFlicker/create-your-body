@@ -5,11 +5,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 
 import { BASE_API_URL } from '~/shared/api';
+import breakfast from '~/shared/assets/svg/avocado.svg';
+import dessert from '~/shared/assets/svg/croissant.svg';
+import dinner from '~/shared/assets/svg/meat.svg';
+import recipesSvg from '~/shared/assets/svg/recipes.svg';
 
-import breakfast from '../../Assets/svg/avocado.svg';
-import dessert from '../../Assets/svg/croissant.svg';
-import dinner from '../../Assets/svg/meat.svg';
-import recipesSvg from '../../Assets/svg/recipes.svg';
 import FoodContainer from '../../Components/Container/FoodContainer';
 import Loader from '../../Components/Loader/Loader';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
