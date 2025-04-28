@@ -24,7 +24,7 @@ import { RecipesPage } from '~/pages/recipes';
 import { ResultPage } from '~/pages/result';
 import { StartPage } from '~/pages/start';
 import { TrainPage } from '~/pages/train';
-import { BASE_API_URL } from '~/shared/api';
+import { apiService, BASE_API_URL, extractErrorLogData } from '~/shared/api';
 
 import ButtonBack from '../Components/Button/ButtonBack';
 import ButtonClose from '../Components/Button/ButtonClose';
@@ -130,51 +130,26 @@ export function AppDev() {
           );
           addLog('Ответ сервера на запрос изображения:', response.data);
         } catch (error) {
-          const errorDetails = {
-            message: error.message,
-            status: error.response?.status,
-            statusText: error.response?.statusText,
-            data: error.response?.data,
-            config: {
-              url: error.config?.url,
-              method: error.config?.method,
-              headers: error.config?.headers,
-            },
-          };
-          addLog(
-            'Ошибка при отправке изображения:',
-            JSON.stringify(errorDetails, null, 2),
-          );
+          const errorText = 'Ошибка при отправке изображения:';
+          const errorDetails = extractErrorLogData(error);
+          addLog(errorText, JSON.stringify(errorDetails, null, 2));
         }
       };
 
       const addUser = async () => {
         try {
-          const response = await axios.get(`${BASE_API_URL}/api/v1/user`, {
-            params: { user_id: telegramUser.id || '5003100894' },
-          });
-          addLog('Ответ сервера на запрос пользователя:', response.data);
-          setData(response.data);
-          const userTarif = response.data.user_tarif || '';
+          const tgId = telegramUser.id || '5003100894';
+          const user = await apiService.getUserByTgId(tgId);
+          addLog('Ответ сервера на запрос пользователя:', user);
+          setData(user);
+          const userTarif = user.user_tarif || '';
           const isBase = userTarif.trim().includes('Base');
           setBase(isBase);
           addLog('Тариф пользователя:', userTarif, 'Base:', isBase);
         } catch (error) {
-          const errorDetails = {
-            message: error.message,
-            status: error.response?.status,
-            statusText: error.response?.statusText,
-            data: error.response?.data,
-            config: {
-              url: error.config?.url,
-              method: error.config?.method,
-              headers: error.config?.headers,
-            },
-          };
-          addLog(
-            'Ошибка при получении данных пользователя:',
-            JSON.stringify(errorDetails, null, 2),
-          );
+          const errorText = 'Ошибка при получении данных пользователя:';
+          const errorDetails = extractErrorLogData(error);
+          addLog(errorText, JSON.stringify(errorDetails, null, 2));
           setData(null);
         }
       };

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 
-import { BASE_API_URL } from '~/shared/api';
+import { apiService, BASE_API_URL } from '~/shared/api';
 import zamer from '~/shared/assets/img/zamer.jpeg';
 import chart from '~/shared/assets/svg/chart.svg';
 import close from '~/shared/assets/svg/close.svg';
@@ -129,10 +129,8 @@ export function ProfilePage({ userId, data, setData }) {
         params: { user_tg_id: userId, level: level },
       });
       console.log('Уровень сложности успешно обновлён:', level);
-      const response = await axios.get(`${BASE_API_URL}/api/v1/user`, {
-        params: { user_id: userId },
-      });
-      setData(response.data);
+      const user = await apiService.getUserByTgId(userId);
+      setData(user);
     } catch (error) {
       console.error(
         'Ошибка при обновлении уровня сложности:',

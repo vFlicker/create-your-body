@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { BASE_API_URL } from '~/shared/api';
+import { apiService, BASE_API_URL } from '~/shared/api';
 import example from '~/shared/assets/img/example.jpeg';
 import add from '~/shared/assets/svg/addImg.svg';
 import close from '~/shared/assets/svg/closeWhite.svg';
@@ -613,10 +613,8 @@ export function ParametersPage({ userId, data, setData }) {
 
       console.log('Данные сохранены!');
       // Обновляем данные пользователя перед переходом
-      const response = await axios.get(`${BASE_API_URL}/api/v1/user`, {
-        params: { user_id: userId },
-      });
-      setData(response.data);
+      const user = await apiService.getUserByTgId(userId);
+      setData(user);
       navigate('/profile');
     } catch (error) {
       console.error(
