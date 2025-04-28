@@ -1,11 +1,10 @@
 import './QuizPage.css';
 
-import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { BASE_API_URL } from '~/shared/api';
+import { apiService } from '~/shared/api';
 
 import Button from '../../Components/Button/Button';
 import ButtonBack from '../../Components/Button/ButtonBack';
@@ -380,17 +379,8 @@ export function QuizPage({ userId, data }) {
             throw new Error(`Некорректные поля: ${invalidFields.join(', ')}`);
           }
 
-          const response = await axios.patch(
-            `${BASE_API_URL}/api/v1/user`,
-            userData,
-            {
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            },
-          );
-
-          console.log('Данные успешно обновлены:', response.data);
+          const status = await apiService.updateUser(userData);
+          console.log('Данные успешно обновлены:', status);
           navigate('/result');
         } catch (error) {
           console.error(
