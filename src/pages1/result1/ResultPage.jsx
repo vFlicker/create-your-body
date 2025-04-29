@@ -10,21 +10,22 @@ import settings from '~/shared/assets/svg/settings.svg';
 
 import Button from '../../Components/Button/Button';
 
-export function ResultPage({ userId }) {
+export function ResultPage({ userQuery }) {
   const navigate = useNavigate();
   const [level, setLevel] = useState('pro');
 
   useEffect(() => {
     const fetchLevel = async () => {
       try {
-        const user = await apiService.getUserById(userId);
+        const user = await apiService.getUserByQuery(userQuery);
         setLevel(user.user_level);
       } catch (error) {
         console.log(`Ошибка ${error}`);
       }
     };
     fetchLevel();
-  }, [userId]);
+  }, [userQuery]);
+
   const description = {
     Профи:
       'У вас уверенный уровень подготовки,и вы готовы к интенсивным тренировкам. Наши программы помогут вам развить силу, выносливость и достичь новых спортивных целей!',

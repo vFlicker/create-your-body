@@ -192,7 +192,7 @@ const PhotoUploader = ({ label, value, onChange, onRemove, isLoading }) => {
   );
 };
 
-export function ParametersPage({ userId, data, setData }) {
+export function ParametersPage({ userId, userQuery, data, setData }) {
   const [isMobile, setIsMobile] = useState(false);
   const formRef = useRef(null);
   const navigate = useNavigate();
@@ -595,7 +595,7 @@ export function ParametersPage({ userId, data, setData }) {
 
       console.log('Данные сохранены!');
       // Обновляем данные пользователя перед переходом
-      const user = await apiService.getUserById(userId);
+      const user = await apiService.getUserByQuery(userQuery);
       setData(user);
       navigate('/profile');
     } catch (error) {

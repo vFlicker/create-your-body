@@ -21,7 +21,7 @@ import PhotoEditor from '../../Components/PhotoEditor/PhotoEditor';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import Selecter from '../../Components/Selecter/Selecter';
 
-export function ProfilePage({ userId, data, setData }) {
+export function ProfilePage({ userId, userQuery, data, setData }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(
@@ -129,7 +129,7 @@ export function ProfilePage({ userId, data, setData }) {
         params: { user_tg_id: userId, level: level },
       });
       console.log('Уровень сложности успешно обновлён:', level);
-      const user = await apiService.getUserById(userId);
+      const user = await apiService.getUserByQuery(userQuery);
       setData(user);
     } catch (error) {
       console.error(

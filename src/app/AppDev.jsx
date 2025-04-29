@@ -63,7 +63,8 @@ function Layout() {
 }
 
 export function AppDev() {
-  const [userId, setUserId] = useState('5003100894'); // Тестовый ID пользователя
+  const [userId, setUserId] = useState('');
+  const [userQuery, setUserQuery] = useState('');
   const [data, setData] = useState(null);
   const [base, setBase] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -101,9 +102,10 @@ export function AppDev() {
       window.Telegram.WebApp.expand();
       window.Telegram.WebApp.disableVerticalSwipes();
 
-      const telegramUser =
-        window.Telegram.WebApp.initDataUnsafe.user || '5003100894';
-      setUserId(telegramUser.id || '5003100894');
+      const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
+      const currentUserQuery = window.Telegram.WebApp.initData;
+      setUserId(telegramUser.id);
+      setUserQuery(currentUserQuery);
       addLog('Telegram User ID:', telegramUser.id);
       addLog('Telegram User Photo URL:', telegramUser.photo_url);
 
@@ -141,8 +143,7 @@ export function AppDev() {
 
       const addUser = async () => {
         try {
-          const id = window.Telegram.WebApp.initData || QUERY_ID;
-          const user = await apiService.getUserByQuery(id);
+          const user = await apiService.getUserByQuery(currentUserQuery);
           addLog('Ответ сервера на запрос пользователя:', user);
           setData(user);
           const userTarif = user.user_tarif || '';
@@ -195,7 +196,10 @@ export function AppDev() {
             <Route path="/" element={<Layout />}>
               <Route index element={<StartPage data={data} />} />
               <Route path="quiz" element={<QuizPage userId={userId} />} />
-              <Route path="result" element={<ResultPage userId={userId} />} />
+              <Route
+                path="result"
+                element={<ResultPage userQuery={userQuery} userId={userId} />}
+              />
               <Route
                 path="dashboard"
                 element={
@@ -209,7 +213,12 @@ export function AppDev() {
               <Route
                 path="profile"
                 element={
-                  <ProfilePage data={data} userId={userId} setData={setData} />
+                  <ProfilePage
+                    data={data}
+                    userQuery={userQuery}
+                    userId={userId}
+                    setData={setData}
+                  />
                 }
               />
               <Route
@@ -218,6 +227,7 @@ export function AppDev() {
                   <ParametersPage
                     data={data}
                     userId={userId}
+                    userQuery={userQuery}
                     setData={setData}
                   />
                 }
