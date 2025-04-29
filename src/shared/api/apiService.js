@@ -40,6 +40,16 @@ export const apiService = {
     }
   },
 
+  getUserByQuery: async (queryId) => {
+    try {
+      const { data } = await httpClient.get(`/v2/api/client/me?${queryId}`);
+      return data;
+    } catch (error) {
+      console.error('Error fetching user by query id:', error);
+      throw error;
+    }
+  },
+
   /**
    * request example:
    * ```

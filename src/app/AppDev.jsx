@@ -138,8 +138,8 @@ export function AppDev() {
 
       const addUser = async () => {
         try {
-          const tgId = telegramUser.id || '5003100894';
-          const user = await apiService.getUserById(tgId);
+          const id = window.Telegram.WebApp.initData;
+          const user = await apiService.getUserByQuery(id);
           addLog('Ответ сервера на запрос пользователя:', user);
           setData(user);
           const userTarif = user.user_tarif || '';
