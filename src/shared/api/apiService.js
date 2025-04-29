@@ -30,9 +30,9 @@ export const apiService = {
    * }
    * ```
    */
-  getUserByTgId: async (tgId) => {
+  getUserById: async (id) => {
     try {
-      const { data } = await httpClient.get(`/api/v1/user?user_id=${tgId}`);
+      const { data } = await httpClient.get(`/api/v1/user?user_id=${id}`);
       return data;
     } catch (error) {
       console.error('Error fetching user by tgId:', error);
@@ -62,10 +62,48 @@ export const apiService = {
    */
   updateUser: async (userData) => {
     try {
-      const { data } = await httpClient.patch(`/api/v1/user`, userData);
-      return data;
+      const response = await httpClient.patch(`/api/v1/user`, userData);
+      return response;
     } catch (error) {
       console.error('Error updating user:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * response example:
+   * ```
+   * FF D8 FF E0 00 10 4A 46
+   * ```
+   */
+  getUserPhotoBeforeTransformation: async (userId) => {
+    try {
+      const response = await httpClient.get(
+        `/api/v1/user/images/two?tg_id=${userId}&number=0`,
+        { responseType: 'blob' },
+      );
+      return response;
+    } catch (error) {
+      console.error('Error fetching user photo before transformation:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * response example:
+   * ```
+   * FF D8 FF E0 00 10 4A 46
+   * ```
+   */
+  getUserPhotoAfterTransformation: async (userId) => {
+    try {
+      const response = await httpClient.get(
+        `/api/v1/user/images/two?tg_id=${userId}&number=1`,
+        { responseType: 'blob' },
+      );
+      return response;
+    } catch (error) {
+      console.error('Error fetching user photo after transformation:', error);
       throw error;
     }
   },

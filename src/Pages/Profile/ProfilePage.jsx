@@ -129,7 +129,7 @@ export function ProfilePage({ userId, data, setData }) {
         params: { user_tg_id: userId, level: level },
       });
       console.log('Уровень сложности успешно обновлён:', level);
-      const user = await apiService.getUserByTgId(userId);
+      const user = await apiService.getUserById(userId);
       setData(user);
     } catch (error) {
       console.error(

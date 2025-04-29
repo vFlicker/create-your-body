@@ -261,35 +261,17 @@ export function ParametersPage({ userId, data, setData }) {
 
         // Проверяем наличие фотографий
         try {
-          // Получаем фото "до"
-          const beforeResponse = await axios.get(
-            `${BASE_API_URL}/api/v1/user/images/two`,
-            {
-              params: {
-                tg_id: String(userId),
-                number: 0,
-              },
-              responseType: 'blob',
-            },
-          );
+          const photoBeforeResponse =
+            await apiService.getUserPhotoBeforeTransformation(userId);
 
-          // Получаем фото "после"
-          const afterResponse = await axios.get(
-            `${BASE_API_URL}/api/v1/user/images/two`,
-            {
-              params: {
-                tg_id: String(userId),
-                number: 1,
-              },
-              responseType: 'blob',
-            },
-          );
+          const photoAfterResponse =
+            await apiService.getUserPhotoAfterTransformation(userId);
 
           console.log('Ответ сервера для фотографий:', {
-            beforeStatus: beforeResponse.status,
-            afterStatus: afterResponse.status,
-            beforeSize: beforeResponse.data?.size,
-            afterSize: afterResponse.data?.size,
+            beforeStatus: photoBeforeResponse.status,
+            afterStatus: photoAfterResponse.status,
+            beforeSize: photoBeforeResponse.data?.size,
+            afterSize: photoAfterResponse.data?.size,
           });
 
           const processPhoto = async (response, isBefore) => {
@@ -336,8 +318,8 @@ export function ParametersPage({ userId, data, setData }) {
           };
 
           await Promise.all([
-            processPhoto(beforeResponse, true),
-            processPhoto(afterResponse, false),
+            processPhoto(photoBeforeResponse, true),
+            processPhoto(photoAfterResponse, false),
           ]);
         } catch (photoError) {
           console.log(
@@ -613,7 +595,7 @@ export function ParametersPage({ userId, data, setData }) {
 
       console.log('Данные сохранены!');
       // Обновляем данные пользователя перед переходом
-      const user = await apiService.getUserByTgId(userId);
+      const user = await apiService.getUserById(userId);
       setData(user);
       navigate('/profile');
     } catch (error) {
