@@ -41,6 +41,6 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: 22
-          source: 'build/*'
+          source: 'dist/*'
           target: '/var/www/cybapp/testfront'
           strip_components: 0

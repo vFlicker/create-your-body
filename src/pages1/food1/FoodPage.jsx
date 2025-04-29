@@ -1,5 +1,5 @@
 import './FoodPage.css';
-import '../communication/CommunicationPage.css';
+import '../communication1/CommunicationPage.css';
 
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
@@ -15,7 +15,7 @@ import FoodContainer from '../../Components/Container/FoodContainer';
 import Loader from '../../Components/Loader/Loader';
 import PdfViewer from '../../Components/PdfViewer/PdfViewer';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
-import { TelegramLinkButton } from '../communication/CommunicationPage';
+import { TelegramLinkButton } from '../communication1/CommunicationPage';
 
 export function FoodPage({ data, userId }) {
   const [isLoading, setIsLoading] = useState(true);
