@@ -13,8 +13,47 @@ import Container from '../../Components/Container/Container';
 // import Progress from '../../Components/Progress/Progress';
 import History from '../../Components/History/History';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
+import { Label } from '~/shared/ui/label';
+import { LabelLink } from '~/shared/ui/label/Label';
+
+function SubscriptionStatus({ subscriptions }) {
+  if (subscriptions.length === 1 && subscriptions[0].stream === 1) {
+    return (
+      <div className="dashLabels">
+        <Label color="green">Поток 1</Label>
+        <LabelLink
+          color="violet"
+          to="https://t.me/cybpayments_bot?start=startnewstream"
+        >
+          Перейти на 2 поток
+        </LabelLink>
+      </div>
+    );
+  }
+
+  if (subscriptions.length === 1 && subscriptions[0].stream === 2) {
+    return (
+      <div className="dashLabels">
+        <Label color="green">Поток 2</Label>
+      </div>
+    );
+  }
+
+  return (
+    <div className="dashLabels">
+      <Label color="green">Поток 1</Label>
+      <Label color="violet">Вы перешли на 2 поток</Label>
+    </div>
+  );
+}
 
 export function DashboardPage({ data, base }) {
+  useEffect(() => {
+    if (window.Telegram && window.Telegram.WebApp) {
+      window.Telegram.WebApp.setBackgroundColor('#F2F2F2');
+    }
+  }, []);
+
   const pageContainersData = [
     {
       name: 'Введение',
@@ -58,12 +97,6 @@ export function DashboardPage({ data, base }) {
     },
   ];
 
-  useEffect(() => {
-    if (window.Telegram && window.Telegram.WebApp) {
-      window.Telegram.WebApp.setBackgroundColor('#F2F2F2');
-    }
-  }, []);
-
   const formatTimeFromString = (timeStr) => {
     if (!timeStr || typeof timeStr !== 'string') return '0:00';
 
@@ -78,7 +111,10 @@ export function DashboardPage({ data, base }) {
   return (
     <div className="dashboard">
       <div className="dashTop">
-        <ProfileBtn level={data.user_level} user_photo={data.image} />
+        <div className="dashHeader">
+          <ProfileBtn level={data.user_level} user_photo={data.image} />
+          <SubscriptionStatus subscriptions={data.subscriptions} />
+        </div>
         <div className="hello">
           <h1>Привет, {data?.name || 'Неизвестный'}!</h1>
           {/* <Progress count_all={0} count_complited={0} title='Прогресс тренировок' /> */}

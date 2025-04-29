@@ -1,50 +1,61 @@
 .dashboard {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    height: 100%;
-    flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  height: 100%;
+  flex: 1;
 }
 
 .dashTop {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding: 70px 16px 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 70px 16px 0 16px;
+}
+
+.dashHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashLabels {
+  display: flex;
+  gap: 8px;
 }
 
 .hello {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .hello h1 {
-    color: #03001A;
-    font-size: 24px;
+  color: #03001A;
+  font-size: 24px;
 }
 
 .dashBot {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    border-radius: 16px 16px 0 0;
-    padding-top: 16px;
-    background: #fff;
-    flex: 1;
-    padding-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-radius: 16px 16px 0 0;
+  padding-top: 16px;
+  background: #fff;
+  flex: 1;
+  padding-bottom: 24px;
 }
 
 .history {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 16px;
 }
 
 .dashMenu {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 16px; 
-    padding: 0 16px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 0 16px;
 }

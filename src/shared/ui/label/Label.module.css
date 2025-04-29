@@ -1,0 +1,15 @@
+.label {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.green {
+  background-color: #CBFF52;
+  color: #000000;
+}
+
+.violet {
+  background-color: #A799FF;
+  color: #FFFFFF;
+}

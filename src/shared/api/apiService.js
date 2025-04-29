@@ -1,3 +1,4 @@
+import { userAdapter } from './dataAdapter';
 import { httpClient } from './httpClient';
 
 export const apiService = {
@@ -32,6 +33,7 @@ export const apiService = {
    */
   getUserById: async (id) => {
     try {
+      console.error('deprecated method');
       const { data } = await httpClient.get(`/api/v1/user?user_id=${id}`);
       return data;
     } catch (error) {
@@ -45,7 +47,8 @@ export const apiService = {
       const { data } = await httpClient.get(
         `/v2/api/client/user/me?${queryId}`,
       );
-      return data;
+      const adaptedUser = userAdapter(data.data);
+      return adaptedUser;
     } catch (error) {
       console.error('Error fetching user by query id:', error);
       throw error;

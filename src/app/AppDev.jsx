@@ -32,6 +32,9 @@ import Loader from '../Components/Loader/Loader';
 import Nav from '../Components/Nav/Nav';
 import PageTransition from '../Components/PageTransition/PageTransition';
 
+const QUERY_ID =
+  'query_id=AAHeQjUqAgAAAN5CNSphCP85&user=%7B%22id%22%3A5003100894%2C%22first_name%22%3A%22Vladyslav%22%2C%22last_name%22%3A%22Sliusar%22%2C%22username%22%3A%22vFlicker%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%2C%22photo_url%22%3A%22https%3A%5C%2F%5C%2Ft.me%5C%2Fi%5C%2Fuserpic%5C%2F320%5C%2FuDnD8SAXAvwYTy_EsnWuicjYOryNK03zY2-bxDXnzn9GogyZmGEjYaD9xuNa7Glc.svg%22%7D&auth_date=1745947388&signature=TV8dU4-l7Ft60W_HFszRKLdXGEXJ97Yk5dGWMpPWxldLELhdhLnvSEfxr-vRx1oNmrQ1iVOSTW_TdHU5l7ywCQ&hash=fe89e5ab5c52962a8f9fb1f32cbc1fffc091e3e338553f6a36f5c007c7fba02c';
+
 function Layout() {
   const location = useLocation();
   const hiddenPathsBack = ['/', '/quiz', '/result', '/dashboard'];
@@ -138,7 +141,7 @@ export function AppDev() {
 
       const addUser = async () => {
         try {
-          const id = window.Telegram.WebApp.initData;
+          const id = window.Telegram.WebApp.initData || QUERY_ID;
           const user = await apiService.getUserByQuery(id);
           addLog('Ответ сервера на запрос пользователя:', user);
           setData(user);
