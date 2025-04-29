@@ -6,9 +6,6 @@ import { AppDev } from './app';
 const root = createRoot(document.getElementById('root'));
 root.render(
   <StrictMode>
-    <div>
-      test
-      <AppDev />
-    </div>
+    <AppDev />
   </StrictMode>,
 );
