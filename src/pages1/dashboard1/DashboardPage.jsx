@@ -101,55 +101,219 @@ function SubscriptionStatus({ subscriptions }) {
   );
 }
 
-export function DashboardPage({ data, base }) {
+const getContainerData = (subscriptions) => {
+  const pageContainersData = [];
+
+  const firstSteam = subscriptions.find((sub) => sub.stream === 1);
+  const secondSteam = subscriptions.find((sub) => sub.stream === 2);
+
+  const firstSteamIsPro = firstSteam && firstSteam.plan === 'Pro';
+  const secondSteamIsPro = secondSteam && secondSteam.plan === 'Pro';
+  const firstSteamBase = firstSteam && firstSteam.plan === 'Base';
+  const secondSteamBase = secondSteam && secondSteam.plan === 'Base';
+
+  // Введение всегда открыто
+  pageContainersData.push({
+    name: 'Введение',
+    icon: health,
+    closed: null,
+    buy: false,
+    instruction: true,
+    to: 'begin',
+  });
+
+  if (firstSteamIsPro) {
+    // Всё открыто
+    pageContainersData.push(
+      {
+        name: 'Тренировки',
+        icon: muscules,
+        closed: null,
+        buy: false,
+        instruction: false,
+        to: 'train',
+      },
+      {
+        name: 'Питание',
+        icon: food,
+        closed: null,
+        buy: false,
+        instruction: false,
+        to: 'food',
+      },
+      {
+        name: 'Лекции',
+        icon: book,
+        closed: null,
+        buy: false,
+        instruction: false,
+        to: 'lectures',
+      },
+      {
+        name: 'Рецепты',
+        icon: recipes,
+        closed: null,
+        buy: false,
+        instruction: false,
+        to: 'recipes',
+      },
+    );
+  } else if (firstSteamBase && secondSteamIsPro) {
+    pageContainersData.push(
+      {
+        name: 'Тренировки',
+        icon: muscules,
+        closed: null,
+        buy: false,
+        instruction: false,
+        to: 'train',
+      },
+      {
+        name: 'Питание',
+        icon: food,
+        closed: null,
+        buy: false,
+        instruction: false,
+        to: 'food',
+      },
+      {
+        name: 'Лекции',
+        icon: book,
+        closed: '10 мая',
+        buy: false,
+        instruction: false,
+        to: 'lectures',
+      },
+      {
+        name: 'Рецепты',
+        icon: recipes,
+        closed: '10 мая',
+        buy: false,
+        instruction: false,
+        to: 'recipes',
+      },
+    );
+  } else if (secondSteamIsPro) {
+    // all open 10 may
+    pageContainersData.push(
+      {
+        name: 'Тренировки',
+        icon: muscules,
+        closed: '10 мая',
+        buy: false,
+        instruction: false,
+        to: 'train',
+      },
+      {
+        name: 'Питание',
+        icon: food,
+        closed: '10 мая',
+        buy: false,
+        instruction: false,
+        to: 'food',
+      },
+      {
+        name: 'Лекции',
+        icon: book,
+        closed: '10 мая',
+        buy: false,
+        instruction: false,
+        to: 'lectures',
+      },
+      {
+        name: 'Рецепты',
+        icon: recipes,
+        closed: '10 мая',
+        buy: false,
+        instruction: false,
+        to: 'recipes',
+      },
+    );
+  } else if (firstSteamBase) {
+    // lectures and recipes -- buy, else access
+    pageContainersData.push(
+      {
+        name: 'Тренировки',
+        icon: muscules,
+        closed: null,
+        buy: false,
+        instruction: false,
+        to: 'train',
+      },
+      {
+        name: 'Питание',
+        icon: food,
+        closed: null,
+        buy: false,
+        instruction: false,
+        to: 'food',
+      },
+      {
+        name: 'Лекции',
+        icon: book,
+        closed: '',
+        buy: true,
+        instruction: false,
+        to: 'lectures',
+      },
+      {
+        name: 'Рецепты',
+        icon: recipes,
+        closed: '',
+        buy: true,
+        instruction: false,
+        to: 'recipes',
+      },
+    );
+  } else if (secondSteamBase) {
+    // lectures and recipes -- buy, else 'open 10 may'
+    pageContainersData.push(
+      {
+        name: 'Тренировки',
+        icon: muscules,
+        closed: '10 мая',
+        buy: false,
+        instruction: false,
+        to: 'train',
+      },
+      {
+        name: 'Питание',
+        icon: food,
+        closed: '10 мая',
+        buy: false,
+        instruction: false,
+        to: 'food',
+      },
+      {
+        name: 'Лекции',
+        icon: book,
+        closed: '',
+        buy: true,
+        instruction: false,
+        to: 'lectures',
+      },
+      {
+        name: 'Рецепты',
+        icon: recipes,
+        closed: '',
+        buy: true,
+        instruction: false,
+        to: 'recipes',
+      },
+    );
+  }
+
+  return pageContainersData;
+};
+
+export function DashboardPage({ data }) {
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.setBackgroundColor('#F2F2F2');
     }
   }, []);
 
-  const pageContainersData = [
-    {
-      name: 'Введение',
-      icon: health,
-      closed: null,
-      buy: false,
-      instruction: true,
-      to: 'begin',
-    },
-    {
-      name: 'Тренировки',
-      icon: muscules,
-      closed: null,
-      buy: false,
-      instruction: false,
-      to: 'train',
-    },
-    {
-      name: 'Питание',
-      icon: food,
-      closed: null,
-      buy: false,
-      instruction: false,
-      to: 'food',
-    },
-    {
-      name: 'Лекции',
-      icon: book,
-      closed: base ? '' : null,
-      buy: base ? true : false,
-      instruction: false,
-      to: 'lectures',
-    },
-    {
-      name: 'Рецепты',
-      icon: recipes,
-      closed: base ? '' : null,
-      buy: base ? true : false,
-      instruction: false,
-      to: 'recipes',
-    },
-  ];
+  const pageContainersData = getContainerData(data.subscriptions);
 
   const formatTimeFromString = (timeStr) => {
     if (!timeStr || typeof timeStr !== 'string') return '0:00';

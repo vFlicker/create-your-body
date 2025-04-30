@@ -6,6 +6,7 @@ import lock from '~/shared/assets/svg/lock.svg';
 
 export default function Containers({ data }) {
   const navigate = useNavigate();
+
   return (
     <div
       className={`container ${data.closed !== null || data.buy ? 'disabled' : ''}`}
@@ -27,9 +28,6 @@ export default function Containers({ data }) {
           <p>Откроется {data.closed}</p>
         </div>
       )}
-      {/* {data.buy &&
-          <div className="blurContainer"></div>
-        } */}
       {data.buy && (
         <button className="containerBuy">
           <img src={lock} alt="Купить" />
