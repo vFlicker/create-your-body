@@ -17,7 +17,7 @@ const navItems = [
   { path: '/train', icon: muscles, label: 'Тренировки' },
   { path: '/food', icon: food, label: 'Питание' },
   { path: '/communication', icon: chat, label: 'Общение' },
-  { path: '/profile', icon: profile, label: 'Профиль' },
+  { path: '', icon: profile, label: 'Профиль' },
 ];
 
 export default function Nav() {

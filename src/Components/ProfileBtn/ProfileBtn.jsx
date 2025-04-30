@@ -31,7 +31,7 @@ export default function ProfileBtn({ level, user_photo }) {
     <div className="profilePlash">
       <button
         className="profileBtn"
-        onClick={() => navigate('/profile')}
+        // onClick={() => navigate('/profile')}
         style={{ borderColor: level === 'Профи' ? '#A799FF' : '' }}
       >
         {isLoading ? (
