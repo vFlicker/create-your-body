@@ -67,7 +67,7 @@ export function AppDev() {
   const [userQuery, setUserQuery] = useState('');
   const [data, setData] = useState(null);
   const [base, setBase] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [logs, setLogs] = useState([]);
 
   const addLog = useCallback((...args) => {
