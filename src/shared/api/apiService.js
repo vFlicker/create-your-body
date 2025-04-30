@@ -1,4 +1,4 @@
-import { userAdapter } from './dataAdapter';
+import { createUserAdapter, getUserAdapter } from './dataAdapter';
 import { httpClient } from './httpClient';
 
 export const apiService = {
@@ -7,7 +7,7 @@ export const apiService = {
       const { data } = await httpClient.get(
         `/v2/api/client/user/me?${queryId}`,
       );
-      const adaptedUser = userAdapter(data.data);
+      const adaptedUser = getUserAdapter(data.data);
       return adaptedUser;
     } catch (error) {
       console.error('Error fetching user by query id:', error);
@@ -15,29 +15,13 @@ export const apiService = {
     }
   },
 
-  /**
-   * request example:
-   * ```
-   * {
-   *   "tg_id": "5003100894",
-   *   "name": "Влад",
-   *   "born_date": "1997-09-26",
-   *   "sex": "male",
-   *   "user_level": "Профи",
-   *   "phone": "+79999999999"
-   * }
-   * ```
-   *
-   * response example:
-   * ```
-   * {
-   *   status: 'success'
-   * }
-   * ```
-   */
-  updateUser: async (userData) => {
+  updateUser: async (queryId, userData) => {
     try {
-      const response = await httpClient.patch(`/api/v1/user`, userData);
+      const adaptedUserData = createUserAdapter(userData);
+      const response = await httpClient.patch(
+        `/v2/api/client/user/me?${queryId}`,
+        adaptedUserData,
+      );
       return response;
     } catch (error) {
       console.error('Error updating user:', error);

@@ -61,7 +61,7 @@ const titleTransition = {
   ease: [0.43, 0.13, 0.23, 0.96],
 };
 
-export function QuizPage({ userId, data }) {
+export function QuizPage({ data, userQuery }) {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [direction, setDirection] = useState('forward');
@@ -354,7 +354,6 @@ export function QuizPage({ userId, data }) {
       const sendData = async () => {
         try {
           const userData = {
-            tg_id: String(userId),
             name: name || '',
             born_date: formattedBirthday,
             sex: gen === 'm' ? 'male' : 'female',
@@ -365,7 +364,6 @@ export function QuizPage({ userId, data }) {
           console.log('Отправляемые данные:', userData);
 
           const requiredFields = [
-            'tg_id',
             'name',
             'born_date',
             'sex',
@@ -379,8 +377,8 @@ export function QuizPage({ userId, data }) {
             throw new Error(`Некорректные поля: ${invalidFields.join(', ')}`);
           }
 
-          const status = await apiService.updateUser(userData);
-          console.log('Данные успешно обновлены:', status);
+          await apiService.updateUser(userQuery, userData);
+          console.log('Данные успешно обновлены');
           navigate('/result');
         } catch (error) {
           console.error(

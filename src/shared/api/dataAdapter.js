@@ -34,7 +34,7 @@
 //   },
 // };
 
-export const userAdapter = (user) => ({
+export const getUserAdapter = (user) => ({
   born_date: user.bornDate ? user.bornDate.split('T')[0] : null,
   check: true,
   email: user.email || null,
@@ -48,13 +48,33 @@ export const userAdapter = (user) => ({
   last_video_link: null,
   last_video_time: null,
   name: user.name,
-  order_created_at: user.subscriptions && user.subscriptions[0] ? user.subscriptions[0].startedAt : null,
-  order_ended_at: user.subscriptions && user.subscriptions[0] ? user.subscriptions[0].expiresAt : null,
-  order_id: user.subscriptions && user.subscriptions[0] ? user.subscriptions[0].orderId : null,
+  order_created_at:
+    user.subscriptions && user.subscriptions[0]
+      ? user.subscriptions[0].startedAt
+      : null,
+  order_ended_at:
+    user.subscriptions && user.subscriptions[0]
+      ? user.subscriptions[0].expiresAt
+      : null,
+  order_id:
+    user.subscriptions && user.subscriptions[0]
+      ? user.subscriptions[0].orderId
+      : null,
   phone: user.phone,
   sex: user.sex,
   tg_id: user.tgId ? String(user.tgId) : null,
   user_level: user.level,
-  user_tarif: user.subscriptions && user.subscriptions[0] ? `Тариф ${user.subscriptions[0].plan}` : null,
+  user_tarif:
+    user.subscriptions && user.subscriptions[0]
+      ? `Тариф ${user.subscriptions[0].plan}`
+      : null,
   subscriptions: user.subscriptions,
+});
+
+export const createUserAdapter = (user) => ({
+  name: user.name,
+  bornDate: new Date(user.born_date).toISOString(),
+  sex: user.sex,
+  level: user.user_level,
+  phone: user.phone,
 });
