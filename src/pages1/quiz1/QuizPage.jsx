@@ -62,6 +62,8 @@ const titleTransition = {
 };
 
 export function QuizPage({ data, userQuery }) {
+  console.log({ userQuery });
+
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [direction, setDirection] = useState('forward');

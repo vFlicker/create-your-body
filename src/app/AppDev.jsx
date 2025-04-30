@@ -104,6 +104,8 @@ export function AppDev() {
 
       const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
       const currentUserQuery = window.Telegram.WebApp.initData;
+      console.log({ telegram: window.Telegram });
+
       setUserId(telegramUser.id);
       setUserQuery(currentUserQuery);
       addLog('Telegram User ID:', telegramUser.id);
@@ -195,7 +197,10 @@ export function AppDev() {
           {hasAccess ? (
             <Route path="/" element={<Layout />}>
               <Route index element={<StartPage data={data} />} />
-              <Route path="quiz" element={<QuizPage userId={userId} />} />
+              <Route
+                path="quiz"
+                element={<QuizPage userQuery={userQuery} data={data} />}
+              />
               <Route
                 path="result"
                 element={<ResultPage userQuery={userQuery} userId={userId} />}
