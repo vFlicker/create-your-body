@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+
 import classes from './Label.module.css';
 
 const colorClass = {
