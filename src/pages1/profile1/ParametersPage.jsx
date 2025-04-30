@@ -490,8 +490,7 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
       const [day, month, year] = birthday.split('.');
       const formattedBirthday = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 
-      await axios.patch(`${BASE_API_URL}/api/v1/user/info`, {
-        tg_id: String(userId),
+      await apiService.updateUser(userQuery, {
         sex: gen === 'm' ? 'male' : 'female',
         born_date: formattedBirthday,
       });
