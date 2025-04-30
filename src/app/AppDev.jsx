@@ -189,7 +189,7 @@ export function AppDev() {
   }, [data, hasAccess, addLog]);
 
   return (
-    <BrowserRouter basename="/testerapp">
+    <BrowserRouter>
       {isLoading ? (
         <Loader height="100vh" />
       ) : (
