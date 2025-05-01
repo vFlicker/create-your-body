@@ -42,12 +42,18 @@ export const TelegramLinkButton = ({
   );
 };
 
-export function CommunicationPage({ data, base }) {
+export function CommunicationPage({ data }) {
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.setBackgroundColor('#F2F2F2');
     }
   }, []);
+
+  const firstSteam = data.subscriptions.find((sub) => sub.stream === 1);
+  const secondSteam = data.subscriptions.find((sub) => sub.stream === 2);
+
+  const firstSteamIsPro = firstSteam && firstSteam.plan === 'Pro';
+  const secondSteamIsPro = secondSteam && secondSteam.plan === 'Pro';
 
   return (
     <div className="comPage">
@@ -63,16 +69,30 @@ export function CommunicationPage({ data, base }) {
           Присоединяйся к нашему сообществу и задавай вопросы. Мы здесь, чтобы
           помочь тебе 💜
         </p>
-        {!base && (
+        {firstSteamIsPro && (
           <div className="hiteTgBtn">
             <TelegramLinkButton
               username={'+2Y3vGikRzyc2ZWQy'}
-              buttonText="Чат в Telegram"
+              buttonText="Чат в Telegram 1 поток"
               icon={chat}
             />
             <TelegramLinkButton
               username={'+WPfyWZoeWik5ODcy'}
-              buttonText="Инфо канал"
+              buttonText="Инфо канал 1 поток"
+              icon={channel}
+            />
+          </div>
+        )}
+        {secondSteamIsPro && (
+          <div className="hiteTgBtn">
+            <TelegramLinkButton
+              username={'+4IrED7hVDX9jMTAy'}
+              buttonText="Чат в Telegram 2 поток"
+              icon={chat}
+            />
+            <TelegramLinkButton
+              username={'+g6mGqc6fOUNjNDdi'}
+              buttonText="Инфо канал 2 поток"
               icon={channel}
             />
           </div>

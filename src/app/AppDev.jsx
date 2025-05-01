@@ -243,9 +243,7 @@ export function AppDev() {
               />
               <Route
                 path="communication"
-                element={
-                  <CommunicationPage data={data} userId={userId} base={base} />
-                }
+                element={<CommunicationPage data={data} />}
               />
               <Route
                 path="train"
