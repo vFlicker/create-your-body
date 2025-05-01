@@ -11,21 +11,28 @@ import muscles from '~/shared/assets/nav/musclesBlack.svg';
 import profile from '~/shared/assets/nav/user.svg';
 import lock from '~/shared/assets/svg/lock.svg';
 
-// Массив с данными для навигации
-const navItems = [
-  { path: '/dashboard', icon: dashboard, label: 'Меню' },
-  { path: '/train', icon: muscles, label: 'Тренировки' },
-  { path: '/food', icon: food, label: 'Питание' },
-  { path: '/communication', icon: chat, label: 'Общение' },
-  { path: '', icon: profile, label: 'Профиль' },
-];
-
-export default function Nav() {
+export default function Nav({ data }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [pressedPath, setPressedPath] = useState(null);
   const [prevPath, setPrevPath] = useState(null);
   const [_hasHandleBack, setHasHandleBack] = useState(false);
+
+  const firstSteam = data.subscriptions.find((sub) => sub.stream === 1);
+  const isBlockFoodAndStrain = !firstSteam;
+
+  // Массив с данными для навигации
+  const navItems = [
+    { path: '/dashboard', icon: dashboard, label: 'Меню' },
+    {
+      path: isBlockFoodAndStrain ? '' : '/train',
+      icon: muscles,
+      label: 'Тренировки',
+    },
+    { path: isBlockFoodAndStrain ? '' : '/food', icon: food, label: 'Питание' },
+    { path: '/communication', icon: chat, label: 'Общение' },
+    { path: '', icon: profile, label: 'Профиль' },
+  ];
 
   // Сохраняем предыдущий путь при изменении location
   useEffect(() => {
