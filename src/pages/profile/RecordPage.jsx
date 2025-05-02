@@ -1,10 +1,9 @@
 import './profile.css';
 
-import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { BASE_API_URL } from '~/shared/api';
+import { apiService } from '~/shared/api';
 
 // import Selecter from '../../Components/Selecter/Selecter';
 // import ButtonEdit from '../../Components/Button/ButtonEdit';
@@ -66,7 +65,7 @@ export function RecordPage({ userId, data }) {
 
   const handleSubmit = async () => {
     try {
-      await axios.post(`${BASE_API_URL}/api/v1/user/parametrs`, {
+      const userBodyParameters = {
         tg_id: String(userId),
         chest: parseInt(formData.chest, 10) || 0,
         waist: parseInt(formData.waist, 10) || 0,
@@ -75,7 +74,9 @@ export function RecordPage({ userId, data }) {
         legs: parseInt(formData.legs, 10) || 0,
         hips: parseInt(formData.hips, 10) || 0,
         weight: parseInt(formData.weight, 10) || 0,
-      });
+      };
+
+      await apiService.createUserBodyParameters(userBodyParameters);
 
       console.log('Данные сохранены', formData);
       navigate('/profile');

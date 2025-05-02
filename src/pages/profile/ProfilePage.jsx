@@ -58,12 +58,7 @@ export function ProfilePage({ userId, userQuery, data, setData }) {
     const fetchUserData = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get(
-          `${BASE_API_URL}/api/v1/user/parametrs`,
-          {
-            params: { user_tg_id: userId },
-          },
-        );
+        const response = await apiService.getUserParameters(userId);
         const parameters = Array.isArray(response.data)
           ? response.data
           : [response.data];

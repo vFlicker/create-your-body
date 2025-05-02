@@ -235,12 +235,8 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
     const fetchData = async () => {
       try {
         // Получаем параметры
-        const parametersResponse = await axios.get(
-          `${BASE_API_URL}/api/v1/user/parametrs`,
-          {
-            params: { user_tg_id: userId },
-          },
-        );
+        const parametersResponse = await apiService.getUserParameters(userId);
+
         const parameters = Array.isArray(parametersResponse.data)
           ? parametersResponse.data
           : [parametersResponse.data];
@@ -507,15 +503,9 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
       };
 
       if (hasParameters) {
-        await axios.patch(
-          `${BASE_API_URL}/api/v1/user/parametrs`,
-          parametersData,
-        );
+        await apiService.updateUserBodyParameters(parametersData);
       } else {
-        await axios.post(
-          `${BASE_API_URL}/api/v1/user/parametrs`,
-          parametersData,
-        );
+        await apiService.createUserBodyParameters(parametersData);
       }
 
       // Загрузка фотографий
