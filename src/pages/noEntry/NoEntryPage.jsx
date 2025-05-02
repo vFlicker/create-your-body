@@ -1,5 +1,5 @@
 import './NoEntryPage.css';
-import '../food1/FoodPage.css';
+import '../food/FoodPage.css';
 
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -10,7 +10,7 @@ import help from '~/shared/assets/svg/help.svg';
 import muscules from '~/shared/assets/svg/muscles.svg';
 
 import Button from '../../Components/Button/Button';
-import { TelegramLinkButton } from '../communication1/CommunicationPage';
+import { TelegramLinkButton } from '../communication/CommunicationPage';
 
 export function NoEntryPage({ logs, addLog }) {
   const [errorsContainer, setErrorsContainer] = useState(false);
