@@ -1,10 +1,9 @@
 import './profile.css';
 
-import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { apiService, BASE_API_URL } from '~/shared/api';
+import { apiService } from '~/shared/api';
 import example from '~/shared/assets/img/example.jpeg';
 import add from '~/shared/assets/svg/addImg.svg';
 import close from '~/shared/assets/svg/closeWhite.svg';

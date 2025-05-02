@@ -71,10 +71,10 @@ export const getUserAdapter = (user) => ({
   subscriptions: user.subscriptions,
 });
 
-export const createUserAdapter = (user) => ({
-  name: user.name,
-  bornDate: new Date(user.born_date).toISOString(),
-  sex: user.sex,
-  level: user.user_level,
-  phone: user.phone,
+export const updateUserAdapter = (user) => ({
+  name: user?.name,
+  bornDate: user.born_date ? new Date(user.born_date).toISOString() : undefined,
+  sex: user?.sex,
+  level: user?.user_level,
+  phone: user?.phone,
 });

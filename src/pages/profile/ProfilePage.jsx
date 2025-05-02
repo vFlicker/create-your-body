@@ -1,11 +1,10 @@
 import './profile.css';
 
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 
-import { apiService, BASE_API_URL } from '~/shared/api';
+import { apiService } from '~/shared/api';
 import zamer from '~/shared/assets/img/zamer.jpeg';
 import chart from '~/shared/assets/svg/chart.svg';
 import close from '~/shared/assets/svg/close.svg';
@@ -120,9 +119,7 @@ export function ProfilePage({ userId, userQuery, data, setData }) {
     setActiveIndex(index);
     const level = index === 0 ? 'Новичок' : 'Профи';
     try {
-      await axios.patch(`${BASE_API_URL}/api/v1/user/level`, null, {
-        params: { user_tg_id: userId, level: level },
-      });
+      await apiService.updateUser(userQuery, { user_level: level });
       console.log('Уровень сложности успешно обновлён:', level);
       const user = await apiService.getUserByQuery(userQuery);
       setData(user);

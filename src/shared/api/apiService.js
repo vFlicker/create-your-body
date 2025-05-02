@@ -1,4 +1,4 @@
-import { createUserAdapter, getUserAdapter } from './dataAdapter';
+import { getUserAdapter, updateUserAdapter } from './dataAdapter';
 import { httpClient } from './httpClient';
 
 export const apiService = {
@@ -17,7 +17,7 @@ export const apiService = {
 
   updateUser: async (queryId, userData) => {
     try {
-      const adaptedUserData = createUserAdapter(userData);
+      const adaptedUserData = updateUserAdapter(userData);
       const response = await httpClient.patch(
         `/v2/api/client/user/me?${queryId}`,
         adaptedUserData,
