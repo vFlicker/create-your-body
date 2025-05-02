@@ -33,9 +33,9 @@ import Nav from '../Components/Nav/Nav';
 import PageTransition from '../Components/PageTransition/PageTransition';
 
 const QUERY_ID =
-  'query_id=AAHeQjUqAgAAAN5CNSphCP85&user=%7B%22id%22%3A5003100894%2C%22first_name%22%3A%22Vladyslav%22%2C%22last_name%22%3A%22Sliusar%22%2C%22username%22%3A%22vFlicker%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%2C%22photo_url%22%3A%22https%3A%5C%2F%5C%2Ft.me%5C%2Fi%5C%2Fuserpic%5C%2F320%5C%2FuDnD8SAXAvwYTy_EsnWuicjYOryNK03zY2-bxDXnzn9GogyZmGEjYaD9xuNa7Glc.svg%22%7D&auth_date=1745947388&signature=TV8dU4-l7Ft60W_HFszRKLdXGEXJ97Yk5dGWMpPWxldLELhdhLnvSEfxr-vRx1oNmrQ1iVOSTW_TdHU5l7ywCQ&hash=fe89e5ab5c52962a8f9fb1f32cbc1fffc091e3e338553f6a36f5c007c7fba02c';
+  'query_id=AAHeQjUqAgAAAN5CNSphXg-_&user=%7B%22id%22%3A5003100894%2C%22first_name%22%3A%22Vladyslav%22%2C%22last_name%22%3A%22Sliusar%22%2C%22username%22%3A%22vFlicker%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%2C%22photo_url%22%3A%22https%3A%5C%2F%5C%2Ft.me%5C%2Fi%5C%2Fuserpic%5C%2F320%5C%2FuDnD8SAXAvwYTy_EsnWuicjYOryNK03zY2-bxDXnzn9GogyZmGEjYaD9xuNa7Glc.svg%22%7D&auth_date=1746115559&signature=ntEo5NStvuDC5iFb5eL7h0PToBCPu4wDPPT3SdmZMLmqG-UpGS7n98k4rE0B0D6hqvgS9kucLOcU85wfymuvBw&hash=372c96f818d87bff896af566daa37b9115d3bf90d8da1d93c49281284448b4d6';
 
-function Layout() {
+function Layout({ data }) {
   const location = useLocation();
   const hiddenPathsBack = ['/', '/quiz', '/result', '/dashboard'];
   const showControlsBack = !hiddenPathsBack.includes(location.pathname);
@@ -56,7 +56,7 @@ function Layout() {
             </PageTransition>
           </AnimatePresence>
         </div>
-        {showControlsNav && <Nav />}
+        {showControlsNav && <Nav data={data} />}
       </div>
     </>
   );
@@ -195,7 +195,7 @@ export function AppDev() {
       ) : (
         <Routes>
           {hasAccess ? (
-            <Route path="/" element={<Layout />}>
+            <Route path="/" element={<Layout data={data} />}>
               <Route index element={<StartPage data={data} />} />
               <Route
                 path="quiz"
@@ -243,9 +243,7 @@ export function AppDev() {
               />
               <Route
                 path="communication"
-                element={
-                  <CommunicationPage data={data} userId={userId} base={base} />
-                }
+                element={<CommunicationPage data={data} />}
               />
               <Route
                 path="train"
