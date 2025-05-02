@@ -262,10 +262,10 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
         // Проверяем наличие фотографий
         try {
           const photoBeforeResponse =
-            await apiService.getUserPhotoBeforeTransformation(userId);
+            await apiService.getUserTransformationPhoto(userId, 'before');
 
           const photoAfterResponse =
-            await apiService.getUserPhotoAfterTransformation(userId);
+            await apiService.getUserTransformationPhoto(userId, 'after');
 
           console.log('Ответ сервера для фотографий:', {
             beforeStatus: photoBeforeResponse.status,
@@ -519,80 +519,22 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
       }
 
       // Загрузка фотографий
-      if (
-        formData.photoBefore instanceof File ||
-        formData.photoAfter instanceof File
-      ) {
-        if (formData.photoBefore instanceof File) {
-          const formDataBefore = new FormData();
-          formDataBefore.append('image', formData.photoBefore);
+      if (formData.photoBefore instanceof File) {
+        const formDataPost = new FormData();
+        formDataPost.append('tg_id', String(userId));
+        formDataPost.append('image_before', formData.photoBefore);
+        await apiService.updateUserTransformationPhoto(formDataPost);
+      }
 
-          if (hasPhotos) {
-            await axios.patch(
-              `${BASE_API_URL}/api/v1/user/images/two`,
-              formDataBefore,
-              {
-                params: {
-                  tg_id: String(userId),
-                  number: 0,
-                },
-                headers: {
-                  'Content-Type': 'multipart/form-data',
-                },
-              },
-            );
-          } else {
-            const formDataPost = new FormData();
-            formDataPost.append('tg_id', String(userId));
-            formDataPost.append('image_before', formData.photoBefore);
-            await axios.post(
-              `${BASE_API_URL}/api/v1/user/images/two`,
-              formDataPost,
-              {
-                headers: {
-                  'Content-Type': 'multipart/form-data',
-                },
-              },
-            );
-          }
-        }
-
-        if (formData.photoAfter instanceof File) {
-          const formDataAfter = new FormData();
-          formDataAfter.append('image', formData.photoAfter);
-
-          if (hasPhotos) {
-            await axios.patch(
-              `${BASE_API_URL}/api/v1/user/images/two`,
-              formDataAfter,
-              {
-                params: {
-                  tg_id: String(userId),
-                  number: 1,
-                },
-                headers: {
-                  'Content-Type': 'multipart/form-data',
-                },
-              },
-            );
-          } else {
-            const formDataPost = new FormData();
-            formDataPost.append('tg_id', String(userId));
-            formDataPost.append('image_after', formData.photoAfter);
-            await axios.post(
-              `${BASE_API_URL}/api/v1/user/images/two`,
-              formDataPost,
-              {
-                headers: {
-                  'Content-Type': 'multipart/form-data',
-                },
-              },
-            );
-          }
-        }
+      if (formData.photoAfter instanceof File) {
+        const formDataPost = new FormData();
+        formDataPost.append('tg_id', String(userId));
+        formDataPost.append('image_after', formData.photoAfter);
+        await apiService.updateUserTransformationPhoto(formDataPost);
       }
 
       console.log('Данные сохранены!');
+
       // Обновляем данные пользователя перед переходом
       const user = await apiService.getUserByQuery(userQuery);
       setData(user);

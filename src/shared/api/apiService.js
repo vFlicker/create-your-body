@@ -34,11 +34,15 @@ export const apiService = {
    * ```
    * FF D8 FF E0 00 10 4A 46
    * ```
+   *
+   * @param {'after' | 'before'} stage
    */
-  getUserPhotoBeforeTransformation: async (userId) => {
+  getUserTransformationPhoto: async (userId, stage) => {
+    const number = { before: 0, after: 1 };
+
     try {
       const response = await httpClient.get(
-        `/api/v1/user/images/two?tg_id=${userId}&number=0`,
+        `/api/v1/user/images/two?tg_id=${userId}&number=${number[stage]}`,
         { responseType: 'blob' },
       );
       return response;
@@ -49,20 +53,35 @@ export const apiService = {
   },
 
   /**
+   * request example:
+   * ```
+   * FormData
+   *   image: (binary)
+   *   tg_id: 5003100894
+   *   image_before: (binary)
+   * ```
+   *
    * response example:
    * ```
-   * FF D8 FF E0 00 10 4A 46
-   * ```
+   * {
+   *   "status": "success",
+   *   "message": "Image posted"
+   * }
    */
-  getUserPhotoAfterTransformation: async (userId) => {
+  updateUserTransformationPhoto: async (formData) => {
     try {
-      const response = await httpClient.get(
-        `/api/v1/user/images/two?tg_id=${userId}&number=1`,
-        { responseType: 'blob' },
+      const response = await httpClient.post(
+        `/api/v1/user/images/two`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
       );
       return response;
     } catch (error) {
-      console.error('Error fetching user photo after transformation:', error);
+      console.error('Error updating user photo before transformation:', error);
       throw error;
     }
   },

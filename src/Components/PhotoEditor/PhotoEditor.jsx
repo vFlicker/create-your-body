@@ -1,7 +1,6 @@
-import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 
-import { BASE_API_URL } from '~/shared/api';
+import { apiService } from '~/shared/api';
 import edit from '~/shared/assets/svg/editSmall.svg';
 import photoNone from '~/shared/assets/svg/photoNone.svg';
 
@@ -18,34 +17,10 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
     const fetchPhoto = async () => {
       setIsLoading(true);
       try {
-        // console.log('Отправка запроса на получение фото:', {
-        //   url: `${BASE_API_URL}/api/v1/user/images/two`,
-        //   userId,
-        //   number,
-        //   requestParams: {
-        //   tg_id: String(userId),
-        //   number: number
-        //   }
-        // });
-
-        const response = await axios.get(
-          `${BASE_API_URL}/api/v1/user/images/two`,
-          {
-            params: {
-              tg_id: String(userId),
-              number: number,
-            },
-            responseType: 'blob',
-          },
-        );
-
-        // console.log('Ответ сервера:', {
-        //   status: response.status,
-        //   headers: response.headers,
-        //   dataType: typeof response.data,
-        //   dataSize: response.data?.size,
-        //   data: response.data
-        // });
+        const response =
+          number === 0
+            ? await apiService.getUserTransformationPhoto(userId, 'before')
+            : await apiService.getUserTransformationPhoto(userId, 'after');
 
         if (response.data && response.data.size > 100) {
           try {
@@ -126,35 +101,17 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
 
       try {
         setIsUploading(true);
-        if (photo) {
-          console.log('Отправка PATCH запроса для обновления фото');
-          await axios.patch(
-            `${BASE_API_URL}/api/v1/user/images/two`,
-            formData,
-            {
-              params: {
-                tg_id: String(userId),
-                number: number,
-              },
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-            },
-          );
+
+        console.log('Отправка POST запроса для обновления фото');
+
+        formData.append('tg_id', String(userId));
+        if (number === 0) {
+          formData.append('image_before', file);
         } else {
-          console.log('Отправка POST запроса для создания нового фото');
-          formData.append('tg_id', String(userId));
-          if (number === 0) {
-            formData.append('image_before', file);
-          } else {
-            formData.append('image_after', file);
-          }
-          await axios.post(`${BASE_API_URL}/api/v1/user/images/two`, formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          });
+          formData.append('image_after', file);
         }
+
+        await apiService.updateUserTransformationPhoto(formData);
 
         setPhoto(URL.createObjectURL(file));
         console.log(`${label} успешно обновлено!`);
