@@ -9,5 +9,5 @@ export default defineConfig({
       '~': '/src',
     },
   },
-  base: '/testerapp/',
+  base: '/testapp/',
 });

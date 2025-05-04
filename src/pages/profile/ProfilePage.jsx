@@ -57,10 +57,7 @@ export function ProfilePage({ userId, userQuery, data, setData }) {
     const fetchUserData = async () => {
       try {
         setIsLoading(true);
-        const response = await apiService.getUserParameters(userId);
-        const parameters = Array.isArray(response.data)
-          ? response.data
-          : [response.data];
+        const parameters = await apiService.getUserParameters(userQuery);
 
         // Сортируем по дате создания
         const sortedParameters = parameters.sort(

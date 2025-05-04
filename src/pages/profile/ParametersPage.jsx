@@ -205,6 +205,7 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
     photoBefore: null,
     photoAfter: null,
   });
+  const [latestParameters, setLatestParameters] = useState(null);
   const [gen, setGen] = useState(data?.sex === 'male' ? 'm' : 'w');
   const [birthday, setBirthday] = useState(
     data?.born_date
@@ -233,14 +234,12 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
 
     const fetchData = async () => {
       try {
-        // Получаем параметры
-        const parametersResponse = await apiService.getUserParameters(userId);
+        const parameters = await apiService.getUserParameters(userQuery);
+        const latestParameters = parameters.sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at),
+        )[0];
 
-        const parameters = Array.isArray(parametersResponse.data)
-          ? parametersResponse.data
-          : [parametersResponse.data];
-        const latestParameters = parameters[parameters.length - 1];
-        console.log(latestParameters);
+        console.log({ latestParameters });
 
         if (latestParameters) {
           setHasParameters(true);
@@ -252,6 +251,7 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
             leg: latestParameters.legs || '',
             weight: latestParameters.weight || '',
           });
+          setLatestParameters(latestParameters);
         }
 
         // Проверяем наличие фотографий
@@ -502,9 +502,13 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
       };
 
       if (hasParameters) {
-        await apiService.updateUserBodyParameters(parametersData);
+        await apiService.updateUserBodyParameters(
+          userQuery,
+          latestParameters.id,
+          parametersData,
+        );
       } else {
-        await apiService.createUserBodyParameters(parametersData);
+        await apiService.addUserBodyParameters(userQuery, parametersData);
       }
 
       // Загрузка фотографий

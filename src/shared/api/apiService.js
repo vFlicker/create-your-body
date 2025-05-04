@@ -1,11 +1,17 @@
-import { getUserAdapter, updateUserAdapter } from './dataAdapter';
+import {
+  addUserParametersAdapter,
+  getUserAdapter,
+  getUserParametersAdapter,
+  updateUserAdapter,
+  updateUserParametersAdapter,
+} from './dataAdapter';
 import { httpClient } from './httpClient';
 
 export const apiService = {
-  getUserByQuery: async (queryId) => {
+  getUserByQuery: async (userQuery) => {
     try {
       const { data } = await httpClient.get(
-        `/v2/api/client/user/me?${queryId}`,
+        `/v2/api/client/user/me?${userQuery}`,
       );
       const adaptedUser = getUserAdapter(data.data);
       return adaptedUser;
@@ -15,11 +21,11 @@ export const apiService = {
     }
   },
 
-  updateUser: async (queryId, userData) => {
+  updateUser: async (userQuery, userData) => {
     try {
       const adaptedUserData = updateUserAdapter(userData);
       const response = await httpClient.patch(
-        `/v2/api/client/user/me?${queryId}`,
+        `/v2/api/client/user/me?${userQuery}`,
         adaptedUserData,
       );
       return response;
@@ -86,102 +92,42 @@ export const apiService = {
     }
   },
 
-  /**
-   * response example:
-   * ```
-   * [
-   *   {
-   *     "tg_id": "5003100894",
-   *     "waist": 60,
-   *     "legs": 60,
-   *     "weight": 60,
-   *     "chest": 65,
-   *     "abdominal_circumference": 60,
-   *     "id": 352,
-   *     "hips": 60,
-   *     "created_at": "2025-05-02T17:53:07.216761"
-   *   },
-   *   {
-   *     "tg_id": "5003100894",
-   *     "waist": 70,
-   *     "legs": 70,
-   *     "weight": 70,
-   *     "chest": 70,
-   *     "abdominal_circumference": 70,
-   *     "id": 353,
-   *     "hips": 70,
-   *     "created_at": "2025-05-02T17:57:55.899665"
-   *   }
-   * ]
-   * ```
-   */
-  getUserParameters: async (userId) => {
+  addUserBodyParameters: async (userQuery, parameters) => {
     try {
-      const response = await httpClient.get(
-        `/api/v1/user/parametrs?user_tg_id=${userId}`,
+      const adaptedParameters = addUserParametersAdapter(parameters);
+      const response = await httpClient.post(
+        `/v2/api/client/user/measurements?${userQuery}`,
+        adaptedParameters,
       );
       return response;
+    } catch (error) {
+      console.error('Error updating user parameters:', error);
+      throw error;
+    }
+  },
+
+  getUserParameters: async (userQuery) => {
+    try {
+      const response = await httpClient.get(
+        `/v2/api/client/user/measurements?${userQuery}`,
+      );
+      const adaptedUserParameters = getUserParametersAdapter(
+        response.data.data.measurements,
+      );
+      return adaptedUserParameters;
     } catch (error) {
       console.error('Error fetching user parameters:', error);
       throw error;
     }
   },
 
-  /**
-   * request example:
-   * ```
-   * {
-   *   "tg_id": "5003100894",
-   *   "chest": 60,
-   *   "waist": 60,
-   *   "abdominal_circumference": 60,
-   *   "legs": 60,
-   *   "hips": 60,
-   *   "weight": 60
-   * }
-   * ```
-   *
-   * response example:
-   * ```
-   * {
-   *   "message": "success"
-   * }
-   * ```
-   */
-  createUserBodyParameters: async (params) => {
+  updateUserBodyParameters: async (userQuery, id, parameters) => {
     try {
-      const response = await httpClient.post(`/api/v1/user/parametrs`, params);
-      return response;
-    } catch (error) {
-      console.error('Error creating user parameters:', error);
-      throw error;
-    }
-  },
-
-  /**
-   * request example:
-   * ```
-   * {
-   *   "tg_id": "5003100894",
-   *   "chest": 60,
-   *   "waist": 60,
-   *   "abdominal_circumference": 60,
-   *   "legs": 60,
-   *   "hips": 60,
-   *   "weight": 60
-   * }
-   * ```
-   *
-   * response example:
-   * ```
-   * {
-   *   "message": "success"
-   * }
-   * ```
-   */
-  updateUserBodyParameters: async (params) => {
-    try {
-      const response = await httpClient.patch(`/api/v1/user/parametrs`, params);
+      const adaptedParameters = updateUserParametersAdapter(parameters);
+      const response = await httpClient.put(
+        `/v2/api/client/user/measurements/${id}?${userQuery}`,
+        adaptedParameters,
+      );
       return response;
     } catch (error) {
       console.error('Error updating user parameters:', error);

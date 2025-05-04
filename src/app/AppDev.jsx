@@ -190,7 +190,7 @@ export function AppDev() {
   }, [data, hasAccess, addLog]);
 
   return (
-    <BrowserRouter basename="/testerapp">
+    <BrowserRouter basename="/testapp">
       {isLoading ? (
         <Loader height="100vh" />
       ) : (
@@ -240,7 +240,13 @@ export function AppDev() {
               />
               <Route
                 path={AppRoute.RECORD}
-                element={<RecordPage data={data} userId={userId} />}
+                element={
+                  <RecordPage
+                    data={data}
+                    userQuery={userQuery}
+                    userId={userId}
+                  />
+                }
               />
               <Route
                 path={AppRoute.COMMUNICATION}

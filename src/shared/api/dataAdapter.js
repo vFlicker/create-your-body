@@ -1,39 +1,3 @@
-// const oldData = {
-//   success: true,
-//   message: 'Информация о пользователе получена',
-//   data: {
-//     id: 1423,
-//     email: 'noemail_3072@example.com',
-//     name: 'Влад',
-//     phone: '+799174367788',
-//     bornDate: '1997-09-26T00:00:00.000Z',
-//     sex: 'male',
-//     createdAt: '2025-03-29T14:31:42.223Z',
-//     level: 'Профи',
-//     tgId: 5003100894,
-//     getcourseId: null,
-//     paymentBotId: null,
-//     userpic:
-//       'https://t.me/i/userpic/320/uDnD8SAXAvwYTy_EsnWuicjYOryNK03zY2-bxDXnzn9GogyZmGEjYaD9xuNa7Glc.svg',
-//     debugMode: false,
-//     role: 'student',
-//     subscriptions: [
-//       {
-//         id: 1020,
-//         userId: 1423,
-//         plan: 'Pro',
-//         startedAt: '2025-04-30T07:00:00.000Z',
-//         expiresAt: '2025-06-09T20:59:00.000Z',
-//         orderNumber: null,
-//         orderId: 'wua7ubt2THHHYYMepBa0purpl',
-//         status: 'active',
-//         stream: 1,
-//         createdAt: '2025-04-30T07:00:00.000Z',
-//       },
-//     ],
-//   },
-// };
-
 export const getUserAdapter = (user) => ({
   born_date: user.bornDate ? user.bornDate.split('T')[0] : null,
   check: true,
@@ -77,4 +41,40 @@ export const updateUserAdapter = (user) => ({
   sex: user?.sex,
   level: user?.user_level,
   phone: user?.phone,
+});
+
+export const getUserParametersAdapter = (parameters) => {
+  return parameters.map((item) => {
+    console.log({ item });
+
+    return {
+      abdominal_circumference: item.abdominalCircumference,
+      chest: item.chest,
+      created_at: item.createdAt,
+      hips: item.hips,
+      id: item.id,
+      legs: item.legs,
+      tg_id: item.userId,
+      waist: item.waist,
+      weight: item.weight,
+    };
+  });
+};
+
+export const addUserParametersAdapter = (parameters) => ({
+  waist: parameters.waist,
+  legs: parameters.legs,
+  weight: parameters.weight,
+  chest: parameters.chest,
+  abdominalCircumference: parameters.abdominal_circumference,
+  hips: parameters.hips,
+});
+
+export const updateUserParametersAdapter = (parameters) => ({
+  waist: parameters.waist,
+  legs: parameters.legs,
+  weight: parameters.weight,
+  chest: parameters.chest,
+  abdominalCircumference: parameters.abdominal_circumference,
+  hips: parameters.hips,
 });

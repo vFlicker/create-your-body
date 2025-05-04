@@ -32,7 +32,7 @@ const InputPair = ({ labels, values, onChange, handleBlur, handleFocus }) => (
   </div>
 );
 
-export function RecordPage({ userId, data }) {
+export function RecordPage({ userQuery, userId, data }) {
   const [isMobile, setIsMobile] = useState(false);
   const formRef = useRef(null);
   const navigate = useNavigate();
@@ -76,7 +76,7 @@ export function RecordPage({ userId, data }) {
         weight: parseInt(formData.weight, 10) || 0,
       };
 
-      await apiService.createUserBodyParameters(userBodyParameters);
+      await apiService.addUserBodyParameters(userQuery, userBodyParameters);
 
       console.log('Данные сохранены', formData);
       navigate('/profile');
