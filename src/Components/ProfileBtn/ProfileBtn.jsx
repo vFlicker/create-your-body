@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import avatar from '~/shared/assets/nav/user.svg';
+import { AppRoute } from '~/shared/router';
 
 import Loader from '../Loader/Loader';
 
@@ -31,7 +32,7 @@ export default function ProfileBtn({ level, user_photo }) {
     <div className="profilePlash">
       <button
         className="profileBtn"
-        // onClick={() => navigate('/profile')}
+        onClick={() => navigate(AppRoute.PROFILE)}
         style={{ borderColor: level === 'Профи' ? '#A799FF' : '' }}
       >
         {isLoading ? (

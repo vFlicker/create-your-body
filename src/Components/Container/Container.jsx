@@ -14,7 +14,7 @@ export default function Containers({ data }) {
         background: data.instruction ? '#D3CCFF' : '',
         borderColor: data.instruction ? '#D3CCFF' : '',
       }}
-      onClick={() => navigate(`/${data.to}`)}
+      onClick={() => navigate(data.to)}
     >
       <div
         className="nameContainer"

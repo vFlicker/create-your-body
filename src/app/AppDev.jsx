@@ -25,6 +25,7 @@ import { ResultPage } from '~/pages/result';
 import { StartPage } from '~/pages/start';
 import { TrainPage } from '~/pages/train';
 import { apiService, BASE_API_URL, extractErrorLogData } from '~/shared/api';
+import { AppRoute } from '~/shared/router';
 
 import ButtonBack from '../Components/Button/ButtonBack';
 import ButtonClose from '../Components/Button/ButtonClose';
@@ -198,25 +199,25 @@ export function AppDev() {
             <Route path="/" element={<Layout data={data} />}>
               <Route index element={<StartPage data={data} />} />
               <Route
-                path="quiz"
+                path={AppRoute.QUIZ}
                 element={<QuizPage userQuery={userQuery} data={data} />}
               />
               <Route
-                path="result"
+                path={AppRoute.RESULT}
                 element={<ResultPage userQuery={userQuery} userId={userId} />}
               />
               <Route
-                path="dashboard"
+                path={AppRoute.DASHBOARD}
                 element={
                   <DashboardPage data={data} userId={userId} base={base} />
                 }
               />
               <Route
-                path="begin"
+                path={AppRoute.BEGIN}
                 element={<BeginPage data={data} userId={userId} />}
               />
               <Route
-                path="profile"
+                path={AppRoute.PROFILE}
                 element={
                   <ProfilePage
                     data={data}
@@ -227,7 +228,7 @@ export function AppDev() {
                 }
               />
               <Route
-                path="parameters"
+                path={AppRoute.PARAMETERS}
                 element={
                   <ParametersPage
                     data={data}
@@ -238,15 +239,15 @@ export function AppDev() {
                 }
               />
               <Route
-                path="record"
+                path={AppRoute.RECORD}
                 element={<RecordPage data={data} userId={userId} />}
               />
               <Route
-                path="communication"
+                path={AppRoute.COMMUNICATION}
                 element={<CommunicationPage data={data} />}
               />
               <Route
-                path="train"
+                path={AppRoute.TRAINING}
                 element={
                   <TrainPage
                     data={data}
@@ -257,11 +258,11 @@ export function AppDev() {
                 }
               />
               <Route
-                path="food"
+                path={AppRoute.FOOD}
                 element={<FoodPage data={data} userId={userId} />}
               />
               <Route
-                path="lectures"
+                path={AppRoute.LECTURES}
                 element={
                   <LecturesPage
                     data={data}
@@ -271,7 +272,7 @@ export function AppDev() {
                 }
               />
               <Route
-                path="recipes"
+                path={AppRoute.RECIPES}
                 element={<RecipesPage data={data} userId={userId} />}
               />
             </Route>
