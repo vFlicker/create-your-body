@@ -100,11 +100,11 @@ export function AppDev() {
       window.Telegram.WebApp.expand();
       window.Telegram.WebApp.disableVerticalSwipes();
 
-      const telegramUser = window.Telegram.WebApp.initDataUnsafe.user || {};
+      const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
       const currentUserQuery = window.Telegram.WebApp.initData;
       console.log({ telegram: window.Telegram });
 
-      setUserId(telegramUser.id || '5003100894');
+      setUserId(telegramUser.id);
       setUserQuery(currentUserQuery);
       addLog('Telegram User ID:', telegramUser.id);
       addLog('Telegram User Photo URL:', telegramUser.photo_url);
@@ -187,7 +187,7 @@ export function AppDev() {
   }, [data, hasAccess, addLog]);
 
   return (
-    <BrowserRouter basename="/testapp">
+    <BrowserRouter>
       {isLoading ? (
         <Loader height="100vh" />
       ) : (
