@@ -10,6 +10,7 @@ import food from '~/shared/assets/nav/food.svg';
 import muscles from '~/shared/assets/nav/musclesBlack.svg';
 import profile from '~/shared/assets/nav/user.svg';
 import lock from '~/shared/assets/svg/lock.svg';
+import { AppRoute } from '~/shared/router';
 
 export default function Nav({ data }) {
   const location = useLocation();
@@ -23,15 +24,19 @@ export default function Nav({ data }) {
 
   // Массив с данными для навигации
   const navItems = [
-    { path: '/dashboard', icon: dashboard, label: 'Меню' },
+    { path: AppRoute.DASHBOARD, icon: dashboard, label: 'Меню' },
     {
-      path: isBlockFoodAndStrain ? '' : '/train',
+      path: isBlockFoodAndStrain ? '' : AppRoute.TRAINING,
       icon: muscles,
       label: 'Тренировки',
     },
-    { path: isBlockFoodAndStrain ? '' : '/food', icon: food, label: 'Питание' },
-    { path: '/communication', icon: chat, label: 'Общение' },
-    { path: '', icon: profile, label: 'Профиль' },
+    {
+      path: isBlockFoodAndStrain ? '' : AppRoute.FOOD,
+      icon: food,
+      label: 'Питание',
+    },
+    { path: AppRoute.COMMUNICATION, icon: chat, label: 'Общение' },
+    { path: AppRoute.PROFILE, icon: profile, label: 'Профиль' },
   ];
 
   // Сохраняем предыдущий путь при изменении location

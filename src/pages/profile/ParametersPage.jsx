@@ -1,10 +1,9 @@
 import './profile.css';
 
-import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { apiService, BASE_API_URL } from '~/shared/api';
+import { apiService } from '~/shared/api';
 import example from '~/shared/assets/img/example.jpeg';
 import add from '~/shared/assets/svg/addImg.svg';
 import close from '~/shared/assets/svg/closeWhite.svg';
@@ -206,6 +205,7 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
     photoBefore: null,
     photoAfter: null,
   });
+  const [latestParameters, setLatestParameters] = useState(null);
   const [gen, setGen] = useState(data?.sex === 'male' ? 'm' : 'w');
   const [birthday, setBirthday] = useState(
     data?.born_date
@@ -234,18 +234,12 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
 
     const fetchData = async () => {
       try {
-        // Получаем параметры
-        const parametersResponse = await axios.get(
-          `${BASE_API_URL}/api/v1/user/parametrs`,
-          {
-            params: { user_tg_id: userId },
-          },
-        );
-        const parameters = Array.isArray(parametersResponse.data)
-          ? parametersResponse.data
-          : [parametersResponse.data];
-        const latestParameters = parameters[parameters.length - 1];
-        console.log(latestParameters);
+        const parameters = await apiService.getUserParameters(userQuery);
+        const latestParameters = parameters.sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at),
+        )[0];
+
+        console.log({ latestParameters });
 
         if (latestParameters) {
           setHasParameters(true);
@@ -257,15 +251,16 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
             leg: latestParameters.legs || '',
             weight: latestParameters.weight || '',
           });
+          setLatestParameters(latestParameters);
         }
 
         // Проверяем наличие фотографий
         try {
           const photoBeforeResponse =
-            await apiService.getUserPhotoBeforeTransformation(userId);
+            await apiService.getUserTransformationPhoto(userId, 'before');
 
           const photoAfterResponse =
-            await apiService.getUserPhotoAfterTransformation(userId);
+            await apiService.getUserTransformationPhoto(userId, 'after');
 
           console.log('Ответ сервера для фотографий:', {
             beforeStatus: photoBeforeResponse.status,
@@ -507,92 +502,32 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
       };
 
       if (hasParameters) {
-        await axios.patch(
-          `${BASE_API_URL}/api/v1/user/parametrs`,
+        await apiService.updateUserBodyParameters(
+          userQuery,
+          latestParameters.id,
           parametersData,
         );
       } else {
-        await axios.post(
-          `${BASE_API_URL}/api/v1/user/parametrs`,
-          parametersData,
-        );
+        await apiService.addUserBodyParameters(userQuery, parametersData);
       }
 
       // Загрузка фотографий
-      if (
-        formData.photoBefore instanceof File ||
-        formData.photoAfter instanceof File
-      ) {
-        if (formData.photoBefore instanceof File) {
-          const formDataBefore = new FormData();
-          formDataBefore.append('image', formData.photoBefore);
+      if (formData.photoBefore instanceof File) {
+        const formDataPost = new FormData();
+        formDataPost.append('tg_id', String(userId));
+        formDataPost.append('image_before', formData.photoBefore);
+        await apiService.updateUserTransformationPhoto(formDataPost);
+      }
 
-          if (hasPhotos) {
-            await axios.patch(
-              `${BASE_API_URL}/api/v1/user/images/two`,
-              formDataBefore,
-              {
-                params: {
-                  tg_id: String(userId),
-                  number: 0,
-                },
-                headers: {
-                  'Content-Type': 'multipart/form-data',
-                },
-              },
-            );
-          } else {
-            const formDataPost = new FormData();
-            formDataPost.append('tg_id', String(userId));
-            formDataPost.append('image_before', formData.photoBefore);
-            await axios.post(
-              `${BASE_API_URL}/api/v1/user/images/two`,
-              formDataPost,
-              {
-                headers: {
-                  'Content-Type': 'multipart/form-data',
-                },
-              },
-            );
-          }
-        }
-
-        if (formData.photoAfter instanceof File) {
-          const formDataAfter = new FormData();
-          formDataAfter.append('image', formData.photoAfter);
-
-          if (hasPhotos) {
-            await axios.patch(
-              `${BASE_API_URL}/api/v1/user/images/two`,
-              formDataAfter,
-              {
-                params: {
-                  tg_id: String(userId),
-                  number: 1,
-                },
-                headers: {
-                  'Content-Type': 'multipart/form-data',
-                },
-              },
-            );
-          } else {
-            const formDataPost = new FormData();
-            formDataPost.append('tg_id', String(userId));
-            formDataPost.append('image_after', formData.photoAfter);
-            await axios.post(
-              `${BASE_API_URL}/api/v1/user/images/two`,
-              formDataPost,
-              {
-                headers: {
-                  'Content-Type': 'multipart/form-data',
-                },
-              },
-            );
-          }
-        }
+      if (formData.photoAfter instanceof File) {
+        const formDataPost = new FormData();
+        formDataPost.append('tg_id', String(userId));
+        formDataPost.append('image_after', formData.photoAfter);
+        await apiService.updateUserTransformationPhoto(formDataPost);
       }
 
       console.log('Данные сохранены!');
+
       // Обновляем данные пользователя перед переходом
       const user = await apiService.getUserByQuery(userQuery);
       setData(user);

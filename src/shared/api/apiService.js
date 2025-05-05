@@ -1,11 +1,17 @@
-import { createUserAdapter, getUserAdapter } from './dataAdapter';
+import {
+  addUserParametersAdapter,
+  getUserAdapter,
+  getUserParametersAdapter,
+  updateUserAdapter,
+  updateUserParametersAdapter,
+} from './dataAdapter';
 import { httpClient } from './httpClient';
 
 export const apiService = {
-  getUserByQuery: async (queryId) => {
+  getUserByQuery: async (userQuery) => {
     try {
       const { data } = await httpClient.get(
-        `/v2/api/client/user/me?${queryId}`,
+        `/v2/api/client/user/me?${userQuery}`,
       );
       const adaptedUser = getUserAdapter(data.data);
       return adaptedUser;
@@ -15,11 +21,11 @@ export const apiService = {
     }
   },
 
-  updateUser: async (queryId, userData) => {
+  updateUser: async (userQuery, userData) => {
     try {
-      const adaptedUserData = createUserAdapter(userData);
+      const adaptedUserData = updateUserAdapter(userData);
       const response = await httpClient.patch(
-        `/v2/api/client/user/me?${queryId}`,
+        `/v2/api/client/user/me?${userQuery}`,
         adaptedUserData,
       );
       return response;
@@ -34,11 +40,15 @@ export const apiService = {
    * ```
    * FF D8 FF E0 00 10 4A 46
    * ```
+   *
+   * @param {'after' | 'before'} stage
    */
-  getUserPhotoBeforeTransformation: async (userId) => {
+  getUserTransformationPhoto: async (userId, stage) => {
+    const number = { before: 0, after: 1 };
+
     try {
       const response = await httpClient.get(
-        `/api/v1/user/images/two?tg_id=${userId}&number=0`,
+        `/api/v1/user/images/two?tg_id=${userId}&number=${number[stage]}`,
         { responseType: 'blob' },
       );
       return response;
@@ -49,20 +59,78 @@ export const apiService = {
   },
 
   /**
+   * request example:
+   * ```
+   * FormData
+   *   image: (binary)
+   *   tg_id: 5003100894
+   *   image_before: (binary)
+   * ```
+   *
    * response example:
    * ```
-   * FF D8 FF E0 00 10 4A 46
-   * ```
+   * {
+   *   "status": "success",
+   *   "message": "Image posted"
+   * }
    */
-  getUserPhotoAfterTransformation: async (userId) => {
+  updateUserTransformationPhoto: async (formData) => {
     try {
-      const response = await httpClient.get(
-        `/api/v1/user/images/two?tg_id=${userId}&number=1`,
-        { responseType: 'blob' },
+      const response = await httpClient.post(
+        `/api/v1/user/images/two`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
       );
       return response;
     } catch (error) {
-      console.error('Error fetching user photo after transformation:', error);
+      console.error('Error updating user photo before transformation:', error);
+      throw error;
+    }
+  },
+
+  addUserBodyParameters: async (userQuery, parameters) => {
+    try {
+      const adaptedParameters = addUserParametersAdapter(parameters);
+      const response = await httpClient.post(
+        `/v2/api/client/user/measurements?${userQuery}`,
+        adaptedParameters,
+      );
+      return response;
+    } catch (error) {
+      console.error('Error updating user parameters:', error);
+      throw error;
+    }
+  },
+
+  getUserParameters: async (userQuery) => {
+    try {
+      const response = await httpClient.get(
+        `/v2/api/client/user/measurements?${userQuery}`,
+      );
+      const adaptedUserParameters = getUserParametersAdapter(
+        response.data.data.measurements,
+      );
+      return adaptedUserParameters;
+    } catch (error) {
+      console.error('Error fetching user parameters:', error);
+      throw error;
+    }
+  },
+
+  updateUserBodyParameters: async (userQuery, id, parameters) => {
+    try {
+      const adaptedParameters = updateUserParametersAdapter(parameters);
+      const response = await httpClient.put(
+        `/v2/api/client/user/measurements/${id}?${userQuery}`,
+        adaptedParameters,
+      );
+      return response;
+    } catch (error) {
+      console.error('Error updating user parameters:', error);
       throw error;
     }
   },

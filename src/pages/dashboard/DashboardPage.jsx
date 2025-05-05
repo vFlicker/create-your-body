@@ -8,6 +8,7 @@ import book from '~/shared/assets/svg/book.svg';
 import health from '~/shared/assets/svg/health.svg';
 import muscules from '~/shared/assets/svg/musclesBlack.svg';
 import recipes from '~/shared/assets/svg/recipes.svg';
+import { AppRoute } from '~/shared/router';
 import { Label } from '~/shared/ui/label';
 import { LabelLink } from '~/shared/ui/label/Label';
 
@@ -119,7 +120,7 @@ const getContainerData = (subscriptions) => {
     closed: null,
     buy: false,
     instruction: true,
-    to: 'begin',
+    to: AppRoute.BEGIN,
   });
 
   if (firstSteamIsPro) {
@@ -131,7 +132,7 @@ const getContainerData = (subscriptions) => {
         closed: null,
         buy: false,
         instruction: false,
-        to: 'train',
+        to: AppRoute.TRAINING,
       },
       {
         name: 'Питание',
@@ -139,7 +140,7 @@ const getContainerData = (subscriptions) => {
         closed: null,
         buy: false,
         instruction: false,
-        to: 'food',
+        to: AppRoute.FOOD,
       },
       {
         name: 'Лекции',
@@ -147,7 +148,7 @@ const getContainerData = (subscriptions) => {
         closed: null,
         buy: false,
         instruction: false,
-        to: 'lectures',
+        to: AppRoute.LECTURES,
       },
       {
         name: 'Рецепты',
@@ -155,7 +156,7 @@ const getContainerData = (subscriptions) => {
         closed: null,
         buy: false,
         instruction: false,
-        to: 'recipes',
+        to: AppRoute.RECIPES,
       },
     );
   } else if (firstSteamBase && secondSteamIsPro) {
@@ -166,7 +167,7 @@ const getContainerData = (subscriptions) => {
         closed: null,
         buy: false,
         instruction: false,
-        to: 'train',
+        to: AppRoute.TRAINING,
       },
       {
         name: 'Питание',
@@ -174,7 +175,7 @@ const getContainerData = (subscriptions) => {
         closed: null,
         buy: false,
         instruction: false,
-        to: 'food',
+        to: AppRoute.FOOD,
       },
       {
         name: 'Лекции',
@@ -182,7 +183,7 @@ const getContainerData = (subscriptions) => {
         closed: '10 мая',
         buy: false,
         instruction: false,
-        to: 'lectures',
+        to: AppRoute.LECTURES,
       },
       {
         name: 'Рецепты',
@@ -190,7 +191,7 @@ const getContainerData = (subscriptions) => {
         closed: '10 мая',
         buy: false,
         instruction: false,
-        to: 'recipes',
+        to: AppRoute.RECIPES,
       },
     );
   } else if (secondSteamIsPro) {
@@ -202,7 +203,7 @@ const getContainerData = (subscriptions) => {
         closed: '10 мая',
         buy: false,
         instruction: false,
-        to: 'train',
+        to: AppRoute.TRAINING,
       },
       {
         name: 'Питание',
@@ -210,7 +211,7 @@ const getContainerData = (subscriptions) => {
         closed: '10 мая',
         buy: false,
         instruction: false,
-        to: 'food',
+        to: AppRoute.FOOD,
       },
       {
         name: 'Лекции',
@@ -218,7 +219,7 @@ const getContainerData = (subscriptions) => {
         closed: '10 мая',
         buy: false,
         instruction: false,
-        to: 'lectures',
+        to: AppRoute.LECTURES,
       },
       {
         name: 'Рецепты',
@@ -226,7 +227,7 @@ const getContainerData = (subscriptions) => {
         closed: '10 мая',
         buy: false,
         instruction: false,
-        to: 'recipes',
+        to: AppRoute.RECIPES,
       },
     );
   } else if (firstSteamBase) {
@@ -238,7 +239,7 @@ const getContainerData = (subscriptions) => {
         closed: null,
         buy: false,
         instruction: false,
-        to: 'train',
+        to: AppRoute.TRAINING,
       },
       {
         name: 'Питание',
@@ -246,7 +247,7 @@ const getContainerData = (subscriptions) => {
         closed: null,
         buy: false,
         instruction: false,
-        to: 'food',
+        to: AppRoute.FOOD,
       },
       {
         name: 'Лекции',
@@ -254,7 +255,7 @@ const getContainerData = (subscriptions) => {
         closed: '',
         buy: true,
         instruction: false,
-        to: 'lectures',
+        to: AppRoute.LECTURES,
       },
       {
         name: 'Рецепты',
@@ -262,7 +263,7 @@ const getContainerData = (subscriptions) => {
         closed: '',
         buy: true,
         instruction: false,
-        to: 'recipes',
+        to: AppRoute.RECIPES,
       },
     );
   } else if (secondSteamBase) {
@@ -274,7 +275,7 @@ const getContainerData = (subscriptions) => {
         closed: '10 мая',
         buy: false,
         instruction: false,
-        to: 'train',
+        to: AppRoute.TRAINING,
       },
       {
         name: 'Питание',
@@ -282,7 +283,7 @@ const getContainerData = (subscriptions) => {
         closed: '10 мая',
         buy: false,
         instruction: false,
-        to: 'food',
+        to: AppRoute.FOOD,
       },
       {
         name: 'Лекции',
@@ -290,7 +291,7 @@ const getContainerData = (subscriptions) => {
         closed: '',
         buy: true,
         instruction: false,
-        to: 'lectures',
+        to: AppRoute.LECTURES,
       },
       {
         name: 'Рецепты',
@@ -298,7 +299,7 @@ const getContainerData = (subscriptions) => {
         closed: '',
         buy: true,
         instruction: false,
-        to: 'recipes',
+        to: AppRoute.RECIPES,
       },
     );
   }

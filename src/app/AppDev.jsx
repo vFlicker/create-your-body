@@ -12,19 +12,20 @@ import {
   useLocation,
 } from 'react-router-dom';
 
-import { BeginPage } from '~/pages1/begin1';
-import { CommunicationPage } from '~/pages1/communication1';
-import { DashboardPage } from '~/pages1/dashboard1';
-import { FoodPage } from '~/pages1/food1';
-import { LecturesPage } from '~/pages1/lectures1';
-import { NoEntryPage } from '~/pages1/noEntry1';
-import { ParametersPage, ProfilePage, RecordPage } from '~/pages1/profile1';
-import { QuizPage } from '~/pages1/quiz1';
-import { RecipesPage } from '~/pages1/recipes1';
-import { ResultPage } from '~/pages1/result1';
-import { StartPage } from '~/pages1/start1';
-import { TrainPage } from '~/pages1/train1';
+import { BeginPage } from '~/pages/begin';
+import { CommunicationPage } from '~/pages/communication';
+import { DashboardPage } from '~/pages/dashboard';
+import { FoodPage } from '~/pages/food';
+import { LecturesPage } from '~/pages/lectures';
+import { NoEntryPage } from '~/pages/noEntry';
+import { ParametersPage, ProfilePage, RecordPage } from '~/pages/profile';
+import { QuizPage } from '~/pages/quiz';
+import { RecipesPage } from '~/pages/recipes';
+import { ResultPage } from '~/pages/result';
+import { StartPage } from '~/pages/start';
+import { TrainPage } from '~/pages/train';
 import { apiService, BASE_API_URL, extractErrorLogData } from '~/shared/api';
+import { AppRoute } from '~/shared/router';
 
 import ButtonBack from '../Components/Button/ButtonBack';
 import ButtonClose from '../Components/Button/ButtonClose';
@@ -99,11 +100,11 @@ export function AppDev() {
       window.Telegram.WebApp.expand();
       window.Telegram.WebApp.disableVerticalSwipes();
 
-      const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
+      const telegramUser = window.Telegram.WebApp.initDataUnsafe.user || {};
       const currentUserQuery = window.Telegram.WebApp.initData;
       console.log({ telegram: window.Telegram });
 
-      setUserId(telegramUser.id);
+      setUserId(telegramUser.id || '5003100894');
       setUserQuery(currentUserQuery);
       addLog('Telegram User ID:', telegramUser.id);
       addLog('Telegram User Photo URL:', telegramUser.photo_url);
@@ -186,7 +187,7 @@ export function AppDev() {
   }, [data, hasAccess, addLog]);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/testapp">
       {isLoading ? (
         <Loader height="100vh" />
       ) : (
@@ -195,25 +196,25 @@ export function AppDev() {
             <Route path="/" element={<Layout data={data} />}>
               <Route index element={<StartPage data={data} />} />
               <Route
-                path="quiz"
+                path={AppRoute.QUIZ}
                 element={<QuizPage userQuery={userQuery} data={data} />}
               />
               <Route
-                path="result"
+                path={AppRoute.RESULT}
                 element={<ResultPage userQuery={userQuery} userId={userId} />}
               />
               <Route
-                path="dashboard"
+                path={AppRoute.DASHBOARD}
                 element={
                   <DashboardPage data={data} userId={userId} base={base} />
                 }
               />
               <Route
-                path="begin"
+                path={AppRoute.BEGIN}
                 element={<BeginPage data={data} userId={userId} />}
               />
               <Route
-                path="profile"
+                path={AppRoute.PROFILE}
                 element={
                   <ProfilePage
                     data={data}
@@ -224,7 +225,7 @@ export function AppDev() {
                 }
               />
               <Route
-                path="parameters"
+                path={AppRoute.PARAMETERS}
                 element={
                   <ParametersPage
                     data={data}
@@ -235,15 +236,21 @@ export function AppDev() {
                 }
               />
               <Route
-                path="record"
-                element={<RecordPage data={data} userId={userId} />}
+                path={AppRoute.RECORD}
+                element={
+                  <RecordPage
+                    data={data}
+                    userQuery={userQuery}
+                    userId={userId}
+                  />
+                }
               />
               <Route
-                path="communication"
+                path={AppRoute.COMMUNICATION}
                 element={<CommunicationPage data={data} />}
               />
               <Route
-                path="train"
+                path={AppRoute.TRAINING}
                 element={
                   <TrainPage
                     data={data}
@@ -254,11 +261,11 @@ export function AppDev() {
                 }
               />
               <Route
-                path="food"
+                path={AppRoute.FOOD}
                 element={<FoodPage data={data} userId={userId} />}
               />
               <Route
-                path="lectures"
+                path={AppRoute.LECTURES}
                 element={
                   <LecturesPage
                     data={data}
@@ -268,7 +275,7 @@ export function AppDev() {
                 }
               />
               <Route
-                path="recipes"
+                path={AppRoute.RECIPES}
                 element={<RecipesPage data={data} userId={userId} />}
               />
             </Route>
