@@ -35,23 +35,12 @@ export const apiService = {
     }
   },
 
-  /**
-   * response example:
-   * ```
-   * FF D8 FF E0 00 10 4A 46
-   * ```
-   *
-   * @param {'after' | 'before'} stage
-   */
-  getUserTransformationPhoto: async (userId, stage) => {
-    const number = { before: 0, after: 1 };
-
+  getUserTransformationPhoto: async (userQuery) => {
     try {
       const response = await httpClient.get(
-        `/api/v1/user/images/two?tg_id=${userId}&number=${number[stage]}`,
-        { responseType: 'blob' },
+        `/v2/api/client/user/photos?${userQuery}`,
       );
-      return response;
+      return response.data.data;
     } catch (error) {
       console.error('Error fetching user photo before transformation:', error);
       throw error;
@@ -59,25 +48,14 @@ export const apiService = {
   },
 
   /**
-   * request example:
-   * ```
-   * FormData
-   *   image: (binary)
-   *   tg_id: 5003100894
-   *   image_before: (binary)
-   * ```
-   *
-   * response example:
-   * ```
-   * {
-   *   "status": "success",
-   *   "message": "Image posted"
-   * }
+   * @param {string} userQuery
+   * @param {FormData} formData
+   * @param {'after' | 'before'} stage
    */
-  updateUserTransformationPhoto: async (formData) => {
+  updateUserTransformationPhoto: async (userQuery, formData, stage) => {
     try {
       const response = await httpClient.post(
-        `/api/v1/user/images/two`,
+        `/v2/api/client/user/photos/${stage}?${userQuery}`,
         formData,
         {
           headers: {

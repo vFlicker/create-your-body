@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { apiService } from '~/shared/api';
+import { apiService, extractErrorLogData } from '~/shared/api';
 import edit from '~/shared/assets/svg/editSmall.svg';
 import photoNone from '~/shared/assets/svg/photoNone.svg';
 
 import ButtonEdit from '../Button/ButtonEdit';
 import Loader from '../Loader/Loader';
 
-export default function PhotoEditor({ label, initialPhoto, userId, number }) {
+export default function PhotoEditor({ label, initialPhoto, userQuery, stage }) {
   const fileInputRef = useRef(null);
   const [photo, setPhoto] = useState(initialPhoto);
   const [isLoading, setIsLoading] = useState(true);
@@ -17,57 +17,20 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
     const fetchPhoto = async () => {
       setIsLoading(true);
       try {
-        const response =
-          number === 0
-            ? await apiService.getUserTransformationPhoto(userId, 'before')
-            : await apiService.getUserTransformationPhoto(userId, 'after');
-
-        if (response.data && response.data.size > 100) {
-          try {
-            const reader = new FileReader();
-            reader.onload = () => {
-              try {
-                const jsonData = JSON.parse(reader.result);
-                console.error('Получен JSON вместо изображения:', jsonData);
-                setPhoto(initialPhoto);
-              } catch {
-                const blob = new Blob([response.data], {
-                  type: response.headers['content-type'] || 'image/jpeg',
-                });
-                const photoUrl = URL.createObjectURL(blob);
-                // console.log('Созданный URL:', photoUrl);
-                setPhoto(photoUrl);
-              }
-            };
-            reader.readAsText(response.data);
-          } catch (error) {
-            console.error('Ошибка при обработке данных:', error);
-            setPhoto(initialPhoto);
-          }
-        } else {
-          console.error('Получены некорректные данные:', response.data);
-          setPhoto(initialPhoto);
-        }
+        const data = await apiService.getUserTransformationPhoto(userQuery);
+        const photoUrl = data[stage].url;
+        setPhoto(photoUrl);
       } catch (error) {
-        console.error('Подробная информация об ошибке:', {
-          message: error.message,
-          status: error.response?.status,
-          statusText: error.response?.statusText,
-          data: error.response?.data,
-          config: {
-            url: error.config?.url,
-            method: error.config?.method,
-            headers: error.config?.headers,
-            data: error.config?.data,
-          },
-        });
+        const errorText = 'Подробная информация об ошибке:';
+        const errorDetails = extractErrorLogData(error);
+        console.error(errorText, errorDetails);
         setPhoto(initialPhoto);
       } finally {
         setIsLoading(false);
       }
     };
     fetchPhoto();
-  }, [userId, number, label, initialPhoto]);
+  }, [userQuery, stage, label, initialPhoto]);
 
   const handleEditClick = () => {
     fileInputRef.current?.click();
@@ -104,14 +67,11 @@ export default function PhotoEditor({ label, initialPhoto, userId, number }) {
 
         console.log('Отправка POST запроса для обновления фото');
 
-        formData.append('tg_id', String(userId));
-        if (number === 0) {
-          formData.append('image_before', file);
-        } else {
-          formData.append('image_after', file);
-        }
-
-        await apiService.updateUserTransformationPhoto(formData);
+        await apiService.updateUserTransformationPhoto(
+          userQuery,
+          formData,
+          stage,
+        );
 
         setPhoto(URL.createObjectURL(file));
         console.log(`${label} успешно обновлено!`);
