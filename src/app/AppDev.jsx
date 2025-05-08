@@ -189,6 +189,8 @@ export function AppDev() {
     addLog('Итоговое условие hasAccess:', hasAccess);
   }, [data, hasAccess, addLog]);
 
+  const stream = data?.subscriptions.at(-1).stream;
+
   return (
     <BrowserRouter basename="/testapp">
       {isLoading ? (
@@ -255,10 +257,12 @@ export function AppDev() {
                 path={AppRoute.TRAINING}
                 element={
                   <TrainPage
+                    userQuery={userQuery}
                     data={data}
                     userId={userId}
                     level={data.user_level}
                     base={base}
+                    stream={stream}
                   />
                 }
               />

@@ -36,7 +36,7 @@ const pageContainersData = [
   },
 ];
 
-export function TrainPage({ data, level, base }) {
+export function TrainPage({ userQuery, data, level, stream, base }) {
   const [showContent, setShowContent] = useState(false);
   const [selectedView, setSelectedView] = useState(null);
 
@@ -94,7 +94,13 @@ export function TrainPage({ data, level, base }) {
             <div
               className={`train-details-content ${showContent ? 'slide-in' : ''}`}
             >
-              <TrainContent view={selectedView} level={level} base={base} />
+              <TrainContent
+                userQuery={userQuery}
+                stream={stream}
+                view={selectedView}
+                level={level}
+                base={base}
+              />
             </div>
           )}
         </div>
