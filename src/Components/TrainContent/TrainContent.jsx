@@ -146,7 +146,7 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
     };
 
     fetchData();
-  }, [view, level]);
+  }, [view, level, stream]);
 
   // Получение данных тренировок для выбранной недели
   useEffect(() => {
@@ -218,7 +218,7 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
     };
 
     fetchWeekTrainings();
-  }, [selectedWeek, page, view, level]);
+  }, [selectedWeek, page, view, level, stream]);
 
   const handleWeekSelect = (weekData) => {
     setIsLoadingTrainings(true);

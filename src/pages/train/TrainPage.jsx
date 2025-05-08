@@ -8,6 +8,7 @@ import back from '~/shared/assets/train/back.svg';
 import dumbbells from '~/shared/assets/train/dumbbells.svg';
 import question from '~/shared/assets/train/question.svg';
 import sport from '~/shared/assets/train/sport.svg';
+import { Select } from '~/shared/ui/select';
 
 import TrainContainer from '../../Components/Container/TrainContainer';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
@@ -36,9 +37,22 @@ const pageContainersData = [
   },
 ];
 
-export function TrainPage({ userQuery, data, level, stream, base }) {
+export function TrainPage({ userQuery, data, level, base }) {
   const [showContent, setShowContent] = useState(false);
   const [selectedView, setSelectedView] = useState(null);
+
+  const streamOptions = data.subscriptions.map(({ stream }) => ({
+    value: stream,
+    label: `Поток ${stream}`,
+  }));
+
+  const maxStreamSubscription = data.subscriptions.reduce((max, sub) => {
+    return sub.stream > max.stream ? sub : max;
+  });
+
+  const [selectedStream, setSelectedStream] = useState(
+    maxStreamSubscription.stream,
+  );
 
   useEffect(() => {
     // Слушаем изменения window.showContent
@@ -58,19 +72,24 @@ export function TrainPage({ userQuery, data, level, stream, base }) {
     window.showContent = true;
   };
 
-  // const handleBack = () => {
-  //     setShowContent(false);
-  //     setSelectedView(null);
-  //     window.showContent = false;
-  // };
+  const onStreamChange = (evt) => {
+    setSelectedStream(evt.target.value);
+  };
 
   return (
     <div className="trainPage">
       <div className="topTrain">
         <ProfileBtn level={data?.user_level} user_photo={data.image} />
-        <div className="trainTitle">
-          <img src={muscules} alt="Тренировка" />
-          <h1 style={{ fontSize: '24px' }}>Тренировки</h1>
+        <div className="trainTitleWrapper">
+          <div className="trainTitle">
+            <img src={muscules} alt="Тренировка" />
+            <h1 style={{ fontSize: '24px' }}>Тренировки</h1>
+          </div>
+          <Select
+            options={streamOptions}
+            value={selectedStream}
+            onChange={onStreamChange}
+          />
         </div>
         {/* <Progress /> */}
       </div>
@@ -96,7 +115,7 @@ export function TrainPage({ userQuery, data, level, stream, base }) {
             >
               <TrainContent
                 userQuery={userQuery}
-                stream={stream}
+                stream={selectedStream}
                 view={selectedView}
                 level={level}
                 base={base}

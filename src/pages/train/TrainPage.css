@@ -13,6 +13,12 @@
   gap: 22px;
 }
 
+.trainTitleWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .trainTitle {
   display: flex;
   align-items: center;
