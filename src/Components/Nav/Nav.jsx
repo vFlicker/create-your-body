@@ -12,26 +12,23 @@ import profile from '~/shared/assets/nav/user.svg';
 import lock from '~/shared/assets/svg/lock.svg';
 import { AppRoute } from '~/shared/router';
 
-export default function Nav({ data }) {
+export default function Nav() {
   const location = useLocation();
   const navigate = useNavigate();
   const [pressedPath, setPressedPath] = useState(null);
   const [prevPath, setPrevPath] = useState(null);
   const [_hasHandleBack, setHasHandleBack] = useState(false);
 
-  const firstSteam = data.subscriptions.find((sub) => sub.stream === 1);
-  const isBlockFoodAndStrain = !firstSteam;
-
   // Массив с данными для навигации
   const navItems = [
     { path: AppRoute.DASHBOARD, icon: dashboard, label: 'Меню' },
     {
-      path: isBlockFoodAndStrain ? '' : AppRoute.TRAINING,
+      path: AppRoute.TRAINING,
       icon: muscles,
       label: 'Тренировки',
     },
     {
-      path: isBlockFoodAndStrain ? '' : AppRoute.FOOD,
+      path: AppRoute.FOOD,
       icon: food,
       label: 'Питание',
     },

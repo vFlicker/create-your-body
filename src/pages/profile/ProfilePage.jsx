@@ -20,7 +20,7 @@ import PhotoEditor from '../../Components/PhotoEditor/PhotoEditor';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import Selecter from '../../Components/Selecter/Selecter';
 
-export function ProfilePage({ userId, userQuery, data, setData }) {
+export function ProfilePage({ userQuery, data, setData }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(
@@ -88,7 +88,7 @@ export function ProfilePage({ userId, userQuery, data, setData }) {
     };
 
     fetchUserData();
-  }, [userId]);
+  }, [userQuery]);
 
   useEffect(() => {
     if (historyOpen) {
@@ -535,14 +535,14 @@ export function ProfilePage({ userId, userQuery, data, setData }) {
                 <PhotoEditor
                   label="Фото до"
                   initialPhoto={''}
-                  userId={userId}
-                  number={0}
+                  userQuery={userQuery}
+                  stage="before"
                 />
                 <PhotoEditor
                   label="Фото после"
                   initialPhoto={''}
-                  userId={userId}
-                  number={1}
+                  userQuery={userQuery}
+                  stage="after"
                 />
               </div>
             </div>

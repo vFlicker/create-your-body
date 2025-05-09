@@ -33,7 +33,7 @@ import Loader from '../Components/Loader/Loader';
 import Nav from '../Components/Nav/Nav';
 import PageTransition from '../Components/PageTransition/PageTransition';
 
-function Layout({ data }) {
+function Layout() {
   const location = useLocation();
   const hiddenPathsBack = ['/', '/quiz', '/result', '/dashboard'];
   const showControlsBack = !hiddenPathsBack.includes(location.pathname);
@@ -54,7 +54,7 @@ function Layout({ data }) {
             </PageTransition>
           </AnimatePresence>
         </div>
-        {showControlsNav && <Nav data={data} />}
+        {showControlsNav && <Nav />}
       </div>
     </>
   );
@@ -219,7 +219,6 @@ export function AppDev() {
                   <ProfilePage
                     data={data}
                     userQuery={userQuery}
-                    userId={userId}
                     setData={setData}
                   />
                 }
@@ -253,6 +252,7 @@ export function AppDev() {
                 path={AppRoute.TRAINING}
                 element={
                   <TrainPage
+                    userQuery={userQuery}
                     data={data}
                     userId={userId}
                     level={data.user_level}

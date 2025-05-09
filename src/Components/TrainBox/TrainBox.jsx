@@ -25,7 +25,6 @@ export default function TrainBox({
 
   // Определяем, какие данные использовать
   const isLecture = !!lectures;
-  console.log(isLecture, lectures, data);
   const currentData = isLecture ? lectures : data;
 
   // Получаем количество тренировок/упражнений

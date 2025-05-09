@@ -7,6 +7,7 @@ import { apiService } from '~/shared/api';
 import example from '~/shared/assets/img/example.jpeg';
 import add from '~/shared/assets/svg/addImg.svg';
 import close from '~/shared/assets/svg/closeWhite.svg';
+import { AppRoute } from '~/shared/router';
 
 import Button from '../../Components/Button/Button';
 import Loader from '../../Components/Loader/Loader';
@@ -220,9 +221,7 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
   );
   const [birthdayError, setBirthdayError] = useState('');
   const [hasParameters, setHasParameters] = useState(false);
-  const [hasPhotos, setHasPhotos] = useState(false);
-  const [isLoadingBefore, setIsLoadingBefore] = useState(true);
-  const [isLoadingAfter, setIsLoadingAfter] = useState(true);
+  const [isLoadingPhotos, setIsLoadingPhotos] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
@@ -231,110 +230,56 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
       const platform = tg.platform.toLowerCase();
       setIsMobile(!['tdesktop', 'macos', 'linux', 'web'].includes(platform));
     }
+  }, []);
 
-    const fetchData = async () => {
+  useEffect(() => {
+    const loadUserMeasurements = async () => {
       try {
         const parameters = await apiService.getUserParameters(userQuery);
-        const latestParameters = parameters.sort(
-          (a, b) => new Date(b.created_at) - new Date(a.created_at),
-        )[0];
-
-        console.log({ latestParameters });
+        const latestParameters = parameters[0];
 
         if (latestParameters) {
           setHasParameters(true);
-          setFormData({
+          setFormData((prev) => ({
+            ...prev,
             chest: latestParameters.chest || '',
             waist: latestParameters.waist || '',
             belly: latestParameters.abdominal_circumference || '',
             hips: latestParameters.hips || '',
             leg: latestParameters.legs || '',
             weight: latestParameters.weight || '',
-          });
+          }));
           setLatestParameters(latestParameters);
         }
-
-        // Проверяем наличие фотографий
-        try {
-          const photoBeforeResponse =
-            await apiService.getUserTransformationPhoto(userId, 'before');
-
-          const photoAfterResponse =
-            await apiService.getUserTransformationPhoto(userId, 'after');
-
-          console.log('Ответ сервера для фотографий:', {
-            beforeStatus: photoBeforeResponse.status,
-            afterStatus: photoAfterResponse.status,
-            beforeSize: photoBeforeResponse.data?.size,
-            afterSize: photoAfterResponse.data?.size,
-          });
-
-          const processPhoto = async (response, isBefore) => {
-            if (response.data && response.data.size > 100) {
-              try {
-                const reader = new FileReader();
-                reader.onload = () => {
-                  try {
-                    const jsonData = JSON.parse(reader.result);
-                    console.error(
-                      `Получен JSON вместо изображения ${isBefore ? 'до' : 'после'}:`,
-                      jsonData,
-                    );
-                  } catch {
-                    // Если это не JSON, значит это изображение
-                    const blob = new Blob([response.data], {
-                      type: response.headers['content-type'] || 'image/jpeg',
-                    });
-                    const photoUrl = URL.createObjectURL(blob);
-                    console.log(
-                      `Созданный URL для фото ${isBefore ? 'до' : 'после'}:`,
-                      photoUrl,
-                    );
-                    setFormData((prev) => ({
-                      ...prev,
-                      [isBefore ? 'photoBefore' : 'photoAfter']: photoUrl,
-                    }));
-                    setHasPhotos(true);
-                  }
-                };
-                reader.readAsText(response.data);
-              } catch (error) {
-                console.error(
-                  `Ошибка при обработке данных фото ${isBefore ? 'до' : 'после'}:`,
-                  error,
-                );
-              }
-            } else {
-              console.error(
-                `Получены некорректные данные фото ${isBefore ? 'до' : 'после'}:`,
-                response.data,
-              );
-            }
-          };
-
-          await Promise.all([
-            processPhoto(photoBeforeResponse, true),
-            processPhoto(photoAfterResponse, false),
-          ]);
-        } catch (photoError) {
-          console.log(
-            'Фотографий нет или ошибка:',
-            photoError.response?.status,
-          );
-          setHasPhotos(false);
-        }
       } catch (error) {
-        console.error('Ошибка при получении данных:', error);
+        console.error('Ошибка при получении параметров:', error);
         setHasParameters(false);
-        setHasPhotos(false);
-      } finally {
-        setIsLoadingBefore(false);
-        setIsLoadingAfter(false);
       }
     };
 
-    fetchData();
-  }, [userId]);
+    loadUserMeasurements();
+  }, [userQuery]);
+
+  useEffect(() => {
+    const loadUserPhotos = async () => {
+      try {
+        const { before, after } =
+          await apiService.getUserTransformationPhoto(userQuery);
+
+        setFormData((prev) => ({
+          ...prev,
+          photoBefore: before.url,
+          photoAfter: after.url,
+        }));
+
+        setIsLoadingPhotos(false);
+      } catch (error) {
+        console.log('Ошибка при получении фотографий:', error);
+      }
+    };
+
+    loadUserPhotos();
+  }, [userQuery]);
 
   const isDateValid = (date) => {
     if (!/^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[012])\.(19|20)\d\d$/.test(date))
@@ -514,16 +459,22 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
       // Загрузка фотографий
       if (formData.photoBefore instanceof File) {
         const formDataPost = new FormData();
-        formDataPost.append('tg_id', String(userId));
-        formDataPost.append('image_before', formData.photoBefore);
-        await apiService.updateUserTransformationPhoto(formDataPost);
+        formDataPost.append('image', formData.photoBefore);
+        await apiService.updateUserTransformationPhoto(
+          userQuery,
+          formDataPost,
+          'before',
+        );
       }
 
       if (formData.photoAfter instanceof File) {
         const formDataPost = new FormData();
-        formDataPost.append('tg_id', String(userId));
-        formDataPost.append('image_after', formData.photoAfter);
-        await apiService.updateUserTransformationPhoto(formDataPost);
+        formDataPost.append('image', formData.photoAfter);
+        await apiService.updateUserTransformationPhoto(
+          userQuery,
+          formDataPost,
+          'after',
+        );
       }
 
       console.log('Данные сохранены!');
@@ -531,7 +482,7 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
       // Обновляем данные пользователя перед переходом
       const user = await apiService.getUserByQuery(userQuery);
       setData(user);
-      navigate('/profile');
+      navigate(AppRoute.PROFILE);
     } catch (error) {
       console.error(
         'Ошибка при сохранении:',
@@ -630,14 +581,14 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
               value={formData.photoBefore}
               onChange={handleFileChange('photoBefore')}
               onRemove={handleRemovePhoto('photoBefore')}
-              isLoading={isLoadingBefore}
+              isLoading={isLoadingPhotos}
             />
             <PhotoUploader
               label="Фото после"
               value={formData.photoAfter}
               onChange={handleFileChange('photoAfter')}
               onRemove={handleRemovePhoto('photoAfter')}
-              isLoading={isLoadingAfter}
+              isLoading={isLoadingPhotos}
             />
           </div>
           <div style={{ position: 'relative', width: '100%' }}>

@@ -35,23 +35,12 @@ export const apiService = {
     }
   },
 
-  /**
-   * response example:
-   * ```
-   * FF D8 FF E0 00 10 4A 46
-   * ```
-   *
-   * @param {'after' | 'before'} stage
-   */
-  getUserTransformationPhoto: async (userId, stage) => {
-    const number = { before: 0, after: 1 };
-
+  getUserTransformationPhoto: async (userQuery) => {
     try {
       const response = await httpClient.get(
-        `/api/v1/user/images/two?tg_id=${userId}&number=${number[stage]}`,
-        { responseType: 'blob' },
+        `/v2/api/client/user/photos?${userQuery}`,
       );
-      return response;
+      return response.data.data;
     } catch (error) {
       console.error('Error fetching user photo before transformation:', error);
       throw error;
@@ -59,25 +48,14 @@ export const apiService = {
   },
 
   /**
-   * request example:
-   * ```
-   * FormData
-   *   image: (binary)
-   *   tg_id: 5003100894
-   *   image_before: (binary)
-   * ```
-   *
-   * response example:
-   * ```
-   * {
-   *   "status": "success",
-   *   "message": "Image posted"
-   * }
+   * @param {string} userQuery
+   * @param {FormData} formData
+   * @param {'after' | 'before'} stage
    */
-  updateUserTransformationPhoto: async (formData) => {
+  updateUserTransformationPhoto: async (userQuery, formData, stage) => {
     try {
       const response = await httpClient.post(
-        `/api/v1/user/images/two`,
+        `/v2/api/client/user/photos/${stage}?${userQuery}`,
         formData,
         {
           headers: {
@@ -131,6 +109,48 @@ export const apiService = {
       return response;
     } catch (error) {
       console.error('Error updating user parameters:', error);
+      throw error;
+    }
+  },
+
+  getAllTrainingWeeks: async (userQuery, stream) => {
+    try {
+      const response = await httpClient.get(
+        `cms/api/workouts/client-weeks?stream=${stream}`,
+        { headers: { 'x-telegram-init': userQuery } },
+      );
+
+      return response;
+    } catch (error) {
+      console.error('Error fetching training weeks:', error);
+      throw error;
+    }
+  },
+
+  getAllTrainingsByWeek: async (userQuery, week, { level, type, stream }) => {
+    try {
+      const response = await httpClient.get(
+        `/cms/api/workouts/client-week/${week}?level=${level}&type=${type}&stream=${stream}`,
+        { headers: { 'x-telegram-init': userQuery } },
+      );
+
+      return response;
+    } catch (error) {
+      console.error('Error fetching training for week:', error);
+      throw error;
+    }
+  },
+
+  getTrainingDetailsById: async (userQuery, trainingId) => {
+    try {
+      const response = await httpClient.get(
+        `/cms/api/workouts/client/${trainingId}`,
+        { headers: { 'x-telegram-init': userQuery } },
+      );
+
+      return response;
+    } catch (error) {
+      console.error('Error fetching training details:', error);
       throw error;
     }
   },
