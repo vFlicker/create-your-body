@@ -124,13 +124,13 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
                 training.type === view && training.level === mappedLevel,
             );
 
-            newWeekDetails[week.week] = {
+            newWeekDetails[week] = {
               count: filteredTrainings.length,
               coverUrl: week.cover?.url || null,
             };
           } catch (error) {
             console.error(
-              `Ошибка при получении данных для недели ${week.week}:`,
+              `Ошибка при получении данных для недели ${week}:`,
               error.message,
             );
           }

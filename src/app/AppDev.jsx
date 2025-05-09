@@ -57,7 +57,7 @@ function Layout({ data }) {
             </PageTransition>
           </AnimatePresence>
         </div>
-        {showControlsNav && <Nav data={data} />}
+        {showControlsNav && <Nav />}
       </div>
     </>
   );
