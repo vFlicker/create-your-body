@@ -268,8 +268,8 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
 
         setFormData((prev) => ({
           ...prev,
-          photoBefore: before.url,
-          photoAfter: after.url,
+          photoBefore: before ? before.url : null,
+          photoAfter: after ? after.url : null,
         }));
 
         setIsLoadingPhotos(false);

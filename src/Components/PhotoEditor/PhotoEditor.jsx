@@ -18,12 +18,10 @@ export default function PhotoEditor({ label, initialPhoto, userQuery, stage }) {
       setIsLoading(true);
       try {
         const data = await apiService.getUserTransformationPhoto(userQuery);
-        const photoUrl = data[stage].url;
-        setPhoto(photoUrl);
+        const photoData = data[stage];
+        if (photoData) setPhoto(photoData.url);
       } catch (error) {
-        const errorText = 'Подробная информация об ошибке:';
-        const errorDetails = extractErrorLogData(error);
-        console.error(errorText, errorDetails);
+        console.error(error);
         setPhoto(initialPhoto);
       } finally {
         setIsLoading(false);
