@@ -1,10 +1,9 @@
 import './RecipesPage.css';
 
-import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 
-import { BASE_API_URL } from '~/shared/api';
+import { apiService } from '~/shared/api';
 import breakfast from '~/shared/assets/svg/avocado.svg';
 import dessert from '~/shared/assets/svg/croissant.svg';
 import dinner from '~/shared/assets/svg/meat.svg';
@@ -41,7 +40,7 @@ const transition = {
   duration: 0.3,
 };
 
-export function RecipesPage({ data }) {
+export function RecipesPage({ userQuery, data }) {
   const [categories, setCategories] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [[page, direction], setPage] = useState([0, 0]);
@@ -63,11 +62,11 @@ export function RecipesPage({ data }) {
     setPage([2, 1]);
     setIsLoadingRecipe(true);
     try {
-      const response = await axios.get(
-        `${BASE_API_URL}/cms/api/recipes/client/${recipe.id}`,
+      const response = await apiService.getRecipeDetailsById(
+        userQuery,
+        recipe.id,
       );
       setSelectedRecipe(response.data.data);
-      console.log(response.data);
     } catch (error) {
       console.error('Error fetching recipe details:', error);
     } finally {
@@ -108,9 +107,7 @@ export function RecipesPage({ data }) {
     const fetchRecipes = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(
-          `${BASE_API_URL}/cms/api/recipes/client/categories`,
-        );
+        const response = await apiService.getRecipesCategories(userQuery);
         setCategories(response.data.data);
       } catch (error) {
         console.error('Error fetching recipes:', error);
@@ -123,11 +120,12 @@ export function RecipesPage({ data }) {
 
   const fetchCategoryRecipes = async (categoryName, page = 1) => {
     try {
-      const response = await axios.get(
-        `${BASE_API_URL}/cms/api/recipes/client/category/${categoryName}?page=${page}`,
+      const response = await apiService.getRecipesByCategoryName(
+        userQuery,
+        categoryName,
+        page,
       );
       const { data, meta } = response.data;
-      console.log(response.data);
       if (page === 1) {
         setRecipes(data);
       } else {

@@ -480,7 +480,7 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
       console.log('Данные сохранены!');
 
       // Обновляем данные пользователя перед переходом
-      const user = await apiService.getUserByQuery(userQuery);
+      const user = await apiService.getUser(userQuery);
       setData(user);
       navigate(AppRoute.PROFILE);
     } catch (error) {

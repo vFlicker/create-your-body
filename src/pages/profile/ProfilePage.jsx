@@ -118,7 +118,7 @@ export function ProfilePage({ userQuery, data, setData }) {
     try {
       await apiService.updateUser(userQuery, { user_level: level });
       console.log('Уровень сложности успешно обновлён:', level);
-      const user = await apiService.getUserByQuery(userQuery);
+      const user = await apiService.getUser(userQuery);
       setData(user);
     } catch (error) {
       console.error(

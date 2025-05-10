@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import { BASE_API_URL } from '~/shared/api';
+import { apiService } from '~/shared/api';
 import food from '~/shared/assets/nav/food.svg';
 import copy from '~/shared/assets/svg/copy.svg';
 import help from '~/shared/assets/svg/help.svg';
@@ -17,7 +17,7 @@ import PdfViewer from '../../Components/PdfViewer/PdfViewer';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import { TelegramLinkButton } from '../communication/CommunicationPage';
 
-export function FoodPage({ data, userId }) {
+export function FoodPage({ data, userId, userQuery }) {
   const [isLoading, setIsLoading] = useState(true);
   const [dataFood, setDataFood] = useState(null);
   const [selectedPdfId, setSelectedPdfId] = useState(null);
@@ -46,7 +46,6 @@ export function FoodPage({ data, userId }) {
     const fetchAllowedIds = async () => {
       try {
         const response = await axios.get('https://hmns-test.ru/cyb/');
-        console.log(response.data);
         // Преобразуем все ID в строки
         const stringIds = response.data.map((id) => id.toString());
         setAllowedUserIds(stringIds);
@@ -79,9 +78,7 @@ export function FoodPage({ data, userId }) {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get(
-          `${BASE_API_URL}/cms/api/nutrition/client/category/nutrition`,
-        );
+        const response = await apiService.getNutritionPlanCategories(userQuery);
         addLog('Ответ сервера на запрос питания:', response.data);
         setDataFood(response.data);
       } catch (error) {
@@ -229,6 +226,7 @@ export function FoodPage({ data, userId }) {
               <PdfViewer
                 pdfId={selectedPdfId}
                 userId={userId}
+                userQuery={userQuery}
                 addLog={addLog}
               />
             </div>

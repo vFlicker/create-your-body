@@ -146,7 +146,7 @@ export function AppDev() {
 
       const addUser = async () => {
         try {
-          const user = await apiService.getUserByQuery(currentUserQuery);
+          const user = await apiService.getUser(currentUserQuery);
           addLog('Ответ сервера на запрос пользователя:', user);
           setData(user);
           const userTarif = user.user_tarif || '';
@@ -265,7 +265,9 @@ export function AppDev() {
               />
               <Route
                 path={AppRoute.FOOD}
-                element={<FoodPage data={data} userId={userId} />}
+                element={
+                  <FoodPage data={data} userId={userId} userQuery={userQuery} />
+                }
               />
               <Route
                 path={AppRoute.LECTURES}
@@ -273,13 +275,14 @@ export function AppDev() {
                   <LecturesPage
                     data={data}
                     userId={userId}
+                    userQuery={userQuery}
                     level={data.user_level}
                   />
                 }
               />
               <Route
                 path={AppRoute.RECIPES}
-                element={<RecipesPage data={data} userId={userId} />}
+                element={<RecipesPage data={data} userQuery={userQuery} />}
               />
             </Route>
           ) : (

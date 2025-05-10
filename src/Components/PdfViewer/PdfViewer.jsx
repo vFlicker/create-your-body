@@ -9,11 +9,10 @@ import {
   Worker,
 } from '@react-pdf-viewer/core';
 import { pageNavigationPlugin } from '@react-pdf-viewer/page-navigation';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import { BASE_API_URL } from '~/shared/api';
+import { apiService } from '~/shared/api';
 import close from '~/shared/assets/svg/close.svg';
 import fullscreen from '~/shared/assets/svg/fullscreen.svg';
 import left from '~/shared/assets/svg/left.svg';
@@ -23,7 +22,13 @@ import Loader from '../Loader/Loader';
 
 const WORKER_URL = `https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`;
 
-export default function PdfViewer({ pdfId, pdfFile, userId, addLog }) {
+export default function PdfViewer({
+  pdfId,
+  pdfFile,
+  userQuery,
+  userId,
+  addLog,
+}) {
   const [pdfUrl, setPdfUrl] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -51,8 +56,11 @@ export default function PdfViewer({ pdfId, pdfFile, userId, addLog }) {
         } else if (pdfId) {
           // Если передан ID для запроса
           addLog?.('Начало запроса PDF по ID:', pdfId);
-          const response = await axios.get(
-            `${BASE_API_URL}/cms/api/nutrition/client/${pdfId}?tg_id=${userId}`,
+
+          const response = await apiService.getNutritionPlanByPdfId(
+            userQuery,
+            userId,
+            pdfId,
           );
           addLog?.('Ответ сервера на запрос PDF:', response.data);
 
