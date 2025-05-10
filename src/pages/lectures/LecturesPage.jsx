@@ -1,11 +1,10 @@
 import './LecturesPage.css';
 import '../train/TrainPage.css';
 
-import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
-import { BASE_API_URL } from '~/shared/api';
+import { apiService } from '~/shared/api';
 import book from '~/shared/assets/svg/book.svg';
 
 import Loader from '../../Components/Loader/Loader';
@@ -34,10 +33,10 @@ const transition = {
   duration: 0.3,
 };
 
-export function LecturesPage({ level, user_photo }) {
+export function LecturesPage({ userQuery, level, user_photo }) {
   const [[page, direction], setPage] = useState([0, 0]);
   const [selectedWeek, setSelectedWeek] = useState(null);
-  const [selectedLecture, setSelectedLecture] = useState(null);
+  const [selectedLectureId, setSelectedLectureId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [weeksData, setWeeksData] = useState(null);
   const [lecturesData, setLecturesData] = useState(null);
@@ -48,10 +47,7 @@ export function LecturesPage({ level, user_photo }) {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        // Получаем список недель
-        const weeksResponse = await axios.get(
-          `${BASE_API_URL}/cms/api/lectures/client-weeks`,
-        );
+        const weeksResponse = await apiService.getAllLectureWeeks(userQuery);
         const weeks = weeksResponse.data.data || [];
         console.log('Все недели:', weeks);
         setWeeksData(weeks);
@@ -72,8 +68,9 @@ export function LecturesPage({ level, user_photo }) {
 
       setIsLoadingLectures(true);
       try {
-        const response = await axios.get(
-          `${BASE_API_URL}/cms/api/lectures/client-week/${selectedWeek}`,
+        const response = await apiService.getAllLectureByWeek(
+          userQuery,
+          selectedWeek,
         );
 
         setLecturesData(response.data);
@@ -96,12 +93,13 @@ export function LecturesPage({ level, user_photo }) {
 
   useEffect(() => {
     const fetchWeekLectures = async () => {
-      if (!selectedLecture) return;
+      if (!selectedLectureId) return;
 
       setIsLoadingLectures(true);
       try {
-        const response = await axios.get(
-          `${BASE_API_URL}/cms/api/lectures/client/${selectedLecture}`,
+        const response = await apiService.getLectureDetailsById(
+          userQuery,
+          selectedLectureId,
         );
 
         setLecture(response.data);
@@ -114,7 +112,7 @@ export function LecturesPage({ level, user_photo }) {
     };
 
     fetchWeekLectures();
-  }, [selectedLecture]);
+  }, [selectedLectureId]);
 
   const handleWeekSelect = (week) => {
     setSelectedWeek(week);
@@ -122,13 +120,13 @@ export function LecturesPage({ level, user_photo }) {
   };
 
   const handleLectureSelect = (lectureId) => {
-    setSelectedLecture(lectureId);
+    setSelectedLectureId(lectureId);
     setPage([2, 1]);
   };
 
   const handleBack = () => {
     if (page === 2) {
-      setSelectedLecture(null);
+      setSelectedLectureId(null);
       setSelectedWeek(null);
       setPage([0, -1]);
     } else if (page === 1) {
@@ -225,7 +223,7 @@ export function LecturesPage({ level, user_photo }) {
             </motion.div>
           )}
 
-          {page === 2 && selectedLecture && (
+          {page === 2 && selectedLectureId && (
             <motion.div
               key="trainingDetails"
               className="trainingDetailsScreen"

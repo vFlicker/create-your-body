@@ -17,7 +17,7 @@ export function ResultPage({ userQuery }) {
   useEffect(() => {
     const fetchLevel = async () => {
       try {
-        const user = await apiService.getUserByQuery(userQuery);
+        const user = await apiService.getUser(userQuery);
         setLevel(user.user_level);
       } catch (error) {
         console.log(`Ошибка ${error}`);
