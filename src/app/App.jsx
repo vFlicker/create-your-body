@@ -60,7 +60,7 @@ function Layout() {
   );
 }
 
-export function AppDev() {
+export function App() {
   const [userId, setUserId] = useState('');
   const [userQuery, setUserQuery] = useState('');
   const [data, setData] = useState(null);
