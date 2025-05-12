@@ -69,34 +69,18 @@ export function CommunicationPage({ data }) {
           Присоединяйся к нашему сообществу и задавай вопросы. Мы здесь, чтобы
           помочь тебе 💜
         </p>
-        {firstSteamIsPro && (
-          <div className="hiteTgBtn">
-            <TelegramLinkButton
-              username={'+2Y3vGikRzyc2ZWQy'}
-              buttonText="Чат в Telegram 1 поток"
-              icon={chat}
-            />
-            <TelegramLinkButton
-              username={'+WPfyWZoeWik5ODcy'}
-              buttonText="Инфо канал 1 поток"
-              icon={channel}
-            />
-          </div>
-        )}
-        {secondSteamIsPro && (
-          <div className="hiteTgBtn">
-            <TelegramLinkButton
-              username={'+4IrED7hVDX9jMTAy'}
-              buttonText="Чат в Telegram 2 поток"
-              icon={chat}
-            />
-            <TelegramLinkButton
-              username={'+g6mGqc6fOUNjNDdi'}
-              buttonText="Инфо канал 2 поток"
-              icon={channel}
-            />
-          </div>
-        )}
+        <div className="hiteTgBtn">
+          <TelegramLinkButton
+            username="+4IrED7hVDX9jMTAy"
+            buttonText="Чат в Telegram"
+            icon={chat}
+          />
+          <TelegramLinkButton
+            username="+g6mGqc6fOUNjNDdi"
+            buttonText="Инфо канал"
+            icon={channel}
+          />
+        </div>
         <TelegramLinkButton
           username={'zabotaCYB'}
           buttonText="Поддержка"

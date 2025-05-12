@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { apiService, extractErrorLogData } from '~/shared/api';
+import { apiService } from '~/shared/api';
 import edit from '~/shared/assets/svg/editSmall.svg';
 import photoNone from '~/shared/assets/svg/photoNone.svg';
 
