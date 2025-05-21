@@ -3,8 +3,7 @@ import { createRoot } from 'react-dom/client';
 
 import { App } from './app';
 
-const root = createRoot(document.getElementById('root'));
-root.render(
+createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />
   </StrictMode>,
