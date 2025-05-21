@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 
-const BASE_API_URL = 'https://cybapp.ru';
+export const BASE_API_URL = 'https://cybapp.ru';
 
 const createHttpClient = (): AxiosInstance => {
   const api = axios.create({

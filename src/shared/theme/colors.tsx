@@ -28,29 +28,29 @@ const enum Color {
 
 const globalColors = css`
   :root {
-    --violet-50: #E9E5FF;
-    --violet-100: #D3CCFF;
-    --violet-200: #A799FF;
-    --violet-300: #7A66FF;
-    --violet-400: #4E33FF;
-    --violet-500: #C0B6FF;
-    --violet-950: #03001A;
+    --violet-50: #e9e5ff;
+    --violet-100: #d3ccff;
+    --violet-200: #a799ff;
+    --violet-300: #7a66ff;
+    --violet-400: #4e33ff;
+    --violet-500: #c0b6ff;
+    --violet-950: #03001a;
 
-    --green-100: #F0FFCC;
-    --green-200: #E0FF99;
-    --green-500: #CBFF52;
+    --green-100: #f0ffcc;
+    --green-200: #e0ff99;
+    --green-500: #cbff52;
 
     --black: #000000;
-    --black-50: #F2F2F2;
-    --black-100: #E6E6E6;
-    --black-200: #CCCCCC;
-    --black-300: #B3B3B3;
+    --black-50: #f2f2f2;
+    --black-100: #e6e6e6;
+    --black-200: #cccccc;
+    --black-300: #b3b3b3;
     --black-400: #999999;
     --black-600: #666666;
-    --black-700: #4D4D4D;
+    --black-700: #4d4d4d;
     --black-800: #333333;
-    --black-900: #1A1A1A;
-    --black-950: #0D0D0D;
+    --black-900: #1a1a1a;
+    --black-950: #0d0d0d;
   }
 `;
 
