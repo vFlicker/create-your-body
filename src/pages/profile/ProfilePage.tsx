@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 
+import { useUpdateUser } from '~/entities/user';
 import { apiService } from '~/shared/api';
 import zamer from '~/shared/assets/img/zamer.jpeg';
 import chart from '~/shared/assets/svg/chart.svg';
@@ -20,7 +21,7 @@ import PhotoEditor from '../../Components/PhotoEditor/PhotoEditor';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import Selecter from '../../Components/Selecter/Selecter';
 
-export function ProfilePage({ userQuery, data, setData }) {
+export function ProfilePage({ userQuery, data }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(
@@ -112,22 +113,12 @@ export function ProfilePage({ userQuery, data, setData }) {
   const handleHistoryTouchStart = () => setIsHistoryPressed(true);
   const handleHistoryTouchEnd = () => setIsHistoryPressed(false);
 
-  const handleSelecterClick = async (index) => {
+  const { updateUserMutate } = useUpdateUser();
+
+  const handleSelectorClick = async (index) => {
     setActiveIndex(index);
     const level = index === 0 ? 'Новичок' : 'Профи';
-    try {
-      await apiService.updateUser(userQuery, { user_level: level });
-      console.log('Уровень сложности успешно обновлён:', level);
-      const user = await apiService.getUser(userQuery);
-      setData(user);
-    } catch (error) {
-      console.error(
-        'Ошибка при обновлении уровня сложности:',
-        error.response
-          ? JSON.stringify(error.response.data, null, 2)
-          : error.message,
-      );
-    }
+    updateUserMutate({ userQuery, userData: { user_level: level } });
   };
 
   const handleCloseHistory = () => {
@@ -358,7 +349,7 @@ export function ProfilePage({ userQuery, data, setData }) {
                   activeIndex={activeIndex}
                   textOne="Новичок"
                   textTwo="Профи"
-                  onClick={handleSelecterClick}
+                  onClick={handleSelectorClick}
                 />
               )}
             </div>
@@ -579,7 +570,7 @@ export function ProfilePage({ userQuery, data, setData }) {
                   activeIndex={activeIndex}
                   textOne="Новичок"
                   textTwo="Профи"
-                  onClick={handleSelecterClick}
+                  onClick={handleSelectorClick}
                 />
               )}
             </div>

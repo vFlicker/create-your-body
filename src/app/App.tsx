@@ -4,14 +4,9 @@ import './App.css';
 import axios from 'axios';
 import { AnimatePresence } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
-import {
-  BrowserRouter,
-  Outlet,
-  Route,
-  Routes,
-  useLocation,
-} from 'react-router-dom';
+import { Outlet, Route, Routes, useLocation } from 'react-router-dom';
 
+import { useUser } from '~/entities/user';
 import { BeginPage } from '~/pages/begin';
 import { CommunicationPage } from '~/pages/communication';
 import { DashboardPage } from '~/pages/dashboard';
@@ -24,7 +19,7 @@ import { RecipesPage } from '~/pages/recipes';
 import { ResultPage } from '~/pages/result';
 import { StartPage } from '~/pages/start';
 import { TrainPage } from '~/pages/train';
-import { apiService, BASE_API_URL, extractErrorLogData } from '~/shared/api';
+import { BASE_API_URL, extractErrorLogData } from '~/shared/api';
 import { AppRoute } from '~/shared/router';
 
 import ButtonBack from '../Components/Button/ButtonBack';
@@ -69,10 +64,13 @@ function Layout() {
 export function App() {
   const [userId, setUserId] = useState('');
   const [userQuery, setUserQuery] = useState('');
-  const [data, setData] = useState(null);
-  const [base, setBase] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [logs, setLogs] = useState([]);
+
+  /**
+   * Раніше ми мали стейт: [data, setData] = useState(null);
+   */
+  const setData = () => {};
 
   const addLog = useCallback((...args) => {
     const msg = args
@@ -147,27 +145,10 @@ export function App() {
         }
       };
 
-      const addUser = async () => {
-        try {
-          const user = await apiService.getUser(currentUserQuery);
-          addLog('Ответ сервера на запрос пользователя:', user);
-          setData(user);
-          const userTarif = user.user_tarif || '';
-          const isBase = userTarif.trim().includes('Base');
-          setBase(isBase);
-          addLog('Тариф пользователя:', userTarif, 'Base:', isBase);
-        } catch (error) {
-          const errorText = 'Ошибка при получении данных пользователя:';
-          const errorDetails = extractErrorLogData(error);
-          addLog(errorText, JSON.stringify(errorDetails, null, 2));
-          setData(null);
-        }
-      };
-
       const fetchData = async () => {
         try {
           setIsLoading(true);
-          await Promise.all([addImage(), addUser()]);
+          await Promise.all([addImage()]);
         } finally {
           setIsLoading(false);
         }
@@ -180,60 +161,64 @@ export function App() {
     }
   }, []);
 
+  const { user, isUserPending } = useUser(userQuery);
+
   // Проверка: есть ли data и data.user_tarif
-  const hasAccess = data && data.user_tarif && data.user_tarif.trim() !== '';
+  const user_tarif = user?.user_tarif.trim() || '';
+  const hasAccess = user_tarif !== '';
+  const base = user_tarif.includes('Base');
 
   useEffect(() => {
     addLog('Проверка условия доступа:');
-    addLog('data:', data);
-    addLog('data.user_tarif:', data?.user_tarif);
-    addLog('data.user_tarif.trim():', data?.user_tarif?.trim());
-    addLog('data.user_tarif.trim() !== "":', data?.user_tarif?.trim() !== '');
+    addLog('user:', user);
+    addLog('user.user_tarif:', user?.user_tarif);
+    addLog('user.user_tarif.trim():', user?.user_tarif?.trim());
+    addLog('user.user_tarif.trim() !== "":', user?.user_tarif?.trim() !== '');
     addLog('Итоговое условие hasAccess:', hasAccess);
-  }, [data, hasAccess, addLog]);
+  }, [user, hasAccess, addLog]);
 
   return (
     <>
-      {isLoading ? (
+      {isLoading || isUserPending ? (
         <Loader height="100vh" />
       ) : (
         <Routes>
           {hasAccess ? (
-            <Route path="/" element={<Layout data={data} />}>
-              <Route index element={<StartPage data={data} />} />
+            <Route path="/" element={<Layout />}>
+              <Route index element={<StartPage data={user} />} />
               <Route
-                path={AppRoute.QUIZ}
-                element={<QuizPage userQuery={userQuery} data={data} />}
+                path={AppRoute.Quiz}
+                element={<QuizPage userQuery={userQuery} data={user} />}
               />
               <Route
-                path={AppRoute.RESULT}
+                path={AppRoute.Result}
                 element={<ResultPage userQuery={userQuery} userId={userId} />}
               />
               <Route
-                path={AppRoute.DASHBOARD}
+                path={AppRoute.Dashboard}
                 element={
-                  <DashboardPage data={data} userId={userId} base={base} />
+                  <DashboardPage data={user} userId={userId} base={base} />
                 }
               />
               <Route
-                path={AppRoute.BEGIN}
-                element={<BeginPage data={data} userId={userId} />}
+                path={AppRoute.Begin}
+                element={<BeginPage data={user} userId={userId} />}
               />
               <Route
-                path={AppRoute.PROFILE}
+                path={AppRoute.Profile}
                 element={
                   <ProfilePage
-                    data={data}
+                    data={user}
                     userQuery={userQuery}
                     setData={setData}
                   />
                 }
               />
               <Route
-                path={AppRoute.PARAMETERS}
+                path={AppRoute.Parameters}
                 element={
                   <ParametersPage
-                    data={data}
+                    data={user}
                     userId={userId}
                     userQuery={userQuery}
                     setData={setData}
@@ -241,51 +226,51 @@ export function App() {
                 }
               />
               <Route
-                path={AppRoute.RECORD}
+                path={AppRoute.Record}
                 element={
                   <RecordPage
-                    data={data}
+                    data={user}
                     userQuery={userQuery}
                     userId={userId}
                   />
                 }
               />
               <Route
-                path={AppRoute.COMMUNICATION}
-                element={<CommunicationPage data={data} />}
+                path={AppRoute.Communication}
+                element={<CommunicationPage data={user} />}
               />
               <Route
-                path={AppRoute.TRAINING}
+                path={AppRoute.Traning}
                 element={
                   <TrainPage
                     userQuery={userQuery}
-                    data={data}
+                    data={user}
                     userId={userId}
-                    level={data.user_level}
+                    level={user.user_level}
                     base={base}
                   />
                 }
               />
               <Route
-                path={AppRoute.FOOD}
+                path={AppRoute.Food}
                 element={
-                  <FoodPage data={data} userId={userId} userQuery={userQuery} />
+                  <FoodPage data={user} userId={userId} userQuery={userQuery} />
                 }
               />
               <Route
-                path={AppRoute.LECTURES}
+                path={AppRoute.Lectures}
                 element={
                   <LecturesPage
-                    data={data}
+                    data={user}
                     userId={userId}
                     userQuery={userQuery}
-                    level={data.user_level}
+                    level={user.user_level}
                   />
                 }
               />
               <Route
-                path={AppRoute.RECIPES}
-                element={<RecipesPage data={data} userQuery={userQuery} />}
+                path={AppRoute.Recipes}
+                element={<RecipesPage data={user} userQuery={userQuery} />}
               />
             </Route>
           ) : (

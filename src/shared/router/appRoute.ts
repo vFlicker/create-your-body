@@ -1,14 +1,14 @@
-export const AppRoute = {
-  PROFILE: '/profile',
-  DASHBOARD: '/dashboard',
-  TRAINING: '/training',
-  FOOD: '/food',
-  COMMUNICATION: '/communication',
-  QUIZ: '/quiz',
-  RESULT: '/result',
-  BEGIN: '/begin',
-  PARAMETERS: '/parameters',
-  RECORD: '/record',
-  LECTURES: '/lectures',
-  RECIPES: '/recipes',
-};
+export const enum AppRoute {
+  Profile = '/profile',
+  Dashboard = '/dashboard',
+  Traning = '/training',
+  Food = '/food',
+  Communication = '/communication',
+  Quiz = '/quiz',
+  Result = '/result',
+  Begin = '/begin',
+  Parameters = '/parameters',
+  Record = '/record',
+  Lectures = '/lectures',
+  Recipes = '/recipes',
+}

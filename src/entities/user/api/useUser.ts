@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { userApi } from './userApi';
+import { userApiService } from './userApi';
 
 export const useUser = (userQuery: string) => {
   const { data, isPending } = useQuery({
     queryKey: ['current-user'],
-    queryFn: () => userApi.getUser(userQuery),
+    queryFn: () => userApiService.getUser(userQuery),
   });
 
   return { user: data, isUserPending: isPending };

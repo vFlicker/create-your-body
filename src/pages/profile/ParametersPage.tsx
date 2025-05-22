@@ -3,6 +3,8 @@ import './profile.css';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useUpdateUser } from '~/entities/user';
+import { userApiService } from '~/entities/user/api/userApi';
 import { apiService } from '~/shared/api';
 import example from '~/shared/assets/img/example.jpeg';
 import add from '~/shared/assets/svg/addImg.svg';
@@ -12,6 +14,7 @@ import { AppRoute } from '~/shared/router';
 import Button from '../../Components/Button/Button';
 import Loader from '../../Components/Loader/Loader';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
+import { isDateValid } from './profileValidators';
 
 const InputPair = ({
   labels,
@@ -281,28 +284,10 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
     loadUserPhotos();
   }, [userQuery]);
 
-  const isDateValid = (date) => {
-    if (!/^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[012])\.(19|20)\d\d$/.test(date))
-      return false;
-    const [day, month, year] = date.split('.').map(Number);
-    const birthDate = new Date(year, month - 1, day);
-    if (
-      birthDate.getFullYear() !== year ||
-      birthDate.getMonth() + 1 !== month ||
-      birthDate.getDate() !== day
-    )
-      return false;
-    const today = new Date();
-    const minDate = new Date(
-      today.getFullYear() - 4,
-      today.getMonth(),
-      today.getDate(),
-    );
-    return birthDate < minDate;
-  };
+  const { updateUserMutate } = useUpdateUser();
 
   const handleBirthdayChange = (e) => {
-    let value = e.target.value.replace(/[^0-9.]/g, '');
+    const value = e.target.value.replace(/[^0-9.]/g, '');
     const parts = value.split('.');
     if (parts.length > 3) return;
     let newValue = '';
@@ -430,10 +415,12 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
       const [day, month, year] = birthday.split('.');
       const formattedBirthday = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 
-      await apiService.updateUser(userQuery, {
+      const userData = {
         sex: gen === 'm' ? 'male' : 'female',
         born_date: formattedBirthday,
-      });
+      };
+
+      updateUserMutate({ userQuery, userData });
 
       // Обновление параметров
       const parametersData = {
@@ -480,9 +467,10 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
       console.log('Данные сохранены!');
 
       // Обновляем данные пользователя перед переходом
-      const user = await apiService.getUser(userQuery);
+      // TODO: remove this method, we can invalidate cache
+      const user = await userApiService.getUser(userQuery);
       setData(user);
-      navigate(AppRoute.PROFILE);
+      navigate(AppRoute.Profile);
     } catch (error) {
       console.error(
         'Ошибка при сохранении:',

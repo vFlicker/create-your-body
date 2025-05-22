@@ -21,19 +21,19 @@ export default function Nav() {
 
   // Массив с данными для навигации
   const navItems = [
-    { path: AppRoute.DASHBOARD, icon: dashboard, label: 'Меню' },
+    { path: AppRoute.Dashboard, icon: dashboard, label: 'Меню' },
     {
-      path: AppRoute.TRAINING,
+      path: AppRoute.Traning,
       icon: muscles,
       label: 'Тренировки',
     },
     {
-      path: AppRoute.FOOD,
+      path: AppRoute.Food,
       icon: food,
       label: 'Питание',
     },
-    { path: AppRoute.COMMUNICATION, icon: chat, label: 'Общение' },
-    { path: AppRoute.PROFILE, icon: profile, label: 'Профиль' },
+    { path: AppRoute.Communication, icon: chat, label: 'Общение' },
+    { path: AppRoute.Profile, icon: profile, label: 'Профиль' },
   ];
 
   // Сохраняем предыдущий путь при изменении location

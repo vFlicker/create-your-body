@@ -68,13 +68,13 @@ const getUserAdapter = (user: User) => ({
   subscriptions: user.subscriptions,
 });
 
-// const updateUserAdapter = (user) => ({
-//   name: user?.name,
-//   bornDate: user.born_date ? new Date(user.born_date).toISOString() : undefined,
-//   sex: user?.sex,
-//   level: user?.user_level,
-//   phone: user?.phone,
-// });
+const updateUserAdapter = (user) => ({
+  name: user?.name,
+  bornDate: user.born_date ? new Date(user.born_date).toISOString() : undefined,
+  sex: user?.sex,
+  level: user?.user_level,
+  phone: user?.phone,
+});
 
 // const getUserParametersAdapter = (parameters) => {
 //   return parameters.map((item) => ({
@@ -90,7 +90,7 @@ const getUserAdapter = (user: User) => ({
 //   }));
 // };
 
-export const userApi = {
+export const userApiService = {
   getUser: async (userQuery: string) => {
     try {
       const { data } = await httpClient.get(
@@ -104,19 +104,19 @@ export const userApi = {
     }
   },
 
-  // updateUser: async (userQuery, userData) => {
-  //   try {
-  //     const adaptedUserData = updateUserAdapter(userData);
-  //     const response = await httpClient.patch(
-  //       `/v2/api/client/user/me?${userQuery}`,
-  //       adaptedUserData,
-  //     );
-  //     return response;
-  //   } catch (error) {
-  //     console.error('Error updating user:', error);
-  //     throw error;
-  //   }
-  // },
+  updateUser: async ({ userQuery, userData }) => {
+    try {
+      const adaptedUserData = updateUserAdapter(userData);
+      const response = await httpClient.patch(
+        `/v2/api/client/user/me?${userQuery}`,
+        adaptedUserData,
+      );
+      return response;
+    } catch (error) {
+      console.error('Error updating user:', error);
+      throw error;
+    }
+  },
 
   // getUserTransformationPhoto: async (userQuery) => {
   //   try {

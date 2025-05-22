@@ -120,7 +120,7 @@ const getContainerData = (subscriptions) => {
     closed: null,
     buy: false,
     instruction: true,
-    to: AppRoute.BEGIN,
+    to: AppRoute.Begin,
   });
 
   if (firstSteamIsPro) {
@@ -132,7 +132,7 @@ const getContainerData = (subscriptions) => {
         closed: null,
         buy: false,
         instruction: false,
-        to: AppRoute.TRAINING,
+        to: AppRoute.Traning,
       },
       {
         name: 'Питание',
@@ -140,7 +140,7 @@ const getContainerData = (subscriptions) => {
         closed: null,
         buy: false,
         instruction: false,
-        to: AppRoute.FOOD,
+        to: AppRoute.Food,
       },
       {
         name: 'Лекции',
@@ -148,7 +148,7 @@ const getContainerData = (subscriptions) => {
         closed: null,
         buy: false,
         instruction: false,
-        to: AppRoute.LECTURES,
+        to: AppRoute.Lectures,
       },
       {
         name: 'Рецепты',
@@ -156,7 +156,7 @@ const getContainerData = (subscriptions) => {
         closed: null,
         buy: false,
         instruction: false,
-        to: AppRoute.RECIPES,
+        to: AppRoute.Recipes,
       },
     );
   } else if (secondSteamIsPro) {
@@ -168,7 +168,7 @@ const getContainerData = (subscriptions) => {
         closed: null,
         buy: false,
         instruction: false,
-        to: AppRoute.TRAINING,
+        to: AppRoute.Traning,
       },
       {
         name: 'Питание',
@@ -176,7 +176,7 @@ const getContainerData = (subscriptions) => {
         closed: null,
         buy: false,
         instruction: false,
-        to: AppRoute.FOOD,
+        to: AppRoute.Food,
       },
       {
         name: 'Лекции',
@@ -184,7 +184,7 @@ const getContainerData = (subscriptions) => {
         closed: null,
         buy: false,
         instruction: false,
-        to: AppRoute.LECTURES,
+        to: AppRoute.Lectures,
       },
       {
         name: 'Рецепты',
@@ -192,7 +192,7 @@ const getContainerData = (subscriptions) => {
         closed: null,
         buy: false,
         instruction: false,
-        to: AppRoute.RECIPES,
+        to: AppRoute.Recipes,
       },
     );
   } else if (firstSteamBase) {
@@ -204,7 +204,7 @@ const getContainerData = (subscriptions) => {
         closed: null,
         buy: false,
         instruction: false,
-        to: AppRoute.TRAINING,
+        to: AppRoute.Traning,
       },
       {
         name: 'Питание',
@@ -212,7 +212,7 @@ const getContainerData = (subscriptions) => {
         closed: null,
         buy: false,
         instruction: false,
-        to: AppRoute.FOOD,
+        to: AppRoute.Food,
       },
       {
         name: 'Лекции',
@@ -220,7 +220,7 @@ const getContainerData = (subscriptions) => {
         closed: '',
         buy: true,
         instruction: false,
-        to: AppRoute.LECTURES,
+        to: AppRoute.Lectures,
       },
       {
         name: 'Рецепты',
@@ -228,7 +228,7 @@ const getContainerData = (subscriptions) => {
         closed: '',
         buy: true,
         instruction: false,
-        to: AppRoute.RECIPES,
+        to: AppRoute.Recipes,
       },
     );
   } else if (secondSteamBase) {
@@ -240,7 +240,7 @@ const getContainerData = (subscriptions) => {
         closed: null,
         buy: false,
         instruction: false,
-        to: AppRoute.TRAINING,
+        to: AppRoute.Traning,
       },
       {
         name: 'Питание',
@@ -248,7 +248,7 @@ const getContainerData = (subscriptions) => {
         closed: null,
         buy: false,
         instruction: false,
-        to: AppRoute.FOOD,
+        to: AppRoute.Food,
       },
       {
         name: 'Лекции',
@@ -256,7 +256,7 @@ const getContainerData = (subscriptions) => {
         closed: '',
         buy: true,
         instruction: false,
-        to: AppRoute.LECTURES,
+        to: AppRoute.Lectures,
       },
       {
         name: 'Рецепты',
@@ -264,7 +264,7 @@ const getContainerData = (subscriptions) => {
         closed: '',
         buy: true,
         instruction: false,
-        to: AppRoute.RECIPES,
+        to: AppRoute.Recipes,
       },
     );
   }

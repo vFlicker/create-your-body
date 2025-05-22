@@ -32,7 +32,7 @@ export default function ProfileBtn({ level, user_photo }) {
     <div className="profilePlash">
       <button
         className="profileBtn"
-        onClick={() => navigate(AppRoute.PROFILE)}
+        onClick={() => navigate(AppRoute.Profile)}
         style={{ borderColor: level === 'Профи' ? '#A799FF' : '' }}
       >
         {isLoading ? (

@@ -1,40 +1,11 @@
 import {
   addUserParametersAdapter,
-  getUserAdapter,
   getUserParametersAdapter,
-  updateUserAdapter,
   updateUserParametersAdapter,
 } from './dataAdapter';
 import { httpClient } from './httpClient';
 
 export const apiService = {
-  getUser: async (userQuery) => {
-    try {
-      const { data } = await httpClient.get(
-        `/v2/api/client/user/me?${userQuery}`,
-      );
-      const adaptedUser = getUserAdapter(data.data);
-      return adaptedUser;
-    } catch (error) {
-      console.error('Error fetching user:', error);
-      throw error;
-    }
-  },
-
-  updateUser: async (userQuery, userData) => {
-    try {
-      const adaptedUserData = updateUserAdapter(userData);
-      const response = await httpClient.patch(
-        `/v2/api/client/user/me?${userQuery}`,
-        adaptedUserData,
-      );
-      return response;
-    } catch (error) {
-      console.error('Error updating user:', error);
-      throw error;
-    }
-  },
-
   getUserTransformationPhoto: async (userQuery) => {
     try {
       const response = await httpClient.get(

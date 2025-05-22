@@ -1,37 +1,27 @@
 import './ResultPage.css';
 
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { apiService } from '~/shared/api';
+import { useUser } from '~/entities/user';
 import result from '~/shared/assets/img/result.jpg';
 import muscles from '~/shared/assets/svg/musclesBlack.svg';
 import settings from '~/shared/assets/svg/settings.svg';
 
 import Button from '../../Components/Button/Button';
 
+const description = {
+  Профи:
+    'У вас уверенный уровень подготовки,и вы готовы к интенсивным тренировкам. Наши программы помогут вам развить силу, выносливость и достичь новых спортивных целей!',
+  Новичок:
+    'Вы только начинаете свой путь в фитнесе. Мы подготовили для вас программы с упором на технику, постепенную адаптацию и безопасное повышение нагрузки.',
+};
+
 export function ResultPage({ userQuery }) {
   const navigate = useNavigate();
-  const [level, setLevel] = useState('pro');
 
-  useEffect(() => {
-    const fetchLevel = async () => {
-      try {
-        const user = await apiService.getUser(userQuery);
-        setLevel(user.user_level);
-      } catch (error) {
-        console.log(`Ошибка ${error}`);
-      }
-    };
-    fetchLevel();
-  }, [userQuery]);
+  const { user } = useUser(userQuery);
+  const level = user?.user_level || 'pro';
 
-  const description = {
-    Профи:
-      'У вас уверенный уровень подготовки,и вы готовы к интенсивным тренировкам. Наши программы помогут вам развить силу, выносливость и достичь новых спортивных целей!',
-    Новичок:
-      'Вы только начинаете свой путь в фитнесе. Мы подготовили для вас программы с упором на технику, постепенную адаптацию и безопасное повышение нагрузки.',
-  };
   return (
     <div className="resultPage">
       <div className="resultImgContainer">

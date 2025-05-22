@@ -2,69 +2,23 @@ import './QuizPage.css';
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-import { apiService } from '~/shared/api';
+import { useUpdateUser } from '~/entities/user';
+import { AppRoute } from '~/shared/router';
 
 import Button from '../../Components/Button/Button';
 import ButtonBack from '../../Components/Button/ButtonBack';
 import Progress from '../../Components/Progress/Progress';
-
-const slideVariants = {
-  enter: (direction) => ({
-    x: direction === 'forward' ? 1000 : -1000,
-    scale: 0.8,
-    rotate: direction === 'forward' ? -5 : 5,
-  }),
-  center: {
-    x: 0,
-    scale: 1,
-    rotate: 0,
-  },
-  exit: (direction) => ({
-    x: direction === 'forward' ? -1000 : 1000,
-    scale: 0.8,
-    rotate: direction === 'forward' ? 5 : -5,
-  }),
-};
-
-const transition = {
-  duration: 0.5,
-  ease: [0.43, 0.13, 0.23, 0.96],
-  scale: {
-    duration: 0.5,
-    ease: 'easeOut',
-  },
-  rotate: {
-    duration: 0.5,
-    ease: 'easeInOut',
-  },
-};
-
-const titleVariants = {
-  enter: (direction) => ({
-    x: direction === 'forward' ? 100 : -100,
-    opacity: 0,
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
-  },
-  exit: (direction) => ({
-    x: direction === 'forward' ? -100 : 100,
-    opacity: 0,
-  }),
-};
-
-const titleTransition = {
-  duration: 0.5,
-  ease: [0.43, 0.13, 0.23, 0.96],
-};
+import {
+  slideVariants,
+  titleTransition,
+  titleVariants,
+  transition,
+} from './quizConfig';
+import { quizData } from './quizData';
+import { isDateValid, validateName, validatePhone } from './quizValidators';
 
 export function QuizPage({ data, userQuery }) {
-  console.log({ userQuery });
-
-  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [direction, setDirection] = useState('forward');
   const [name, setName] = useState('');
@@ -103,179 +57,6 @@ export function QuizPage({ data, userQuery }) {
     }
   }, [data]);
 
-  const quizData = [
-    {
-      question:
-        'Обладаете ли вы достаточным уровнем знаний и пониманием выполнения базовых движений?',
-      options: [
-        { text: 'Да, знаю технику и выполняю уверенно', img: '✅', level: 1 },
-        { text: 'Нет, не уверен(а) в технике', img: '❌', level: 2 },
-      ],
-    },
-    {
-      question: 'Как часто вы тренировались в последние 3 месяца?',
-      options: [
-        { text: 'Регулярно (3-5 раз в неделю)', img: '🏋️‍♀️', level: 1 },
-        { text: 'Иногда (1-2 раза в неделю)', img: '🛋️', level: 2 },
-      ],
-    },
-    {
-      question: 'Как вы оцениваете свою силу?',
-      options: [
-        { text: 'Высокая', img: '💪', level: 1 },
-        { text: 'Средняя', img: '🫠', level: 2 },
-      ],
-    },
-    {
-      question: 'Как оцениваете свою выносливость?',
-      options: [
-        { text: 'Высокая', img: '🚀', level: 1 },
-        { text: 'Средняя', img: '😓', level: 2 },
-      ],
-    },
-    {
-      question:
-        'Какой у вас уровень физической активности в повседневной жизни?',
-      options: [
-        { text: 'Высокий', img: '🚶‍♀️', level: 1 },
-        { text: 'Средний', img: '🛋️', level: 2 },
-      ],
-    },
-    {
-      question: 'Как вы чувствуете себя после тренировки?',
-      options: [
-        { text: 'Энергичным', img: '😌', level: 1 },
-        { text: 'Уставшим', img: '😰', level: 2 },
-      ],
-    },
-    {
-      question: 'Какой уровень сложности тренировок вам комфортен?',
-      options: [
-        { text: 'Высокий', img: '🚀', level: 1 },
-        { text: 'Средний', img: '🥵', level: 2 },
-      ],
-    },
-  ];
-
-  const isDateValid = (date) => {
-    if (!/^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[012])\.(19|20)\d\d$/.test(date))
-      return false;
-    const [day, month, year] = date.split('.').map(Number);
-    const birthDate = new Date(year, month - 1, day);
-    if (
-      birthDate.getFullYear() !== year ||
-      birthDate.getMonth() + 1 !== month ||
-      birthDate.getDate() !== day
-    )
-      return false;
-    const today = new Date();
-    const minDate = new Date(
-      today.getFullYear() - 4,
-      today.getMonth(),
-      today.getDate(),
-    );
-    return birthDate < minDate;
-  };
-
-  const validatePhone = (phone) => {
-    const cleanedPhone = phone.replace(/[^\d+]/g, '');
-
-    if (cleanedPhone.startsWith('7') || cleanedPhone.startsWith('8')) {
-      if (cleanedPhone.length !== 11) {
-        return 'Номер телефона должен содержать 11 цифр';
-      }
-      return '';
-    }
-
-    if (cleanedPhone.startsWith('+7')) {
-      if (cleanedPhone.length !== 12) {
-        return 'Номер телефона должен содержать 12 цифр';
-      }
-      return '';
-    }
-
-    if (cleanedPhone.startsWith('+')) {
-      if (cleanedPhone.length < 10 || cleanedPhone.length > 15) {
-        return 'Номер телефона должен содержать от 10 до 15 символов';
-      }
-      return '';
-    }
-
-    return 'Введите корректный номер телефона';
-  };
-
-  const handlePhoneChange = (e) => {
-    let value = e.target.value.replace(/[^\d+]/g, '');
-
-    if (value.startsWith('+')) {
-      if (value.length > 15) return;
-      setTel(value);
-      setTelError(validatePhone(value));
-      return;
-    }
-
-    if (value.length === 1) {
-      if (value === '7' || value === '+') value = '+7';
-      else if (value === '8') value = '8';
-      else value = `+7${value}`;
-    }
-
-    const maxLength = value.startsWith('+') ? 12 : 11;
-    if (value.length > maxLength) return;
-
-    setTel(value);
-    setTelError(validatePhone(value));
-
-    if (value.length === maxLength && telRef.current) {
-      telRef.current.blur();
-    }
-  };
-
-  const validateName = (name) => {
-    if (!name.trim()) {
-      return 'Введите ваше имя';
-    }
-    if (name.length < 2) {
-      return 'Имя должно содержать минимум 2 символа';
-    }
-    if (name.length > 20) {
-      return 'Имя не должно превышать 20 символов';
-    }
-    if (!/^[а-яА-Яa-zA-Z\s]+$/.test(name)) {
-      return 'Имя может содержать только буквы';
-    }
-    return '';
-  };
-
-  const handleNameChange = (e) => {
-    const value = e.target.value;
-    const sanitizedValue = value.replace(/[^а-яА-Яa-zA-Z\s]/g, '');
-    setName(sanitizedValue);
-    setNameError(validateName(sanitizedValue));
-  };
-
-  const handleBirthdayChange = (e) => {
-    let value = e.target.value.replace(/[^0-9.]/g, '');
-    const parts = value.split('.');
-    if (parts.length > 3) return;
-    let newValue = '';
-    for (let i = 0; i < value.length; i++) {
-      if (i === 2 || i === 5) newValue += '.';
-      newValue += value[i];
-    }
-    newValue = newValue.replace(/\.+/g, '.');
-    if (newValue.length > 10) return;
-
-    setBirthday(newValue);
-    setBirthdayError(
-      isDateValid(newValue) ? '' : 'Введите корректную дату рождения',
-    );
-
-    if (newValue.length === 10 && birthdayRef.current) {
-      birthdayRef.current.blur();
-    }
-  };
-
   useEffect(() => {
     if (step === 1) {
       const isNameValid = !nameError && name.trim().length > 0;
@@ -305,6 +86,64 @@ export function QuizPage({ data, userQuery }) {
       setIsMobile(platform !== 'tdesktop' && platform !== 'macos');
     }
   }, []);
+
+  const { updateUserMutate } = useUpdateUser(AppRoute.Result);
+
+  const handlePhoneChange = (e) => {
+    let value = e.target.value.replace(/[^\d+]/g, '');
+
+    if (value.startsWith('+')) {
+      if (value.length > 15) return;
+      setTel(value);
+      setTelError(validatePhone(value));
+      return;
+    }
+
+    if (value.length === 1) {
+      if (value === '7' || value === '+') value = '+7';
+      else if (value === '8') value = '8';
+      else value = `+7${value}`;
+    }
+
+    const maxLength = value.startsWith('+') ? 12 : 11;
+    if (value.length > maxLength) return;
+
+    setTel(value);
+    setTelError(validatePhone(value));
+
+    if (value.length === maxLength && telRef.current) {
+      telRef.current.blur();
+    }
+  };
+
+  const handleNameChange = (e) => {
+    const value = e.target.value;
+    const sanitizedValue = value.replace(/[^а-яА-Яa-zA-Z\s]/g, '');
+    setName(sanitizedValue);
+    setNameError(validateName(sanitizedValue));
+  };
+
+  const handleBirthdayChange = (e) => {
+    const value = e.target.value.replace(/[^0-9.]/g, '');
+    const parts = value.split('.');
+    if (parts.length > 3) return;
+    let newValue = '';
+    for (let i = 0; i < value.length; i++) {
+      if (i === 2 || i === 5) newValue += '.';
+      newValue += value[i];
+    }
+    newValue = newValue.replace(/\.+/g, '.');
+    if (newValue.length > 10) return;
+
+    setBirthday(newValue);
+    setBirthdayError(
+      isDateValid(newValue) ? '' : 'Введите корректную дату рождения',
+    );
+
+    if (newValue.length === 10 && birthdayRef.current) {
+      birthdayRef.current.blur();
+    }
+  };
 
   const handleFocus = (e) => {
     if (!isMobile) return;
@@ -379,9 +218,8 @@ export function QuizPage({ data, userQuery }) {
             throw new Error(`Некорректные поля: ${invalidFields.join(', ')}`);
           }
 
-          await apiService.updateUser(userQuery, userData);
+          updateUserMutate({ userQuery, userData });
           console.log('Данные успешно обновлены');
-          navigate('/result');
         } catch (error) {
           console.error(
             'Ошибка при обновлении данных:',
