@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 
 import { useUpdateUser } from '~/entities/user';
-import { apiService } from '~/shared/api';
+import { useBodyMeasurements } from '~/entities/user/api/useBodyMeasurements';
 import zamer from '~/shared/assets/img/zamer.jpeg';
 import chart from '~/shared/assets/svg/chart.svg';
 import close from '~/shared/assets/svg/close.svg';
@@ -27,12 +27,8 @@ export function ProfilePage({ userQuery, data }) {
   const [activeIndex, setActiveIndex] = useState(
     data.user_level === 'Новичок' ? 0 : 1,
   );
-  const [lastParameters, setLastParameters] = useState(null);
-  const [firstParameters, setFirstParameters] = useState(null);
-  const [dataParameters, setDataParameters] = useState(null);
   const [isPressed, setIsPressed] = useState(false);
   const [isHistoryPressed, setIsHistoryPressed] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
@@ -50,46 +46,14 @@ export function ProfilePage({ userQuery, data }) {
     return diff > 0 ? `+${diff}` : diff;
   };
 
+  const { bodyMeasurements, isBodyMeasurementsPending } =
+    useBodyMeasurements(userQuery);
+
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.setBackgroundColor('#F2F2F2');
     }
-
-    const fetchUserData = async () => {
-      try {
-        setIsLoading(true);
-        const parameters = await apiService.getUserParameters(userQuery);
-
-        // Сортируем по дате создания
-        const sortedParameters = parameters.sort(
-          (a, b) => new Date(a.created_at) - new Date(b.created_at),
-        );
-        console.log('Отсортированные параметры:', sortedParameters);
-        setDataParameters(sortedParameters);
-
-        // Сохраняем первое и последнее измерение только если есть больше одного измерения
-        if (sortedParameters.length > 1) {
-          setFirstParameters(sortedParameters[0]);
-          setLastParameters(sortedParameters[sortedParameters.length - 1]);
-        } else if (sortedParameters.length === 1) {
-          setLastParameters(sortedParameters[0]);
-          setFirstParameters(null);
-        }
-      } catch (err) {
-        console.error(
-          'Ошибка при получении параметров:',
-          err.response
-            ? JSON.stringify(err.response.data, null, 2)
-            : err.message,
-        );
-        setLastParameters(null);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, [userQuery]);
+  }, []);
 
   useEffect(() => {
     if (historyOpen) {
@@ -129,10 +93,21 @@ export function ProfilePage({ userQuery, data }) {
     }, 800); // Время анимации
   };
 
+  let firstParameters = bodyMeasurements && bodyMeasurements.at(-1);
+  let lastParameters = bodyMeasurements && bodyMeasurements[0];
+  if (bodyMeasurements?.length === 1) {
+    firstParameters = null;
+    lastParameters = bodyMeasurements[0];
+  }
+
   return (
     <div
       className="profilePage"
-      style={{ height: isLoading ? 'calc(100vh - 160px)' : 'fit-content' }}
+      style={{
+        height: isBodyMeasurementsPending
+          ? 'calc(100vh - 160px)'
+          : 'fit-content',
+      }}
     >
       {historyOpen &&
         createPortal(
@@ -145,8 +120,8 @@ export function ProfilePage({ userQuery, data }) {
                 <img src={exit} alt="Выйти" />
               </button>
               <div className="profileHistoryList">
-                {dataParameters &&
-                  dataParameters.map((parameter, index) => (
+                {bodyMeasurements &&
+                  bodyMeasurements.map((parameter, index) => (
                     <div key={index} className="profileHistoryItem">
                       <div className="historyDate">
                         <p>{formatDate(parameter.created_at)}</p>
@@ -160,7 +135,7 @@ export function ProfilePage({ userQuery, data }) {
                               <span
                                 className={
                                   parameter.chest -
-                                    dataParameters[index - 1].chest >
+                                    bodyMeasurements[index - 1].chest >
                                   0
                                     ? 'positive'
                                     : 'negative'
@@ -169,7 +144,7 @@ export function ProfilePage({ userQuery, data }) {
                               >
                                 {calculateDifference(
                                   parameter.chest,
-                                  dataParameters[index - 1].chest,
+                                  bodyMeasurements[index - 1].chest,
                                 )}
                               </span>
                             )}
@@ -183,7 +158,7 @@ export function ProfilePage({ userQuery, data }) {
                               <span
                                 className={
                                   parameter.waist -
-                                    dataParameters[index - 1].waist >
+                                    bodyMeasurements[index - 1].waist >
                                   0
                                     ? 'positive'
                                     : 'negative'
@@ -192,7 +167,7 @@ export function ProfilePage({ userQuery, data }) {
                               >
                                 {calculateDifference(
                                   parameter.waist,
-                                  dataParameters[index - 1].waist,
+                                  bodyMeasurements[index - 1].waist,
                                 )}
                               </span>
                             )}
@@ -206,7 +181,7 @@ export function ProfilePage({ userQuery, data }) {
                               <span
                                 className={
                                   parameter.abdominal_circumference -
-                                    dataParameters[index - 1]
+                                    bodyMeasurements[index - 1]
                                       .abdominal_circumference >
                                   0
                                     ? 'positive'
@@ -216,7 +191,7 @@ export function ProfilePage({ userQuery, data }) {
                               >
                                 {calculateDifference(
                                   parameter.abdominal_circumference,
-                                  dataParameters[index - 1]
+                                  bodyMeasurements[index - 1]
                                     .abdominal_circumference,
                                 )}
                               </span>
@@ -231,7 +206,7 @@ export function ProfilePage({ userQuery, data }) {
                               <span
                                 className={
                                   parameter.hips -
-                                    dataParameters[index - 1].hips >
+                                    bodyMeasurements[index - 1].hips >
                                   0
                                     ? 'positive'
                                     : 'negative'
@@ -240,7 +215,7 @@ export function ProfilePage({ userQuery, data }) {
                               >
                                 {calculateDifference(
                                   parameter.hips,
-                                  dataParameters[index - 1].hips,
+                                  bodyMeasurements[index - 1].hips,
                                 )}
                               </span>
                             )}
@@ -254,7 +229,7 @@ export function ProfilePage({ userQuery, data }) {
                               <span
                                 className={
                                   parameter.legs -
-                                    dataParameters[index - 1].legs >
+                                    bodyMeasurements[index - 1].legs >
                                   0
                                     ? 'positive'
                                     : 'negative'
@@ -263,7 +238,7 @@ export function ProfilePage({ userQuery, data }) {
                               >
                                 {calculateDifference(
                                   parameter.legs,
-                                  dataParameters[index - 1].legs,
+                                  bodyMeasurements[index - 1].legs,
                                 )}
                               </span>
                             )}
@@ -277,7 +252,7 @@ export function ProfilePage({ userQuery, data }) {
                               <span
                                 className={
                                   parameter.weight -
-                                    dataParameters[index - 1].weight >
+                                    bodyMeasurements[index - 1].weight >
                                   0
                                     ? 'positive'
                                     : 'negative'
@@ -286,7 +261,7 @@ export function ProfilePage({ userQuery, data }) {
                               >
                                 {calculateDifference(
                                   parameter.weight,
-                                  dataParameters[index - 1].weight,
+                                  bodyMeasurements[index - 1].weight,
                                 )}
                               </span>
                             )}
@@ -307,9 +282,9 @@ export function ProfilePage({ userQuery, data }) {
 
       <div
         className="profileContainer"
-        style={{ height: isLoading ? '100%' : 'auto' }}
+        style={{ height: isBodyMeasurementsPending ? '100%' : 'auto' }}
       >
-        {isLoading ? (
+        {isBodyMeasurementsPending ? (
           <Loader />
         ) : lastParameters ? (
           <div className="dataHave">
@@ -525,13 +500,11 @@ export function ProfilePage({ userQuery, data }) {
               <div className="photosBefore">
                 <PhotoEditor
                   label="Фото до"
-                  initialPhoto={''}
                   userQuery={userQuery}
                   stage="before"
                 />
                 <PhotoEditor
                   label="Фото после"
-                  initialPhoto={''}
                   userQuery={userQuery}
                   stage="after"
                 />

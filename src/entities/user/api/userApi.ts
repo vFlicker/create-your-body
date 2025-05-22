@@ -76,19 +76,37 @@ const updateUserAdapter = (user) => ({
   phone: user?.phone,
 });
 
-// const getUserParametersAdapter = (parameters) => {
-//   return parameters.map((item) => ({
-//     abdominal_circumference: item.abdominalCircumference,
-//     chest: item.chest,
-//     created_at: item.createdAt,
-//     hips: item.hips,
-//     id: item.id,
-//     legs: item.legs,
-//     tg_id: item.userId,
-//     waist: item.waist,
-//     weight: item.weight,
-//   }));
-// };
+export const getParametersAdapter = (parameters) => {
+  return parameters.map((item) => ({
+    abdominal_circumference: item.abdominalCircumference,
+    chest: item.chest,
+    created_at: item.createdAt,
+    hips: item.hips,
+    id: item.id,
+    legs: item.legs,
+    tg_id: item.userId,
+    waist: item.waist,
+    weight: item.weight,
+  }));
+};
+
+export const addParametersAdapter = (parameters) => ({
+  waist: parameters.waist,
+  legs: parameters.legs,
+  weight: parameters.weight,
+  chest: parameters.chest,
+  abdominalCircumference: parameters.abdominal_circumference,
+  hips: parameters.hips,
+});
+
+export const updateParametersAdapter = (parameters) => ({
+  waist: parameters.waist,
+  legs: parameters.legs,
+  weight: parameters.weight,
+  chest: parameters.chest,
+  abdominalCircumference: parameters.abdominal_circumference,
+  hips: parameters.hips,
+});
 
 export const userApiService = {
   getUser: async (userQuery: string) => {
@@ -118,81 +136,112 @@ export const userApiService = {
     }
   },
 
-  // getUserTransformationPhoto: async (userQuery) => {
-  //   try {
-  //     const response = await httpClient.get(
-  //       `/v2/api/client/user/photos?${userQuery}`,
-  //     );
-  //     return response.data.data;
-  //   } catch (error) {
-  //     console.error('Error fetching user photo transformation:', error);
-  //     throw error;
-  //   }
-  // },
+  getTransformationPhotos: async (userQuery) => {
+    try {
+      const response = await httpClient.get(
+        `/v2/api/client/user/photos?${userQuery}`,
+      );
+      return response.data.data;
+    } catch (error) {
+      console.error('Error fetching user photo transformation:', error);
+      throw error;
+    }
+  },
 
-  // /**
-  //  * @param {string} userQuery
-  //  * @param {FormData} formData
-  //  * @param {'after' | 'before'} stage
-  //  */
-  // updateUserTransformationPhoto: async (userQuery, formData, stage) => {
-  //   try {
-  //     const response = await httpClient.post(
-  //       `/v2/api/client/user/photos/${stage}?${userQuery}`,
-  //       formData,
-  //       {
-  //         headers: {
-  //           'Content-Type': 'multipart/form-data',
-  //         },
-  //       },
-  //     );
-  //     return response;
-  //   } catch (error) {
-  //     console.error('Error updating user photo transformation:', error);
-  //     throw error;
-  //   }
-  // },
+  updateTransformationPhotos: async ({
+    userQuery,
+    formData,
+    stage,
+  }: {
+    userQuery: string;
+    formData: FormData;
+    stage: string;
+  }) => {
+    try {
+      const response = await httpClient.post(
+        `/v2/api/client/user/photos/${stage}?${userQuery}`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+      return response;
+    } catch (error) {
+      console.error('Error updating user photo transformation:', error);
+      throw error;
+    }
+  },
 
-  // addUserBodyParameters: async (userQuery, parameters) => {
-  //   try {
-  //     const adaptedParameters = addUserParametersAdapter(parameters);
-  //     const response = await httpClient.post(
-  //       `/v2/api/client/user/measurements?${userQuery}`,
-  //       adaptedParameters,
-  //     );
-  //     return response;
-  //   } catch (error) {
-  //     console.error('Error adding user parameters:', error);
-  //     throw error;
-  //   }
-  // },
+  createBodyMeasurements: async ({
+    userQuery,
+    parameters,
+  }: {
+    userQuery: string;
+    parameters: {
+      waist: number;
+      legs: number;
+      weight: number;
+      chest: number;
+      abdominal_circumference: number;
+      hips: number;
+    };
+  }) => {
+    try {
+      const adaptedParameters = addParametersAdapter(parameters);
+      const response = await httpClient.post(
+        `/v2/api/client/user/measurements?${userQuery}`,
+        adaptedParameters,
+      );
+      return response;
+    } catch (error) {
+      console.error('Error adding user parameters:', error);
+      throw error;
+    }
+  },
 
-  // getUserParameters: async (userQuery) => {
-  //   try {
-  //     const response = await httpClient.get(
-  //       `/v2/api/client/user/measurements?${userQuery}`,
-  //     );
-  //     const adaptedUserParameters = getUserParametersAdapter(
-  //       response.data.data.measurements,
-  //     );
-  //     return adaptedUserParameters;
-  //   } catch (error) {
-  //     console.error('Error fetching user parameters:', error);
-  //     throw error;
-  //   }
-  // },
+  getBodyMeasurements: async (userQuery) => {
+    try {
+      const response = await httpClient.get(
+        `/v2/api/client/user/measurements?${userQuery}`,
+      );
+      const adaptedUserParameters = getParametersAdapter(
+        response.data.data.measurements,
+      );
+      return adaptedUserParameters;
+    } catch (error) {
+      console.error('Error fetching user parameters:', error);
+      throw error;
+    }
+  },
 
-  // updateUserBodyParameters: async (userQuery, id, parameters) => {
-  //   try {
-  //     const adaptedParameters = updateUserParametersAdapter(parameters);
-  //     const response = await httpClient.put(
-  //       `/v2/api/client/user/measurements/${id}?${userQuery}`,
-  //       adaptedParameters,
-  //     );
-  //     return response;
-  //   } catch (error) {
-  //     console.error('Error updating user parameters:', error);
-  //     throw error;
-  //   }
-  // },
+  updateBodyMeasurements: async ({
+    userQuery,
+    id,
+    parameters,
+  }: {
+    userQuery: string;
+    id: number;
+    parameters: {
+      waist: number;
+      legs: number;
+      weight: number;
+      chest: number;
+      abdominal_circumference: number;
+      hips: number;
+    };
+  }) => {
+    try {
+      const adaptedParameters = updateParametersAdapter(parameters);
+      const response = await httpClient.put(
+        `/v2/api/client/user/measurements/${id}?${userQuery}`,
+        adaptedParameters,
+      );
+      return response;
+    } catch (error) {
+      console.error('Error updating user parameters:', error);
+      throw error;
+    }
+  },
 };

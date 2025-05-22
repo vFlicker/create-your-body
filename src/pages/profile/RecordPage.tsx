@@ -3,7 +3,7 @@ import './profile.css';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { apiService } from '~/shared/api';
+import { useCreateBodyMeasurements } from '~/entities/user/api/useCreateBodyMeasurements';
 
 // import Selecter from '../../Components/Selecter/Selecter';
 // import ButtonEdit from '../../Components/Button/ButtonEdit';
@@ -55,6 +55,8 @@ export function RecordPage({ userQuery, userId, data }) {
     }
   }, []);
 
+  const { createBodyMeasurementsMutate } = useCreateBodyMeasurements();
+
   // const handleSelecterClick = (index) => {
   //   setActiveIndex(index);
   // };
@@ -76,7 +78,10 @@ export function RecordPage({ userQuery, userId, data }) {
         weight: parseInt(formData.weight, 10) || 0,
       };
 
-      await apiService.addUserBodyParameters(userQuery, userBodyParameters);
+      createBodyMeasurementsMutate({
+        userQuery,
+        parameters: userBodyParameters,
+      });
 
       console.log('Данные сохранены', formData);
       navigate('/profile');

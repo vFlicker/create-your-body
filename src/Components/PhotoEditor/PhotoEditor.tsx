@@ -1,34 +1,23 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 
-import { apiService } from '~/shared/api';
+import { useTransformationPhotos } from '~/entities/user/api/useTransformationPhoto';
+import { useUpdateTransformationPhotos } from '~/entities/user/api/useUpdateTransformationPhotos';
 import edit from '~/shared/assets/svg/editSmall.svg';
 import photoNone from '~/shared/assets/svg/photoNone.svg';
 
 import ButtonEdit from '../Button/ButtonEdit';
 import Loader from '../Loader/Loader';
 
-export default function PhotoEditor({ label, initialPhoto, userQuery, stage }) {
+export default function PhotoEditor({ label, userQuery, stage }) {
   const fileInputRef = useRef(null);
-  const [photo, setPhoto] = useState(initialPhoto);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isUploading, setIsUploading] = useState(false);
 
-  useEffect(() => {
-    const fetchPhoto = async () => {
-      setIsLoading(true);
-      try {
-        const data = await apiService.getUserTransformationPhoto(userQuery);
-        const photoData = data[stage];
-        if (photoData) setPhoto(photoData.url);
-      } catch (error) {
-        console.error(error);
-        setPhoto(initialPhoto);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchPhoto();
-  }, [userQuery, stage, label, initialPhoto]);
+  const { isTransformationPhotosPending, transformationPhotos } =
+    useTransformationPhotos(userQuery);
+
+  const {
+    updateTransformationPhotosMutate,
+    isUpdateTransformationPhotosPending,
+  } = useUpdateTransformationPhotos();
 
   const handleEditClick = () => {
     fileInputRef.current?.click();
@@ -42,8 +31,6 @@ export default function PhotoEditor({ label, initialPhoto, userQuery, stage }) {
           window.Telegram.WebApp.showAlert(
             'Максимальный размер фотографии 2 МБ',
           );
-        } else {
-          alert('Максимальный размер фотографии 2 МБ');
         }
         return;
       }
@@ -51,8 +38,6 @@ export default function PhotoEditor({ label, initialPhoto, userQuery, stage }) {
       if (!file.type.startsWith('image/')) {
         if (window.Telegram?.WebApp) {
           window.Telegram.WebApp.showAlert('Пожалуйста, загрузите изображение');
-        } else {
-          alert('Пожалуйста, загрузите изображение');
         }
         return;
       }
@@ -61,50 +46,33 @@ export default function PhotoEditor({ label, initialPhoto, userQuery, stage }) {
       formData.append('image', file);
 
       try {
-        setIsUploading(true);
-
-        console.log('Отправка POST запроса для обновления фото');
-
-        await apiService.updateUserTransformationPhoto(
+        updateTransformationPhotosMutate({
           userQuery,
           formData,
           stage,
-        );
-
-        setPhoto(URL.createObjectURL(file));
-        console.log(`${label} успешно обновлено!`);
-      } catch (error) {
-        console.error('Подробная информация об ошибке при загрузке:', {
-          message: error.message,
-          status: error.response?.status,
-          statusText: error.response?.statusText,
-          data: error.response?.data,
-          config: {
-            url: error.config?.url,
-            method: error.config?.method,
-            headers: error.config?.headers,
-            data: error.config?.data,
-          },
         });
+      } catch {
         if (window.Telegram?.WebApp) {
           window.Telegram.WebApp.showAlert('Ошибка при загрузке фотографии');
-        } else {
-          alert('Ошибка при загрузке фотографии');
         }
-      } finally {
-        setIsUploading(false);
       }
     }
   };
+
+  const isLoading =
+    isTransformationPhotosPending || isUpdateTransformationPhotosPending;
+
+  const photoData = transformationPhotos && transformationPhotos[stage];
+  const photoUrl = photoData?.url;
 
   return (
     <div className="before">
       <span>{label}</span>
       <div
         className="forBefore"
-        style={{ background: photo ? 'transparent' : 'rgb(110 110 110)' }}
+        style={{ background: photoUrl ? 'transparent' : 'rgb(110 110 110)' }}
       >
-        {isLoading || isUploading ? (
+        {isLoading ? (
           <div
             style={{
               width: '100%',
@@ -116,8 +84,8 @@ export default function PhotoEditor({ label, initialPhoto, userQuery, stage }) {
           >
             <Loader />
           </div>
-        ) : photo ? (
-          <img src={photo} alt={label} />
+        ) : photoUrl ? (
+          <img src={photoUrl} alt={label} />
         ) : (
           <img
             src={photoNone}
@@ -139,7 +107,7 @@ export default function PhotoEditor({ label, initialPhoto, userQuery, stage }) {
             size={30}
             sizeIcon={16}
             onClick={handleEditClick}
-            disabled={isLoading || isUploading}
+            disabled={isLoading}
           />
         </div>
       </div>
@@ -149,7 +117,7 @@ export default function PhotoEditor({ label, initialPhoto, userQuery, stage }) {
         ref={fileInputRef}
         style={{ display: 'none' }}
         onChange={handleFileChange}
-        disabled={isLoading || isUploading}
+        disabled={isLoading}
       />
     </div>
   );

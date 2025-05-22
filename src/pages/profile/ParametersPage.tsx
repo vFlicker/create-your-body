@@ -4,8 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useUpdateUser } from '~/entities/user';
+import { useBodyMeasurements } from '~/entities/user/api/useBodyMeasurements';
+import { useCreateBodyMeasurements } from '~/entities/user/api/useCreateBodyMeasurements';
 import { userApiService } from '~/entities/user/api/userApi';
-import { apiService } from '~/shared/api';
+import { useTransformationPhotos } from '~/entities/user/api/useTransformationPhoto';
+import { useUpdateBodyMeasurements } from '~/entities/user/api/useUpdateBodyMeasurements';
+import { useUpdateTransformationPhotos } from '~/entities/user/api/useUpdateTransformationPhotos';
 import example from '~/shared/assets/img/example.jpeg';
 import add from '~/shared/assets/svg/addImg.svg';
 import close from '~/shared/assets/svg/closeWhite.svg';
@@ -140,7 +144,7 @@ const InputPair = ({
   );
 };
 
-const PhotoUploader = ({ label, value, onChange, onRemove, isLoading }) => {
+const PhotoUploader = ({ label, src, onChange, onRemove, isLoading }) => {
   const fileInputRef = useRef(null);
 
   const handleClick = () => {
@@ -168,10 +172,10 @@ const PhotoUploader = ({ label, value, onChange, onRemove, isLoading }) => {
         >
           <Loader width="20px" />
         </div>
-      ) : value ? (
+      ) : src ? (
         <div className="uploadContainer">
           <img
-            src={typeof value === 'string' ? value : URL.createObjectURL(value)}
+            src={typeof src === 'string' ? src : URL.createObjectURL(value)}
             alt={label}
             className="previewImage"
             onClick={(e) => e.stopPropagation()}
@@ -224,7 +228,6 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
   );
   const [birthdayError, setBirthdayError] = useState('');
   const [hasParameters, setHasParameters] = useState(false);
-  const [isLoadingPhotos, setIsLoadingPhotos] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
@@ -235,11 +238,12 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
     }
   }, []);
 
+  const { bodyMeasurements } = useBodyMeasurements(userQuery);
+
   useEffect(() => {
     const loadUserMeasurements = async () => {
       try {
-        const parameters = await apiService.getUserParameters(userQuery);
-        const latestParameters = parameters[0];
+        const latestParameters = bodyMeasurements[0];
 
         if (latestParameters) {
           setHasParameters(true);
@@ -261,28 +265,15 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
     };
 
     loadUserMeasurements();
-  }, [userQuery]);
+  }, [bodyMeasurements]);
 
-  useEffect(() => {
-    const loadUserPhotos = async () => {
-      try {
-        const { before, after } =
-          await apiService.getUserTransformationPhoto(userQuery);
+  const { isTransformationPhotosPending, transformationPhotos } =
+    useTransformationPhotos(userQuery);
 
-        setFormData((prev) => ({
-          ...prev,
-          photoBefore: before ? before.url : null,
-          photoAfter: after ? after.url : null,
-        }));
+  const { updateBodyMeasurementsMutate } = useUpdateBodyMeasurements();
+  const { createBodyMeasurementsMutate } = useCreateBodyMeasurements();
 
-        setIsLoadingPhotos(false);
-      } catch (error) {
-        console.log('Ошибка при получении фотографий:', error);
-      }
-    };
-
-    loadUserPhotos();
-  }, [userQuery]);
+  const { updateTransformationPhotosMutate } = useUpdateTransformationPhotos();
 
   const { updateUserMutate } = useUpdateUser();
 
@@ -434,34 +425,37 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
       };
 
       if (hasParameters) {
-        await apiService.updateUserBodyParameters(
+        updateBodyMeasurementsMutate({
           userQuery,
-          latestParameters.id,
-          parametersData,
-        );
+          id: latestParameters.id,
+          parameters: parametersData,
+        });
       } else {
-        await apiService.addUserBodyParameters(userQuery, parametersData);
+        createBodyMeasurementsMutate({
+          userQuery,
+          parameters: parametersData,
+        });
       }
 
       // Загрузка фотографий
       if (formData.photoBefore instanceof File) {
         const formDataPost = new FormData();
         formDataPost.append('image', formData.photoBefore);
-        await apiService.updateUserTransformationPhoto(
+        updateTransformationPhotosMutate({
           userQuery,
-          formDataPost,
-          'before',
-        );
+          formData: formDataPost,
+          stage: 'before',
+        });
       }
 
       if (formData.photoAfter instanceof File) {
         const formDataPost = new FormData();
         formDataPost.append('image', formData.photoAfter);
-        await apiService.updateUserTransformationPhoto(
+        updateTransformationPhotosMutate({
           userQuery,
-          formDataPost,
-          'after',
-        );
+          formData: formDataPost,
+          stage: 'after',
+        });
       }
 
       console.log('Данные сохранены!');
@@ -566,17 +560,17 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
           <div className="loadPhotos">
             <PhotoUploader
               label="Фото до"
-              value={formData.photoBefore}
+              src={transformationPhotos?.before?.url}
               onChange={handleFileChange('photoBefore')}
               onRemove={handleRemovePhoto('photoBefore')}
-              isLoading={isLoadingPhotos}
+              isLoading={isTransformationPhotosPending}
             />
             <PhotoUploader
               label="Фото после"
-              value={formData.photoAfter}
+              src={transformationPhotos?.after?.url}
               onChange={handleFileChange('photoAfter')}
               onRemove={handleRemovePhoto('photoAfter')}
-              isLoading={isLoadingPhotos}
+              isLoading={isTransformationPhotosPending}
             />
           </div>
           <div style={{ position: 'relative', width: '100%' }}>
