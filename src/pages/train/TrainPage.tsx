@@ -8,7 +8,7 @@ import back from '~/shared/assets/train/back.svg';
 import dumbbells from '~/shared/assets/train/dumbbells.svg';
 import question from '~/shared/assets/train/question.svg';
 import sport from '~/shared/assets/train/sport.svg';
-import { Select } from '~/shared/ui/select';
+import { Select } from '~/shared/ui/Select';
 
 import TrainContainer from '../../Components/Container/TrainContainer';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';

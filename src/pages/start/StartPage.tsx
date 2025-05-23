@@ -5,11 +5,22 @@ import { useNavigate } from 'react-router-dom';
 
 import element from '~/shared/assets/img/element.png';
 import startPhoto from '~/shared/assets/img/start.jpg';
-import run from '~/shared/assets/svg/run.svg';
+import { Button } from '~/shared/ui/Button';
+import { Icon } from '~/shared/ui/Icon';
 
-import Button from '../../Components/Button/Button';
 import ImageOverlay from '../../Components/ImageOverley';
 import Loader from '../../Components/Loader/Loader';
+
+const buttonConfig = {
+  start: {
+    text: 'Начать',
+    Icon: <Icon name="icon-run" />,
+  },
+  training: {
+    text: 'К тренировкам',
+    Icon: <Icon name="icon-muscles" />,
+  },
+};
 
 export function StartPage({ data }) {
   const navigate = useNavigate();
@@ -57,6 +68,8 @@ export function StartPage({ data }) {
     }
   }
 
+  const buttonType = data.born_date ? 'training' : 'start';
+
   return (
     <div className="startPage">
       <div className="imgContainer">
@@ -75,11 +88,12 @@ export function StartPage({ data }) {
             <p>Построй тело своей мечты</p>
           </div>
           <Button
+            color="neutral"
+            icon={buttonConfig[buttonType].Icon}
             onClick={handleButtonClick}
-            bgFocus="#A799FF"
-            icon={run}
-            text={data.born_date ? 'Тренироваться' : 'Начать'}
-          />
+          >
+            {buttonConfig[buttonType].text}
+          </Button>
         </div>
       </div>
     </div>

@@ -1,9 +1,27 @@
-.select {
+import styled from '@emotion/styled';
+
+import { Color } from '../theme/colors';
+
+export function Select({ className, value, options, onChange }) {
+  return (
+    <div>
+      <StyledSelect className={className} value={value} onChange={onChange}>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </StyledSelect>
+    </div>
+  );
+}
+
+const StyledSelect = styled.select`
   padding: 4px 28px 4px 12px;
   border: none;
   border-radius: 8px;
 
-  background-color: #CBFF52;
+  background-color: ${Color.Green_500};
   background-image: url("data:image/svg+xml,%3Csvg width='12' height='13' viewBox='0 0 12 13' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 5L6 8L9 5' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' /%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
@@ -18,4 +36,4 @@
   outline: none;
 
   cursor: pointer;
-}
+`;
