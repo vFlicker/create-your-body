@@ -6,8 +6,7 @@ import chat from '~/shared/assets/nav/chat.svg';
 import bot from '~/shared/assets/svg/bot.svg';
 import channel from '~/shared/assets/svg/channel.svg';
 import help from '~/shared/assets/svg/help.svg';
-
-import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
+import { Profile } from '~/shared/ui/Profile';
 
 export const TelegramLinkButton = ({
   username,
@@ -58,7 +57,7 @@ export function CommunicationPage({ data }) {
   return (
     <div className="comPage">
       <div className="topCom">
-        <ProfileBtn level={data.user_level} user_photo={data.image} />
+        <Profile level={data.user_level} photoSrc={data.image} />
         <div className="comTitle">
           <img src={chat} alt="Общение и поддержка" />
           <h1 style={{ fontSize: '24px' }}>Общение и поддержка</h1>

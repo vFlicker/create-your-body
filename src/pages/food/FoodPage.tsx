@@ -9,12 +9,12 @@ import { apiService } from '~/shared/api';
 import food from '~/shared/assets/nav/food.svg';
 import copy from '~/shared/assets/svg/copy.svg';
 import help from '~/shared/assets/svg/help.svg';
+import { Profile } from '~/shared/ui/Profile';
 
 import Button from '../../Components/Button/Button';
 import FoodContainer from '../../Components/Container/FoodContainer';
 import Loader from '../../Components/Loader/Loader';
 import PdfViewer from '../../Components/PdfViewer/PdfViewer';
-import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import { TelegramLinkButton } from '../communication/CommunicationPage';
 
 export function FoodPage({ data, userId, userQuery }) {
@@ -188,7 +188,7 @@ export function FoodPage({ data, userId, userQuery }) {
         )}
 
       <div className="topFood">
-        <ProfileBtn level={data?.user_level} user_photo={data?.image} />
+        <Profile level={data?.user_level} photoSrc={data?.image} />
         <div className="topFoodTitle">
           <img src={food} alt="logo" />
           <h1 style={{ fontSize: '24px' }}>Питание</h1>

@@ -1,11 +1,18 @@
 import './Loader.css';
 
+type LoaderProps = {
+  height?: string;
+  width?: string;
+  borderWidth?: string;
+  widthContainer?: string;
+};
+
 export default function Loader({
   height = '100%',
   width = '50px',
   borderWidth = '4px',
   widthContainer = '100%',
-}) {
+}: LoaderProps) {
   return (
     <div
       className="loadingSpinner"

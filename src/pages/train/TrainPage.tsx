@@ -7,10 +7,10 @@ import back from '~/shared/assets/train/back.svg';
 import dumbbells from '~/shared/assets/train/dumbbells.svg';
 import question from '~/shared/assets/train/question.svg';
 import sport from '~/shared/assets/train/sport.svg';
+import { Profile } from '~/shared/ui/Profile';
 import { Select } from '~/shared/ui/Select';
 import { TitleCard } from '~/shared/ui/TitleCard';
 
-import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import TrainContent from '../../Components/TrainContent/TrainContent';
 
 const pageContainersData = [
@@ -78,7 +78,7 @@ export function TrainPage({ userQuery, data, level, base }) {
   return (
     <div className="trainPage">
       <div className="topTrain">
-        <ProfileBtn level={data?.user_level} user_photo={data.image} />
+        <Profile level={data?.user_level} photoSrc={data.image} />
         <div className="trainTitleWrapper">
           <div className="trainTitle">
             <img src={muscules} alt="Тренировка" />

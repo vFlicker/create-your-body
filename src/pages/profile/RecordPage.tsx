@@ -4,11 +4,11 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useCreateBodyMeasurements } from '~/entities/user/api/useCreateBodyMeasurements';
+import { Profile } from '~/shared/ui/Profile';
 
 // import Selecter from '../../Components/Selecter/Selecter';
 // import ButtonEdit from '../../Components/Button/ButtonEdit';
 import Button from '../../Components/Button/Button';
-import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 
 // import settings from '~/shared/assets/svg/settings.svg';
 // import right from '~/shared/assets/svg/right.svg';
@@ -136,7 +136,11 @@ export function RecordPage({ userQuery, userId, data }) {
       <div className="profileContainer">
         <div className="profile" style={{ justifyContent: 'space-between' }}>
           <div className="profileData">
-            <ProfileBtn level={data.user_level} user_photo={data.image} />
+            <Profile
+              level={data.user_level}
+              photoSrc={data.image}
+              isShowInfo={false}
+            />
             <div className="profileName">
               <p>{data?.name || 'Имя'}</p>
               <span>{data?.user_level || 'Уровень'}</span>

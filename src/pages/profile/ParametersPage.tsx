@@ -14,10 +14,10 @@ import example from '~/shared/assets/img/example.jpeg';
 import add from '~/shared/assets/svg/addImg.svg';
 import close from '~/shared/assets/svg/closeWhite.svg';
 import { AppRoute } from '~/shared/router';
+import { Profile } from '~/shared/ui/Profile';
 
 import Button from '../../Components/Button/Button';
 import Loader from '../../Components/Loader/Loader';
-import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import { isDateValid } from './profileValidators';
 
 const InputPair = ({
@@ -522,7 +522,11 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
     <div className="profilePage" ref={formRef}>
       <div className="profileContainer">
         <div className="profile">
-          <ProfileBtn level={data.user_level} user_photo={data.image} />
+          <Profile
+            level={data.user_level}
+            photoSrc={data.image}
+            isShowInfo={false}
+          />
           <div className="profileName">
             <p>{data?.name || 'Имя'}</p>
             <span>{data?.user_level || 'Уровень'}</span>

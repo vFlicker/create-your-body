@@ -2,20 +2,14 @@ import './DashboardPage.css';
 
 import { useEffect } from 'react';
 
-import food from '~/shared/assets/nav/food.svg';
-import book from '~/shared/assets/svg/book.svg';
-// import Loader from '../../Components/Loader/Loader';
-import health from '~/shared/assets/svg/health.svg';
-import muscules from '~/shared/assets/svg/musclesBlack.svg';
-import recipes from '~/shared/assets/svg/recipes.svg';
-import { AppRoute } from '~/shared/router';
 import { Label } from '~/shared/ui/label';
 import { LabelLink } from '~/shared/ui/label/Label';
+import { Profile } from '~/shared/ui/Profile';
 
 import Container from '../../Components/Container/Container';
-// import Progress from '../../Components/Progress/Progress';
 import History from '../../Components/History/History';
-import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
+import { formatTimeFromString } from './formatTimeFromString';
+import { getTitleCards } from './getContainerData';
 
 function SubscriptionStatus({ subscriptions }) {
   if (subscriptions.length === 1 && subscriptions[0].stream === 1) {
@@ -102,176 +96,6 @@ function SubscriptionStatus({ subscriptions }) {
   );
 }
 
-const getContainerData = (subscriptions) => {
-  const pageContainersData = [];
-
-  const firstSteam = subscriptions.find((sub) => sub.stream === 1);
-  const secondSteam = subscriptions.find((sub) => sub.stream === 2);
-
-  const firstSteamIsPro = firstSteam && firstSteam.plan === 'Pro';
-  const secondSteamIsPro = secondSteam && secondSteam.plan === 'Pro';
-  const firstSteamBase = firstSteam && firstSteam.plan === 'Base';
-  const secondSteamBase = secondSteam && secondSteam.plan === 'Base';
-
-  // Введение всегда открыто
-  pageContainersData.push({
-    name: 'Введение',
-    icon: health,
-    closed: null,
-    buy: false,
-    instruction: true,
-    to: AppRoute.Begin,
-  });
-
-  if (firstSteamIsPro) {
-    // all open
-    pageContainersData.push(
-      {
-        name: 'Тренировки',
-        icon: muscules,
-        closed: null,
-        buy: false,
-        instruction: false,
-        to: AppRoute.Traning,
-      },
-      {
-        name: 'Питание',
-        icon: food,
-        closed: null,
-        buy: false,
-        instruction: false,
-        to: AppRoute.Food,
-      },
-      {
-        name: 'Лекции',
-        icon: book,
-        closed: null,
-        buy: false,
-        instruction: false,
-        to: AppRoute.Lectures,
-      },
-      {
-        name: 'Рецепты',
-        icon: recipes,
-        closed: null,
-        buy: false,
-        instruction: false,
-        to: AppRoute.Recipes,
-      },
-    );
-  } else if (secondSteamIsPro) {
-    // all open
-    pageContainersData.push(
-      {
-        name: 'Тренировки',
-        icon: muscules,
-        closed: null,
-        buy: false,
-        instruction: false,
-        to: AppRoute.Traning,
-      },
-      {
-        name: 'Питание',
-        icon: food,
-        closed: null,
-        buy: false,
-        instruction: false,
-        to: AppRoute.Food,
-      },
-      {
-        name: 'Лекции',
-        icon: book,
-        closed: null,
-        buy: false,
-        instruction: false,
-        to: AppRoute.Lectures,
-      },
-      {
-        name: 'Рецепты',
-        icon: recipes,
-        closed: null,
-        buy: false,
-        instruction: false,
-        to: AppRoute.Recipes,
-      },
-    );
-  } else if (firstSteamBase) {
-    // lectures and recipes -- buy, else open
-    pageContainersData.push(
-      {
-        name: 'Тренировки',
-        icon: muscules,
-        closed: null,
-        buy: false,
-        instruction: false,
-        to: AppRoute.Traning,
-      },
-      {
-        name: 'Питание',
-        icon: food,
-        closed: null,
-        buy: false,
-        instruction: false,
-        to: AppRoute.Food,
-      },
-      {
-        name: 'Лекции',
-        icon: book,
-        closed: '',
-        buy: true,
-        instruction: false,
-        to: AppRoute.Lectures,
-      },
-      {
-        name: 'Рецепты',
-        icon: recipes,
-        closed: '',
-        buy: true,
-        instruction: false,
-        to: AppRoute.Recipes,
-      },
-    );
-  } else if (secondSteamBase) {
-    // lectures and recipes -- buy, else open
-    pageContainersData.push(
-      {
-        name: 'Тренировки',
-        icon: muscules,
-        closed: null,
-        buy: false,
-        instruction: false,
-        to: AppRoute.Traning,
-      },
-      {
-        name: 'Питание',
-        icon: food,
-        closed: null,
-        buy: false,
-        instruction: false,
-        to: AppRoute.Food,
-      },
-      {
-        name: 'Лекции',
-        icon: book,
-        closed: '',
-        buy: true,
-        instruction: false,
-        to: AppRoute.Lectures,
-      },
-      {
-        name: 'Рецепты',
-        icon: recipes,
-        closed: '',
-        buy: true,
-        instruction: false,
-        to: AppRoute.Recipes,
-      },
-    );
-  }
-
-  return pageContainersData;
-};
-
 export function DashboardPage({ data }) {
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
@@ -279,29 +103,17 @@ export function DashboardPage({ data }) {
     }
   }, []);
 
-  const pageContainersData = getContainerData(data.subscriptions);
-
-  const formatTimeFromString = (timeStr) => {
-    if (!timeStr || typeof timeStr !== 'string') return '0:00';
-
-    const [minutes, seconds] = timeStr.split(':').map(Number);
-    if (isNaN(minutes) || isNaN(seconds)) return '0:00';
-
-    const formattedMinutes = Math.floor(minutes);
-    const formattedSeconds = Math.floor(seconds);
-    return `${formattedMinutes}:${formattedSeconds < 10 ? '0' : ''}${formattedSeconds}`;
-  };
+  const pageContainersData = getTitleCards(data.subscriptions);
 
   return (
     <div className="dashboard">
       <div className="dashTop">
         <div className="dashHeader">
-          <ProfileBtn level={data.user_level} user_photo={data.image} />
+          <Profile level={data.user_level} photoSrc={data.image} />
           <SubscriptionStatus subscriptions={data.subscriptions} />
         </div>
         <div className="hello">
           <h1>Привет, {data?.name || 'Неизвестный'}!</h1>
-          {/* <Progress count_all={0} count_complited={0} title='Прогресс тренировок' /> */}
         </div>
       </div>
       <div className="dashBot">
@@ -309,15 +121,6 @@ export function DashboardPage({ data }) {
           formatTimeFromString(data.greet_video_time_view) <
             formatTimeFromString('14:55') && (
             <div className="history">
-              {/* {data?.last_video && (
-            <History
-              text="Продолжить просмотр"
-              viewed={Math.floor((50 * 60 - Number(data.last_video_time)) / 60)} // Переводим оставшееся время в просмотренные минуты
-              view={50} // Фиксированная длительность 50 минут
-              lastVideo={data.last_video} // Передаём страницу для ссылки
-            />
-          )} */}
-
               <History
                 text="Инструкция + Вводный урок"
                 viewed={formatTimeFromString(data.greet_video_time_view)}

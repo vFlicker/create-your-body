@@ -13,12 +13,12 @@ import exit from '~/shared/assets/svg/exit.svg';
 import history from '~/shared/assets/svg/history.svg';
 import right from '~/shared/assets/svg/right.svg';
 import settings from '~/shared/assets/svg/settings.svg';
+import { Profile } from '~/shared/ui/Profile';
 
 import Button from '../../Components/Button/Button';
 import ButtonEdit from '../../Components/Button/ButtonEdit';
 import Loader from '../../Components/Loader/Loader';
 import PhotoEditor from '../../Components/PhotoEditor/PhotoEditor';
-import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import Selecter from '../../Components/Selecter/Selecter';
 
 export function ProfilePage({ userQuery, data }) {
@@ -293,7 +293,11 @@ export function ProfilePage({ userQuery, data }) {
               style={{ justifyContent: 'space-between' }}
             >
               <div className="profileData">
-                <ProfileBtn level={data?.user_level} user_photo={data?.image} />
+                <Profile
+                  level={data?.user_level}
+                  photoSrc={data?.image}
+                  isShowInfo={false}
+                />
                 <div className="profileName">
                   <p>{data?.name || 'Имя'}</p>
                   <span>{data?.user_level || 'Уровень'}</span>
@@ -514,7 +518,7 @@ export function ProfilePage({ userQuery, data }) {
         ) : (
           <>
             <div className="profile">
-              <ProfileBtn level={data?.user_level} user_photo={data?.image} />
+              <Profile level={data?.user_level} user_photo={data?.image} />
               <div className="profileName">
                 <p>{data?.name || 'Имя'}</p>
                 <span>{data?.user_level || 'Уровень'}</span>

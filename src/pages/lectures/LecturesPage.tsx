@@ -6,9 +6,9 @@ import { useEffect, useState } from 'react';
 
 import { apiService } from '~/shared/api';
 import book from '~/shared/assets/svg/book.svg';
+import { Profile } from '~/shared/ui/Profile';
 
 import Loader from '../../Components/Loader/Loader';
-import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import TrainBox from '../../Components/TrainBox/TrainBox';
 import TrainingPage from '../../Components/TrainingPage/TrainingPage';
 
@@ -151,7 +151,7 @@ export function LecturesPage({ userQuery, level, user_photo }) {
   return (
     <div className="lecturesPage">
       <div className="topLectures">
-        <ProfileBtn level={level} user_photo={user_photo} />
+        <Profile level={level} photoSrc={user_photo} />
         <div className="lecturesTitle">
           <img src={book} alt="Лекции" />
           <h1 style={{ fontSize: '24px' }}>Лекции</h1>

@@ -6,9 +6,9 @@ import { useLocation } from 'react-router-dom'; // Импортируем useLoc
 import pdf from '~/shared/assets/pdf/begin.pdf';
 import health from '~/shared/assets/svg/health.svg';
 import begin from '~/shared/assets/video/begin.mp4';
+import { Profile } from '~/shared/ui/Profile';
 
 import PdfViewer from '../../Components/PdfViewer/PdfViewer';
-import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import Selecter from '../../Components/Selecter/Selecter';
 import VideoPage from '../../Components/VideoPage/VideoPage';
 
@@ -38,7 +38,7 @@ export function BeginPage({ userId, data }) {
   return (
     <div className="beginPage">
       <div className="topBegin">
-        <ProfileBtn level={data.user_level} user_photo={data.image} />
+        <Profile level={data.user_level} photoSrc={data.image} />
         <div className="beginTitle">
           <img src={health} alt="Введение" />
           <h1 style={{ fontSize: '24px' }}>Введение</h1>
