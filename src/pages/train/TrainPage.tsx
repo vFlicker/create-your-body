@@ -2,37 +2,36 @@ import './TrainPage.css';
 
 import { useEffect, useState } from 'react';
 
-// import Progress from '../../Components/Progress/Progress';
 import muscules from '~/shared/assets/svg/musclesBlack.svg';
 import back from '~/shared/assets/train/back.svg';
 import dumbbells from '~/shared/assets/train/dumbbells.svg';
 import question from '~/shared/assets/train/question.svg';
 import sport from '~/shared/assets/train/sport.svg';
 import { Select } from '~/shared/ui/Select';
+import { TitleCard } from '~/shared/ui/TitleCard';
 
-import TrainContainer from '../../Components/Container/TrainContainer';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 import TrainContent from '../../Components/TrainContent/TrainContent';
 
 const pageContainersData = [
   {
     title: 'Разминка / МФР',
-    icon: back,
+    iconSrc: back,
     to: 'warmup',
   },
   {
     title: 'Все о тренировках',
-    icon: question,
+    iconSrc: question,
     to: 'train',
   },
   {
     title: 'Тренировка для дома',
-    icon: sport,
+    iconSrc: sport,
     to: 'home',
   },
   {
     title: 'Тренировка для зала',
-    icon: dumbbells,
+    iconSrc: dumbbells,
     to: 'gym',
   },
 ];
@@ -66,8 +65,8 @@ export function TrainPage({ userQuery, data, level, base }) {
     };
   }, []);
 
-  const handleContainerClick = (containerData) => {
-    setSelectedView(containerData.to);
+  const handleContainerClick = (to: string): void => {
+    setSelectedView(to);
     setShowContent(true);
     window.showContent = true;
   };
@@ -99,13 +98,12 @@ export function TrainPage({ userQuery, data, level, base }) {
             className="train-content"
             style={{ transform: showContent ? 'translateX(-50%)' : '' }}
           >
-            {pageContainersData?.map((containerData, index) => (
-              <TrainContainer
-                key={index}
-                title={containerData.title}
-                icon={containerData.icon}
-                iconAlt={containerData.title}
-                onClick={() => handleContainerClick(containerData)}
+            {pageContainersData?.map(({ title, to, iconSrc }) => (
+              <TitleCard
+                key={title}
+                title={title}
+                iconSrc={iconSrc}
+                onClick={() => handleContainerClick(to)}
               />
             ))}
           </div>

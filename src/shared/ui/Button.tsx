@@ -33,41 +33,14 @@ const ButtonColorToCss = {
   [ButtonColor.Accent]: css`
     --color-button: ${Color.Violet_200};
     --color-text: ${Color.Black_50};
-
-    &:hover:not(:disabled),
-    &:focus:not(:disabled) {
-      --color-button: ${Color.Violet_300};
-    }
-
-    &:active:not(:disabled) {
-      --color-button: ${Color.Violet_400};
-    }
   `,
   [ButtonColor.Secondary]: css`
     --color-button: ${Color.Green_500};
     --color-text: ${Color.Black_950};};
-
-    &:hover:not(:disabled),
-    &:focus:not(:disabled) {
-      --color-button: ${Color.Green_200};
-    }
-
-    &:active:not(:disabled) {
-      --color-button: ${Color.Green_100};
-    }
   `,
   [ButtonColor.Neutral]: css`
     --color-button: ${Color.Black_950};
     --color-text: ${Color.Black_50};
-
-    &:hover:not(:disabled),
-    &:focus:not(:disabled) {
-      --color-button: ${Color.Violet_200};
-    }
-
-    &:active:not(:disabled) {
-      --color-button: ${Color.Violet_300};
-    }
   `,
 };
 
