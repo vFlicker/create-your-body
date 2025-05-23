@@ -1,34 +1,20 @@
-import './StartPage.css';
-
-import { useEffect, useState } from 'react';
+import styled from '@emotion/styled';
+import { JSX, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import element from '~/shared/assets/img/element.png';
-import startPhoto from '~/shared/assets/img/start.jpg';
+import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/Button';
-import { Icon } from '~/shared/ui/Icon';
 
-import ImageOverlay from '../../Components/ImageOverley';
-import Loader from '../../Components/Loader/Loader';
+import { ImageOverlay } from './ImageOverlay';
+import { buttonConfig } from './startPageConfig';
 
-const buttonConfig = {
-  start: {
-    text: 'Начать',
-    Icon: <Icon name="icon-run" />,
-  },
-  training: {
-    text: 'К тренировкам',
-    Icon: <Icon name="icon-muscles" />,
-  },
+type StartPageProps = {
+  type: 'start' | 'training';
 };
 
-export function StartPage({ data }) {
+export function StartPage({ type }: StartPageProps): JSX.Element {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
-  const [loadedImages, setLoadedImages] = useState({
-    startPhoto: false,
-    element: false,
-  });
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
@@ -36,66 +22,94 @@ export function StartPage({ data }) {
     }
   }, []);
 
-  useEffect(() => {
-    const startPhotoImg = new Image();
-    const elementImg = new Image();
-
-    startPhotoImg.src = startPhoto;
-    elementImg.src = element;
-
-    startPhotoImg.onload = () => {
-      setLoadedImages((prev) => ({ ...prev, startPhoto: true }));
-      checkAllImagesLoaded({ ...loadedImages, startPhoto: true });
-    };
-
-    elementImg.onload = () => {
-      setLoadedImages((prev) => ({ ...prev, element: true }));
-      checkAllImagesLoaded({ ...loadedImages, element: true });
-    };
-  }, [loadedImages]);
-
-  const checkAllImagesLoaded = (newLoadedImages) => {
-    if (newLoadedImages.startPhoto && newLoadedImages.element) {
-      setIsLoading(false);
-    }
-  };
-
-  function handleButtonClick() {
-    if (data.born_date) {
-      navigate('/dashboard');
-    } else {
-      navigate('/quiz');
-    }
-  }
-
-  const buttonType = data.born_date ? 'training' : 'start';
+  const { buttonText, ButtonIcon, onButtonClick } = buttonConfig[type];
 
   return (
-    <div className="startPage">
-      <div className="imgContainer">
-        {isLoading && <Loader />}
-        <img className="green" src={element} alt="Зеленый фон" />
-        <ImageOverlay overlayImageSrc={startPhoto} maskImageSrc={element} />
-      </div>
-      <div className="startDown">
-        <div className="startPadding">
-          <div className="startText">
-            <h1>
+    <StyledStartPage>
+      <StyledImgContainer>
+        <StyledGreenImg className="green" src={element} />
+        <ImageOverlay />
+      </StyledImgContainer>
+
+      <StyledStartDown>
+        <StyledStartPadding>
+          <StyledStartText>
+            <StyledH1>
               CREATE
               <br />
               YOUR <span>BODY</span>
-            </h1>
+            </StyledH1>
             <p>Построй тело своей мечты</p>
-          </div>
+          </StyledStartText>
+
           <Button
             color="neutral"
-            icon={buttonConfig[buttonType].Icon}
-            onClick={handleButtonClick}
+            icon={ButtonIcon}
+            onClick={() => onButtonClick(navigate)}
           >
-            {buttonConfig[buttonType].text}
+            {buttonText}
           </Button>
-        </div>
-      </div>
-    </div>
+        </StyledStartPadding>
+      </StyledStartDown>
+    </StyledStartPage>
   );
 }
+
+const StyledStartPage = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+
+  height: 100vh;
+  width: 100%;
+`;
+
+const StyledImgContainer = styled.div`
+  position: relative;
+
+  flex: 1;
+  width: 100%;
+
+  overflow: hidden;
+`;
+
+const StyledGreenImg = styled.img`
+  position: absolute;
+  top: 0;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 1;
+`;
+
+const StyledStartDown = styled.div`
+  width: 100%;
+  padding-bottom: 32px;
+`;
+
+const StyledStartPadding = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  padding: 0 16px;
+`;
+
+const StyledStartText = styled.div`
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 16px;
+
+  color: ${Color.Black_950};
+`;
+
+const StyledH1 = styled.h1`
+  font-size: 52px;
+
+  span {
+    color: ${Color.Violet_200};
+  }
+`;

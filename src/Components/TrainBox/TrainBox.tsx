@@ -2,7 +2,7 @@ import './TrainBox.css';
 
 import { useEffect, useState } from 'react';
 
-import mokap from '~/shared/assets/img/mokap.PNG';
+import mokap from '~/shared/assets/img/mokap.jpeg';
 import close from '~/shared/assets/svg/closeTrain.svg';
 import bonus from '~/shared/assets/svg/gift.svg';
 import play from '~/shared/assets/svg/play.svg';

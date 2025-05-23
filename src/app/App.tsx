@@ -185,7 +185,12 @@ export function App() {
         <Routes>
           {hasAccess ? (
             <Route path="/" element={<Layout />}>
-              <Route index element={<StartPage data={user} />} />
+              <Route
+                index
+                element={
+                  <StartPage type={user.born_date ? 'training' : 'start'} />
+                }
+              />
               <Route
                 path={AppRoute.Quiz}
                 element={<QuizPage userQuery={userQuery} data={user} />}
