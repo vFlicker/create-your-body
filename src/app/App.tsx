@@ -7,6 +7,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { Outlet, Route, Routes, useLocation } from 'react-router-dom';
 
 import { useUser } from '~/entities/user';
+import { BackButton } from '~/features/BackButton';
+import { CloseButton } from '~/features/CloseButton';
 import { BeginPage } from '~/pages/begin';
 import { CommunicationPage } from '~/pages/communication';
 import { DashboardPage } from '~/pages/dashboard';
@@ -21,11 +23,9 @@ import { StartPage } from '~/pages/start';
 import { TrainPage } from '~/pages/train';
 import { BASE_API_URL, extractErrorLogData } from '~/shared/api';
 import { AppRoute } from '~/shared/router';
+import { Nav } from '~/widget/nav';
 
-import ButtonBack from '../Components/Button/ButtonBack';
-import ButtonClose from '../Components/Button/ButtonClose';
 import Loader from '../Components/Loader/Loader';
-import Nav from '../Components/Nav/Nav';
 import PageTransition from '../Components/PageTransition/PageTransition';
 import { withProviders } from './providers';
 
@@ -44,8 +44,8 @@ function Layout() {
   return (
     <>
       <div className="header">
-        {showControlsBack && <ButtonBack />}
-        <ButtonClose />
+        {showControlsBack && <BackButton />}
+        <CloseButton />
       </div>
       <div className="App">
         <div className="page-transition-container">

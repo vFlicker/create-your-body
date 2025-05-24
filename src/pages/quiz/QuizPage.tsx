@@ -4,10 +4,10 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
 import { useUpdateUser } from '~/entities/user';
+import { BackButton } from '~/features/BackButton';
 import { AppRoute } from '~/shared/router';
 
 import Button from '../../Components/Button/Button';
-import ButtonBack from '../../Components/Button/ButtonBack';
 import Progress from '../../Components/Progress/Progress';
 import {
   slideVariants,
@@ -358,7 +358,7 @@ export function QuizPage({ data, userQuery }) {
   return (
     <div className={`quizPage ${isFocused ? 'focused' : ''}`} ref={formRef}>
       <div className="forBack">
-        {step !== 1 && <ButtonBack onClick={handleBack} />}
+        {step !== 1 && <BackButton onClick={handleBack} />}
       </div>
       <div className={`topPage ${step > 1 ? 'expanded' : ''}`}>
         <div className="titleContainer">
