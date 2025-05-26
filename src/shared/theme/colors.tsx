@@ -24,6 +24,8 @@ const enum Color {
   Black_800 = 'var(--black-800)',
   Black_900 = 'var(--black-900)',
   Black_950 = 'var(--black-950)',
+
+  White = 'var(--white)',
 }
 
 const globalColors = css`
@@ -51,6 +53,8 @@ const globalColors = css`
     --black-800: #333333;
     --black-900: #1a1a1a;
     --black-950: #0d0d0d;
+
+    --white: #ffffff;
   }
 `;
 

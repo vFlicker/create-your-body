@@ -10,8 +10,8 @@ import check from '~/shared/assets/svg/check.svg';
 
 import Button from '../../Components/Button/Button';
 import Loader from '../../Components/Loader/Loader';
+import { Toggler } from '../../shared/ui/Toggler.js';
 import PdfViewer from '../PdfViewer/PdfViewer.jsx';
-import Selecter from '../Selecter/Selecter';
 import TrainBox from '../TrainBox/TrainBox';
 import TrainingPage from '../TrainingPage/TrainingPage';
 
@@ -79,7 +79,7 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
   const [[page, direction], setPage] = useState([0, 0]);
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [originalTrainingData, setOriginalTrainingData] = useState(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeValue, setActiveValue] = useState('Разминка');
   const [direct, setDirect] = useState(0);
   const [weeksData, setWeeksData] = useState([]);
   const [weekDetails, setWeekDetails] = useState({});
@@ -281,24 +281,18 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
       window.dispatchEvent(new Event('showContentChange'));
     };
 
-    const handleSelect = (index) => {
-      setDirect(index > activeIndex ? 1 : -1);
-      setActiveIndex(index);
-    };
-
     return (
       <div className="warmupContent">
         {!base && (
-          <Selecter
-            textOne="Разминка"
-            textTwo="МФР"
-            activeIndex={activeIndex}
-            onClick={handleSelect}
+          <Toggler
+            values={['Разминка', 'МФР']}
+            activeValue={activeValue}
+            onClick={setActiveValue}
           />
         )}
         <AnimatePresence initial={false} custom={direct} mode="wait">
           <motion.div
-            key={activeIndex}
+            key={activeValue}
             className="warmup-screen"
             custom={direct}
             variants={slideVariants}
@@ -307,7 +301,7 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
             exit="exit"
             transition={transition}
           >
-            {activeIndex === 0 ? (
+            {activeValue === 'Разминка' ? (
               <div className="warmup-content">
                 <div className="warmup-videos">
                   {warmup.Z.map((item, index) => (

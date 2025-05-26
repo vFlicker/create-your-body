@@ -13,20 +13,19 @@ import exit from '~/shared/assets/svg/exit.svg';
 import history from '~/shared/assets/svg/history.svg';
 import right from '~/shared/assets/svg/right.svg';
 import settings from '~/shared/assets/svg/settings.svg';
+import { Color } from '~/shared/theme/colors';
 import { Profile } from '~/shared/ui/Profile';
 
 import Button from '../../Components/Button/Button';
 import ButtonEdit from '../../Components/Button/ButtonEdit';
 import Loader from '../../Components/Loader/Loader';
 import PhotoEditor from '../../Components/PhotoEditor/PhotoEditor';
-import Selecter from '../../Components/Selecter/Selecter';
+import { Toggler } from '../../shared/ui/Toggler';
 
 export function ProfilePage({ userQuery, data }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(
-    data.user_level === 'Новичок' ? 0 : 1,
-  );
+  const [activeLevel, setActiveLevel] = useState(data.user_level);
   const [isPressed, setIsPressed] = useState(false);
   const [isHistoryPressed, setIsHistoryPressed] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
@@ -79,9 +78,8 @@ export function ProfilePage({ userQuery, data }) {
 
   const { updateUserMutate } = useUpdateUser();
 
-  const handleSelectorClick = async (index) => {
-    setActiveIndex(index);
-    const level = index === 0 ? 'Новичок' : 'Профи';
+  const handleSelectorClick = async (level) => {
+    setActiveLevel(level);
     updateUserMutate({ userQuery, userData: { user_level: level } });
   };
 
@@ -323,11 +321,10 @@ export function ProfilePage({ userQuery, data }) {
                 />
               </div>
               {open && (
-                <Selecter
-                  bg="#fff"
-                  activeIndex={activeIndex}
-                  textOne="Новичок"
-                  textTwo="Профи"
+                <Toggler
+                  backgroundColor={Color.White}
+                  values={['Новичок', 'Профи']}
+                  activeValue={activeLevel}
                   onClick={handleSelectorClick}
                 />
               )}
@@ -542,11 +539,10 @@ export function ProfilePage({ userQuery, data }) {
                 />
               </div>
               {open && (
-                <Selecter
-                  bg="#fff"
-                  activeIndex={activeIndex}
-                  textOne="Новичок"
-                  textTwo="Профи"
+                <Toggler
+                  backgroundColor={Color.White}
+                  values={['Новичок', 'Профи']}
+                  activeValue={activeLevel}
                   onClick={handleSelectorClick}
                 />
               )}

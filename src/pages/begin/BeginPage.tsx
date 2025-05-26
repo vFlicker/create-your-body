@@ -7,9 +7,9 @@ import pdf from '~/shared/assets/pdf/begin.pdf';
 import health from '~/shared/assets/svg/health.svg';
 import begin from '~/shared/assets/video/begin.mp4';
 import { Profile } from '~/shared/ui/Profile';
+import { Toggler } from '~/shared/ui/Toggler';
 
 import PdfViewer from '../../Components/PdfViewer/PdfViewer';
-import Selecter from '../../Components/Selecter/Selecter';
 import VideoPage from '../../Components/VideoPage/VideoPage';
 
 export function BeginPage({ userId, data }) {
@@ -21,8 +21,9 @@ export function BeginPage({ userId, data }) {
   const viewParam = queryParams.get('view');
 
   // Устанавливаем начальное значение videoView на основе query-параметра
-  const [videoView, setVideoView] = useState(viewParam === 'video');
-  const [activeIndex, setActiveIndex] = useState(viewParam === 'video' ? 1 : 0);
+  const [activeToggler, setActiveToggler] = useState(
+    viewParam === 'video' ? 'Видео' : 'Подготовка',
+  );
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
@@ -30,10 +31,7 @@ export function BeginPage({ userId, data }) {
     }
   }, []);
 
-  const handleSelect = (index) => {
-    setActiveIndex(index);
-    setVideoView(index === 1);
-  };
+  const isVideoView = activeToggler === 'Видео';
 
   return (
     <div className="beginPage">
@@ -45,15 +43,13 @@ export function BeginPage({ userId, data }) {
         </div>
       </div>
       <div className="botBegin">
-        <Selecter
-          onClick={handleSelect}
-          textOne="Подготовка"
-          textTwo="Видео"
-          activeIndex={activeIndex}
+        <Toggler
+          values={['Подготовка', 'Видео']}
+          activeValue={activeToggler}
+          onClick={setActiveToggler}
         />
-        {!videoView ? (
-          <PdfViewer pdfFile={pdf} />
-        ) : (
+
+        {isVideoView && (
           <VideoPage
             video={begin}
             page="/begin"
@@ -61,6 +57,8 @@ export function BeginPage({ userId, data }) {
             instruction={true}
           />
         )}
+
+        {!isVideoView && <PdfViewer pdfFile={pdf} />}
       </div>
     </div>
   );
