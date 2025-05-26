@@ -4,11 +4,11 @@ import '../train/TrainPage.css';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
+import { Profile } from '~/entities/user';
 import { apiService } from '~/shared/api';
 import book from '~/shared/assets/svg/book.svg';
-import { Profile } from '~/shared/ui/Profile';
+import { Loader } from '~/shared/ui/Loader';
 
-import Loader from '../../Components/Loader/Loader';
 import TrainBox from '../../Components/TrainBox/TrainBox';
 import TrainingPage from '../../Components/TrainingPage/TrainingPage';
 

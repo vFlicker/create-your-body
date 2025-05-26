@@ -3,15 +3,15 @@ import './RecipesPage.css';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 
+import { Profile } from '~/entities/user';
 import { apiService } from '~/shared/api';
 import breakfast from '~/shared/assets/svg/avocado.svg';
 import dessert from '~/shared/assets/svg/croissant.svg';
 import dinner from '~/shared/assets/svg/meat.svg';
 import recipesSvg from '~/shared/assets/svg/recipes.svg';
-import { Profile } from '~/shared/ui/Profile';
+import { Loader } from '~/shared/ui/Loader';
 
 import FoodContainer from '../../Components/Container/FoodContainer';
-import Loader from '../../Components/Loader/Loader';
 
 const categoryIcons = {
   Десерты: dessert,

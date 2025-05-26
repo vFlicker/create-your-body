@@ -23,9 +23,9 @@ import { StartPage } from '~/pages/start';
 import { TrainPage } from '~/pages/train';
 import { BASE_API_URL, extractErrorLogData } from '~/shared/api';
 import { AppRoute } from '~/shared/router';
+import { Loader } from '~/shared/ui/Loader';
 import { Nav } from '~/widget/nav';
 
-import Loader from '../Components/Loader/Loader';
 import PageTransition from '../Components/PageTransition/PageTransition';
 import { withProviders } from './providers';
 
@@ -180,7 +180,7 @@ export function App() {
   return (
     <>
       {isLoading || isUserPending ? (
-        <Loader height="100vh" />
+        <Loader />
       ) : (
         <Routes>
           {hasAccess ? (

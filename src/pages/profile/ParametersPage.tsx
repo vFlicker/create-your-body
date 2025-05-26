@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useUpdateUser } from '~/entities/user';
+import { Profile } from '~/entities/user';
 import { useBodyMeasurements } from '~/entities/user/api/useBodyMeasurements';
 import { useCreateBodyMeasurements } from '~/entities/user/api/useCreateBodyMeasurements';
 import { userApiService } from '~/entities/user/api/userApi';
@@ -14,10 +15,9 @@ import example from '~/shared/assets/img/example.jpeg';
 import add from '~/shared/assets/svg/addImg.svg';
 import close from '~/shared/assets/svg/closeWhite.svg';
 import { AppRoute } from '~/shared/router';
-import { Profile } from '~/shared/ui/Profile';
+import { Loader } from '~/shared/ui/Loader';
 
 import Button from '../../Components/Button/Button';
-import Loader from '../../Components/Loader/Loader';
 import { isDateValid } from './profileValidators';
 
 const InputPair = ({
@@ -170,7 +170,8 @@ const PhotoUploader = ({ label, src, onChange, onRemove, isLoading }) => {
             alignItems: 'center',
           }}
         >
-          <Loader width="20px" />
+          {/* TODO: I remove width  <Loader width="20px"  */}
+          <Loader />
         </div>
       ) : src ? (
         <div className="uploadContainer">

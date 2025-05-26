@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 
 import { useUpdateUser } from '~/entities/user';
+import { Profile } from '~/entities/user';
 import { useBodyMeasurements } from '~/entities/user/api/useBodyMeasurements';
 import zamer from '~/shared/assets/img/zamer.jpeg';
 import chart from '~/shared/assets/svg/chart.svg';
@@ -14,11 +15,10 @@ import history from '~/shared/assets/svg/history.svg';
 import right from '~/shared/assets/svg/right.svg';
 import settings from '~/shared/assets/svg/settings.svg';
 import { Color } from '~/shared/theme/colors';
-import { Profile } from '~/shared/ui/Profile';
+import { Loader } from '~/shared/ui/Loader';
 
 import Button from '../../Components/Button/Button';
 import ButtonEdit from '../../Components/Button/ButtonEdit';
-import Loader from '../../Components/Loader/Loader';
 import PhotoEditor from '../../Components/PhotoEditor/PhotoEditor';
 import { Toggler } from '../../shared/ui/Toggler';
 

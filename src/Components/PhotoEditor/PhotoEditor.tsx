@@ -4,9 +4,9 @@ import { useTransformationPhotos } from '~/entities/user/api/useTransformationPh
 import { useUpdateTransformationPhotos } from '~/entities/user/api/useUpdateTransformationPhotos';
 import edit from '~/shared/assets/svg/editSmall.svg';
 import photoNone from '~/shared/assets/svg/photoNone.svg';
+import { Loader } from '~/shared/ui/Loader';
 
 import ButtonEdit from '../Button/ButtonEdit';
-import Loader from '../Loader/Loader';
 
 export default function PhotoEditor({ label, userQuery, stage }) {
   const fileInputRef = useRef(null);
@@ -73,17 +73,7 @@ export default function PhotoEditor({ label, userQuery, stage }) {
         style={{ background: photoUrl ? 'transparent' : 'rgb(110 110 110)' }}
       >
         {isLoading ? (
-          <div
-            style={{
-              width: '100%',
-              height: '100%',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Loader />
-          </div>
+          <Loader />
         ) : photoUrl ? (
           <img src={photoUrl} alt={label} />
         ) : (

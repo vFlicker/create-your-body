@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
+import { JSX } from 'react';
 
 import { Color } from '../theme/colors';
 
-export function Select({ className, value, options, onChange }) {
+export function Select({ className, value, options, onChange }): JSX.Element {
   return (
     <div>
       <StyledSelect className={className} value={value} onChange={onChange}>

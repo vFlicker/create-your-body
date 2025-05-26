@@ -3,7 +3,6 @@ import './TrainingPage.css';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-// import Loader from '../../Components/Loader/Loader';
 import arrow from '~/shared/assets/svg/arrow.svg';
 import back from '~/shared/assets/svg/arrowBack.svg';
 import brain from '~/shared/assets/svg/brain.svg';

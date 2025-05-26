@@ -2,9 +2,9 @@ import './DashboardPage.css';
 
 import { useEffect } from 'react';
 
+import { Profile } from '~/entities/user';
 import { Label } from '~/shared/ui/label';
 import { LabelLink } from '~/shared/ui/label/Label';
-import { Profile } from '~/shared/ui/Profile';
 
 import Container from '../../Components/Container/Container';
 import History from '../../Components/History/History';

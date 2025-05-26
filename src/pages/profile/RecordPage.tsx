@@ -3,8 +3,8 @@ import './profile.css';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { Profile } from '~/entities/user';
 import { useCreateBodyMeasurements } from '~/entities/user/api/useCreateBodyMeasurements';
-import { Profile } from '~/shared/ui/Profile';
 
 // import Selecter from '../../Components/Selecter/Selecter';
 // import ButtonEdit from '../../Components/Button/ButtonEdit';

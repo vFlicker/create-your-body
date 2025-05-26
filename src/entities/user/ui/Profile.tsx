@@ -1,11 +1,10 @@
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import { JSX, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import defaultAvatarSrc from '~/shared/assets/nav/user.svg';
 import { AppRoute } from '~/shared/router';
-
-import Loader from '../../Components/Loader/Loader';
+import { Loader } from '~/shared/ui/Loader';
 
 type ProfileProps = {
   level: 'Профи' | 'Новичок';
@@ -13,7 +12,11 @@ type ProfileProps = {
   isShowInfo?: boolean;
 };
 
-export function Profile({ level, photoSrc, isShowInfo = true }: ProfileProps) {
+export function Profile({
+  level,
+  photoSrc,
+  isShowInfo = true,
+}: ProfileProps): JSX.Element {
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -32,7 +35,7 @@ export function Profile({ level, photoSrc, isShowInfo = true }: ProfileProps) {
   return (
     <StyledProfileWrapper>
       <StyledButton level={level} onClick={() => navigate(AppRoute.Profile)}>
-        {isLoading && <Loader width={16} />}
+        {isLoading && <Loader />}
         {!isLoading && (
           <StyledAvatar src={photoSrc ?? defaultAvatarSrc} alt="Ваш аватар" />
         )}

@@ -5,16 +5,16 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
+import { Profile } from '~/entities/user';
 import { apiService } from '~/shared/api';
 import food from '~/shared/assets/nav/food.svg';
 import copy from '~/shared/assets/svg/copy.svg';
 import help from '~/shared/assets/svg/help.svg';
-import { Profile } from '~/shared/ui/Profile';
+import { Loader } from '~/shared/ui/Loader';
 import { PdfViewer } from '~/widget/pdfViewer/PdfViewer';
 
 import Button from '../../Components/Button/Button';
 import FoodContainer from '../../Components/Container/FoodContainer';
-import Loader from '../../Components/Loader/Loader';
 import { TelegramLinkButton } from '../communication/CommunicationPage';
 
 export function FoodPage({ data, userId, userQuery }) {

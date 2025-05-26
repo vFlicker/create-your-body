@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { JSX } from 'react';
 
 import { Color } from '../theme/colors';
 
@@ -16,7 +17,7 @@ export function Toggler({
   activeValue,
   backgroundColor,
   onClick,
-}: TogglerProps) {
+}: TogglerProps): JSX.Element {
   return (
     <StyledTogglerWrapper
       className={className}

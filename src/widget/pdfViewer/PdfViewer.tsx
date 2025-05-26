@@ -9,15 +9,15 @@ import {
   Worker,
 } from '@react-pdf-viewer/core';
 import { pageNavigationPlugin } from '@react-pdf-viewer/page-navigation';
-import { useEffect, useState } from 'react';
+import { JSX, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import Loader from '~/Components/Loader/Loader';
 import { apiService } from '~/shared/api';
 import close from '~/shared/assets/svg/close.svg';
 import fullscreen from '~/shared/assets/svg/fullscreen.svg';
 import left from '~/shared/assets/svg/left.svg';
 import right from '~/shared/assets/svg/right.svg';
+import { Loader } from '~/shared/ui/Loader';
 
 import { Color } from '../../shared/theme/colors';
 import { pdfViewerAddition } from './pdfViewerAddition';
@@ -36,7 +36,7 @@ export function PdfViewer({
   pdfFileSrc,
   userQuery,
   userId,
-}: PdfViewerProps) {
+}: PdfViewerProps): JSX.Element {
   const [pdfUrl, setPdfUrl] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);

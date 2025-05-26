@@ -2,11 +2,11 @@ import './CommunicationPage.css';
 
 import { useEffect } from 'react';
 
+import { Profile } from '~/entities/user';
 import chat from '~/shared/assets/nav/chat.svg';
 import bot from '~/shared/assets/svg/bot.svg';
 import channel from '~/shared/assets/svg/channel.svg';
 import help from '~/shared/assets/svg/help.svg';
-import { Profile } from '~/shared/ui/Profile';
 
 export const TelegramLinkButton = ({
   username,
@@ -47,12 +47,6 @@ export function CommunicationPage({ data }) {
       window.Telegram.WebApp.setBackgroundColor('#F2F2F2');
     }
   }, []);
-
-  const firstSteam = data.subscriptions.find((sub) => sub.stream === 1);
-  const secondSteam = data.subscriptions.find((sub) => sub.stream === 2);
-
-  const firstSteamIsPro = firstSteam && firstSteam.plan === 'Pro';
-  const secondSteamIsPro = secondSteam && secondSteam.plan === 'Pro';
 
   return (
     <div className="comPage">

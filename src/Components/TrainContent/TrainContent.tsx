@@ -7,10 +7,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { apiService } from '~/shared/api';
 import pdfSrc from '~/shared/assets/pdf/trane.pdf';
 import check from '~/shared/assets/svg/check.svg';
+import { Loader } from '~/shared/ui/Loader.js';
 import { PdfViewer } from '~/widget/pdfViewer';
 
 import Button from '../../Components/Button/Button';
-import Loader from '../../Components/Loader/Loader';
 import { Toggler } from '../../shared/ui/Toggler.js';
 import TrainBox from '../TrainBox/TrainBox';
 import TrainingPage from '../TrainingPage/TrainingPage';
@@ -396,6 +396,7 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
               transition: 'all 0.6s ease-in-out',
               gridTemplateColumns: isLoading ? '1fr' : '',
               height: isLoading ? '100%' : '',
+              flexGrow: isLoading ? 1 : 0,
             }}
           >
             {isLoading ? (

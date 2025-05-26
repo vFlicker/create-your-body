@@ -2,12 +2,12 @@ import './TrainPage.css';
 
 import { useEffect, useState } from 'react';
 
+import { Profile } from '~/entities/user';
 import muscules from '~/shared/assets/svg/musclesBlack.svg';
 import back from '~/shared/assets/train/back.svg';
 import dumbbells from '~/shared/assets/train/dumbbells.svg';
 import question from '~/shared/assets/train/question.svg';
 import sport from '~/shared/assets/train/sport.svg';
-import { Profile } from '~/shared/ui/Profile';
 import { Select } from '~/shared/ui/Select';
 import { TitleCard } from '~/shared/ui/TitleCard';
 
