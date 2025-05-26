@@ -5,13 +5,13 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 
 import { apiService } from '~/shared/api';
-import pdf from '~/shared/assets/pdf/trane.pdf';
+import pdfSrc from '~/shared/assets/pdf/trane.pdf';
 import check from '~/shared/assets/svg/check.svg';
+import { PdfViewer } from '~/widget/pdfViewer';
 
 import Button from '../../Components/Button/Button';
 import Loader from '../../Components/Loader/Loader';
 import { Toggler } from '../../shared/ui/Toggler.js';
-import PdfViewer from '../PdfViewer/PdfViewer.jsx';
 import TrainBox from '../TrainBox/TrainBox';
 import TrainingPage from '../TrainingPage/TrainingPage';
 
@@ -374,7 +374,7 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
   if (view === 'train') {
     return (
       <div className="trainContent">
-        <PdfViewer pdfFile={pdf} />
+        <PdfViewer pdfFileSrc={pdfSrc} />
       </div>
     );
   }

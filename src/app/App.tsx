@@ -1,6 +1,6 @@
 import './index.css';
-import './App.css';
 
+import styled from '@emotion/styled';
 import axios from 'axios';
 import { AnimatePresence } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
@@ -43,11 +43,11 @@ function Layout() {
 
   return (
     <>
-      <div className="header">
+      <StyledHeader>
         {showControlsBack && <BackButton />}
         <CloseButton />
-      </div>
-      <div className="App">
+      </StyledHeader>
+      <StyledMain>
         <div className="page-transition-container">
           <AnimatePresence mode="sync">
             <PageTransition key={location.pathname}>
@@ -56,7 +56,7 @@ function Layout() {
           </AnimatePresence>
         </div>
         {showControlsNav && <Nav />}
-      </div>
+      </StyledMain>
     </>
   );
 }
@@ -289,3 +289,18 @@ export function App() {
     </>
   );
 }
+
+const StyledHeader = styled.div`
+  position: absolute;
+  top: 16px;
+  height: 28px;
+  width: 100%;
+`;
+
+const StyledMain = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+`;

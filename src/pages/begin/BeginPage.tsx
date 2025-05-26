@@ -3,13 +3,13 @@ import './BeginPage.css';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom'; // Импортируем useLocation
 
-import pdf from '~/shared/assets/pdf/begin.pdf';
+import pdfSrc from '~/shared/assets/pdf/begin.pdf';
 import health from '~/shared/assets/svg/health.svg';
 import begin from '~/shared/assets/video/begin.mp4';
 import { Profile } from '~/shared/ui/Profile';
 import { Toggler } from '~/shared/ui/Toggler';
+import { PdfViewer } from '~/widget/pdfViewer/PdfViewer';
 
-import PdfViewer from '../../Components/PdfViewer/PdfViewer';
 import VideoPage from '../../Components/VideoPage/VideoPage';
 
 export function BeginPage({ userId, data }) {
@@ -58,7 +58,7 @@ export function BeginPage({ userId, data }) {
           />
         )}
 
-        {!isVideoView && <PdfViewer pdfFile={pdf} />}
+        {!isVideoView && <PdfViewer pdfFileSrc={pdfSrc} />}
       </div>
     </div>
   );

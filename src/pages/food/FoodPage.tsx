@@ -2,7 +2,7 @@ import './FoodPage.css';
 import '../communication/CommunicationPage.css';
 
 import axios from 'axios';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { apiService } from '~/shared/api';
@@ -10,11 +10,11 @@ import food from '~/shared/assets/nav/food.svg';
 import copy from '~/shared/assets/svg/copy.svg';
 import help from '~/shared/assets/svg/help.svg';
 import { Profile } from '~/shared/ui/Profile';
+import { PdfViewer } from '~/widget/pdfViewer/PdfViewer';
 
 import Button from '../../Components/Button/Button';
 import FoodContainer from '../../Components/Container/FoodContainer';
 import Loader from '../../Components/Loader/Loader';
-import PdfViewer from '../../Components/PdfViewer/PdfViewer';
 import { TelegramLinkButton } from '../communication/CommunicationPage';
 
 export function FoodPage({ data, userId, userQuery }) {
@@ -22,24 +22,7 @@ export function FoodPage({ data, userId, userQuery }) {
   const [dataFood, setDataFood] = useState(null);
   const [selectedPdfId, setSelectedPdfId] = useState(null);
   const [errorsContainer, setErrorsContainer] = useState(false);
-  const [logs, setLogs] = useState([]);
   const [allowedUserIds, setAllowedUserIds] = useState([]);
-
-  const addLog = useCallback((...args) => {
-    const msg = args
-      .map((arg) => {
-        try {
-          return typeof arg === 'object'
-            ? JSON.stringify(arg, null, 2)
-            : String(arg);
-        } catch {
-          return String(arg);
-        }
-      })
-      .join(' ');
-
-    setLogs((prevLogs) => [...prevLogs, msg]);
-  }, []);
 
   // Получение разрешенных ID с сервера
   useEffect(() => {
@@ -49,27 +32,13 @@ export function FoodPage({ data, userId, userQuery }) {
         // Преобразуем все ID в строки
         const stringIds = response.data.map((id) => id.toString());
         setAllowedUserIds(stringIds);
-      } catch (error) {
-        const errorDetails = {
-          message: error.message,
-          status: error.response?.status,
-          statusText: error.response?.statusText,
-          data: error.response?.data,
-          config: {
-            url: error.config?.url,
-            method: error.config?.method,
-            headers: error.config?.headers,
-          },
-        };
-        addLog(
-          'Ошибка при получении разрешенных ID:',
-          JSON.stringify(errorDetails, null, 2),
-        );
+      } catch (err) {
+        console.error('Ошибка при получении разрешенных ID:', err);
       }
     };
 
     fetchAllowedIds();
-  }, [addLog]);
+  }, []);
 
   // Проверка, имеет ли пользователь доступ к просмотру логов
   const canViewLogs = allowedUserIds.includes(userId?.toString());
@@ -79,25 +48,9 @@ export function FoodPage({ data, userId, userQuery }) {
       try {
         setIsLoading(true);
         const response = await apiService.getNutritionPlanCategories(userQuery);
-        addLog('Ответ сервера на запрос питания:', response.data);
         setDataFood(response.data);
-      } catch (error) {
-        const errorDetails = {
-          message: error.message,
-          status: error.response?.status,
-          statusText: error.response?.statusText,
-          data: error.response?.data,
-          config: {
-            url: error.config?.url,
-            method: error.config?.method,
-            headers: error.config?.headers,
-          },
-          stack: error.stack,
-        };
-        addLog(
-          'Ошибка при получении данных питания:',
-          JSON.stringify(errorDetails, null, 2),
-        );
+      } catch (err) {
+        console.error('Ошибка при получении данных о питании:', err);
       } finally {
         setIsLoading(false);
       }
@@ -224,10 +177,9 @@ export function FoodPage({ data, userId, userQuery }) {
           {selectedPdfId && (
             <div className={`pdf-wrapper ${selectedPdfId ? 'slide-in' : ''}`}>
               <PdfViewer
-                pdfId={selectedPdfId}
-                userId={userId}
                 userQuery={userQuery}
-                addLog={addLog}
+                userId={userId}
+                pdfId={selectedPdfId}
               />
             </div>
           )}
