@@ -24,7 +24,7 @@ import { TrainPage } from '~/pages/train';
 import { BASE_API_URL, extractErrorLogData } from '~/shared/api';
 import { AppRoute } from '~/shared/router';
 import { Loader } from '~/shared/ui/Loader';
-import { Nav } from '~/widget/nav';
+import { Nav } from '~/shared/ui/nav';
 
 import PageTransition from '../Components/PageTransition/PageTransition';
 import { withProviders } from './providers';

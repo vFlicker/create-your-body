@@ -9,7 +9,7 @@ import pdfSrc from '~/shared/assets/pdf/trane.pdf';
 import checkIconSrc from '~/shared/assets/svg/check.svg';
 import { Button } from '~/shared/ui/Button';
 import { Loader } from '~/shared/ui/Loader.js';
-import { PdfViewer } from '~/widget/pdfViewer';
+import { PdfViewer } from '~/shared/ui/pdfViewer';
 
 import { Toggler } from '../../shared/ui/Toggler.js';
 import TrainBox from '../TrainBox/TrainBox';
@@ -370,7 +370,7 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
   if (view === 'train') {
     return (
       <div className="trainContent">
-        <PdfViewer pdfFileSrc={pdfSrc} />
+        <PdfViewer pdfSrc={pdfSrc} />
       </div>
     );
   }

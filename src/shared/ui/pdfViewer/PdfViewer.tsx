@@ -9,36 +9,31 @@ import {
   Worker,
 } from '@react-pdf-viewer/core';
 import { pageNavigationPlugin } from '@react-pdf-viewer/page-navigation';
-import { JSX, useEffect, useState } from 'react';
+import { JSX, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import { apiService } from '~/shared/api';
 import close from '~/shared/assets/svg/close.svg';
 import fullscreen from '~/shared/assets/svg/fullscreen.svg';
 import left from '~/shared/assets/svg/left.svg';
 import right from '~/shared/assets/svg/right.svg';
 import { Loader } from '~/shared/ui/Loader';
 
-import { Color } from '../../shared/theme/colors';
+import { Color } from '../../theme/colors';
 import { pdfViewerAddition } from './pdfViewerAddition';
 
 const WORKER_URL = `https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`;
 
 type PdfViewerProps = {
   pdfId?: string;
-  pdfFileSrc?: string;
-  userQuery?: string;
-  userId?: string;
+  pdfSrc?: string;
+  isLoading?: boolean;
 };
 
 export function PdfViewer({
+  pdfSrc,
   pdfId,
-  pdfFileSrc,
-  userQuery,
-  userId,
+  isLoading,
 }: PdfViewerProps): JSX.Element {
-  const [pdfUrl, setPdfUrl] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const pageNavigationPluginInstance = pageNavigationPlugin();
@@ -49,34 +44,6 @@ export function PdfViewer({
     setIsFullscreen((prevIsFullscreen) => !prevIsFullscreen);
   };
 
-  useEffect(() => {
-    const loadPdfUrl = async () => {
-      try {
-        setIsLoading(true);
-
-        if (pdfFileSrc) {
-          setPdfUrl(pdfFileSrc);
-          return;
-        }
-
-        const response = await apiService.getNutritionPlanByPdfId(
-          userQuery,
-          userId,
-          pdfId,
-        );
-
-        const { pdfUrl } = response.data.data;
-        setPdfUrl(pdfUrl);
-      } catch (err) {
-        console.error('Ошибка при загрузке PDF:', err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadPdfUrl();
-  }, [pdfId, pdfFileSrc, userId, userQuery]);
-
   const renderPdfContent = () => (
     <>
       <StyledFullscreenOverlay isActive={isFullscreen} />
@@ -86,7 +53,7 @@ export function PdfViewer({
           <Viewer
             defaultScale={SpecialZoomLevel.PageFit}
             scrollMode={ScrollMode.Page}
-            fileUrl={pdfUrl}
+            fileUrl={pdfSrc}
             enableSmoothScroll={false}
             plugins={[pageNavigationPluginInstance]}
           />

@@ -3,34 +3,24 @@ import '../communication/CommunicationPage.css';
 
 import { useEffect, useState } from 'react';
 
+import { useNutritionCategories, useNutritionPlan } from '~/entities/nutrition';
 import { Profile } from '~/entities/user';
-import { apiService } from '~/shared/api';
 import food from '~/shared/assets/nav/food.svg';
 import { Loader } from '~/shared/ui/Loader';
-import { PdfViewer } from '~/widget/pdfViewer/PdfViewer';
-
-import FoodContainer from '../../Components/Container/FoodContainer';
+import { PdfViewer } from '~/shared/ui/pdfViewer';
+import { TitleCard } from '~/shared/ui/TitleCard';
 
 export function FoodPage({ data, userId, userQuery }) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [dataFood, setDataFood] = useState(null);
   const [selectedPdfId, setSelectedPdfId] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const response = await apiService.getNutritionPlanCategories(userQuery);
-        setDataFood(response.data);
-      } catch (err) {
-        console.error('Ошибка при получении данных о питании:', err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const { isNutritionCategoriesPending, nutritionCategories } =
+    useNutritionCategories(userQuery);
 
-    fetchData();
-  }, []);
+  const { isNutritionPlanLoading, nutritionPlan } = useNutritionPlan(
+    userQuery,
+    userId,
+    selectedPdfId,
+  );
 
   const handleBack = () => {
     setSelectedPdfId(null);
@@ -63,25 +53,23 @@ export function FoodPage({ data, userId, userQuery }) {
         <div
           className={`content-wrapper-food ${selectedPdfId ? 'slide-left' : ''}`}
           style={{
-            width: isLoading ? '100%' : '',
-            height: isLoading ? '100%' : '',
+            width: isNutritionCategoriesPending ? '100%' : '',
+            height: isNutritionCategoriesPending ? '100%' : '',
           }}
         >
-          {isLoading ? (
+          {isNutritionCategoriesPending ? (
             <Loader />
           ) : (
             <div
               className="foodList"
               style={{ height: selectedPdfId ? '50vh' : '' }}
             >
-              {dataFood?.data?.map((item) => (
-                <FoodContainer
-                  key={item.id}
-                  title={item.title}
-                  icon={item.iconUrl}
-                  iconAlt={item.title}
-                  onClick={() => setSelectedPdfId(item.id)}
-                  foodId={item.id}
+              {nutritionCategories.data.map(({ iconUrl, id, title }) => (
+                <TitleCard
+                  key={id}
+                  title={title}
+                  iconSrc={iconUrl}
+                  onClick={() => setSelectedPdfId(id)}
                 />
               ))}
             </div>
@@ -89,9 +77,8 @@ export function FoodPage({ data, userId, userQuery }) {
           {selectedPdfId && (
             <div className={`pdf-wrapper ${selectedPdfId ? 'slide-in' : ''}`}>
               <PdfViewer
-                userQuery={userQuery}
-                userId={userId}
-                pdfId={selectedPdfId}
+                isLoading={isNutritionPlanLoading}
+                pdfSrc={nutritionPlan?.data?.pdfUrl}
               />
             </div>
           )}

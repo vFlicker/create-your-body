@@ -142,18 +142,4 @@ export const apiService = {
       throw error;
     }
   },
-
-  getNutritionPlanByPdfId: async (userQuery, userId, pdfId) => {
-    try {
-      const response = await httpClient.get(
-        `/cms/api/nutrition/client/${pdfId}?tg_id=${userId}`,
-        { headers: { 'x-telegram-init': userQuery } },
-      );
-
-      return response;
-    } catch (error) {
-      console.error('Error fetching nutrition plan by ID with PDF:', error);
-      throw error;
-    }
-  },
 };
