@@ -16,10 +16,10 @@ import history from '~/shared/assets/svg/history.svg';
 import right from '~/shared/assets/svg/right.svg';
 import settings from '~/shared/assets/svg/settings.svg';
 import { Color } from '~/shared/theme/colors';
+import { Button } from '~/shared/ui/Button';
 import { IconButton } from '~/shared/ui/IconButton';
 import { Loader } from '~/shared/ui/Loader';
 
-import Button from '../../Components/Button/Button';
 import PhotoEditor from '../../Components/PhotoEditor/PhotoEditor';
 import { Toggler } from '../../shared/ui/Toggler';
 
@@ -590,13 +590,9 @@ export function ProfilePage({ userQuery, data }) {
                 </p>
               </div>
             </div>
-            <Button
-              onClick={() => navigate('/parameters')}
-              text="Добавить параметры"
-              bg="#A799FF"
-              bgFocus="#776CBC"
-              color="#F2F2F2"
-            />
+            <Button color="accent" onClick={() => navigate('/parameters')}>
+              Добавить параметры
+            </Button>
           </>
         )}
       </div>

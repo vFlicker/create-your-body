@@ -3,9 +3,9 @@ import './VideoPage.css';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import check from '~/shared/assets/svg/check.svg';
+import checkIconSrc from '~/shared/assets/svg/check.svg';
+import { Button } from '~/shared/ui/Button';
 
-import Button from '../Button/Button';
 import VideoViewer from '../VideoViewer/VideoViewer';
 
 export default function VideoPage({ video, page, userId, instruction, text }) {
@@ -45,14 +45,12 @@ export default function VideoPage({ video, page, userId, instruction, text }) {
         </p>
       </div>
       <Button
+        color="secondary"
+        iconSrc={checkIconSrc}
         onClick={handleButtonClick}
-        width="100%"
-        color="#0D0D0D"
-        icon={check}
-        text={isVideoEnded ? 'Завершить' : 'Начать'} // Текст кнопки зависит от состояния
-        bg="#CBFF52"
-        bgFocus="#EBFFBD"
-      />
+      >
+        {isVideoEnded ? 'Завершить' : 'Начать'}
+      </Button>
     </div>
   );
 }

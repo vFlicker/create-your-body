@@ -8,7 +8,7 @@ import { TypographyVariantToCss } from './Typography';
 
 type ButtonBaseProps = {
   color: `${ButtonColor}`;
-  icon?: JSX.Element;
+  iconSrc?: string;
 };
 
 type ButtonProps = ComponentProps<typeof StyledButton>;
@@ -19,10 +19,11 @@ const enum ButtonColor {
   Neutral = 'neutral',
 }
 
-function Button(props: ButtonProps): JSX.Element {
+function Button({ iconSrc, children, ...props }: ButtonProps): JSX.Element {
   return (
     <StyledButton {...props}>
-      {props.icon} {props.children}
+      {iconSrc && <img src={iconSrc} />}
+      {children}
     </StyledButton>
   );
 }
@@ -52,6 +53,7 @@ const StyledButton = styled.button<ButtonBaseProps>`
   align-items: center;
   gap: 4px;
 
+  width: 100%;
   min-height: 54px;
   border-radius: 50px;
 

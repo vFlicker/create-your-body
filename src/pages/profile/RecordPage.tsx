@@ -5,13 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Profile } from '~/entities/user';
 import { useCreateBodyMeasurements } from '~/entities/user/api/useCreateBodyMeasurements';
-
-// import Selecter from '../../Components/Selecter/Selecter';
-import Button from '../../Components/Button/Button';
-
-// import settings from '~/shared/assets/svg/settings.svg';
-// import right from '~/shared/assets/svg/right.svg';
-// import close from '~/shared/assets/svg/close.svg';
+import { Button } from '~/shared/ui/Button';
 
 const InputPair = ({ labels, values, onChange, handleBlur, handleFocus }) => (
   <div className="inputPair" style={{ display: 'flex' }}>
@@ -146,51 +140,8 @@ export function RecordPage({ userQuery, userId, data }) {
             </div>
           </div>
         </div>
-        {/* <div className="settings">
-          <div className="set" onClick={() => setOpen(!open)}>
-            <img src={settings} alt="Настройки" />
-            <p>Настроить уровень сложности</p>
-            <img
-              className="toggle"
-              src={right}
-              style={{ opacity: open ? '0' : '1' }}
-              alt="Настроить уровень сложности"
-            />
-            <img
-              className="toggle"
-              src={close}
-              style={{ opacity: open ? '1' : '0' }}
-              alt="Настроить уровень сложности"
-            />
-          </div>
-          {open && (
-            <Selecter
-              bg="#fff"
-              activeIndex={activeIndex}
-              textOne="Новичок"
-              textTwo="Профи"
-              onClick={handleSelecterClick}
-            />
-          )}
-        </div> */}
         <div className="recordYourProgress">
           <h3>Запишите свой прогресс</h3>
-          {/* <div className="weeksContainer">
-            <p>Неделя</p>
-            <div className="weeks">
-              {[1, 2, 3, 4].map((weekNumber) => (
-                <div
-                  key={weekNumber}
-                  className={`week ${weekNumber < activeWeek ? 'past' : ''} ${
-                    weekNumber === activeWeek ? 'active' : ''
-                  }`}
-                  onClick={() => setActiveWeek(weekNumber)}
-                >
-                  {weekNumber}
-                </div>
-              ))}
-            </div>
-          </div> */}
           <div className="inputsSection">
             {inputPairs.map(({ labels, fields }) => (
               <InputPair
@@ -203,14 +154,9 @@ export function RecordPage({ userQuery, userId, data }) {
               />
             ))}
           </div>
-          <Button
-            text="Сохранить"
-            width="100%"
-            bg="#CBFF52"
-            bgFocus="#EBFFBD"
-            color="#0D0D0D"
-            onClick={handleSubmit}
-          />
+          <Button color="secondary" onClick={handleSubmit}>
+            Сохранить
+          </Button>
         </div>
       </div>
     </div>

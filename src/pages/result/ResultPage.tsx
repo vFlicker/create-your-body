@@ -6,8 +6,7 @@ import { useUser } from '~/entities/user';
 import result from '~/shared/assets/img/result.jpg';
 import muscles from '~/shared/assets/svg/musclesBlack.svg';
 import settings from '~/shared/assets/svg/settings.svg';
-
-import Button from '../../Components/Button/Button';
+import { Button } from '~/shared/ui/Button';
 
 const description = {
   Профи:
@@ -39,13 +38,12 @@ export function ResultPage({ userQuery }) {
           </div>
         </div>
         <Button
-          icon={muscles}
-          text="К тренировкам"
-          bg="#CBFF52"
-          bgFocus="#EBFFBD"
-          color="#0D0D0D"
+          iconSrc={muscles}
+          color="secondary"
           onClick={() => navigate('/dashboard')}
-        />
+        >
+          К тренировкам
+        </Button>
       </div>
     </div>
   );

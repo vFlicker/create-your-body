@@ -6,11 +6,11 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { apiService } from '~/shared/api';
 import pdfSrc from '~/shared/assets/pdf/trane.pdf';
-import check from '~/shared/assets/svg/check.svg';
+import checkIconSrc from '~/shared/assets/svg/check.svg';
+import { Button } from '~/shared/ui/Button';
 import { Loader } from '~/shared/ui/Loader.js';
 import { PdfViewer } from '~/widget/pdfViewer';
 
-import Button from '../../Components/Button/Button';
 import { Toggler } from '../../shared/ui/Toggler.js';
 import TrainBox from '../TrainBox/TrainBox';
 import TrainingPage from '../TrainingPage/TrainingPage';
@@ -325,14 +325,12 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
                 </div>
                 <div className="warmup-navigation">
                   <Button
+                    color="secondary"
+                    iconSrc={checkIconSrc}
                     onClick={handleComplete}
-                    text="Завершить разминку"
-                    icon={check}
-                    bg="#CBFF52"
-                    bgFocus="#EBFFBD"
-                    color="#0D0D0D"
-                    width="100%"
-                  />
+                  >
+                    Завершить разминку
+                  </Button>
                 </div>
               </div>
             ) : (
@@ -353,14 +351,12 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
                 ))}
                 <div className="warmup-navigation">
                   <Button
+                    color="secondary"
+                    iconSrc={checkIconSrc}
                     onClick={handleComplete}
-                    text="Завершить МФР"
-                    icon={check}
-                    bg="#CBFF52"
-                    bgFocus="#EBFFBD"
-                    color="#0D0D0D"
-                    width="100%"
-                  />
+                  >
+                    Завершить МФР
+                  </Button>
                 </div>
               </div>
             )}

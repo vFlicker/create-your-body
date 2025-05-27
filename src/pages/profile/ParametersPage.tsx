@@ -1,5 +1,6 @@
 import './profile.css';
 
+import styled from '@emotion/styled';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,9 +16,9 @@ import example from '~/shared/assets/img/example.jpeg';
 import add from '~/shared/assets/svg/addImg.svg';
 import close from '~/shared/assets/svg/closeWhite.svg';
 import { AppRoute } from '~/shared/router';
+import { Button } from '~/shared/ui/Button';
 import { Loader } from '~/shared/ui/Loader';
 
-import Button from '../../Components/Button/Button';
 import { isDateValid } from './profileValidators';
 
 const InputPair = ({
@@ -580,14 +581,12 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
           </div>
           <div style={{ position: 'relative', width: '100%' }}>
             <Button
-              text="Сохранить"
-              width="100%"
-              bg={isFormValid() ? '#CBFF52' : '#EBFFBD'}
-              bgFocus="#EBFFBD"
-              color="#0D0D0D"
-              onClick={handleSubmit}
+              color="secondary"
               disabled={!isFormValid() || isSaving}
-            />
+              onClick={handleSubmit}
+            >
+              Сохранить
+            </Button>
             {isSaving && (
               <div
                 style={{
@@ -619,3 +618,7 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
     </div>
   );
 }
+
+const StyledSaveButton = styled(Button)`
+  width: 100%;
+`;

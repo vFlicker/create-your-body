@@ -4,12 +4,12 @@ import '../food/FoodPage.css';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import chat from '~/shared/assets/nav/chat.svg';
-import copy from '~/shared/assets/svg/copy.svg';
-import help from '~/shared/assets/svg/help.svg';
-import muscules from '~/shared/assets/svg/muscles.svg';
+import chatIconSrc from '~/shared/assets/nav/chat.svg';
+import copyIconSrc from '~/shared/assets/svg/copy.svg';
+import helpIconSrc from '~/shared/assets/svg/help.svg';
+import musculesIconSrc from '~/shared/assets/svg/muscles.svg';
+import { Button } from '~/shared/ui/Button';
 
-import Button from '../../Components/Button/Button';
 import { TelegramLinkButton } from '../communication/CommunicationPage';
 
 export function NoEntryPage({ logs, addLog }) {
@@ -68,58 +68,36 @@ export function NoEntryPage({ logs, addLog }) {
             </div>
             <div className="supportBtn">
               <Button
-                bg={'#CBFF52'}
-                bgFocus={'#EBFFBD'}
-                color={'#0d0d0d'}
-                icon={copy}
-                text={'Скопировать все'}
+                color="secondary"
+                iconSrc={copyIconSrc}
                 onClick={() => {
                   navigator.clipboard.writeText(logs.join('\n'));
                 }}
-                width={'100%'}
-              />
+              >
+                Скопировать все
+              </Button>
               <TelegramLinkButton
                 username={'zabotaCYB'}
                 buttonText="Поддержка"
                 onClick={handleOpenTelegramLink}
-                icon={help}
+                icon={helpIconSrc}
                 style={{ width: '100%' }}
               />
-              <Button
-                bg={'#0D0D0D'}
-                bgFocus={'#A799FF'}
-                color={'#fff'}
-                text={'Выйти'}
-                onClick={() => {
-                  setErrorsContainer(false);
-                  addLog('Закрытие контейнера ошибок');
-                }}
-                width={'100%'}
-              />
+              <Button color="neutral" onClick={() => setErrorsContainer(false)}>
+                Выйти
+              </Button>
             </div>
           </div>,
           document.body,
         )}
       <h1>Доступ в приложение закрыт</h1>
       <p>Если считаешь, что это ошибка - обратись в поддержку</p>
-      <Button
-        bg="#A799FF"
-        bgFocus="#776CBC"
-        icon={muscules}
-        onClick={handleOpenSite}
-        text="Приобрести доступ"
-        color="#FFFFFF"
-        width="100%"
-      />
-      <Button
-        bg="#CBFF52"
-        bgFocus="#EBFFBD"
-        icon={chat}
-        onClick={openLogs}
-        text="Обратиться в поддержку"
-        color="#0d0d0d"
-        width="100%"
-      />
+      <Button color="accent" iconSrc={musculesIconSrc} onClick={handleOpenSite}>
+        Приобрести доступ
+      </Button>
+      <Button color="secondary" iconSrc={chatIconSrc} onClick={openLogs}>
+        Обратиться в поддержку
+      </Button>
     </div>
   );
 }

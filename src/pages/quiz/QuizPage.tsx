@@ -1,13 +1,14 @@
 import './QuizPage.css';
 
+import styled from '@emotion/styled';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
 import { useUpdateUser } from '~/entities/user';
 import { BackButton } from '~/features/BackButton';
 import { AppRoute } from '~/shared/router';
+import { Button } from '~/shared/ui/Button';
 
-import Button from '../../Components/Button/Button';
 import Progress from '../../Components/Progress/Progress';
 import {
   slideVariants,
@@ -391,20 +392,19 @@ export function QuizPage({ data, userQuery }) {
           <AnimatePresence initial={false} mode="sync">
             {step === 1 ? renderStep1() : renderQuizStep()}
           </AnimatePresence>
-          <Button
-            text={step === 8 ? 'Завершить' : 'Далее'}
-            onClick={handleNext}
+          <StyledButton
             disabled={!isValid}
-            width="calc(100% - 32px)"
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: '50%',
-              transform: 'translateX(-50%)',
-            }}
-          />
+            color="neutral"
+            onClick={handleNext}
+          >
+            {step === 8 ? 'Завершить' : 'Далее'}
+          </StyledButton>
         </div>
       </div>
     </div>
   );
 }
+
+const StyledButton = styled(Button)`
+  margin-top: auto;
+`;

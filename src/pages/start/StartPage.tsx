@@ -22,7 +22,7 @@ export function StartPage({ type }: StartPageProps): JSX.Element {
     }
   }, []);
 
-  const { buttonText, ButtonIcon, onButtonClick } = buttonConfig[type];
+  const { buttonText, buttonIconSrc, onButtonClick } = buttonConfig[type];
 
   return (
     <StyledStartPage>
@@ -44,7 +44,7 @@ export function StartPage({ type }: StartPageProps): JSX.Element {
 
           <Button
             color="neutral"
-            icon={ButtonIcon}
+            iconSrc={buttonIconSrc}
             onClick={() => onButtonClick(navigate)}
           >
             {buttonText}

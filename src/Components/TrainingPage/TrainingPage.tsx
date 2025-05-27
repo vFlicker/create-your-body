@@ -3,12 +3,12 @@ import './TrainingPage.css';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import arrow from '~/shared/assets/svg/arrow.svg';
-import back from '~/shared/assets/svg/arrowBack.svg';
-import brain from '~/shared/assets/svg/brain.svg';
-import check from '~/shared/assets/svg/check.svg';
+import arrowIconSrc from '~/shared/assets/svg/arrow.svg';
+import backIconSrc from '~/shared/assets/svg/arrowBack.svg';
+import brainIconSrc from '~/shared/assets/svg/brain.svg';
+import checkIconSrc from '~/shared/assets/svg/check.svg';
+import { Button } from '~/shared/ui/Button';
 
-import Button from '../Button/Button';
 import Notification from '../Notification/Notification';
 
 const slideVariants = {
@@ -210,27 +210,18 @@ export default function TrainingPage({ trainingData, onBack, lectures, jcsb }) {
       </div>
 
       <div className="training-navigation">
+        <Button iconSrc={backIconSrc} color="secondary" onClick={handleBack}>
+          Назад
+        </Button>
         <Button
-          onClick={handleBack}
-          text="Назад"
-          icon={back}
-          bg="#CBFF52"
-          bgFocus="#EBFFBD"
-          color="#0d0d0d"
-          width="100%"
-        />
-        <Button
-          onClick={handleNext}
-          text={
-            isLastStep ? (lectures ? 'Изучено' : 'Завершить') : 'Продолжить'
+          iconSrc={
+            isLastStep ? (lectures ? brainIconSrc : checkIconSrc) : arrowIconSrc
           }
-          reverse={isLastStep ? false : true}
-          icon={isLastStep ? (lectures ? brain : check) : arrow}
-          bg={isLastStep ? '#CBFF52' : '#A799FF'}
-          bgFocus={isLastStep ? '#EBFFBD' : '#776CBC'}
-          color={isLastStep ? '#0d0d0d' : '#fff'}
-          width="100%"
-        />
+          color={isLastStep ? 'secondary' : 'accent'}
+          onClick={handleNext}
+        >
+          {isLastStep ? (lectures ? 'Изучено' : 'Завершить') : 'Продолжить'}
+        </Button>
       </div>
     </div>
   );
