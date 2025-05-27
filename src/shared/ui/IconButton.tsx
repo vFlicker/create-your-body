@@ -1,57 +1,52 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 
 import lockIconSrc from '~/shared/assets/svg/lock.svg';
 import { Color } from '~/shared/theme/colors';
 
-type NavButtonProps = {
-  to: string;
-  label: string;
+type IconButtonProps = {
+  className?: string;
   iconSrc: string;
+  text?: string;
+  isActive?: boolean;
   disabled?: boolean;
   onClick?: () => void;
 };
 
-export function NavButton({
-  to,
+export function IconButton({
+  className,
   iconSrc,
-  label,
+  text,
+  isActive = false,
   disabled = false,
   onClick,
-}: NavButtonProps): JSX.Element {
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const isActive = pathname === to;
-
-  const handleButtonClick = () => {
-    if (disabled || isActive) return;
-
-    navigate(to);
-    if (onClick) onClick();
-  };
-
+}: IconButtonProps): JSX.Element {
   return (
-    <StyledNavButtonWrapper>
-      <StyledNavButton
+    <StyledIconButtonWrapper className={className}>
+      <StyledIconButton
         isActive={isActive}
         disabled={disabled}
-        onClick={handleButtonClick}
+        onClick={onClick}
       >
         <StyledIcon src={disabled ? lockIconSrc : iconSrc} />
-      </StyledNavButton>
-      <StyledLabel>{label}</StyledLabel>
-    </StyledNavButtonWrapper>
+      </StyledIconButton>
+      {text && <StyledText>{text}</StyledText>}
+    </StyledIconButtonWrapper>
   );
 }
 
-const StyledNavButtonWrapper = styled.div`
+const StyledIconButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 4px;
 `;
 
-const StyledNavButton = styled.button<{ isActive: boolean; disabled: boolean }>`
+const StyledIconButton = styled.button<{
+  isActive: boolean;
+  disabled: boolean;
+}>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -78,7 +73,7 @@ const StyledIcon = styled.img`
   height: 24px;
 `;
 
-const StyledLabel = styled.div`
+const StyledText = styled.div`
   color: ${Color.Black_950};
   font-size: 10px;
   text-align: center;

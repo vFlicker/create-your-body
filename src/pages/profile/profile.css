@@ -1,10 +1,10 @@
 .profilePage {
-    padding-top: 70px;
-    transition: all 150ms ease-in-out;
-    position: relative;
-    display: flex;
-    width: 100%;
-    height: fit-content;
+  padding-top: 70px;
+  transition: all 150ms ease-in-out;
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: fit-content;
 }
 
 .profileContainer,
@@ -18,13 +18,13 @@
 .solution,
 .profileName,
 .weeksContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .dataHave {
-    flex: 1;
+  flex: 1;
 }
 
 .profile,
@@ -36,17 +36,17 @@
 .photosBefore,
 .uploadContainer,
 .uploadPlaceholderContainer {
-    display: flex;
-    align-items: center;
-    gap: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .profileContainer {
-    background: #fff;
-    border-radius: 16px 16px 0 0;
-    padding: 16px 16px 32px 16px;
-    flex: 1;
-    width: 100%;
+  background: #fff;
+  border-radius: 16px 16px 0 0;
+  padding: 16px 16px 32px 16px;
+  flex: 1;
+  width: 100%;
 }
 
 .profileName,
@@ -54,18 +54,18 @@
 .before,
 .photoUploader,
 .inputGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .profileName p,
 .howSize h3,
 .parameters h3,
 .photosContainerBefore h3 {
-    font-size: 18px;
-    font-weight: 700;
-    color: #0D0D0D;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0D0D0D;
 }
 
 .profileName span,
@@ -73,8 +73,8 @@
 .before span,
 .recordText p,
 .photosContainerBefore p {
-    font-size: 12px;
-    color: #999999;
+  font-size: 12px;
+  color: #999999;
 }
 
 .set p,
@@ -82,19 +82,19 @@
 .recordText p,
 .recordBtn p,
 .profileInfo p {
-    font-size: 14px;
-    color: #0D0D0D;
+  font-size: 14px;
+  color: #0D0D0D;
 }
 
 .settings {
-    background: #F2F2F2;
-    border-radius: 16px;
-    padding: 10px 16px;
-    cursor: pointer;
-    transition: all 150ms ease-in-out;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  background: #F2F2F2;
+  border-radius: 16px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all 150ms ease-in-out;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .set,
@@ -102,344 +102,349 @@
 .inputPair,
 .loadPhotos,
 .photoUploader {
-    width: 100%;
+  width: 100%;
 }
 
 .loadPhotos {
-    display: flex;
+  display: flex;
 }
 
 .set {
-    position: relative;
+  position: relative;
 }
 
 .toggle {
-    position: absolute;
-    right: 16px;
-    transition: all 150ms ease-in-out;
+  position: absolute;
+  right: 16px;
+  transition: all 150ms ease-in-out;
 }
 
-.zamer{
-    height: 320px;
+.zamer {
+  height: 320px;
 }
 
 .examplePhoto {
-    height: 380px;
+  height: 380px;
 }
 
 .zamer img {
-    border-radius: 14px;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top center;
+  border-radius: 14px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
 }
 
 .examplePhoto img {
-    border-radius: 14px;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top center;
+  border-radius: 14px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
 }
 
 .profileInfo h4 {
-    color: #0D0D0D;
-    font-size: 16px;
-    font-weight: 700;
+  color: #0D0D0D;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .solution p,
 .profileInfo p {
-    line-height: 120%;
+  line-height: 120%;
 }
 
 .solution {
-    width: 40%;
+  width: 40%;
 }
 
 .examplePhoto {
-    width: 60%;
+  width: 60%;
 }
 
 .howSize {
-    padding-top: 8px;
+  padding-top: 8px;
 }
 
 .dot {
-    background: #A799FF;
-    border-radius: 50px;
-    width: 8px;
-    height: 8px;
+  background: #A799FF;
+  border-radius: 50px;
+  width: 8px;
+  height: 8px;
 }
 
 .inputsSection {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    gap: 14px;
-    position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
 }
 
 .inputPair {
-    gap: 16px;
-    display: flex;
+  gap: 16px;
+  display: flex;
 }
 
 .inputGroup {
-    width: 50%;
+  width: 50%;
 }
 
 .inputGroup label,
 .photoUploader label {
-    font-size: 14px;
-    color: #333;
+  font-size: 14px;
+  color: #333;
 }
 
 .inputGroup input,
 .inputGroup select {
-    height: 46px;
-    border: 1px solid #e6e6e6;
-    background: #F2F2F2;
-    border-radius: 50px;
-    padding-left: 14px;
-    width: calc(100% - 14px);
+  height: 46px;
+  border: 1px solid #e6e6e6;
+  background: #F2F2F2;
+  border-radius: 50px;
+  padding-left: 14px;
+  width: calc(100% - 14px);
 }
 
 .inputGroup select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    border: none;
-    outline: none;
-    color: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: none;
+  outline: none;
+  color: inherit;
 }
 
 .photoUploader input[type="file"] {
-    display: none;
+  display: none;
 }
 
 .photoUploader {
-    gap: 4px;
+  gap: 4px;
 }
 
 .submitButton {
-    width: 100%;
-    padding: 15px;
-    background: #d4ff4d;
-    border: none;
-    border-radius: 25px;
-    font-size: 16px;
-    cursor: pointer;
+  width: 100%;
+  padding: 15px;
+  background: #d4ff4d;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .submitButton:hover {
-    background: #c2e83a;
+  background: #c2e83a;
 }
 
 .uploadPlaceholderContainer,
 .uploadContainer {
-    justify-content: center;
-    width: 54px;
-    height: 54px;
-    border-radius: 4px;
-    background: #0D0D0D;
-    cursor: pointer;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 4px;
+  background: #0D0D0D;
+  cursor: pointer;
 }
 
 .uploadContainer {
-    position: relative;
+  position: relative;
 }
 
 .uploadContainer::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    border-radius: 4px;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 4px;
 }
 
 .closePhoto {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .recordText h4 {
-    color: #0D0D0D;
-    font-weight: 700;
-    font-size: 14px;
+  color: #0D0D0D;
+  font-weight: 700;
+  font-size: 14px;
 }
 
 .recordBtn {
-    justify-content: center;
-    height: 54px;
-    border-radius: 14px;
-    background: #F2F2F2;
-    border: 1px solid #E6E6E6;
-    position: relative;
+  justify-content: center;
+  height: 54px;
+  border-radius: 14px;
+  background: #F2F2F2;
+  border: 1px solid #E6E6E6;
+  position: relative;
 }
 
 .recordBtn:hover {
-    background: #C0C0C0;
-    border-color: #C0C0C0;
+  background: #C0C0C0;
+  border-color: #C0C0C0;
 }
 
 .parametersValues {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .param {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #F2F2F2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #F2F2F2;
 }
 
 .param:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .forBefore {
-    position: relative;
-    height: 210px;
-    width: 100%;
-    border-radius: 6px;
+  position: relative;
+  height: 210px;
+  width: 100%;
+  border-radius: 6px;
 }
 
-.forBefore img {
-    width: 100%;
-    height: 100%;
-    border-radius: 6px;
-    object-fit: cover;
+.forBefore>img {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  object-fit: cover;
 }
 
 .forEdit {
-    position: absolute;
-    top: 16px;
-    right: 16px;
+  position: absolute;
+  top: 16px;
+  right: 16px;
 }
 
 .previewImage {
-    width: 54px;
-    height: 54px;
-    object-fit: cover;
-    border-radius: 4px;
-    cursor: pointer;
+  width: 54px;
+  height: 54px;
+  object-fit: cover;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .weeks {
-    display: flex;
-    align-items: center;
-    gap: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .week {
-    width: 100%;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #F2F2F2;
-    border: 1px solid #E6E6E6;
-    position: relative;
-    border-radius: 14px;
+  width: 100%;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F2F2F2;
+  border: 1px solid #E6E6E6;
+  position: relative;
+  border-radius: 14px;
 }
 
 .week.past::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.5);
-    z-index: 1;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5);
+  z-index: 1;
 }
 
 .week.active {
-    background-color: #A799FF;
-    border: 1px solid #A799FF;
-    color: #F2F2F2;
+  background-color: #A799FF;
+  border: 1px solid #A799FF;
+  color: #F2F2F2;
 }
 
 .notseven {
-    color: 999999;
-    font-size: 12px;
+  color: 999999;
+  font-size: 12px;
 }
 
 .recordBtn:disabled {
-    pointer-events: none;
+  pointer-events: none;
 }
 
 .recordBtn:disabled::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.5);
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .value {
-    width: 100%;
-    align-items: flex-start;
+  width: 100%;
+  align-items: flex-start;
 }
 
 .value span {
-    color: #0D0D0D;
-    font-size: 12px;
+  color: #0D0D0D;
+  font-size: 12px;
 }
 
 .value p {
-    font-weight: 700;
-    font-size: 18px;
-    color: #0D0D0D;
+  font-weight: 700;
+  font-size: 18px;
+  color: #0D0D0D;
 }
 
 /* Контейнер для центрирования спиннера */
 .loadingSpinner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%; /* Можно настроить высоту */
-  }
-  
-  /* Стили для спиннера */
-  .spinner {
-    width: 50px;
-    height: 50px;
-    border: 4px solid rgba(0, 0, 0, 0.1); /* Светлая часть круга */
-    border-top: 4px solid #A799FF; /* Цвет активной части, как на картинке */
-    border-radius: 50%;
-    animation: spin 1s linear infinite; /* Анимация вращения */
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  /* Можно настроить высоту */
+}
+
+/* Стили для спиннера */
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  /* Светлая часть круга */
+  border-top: 4px solid #A799FF;
+  /* Цвет активной части, как на картинке */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
   /* Анимация вращения */
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
+}
+
+/* Анимация вращения */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
 
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .error-message-parameters {
-    position: absolute;
-    bottom: -16px;
-    left: 16px;
-    font-size: 12px;
-    color: #FF3B30;
-    transition: all 500ms ease-in-out;
+  position: absolute;
+  bottom: -16px;
+  left: 16px;
+  font-size: 12px;
+  color: #FF3B30;
+  transition: all 500ms ease-in-out;
 }
 
 .parameters .value p span {
@@ -458,257 +463,261 @@
 }
 
 .recordYourProgress {
-    flex: 1;
-    justify-content: space-between;
+  flex: 1;
+  justify-content: space-between;
 }
 
 .profileHistoryContainer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #F2F2F2;
-    z-index: 10000;
-    overflow-y: auto;
-    padding: 20px;
-    box-sizing: border-box;
-    scroll-behavior: smooth;
-    animation: swipe 0.8s cubic-bezier(0.64, 0.02, 0.22, 0.96);
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #F2F2F2;
+  z-index: 10000;
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  animation: swipe 0.8s cubic-bezier(0.64, 0.02, 0.22, 0.96);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .profileHistoryContent {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .profileHistoryContainer h3 {
-    font-size: 20px;
-    font-weight: 600;
-    color: #0D0D0D;
-    text-align: center;
-    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 20px;
+  font-weight: 600;
+  color: #0D0D0D;
+  text-align: center;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .profileHistoryList {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .profileHistoryItem {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .historyDate {
-    background: #CBFF52;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px;
-    border-radius: 14px;
-    box-sizing: border-box;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
-    position: relative;
-    overflow: hidden;
+  background: #CBFF52;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 14px;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
 }
 
 .historyDate p {
-    font-size: 12px;
-    color: #0D0D0D;
-    font-weight: 700;
+  font-size: 12px;
+  color: #0D0D0D;
+  font-weight: 700;
 }
 
 .historyParameters {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    background: #fff;
-    padding: 8px;
-    border-radius: 14px;
-    box-sizing: border-box;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #fff;
+  padding: 8px;
+  border-radius: 14px;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+  width: 100%;
 }
 
 .historyParameter {
-    display: flex;
-    justify-content: space-between;
-    gap: 4px;
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
 }
 
 .historyParameter p {
-    font-size: 12px;
-    color: #0D0D0D;
-    font-weight: 700;
+  font-size: 12px;
+  color: #0D0D0D;
+  font-weight: 700;
 }
 
 .historyParameter span {
-    font-size: 12px;
-    color: #0D0D0D;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
+  font-size: 12px;
+  color: #0D0D0D;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
 }
 
 .historyParameter span span {
-    font-size: 10px;
+  font-size: 10px;
 }
 
 .historyParameter span span.positive {
-    color: #547800;
+  color: #547800;
 }
 
 .historyParameter span span.negative {
-    color: #A799FF;
+  color: #A799FF;
 }
 
 .whiteAnimate {
-    position: absolute;
-    top: 0;
-    width: 3px;
-    height: 100%;
-    background: #0D0D0D;
-    border-radius: 50px;
-    animation: shine 2s infinite linear;
+  position: absolute;
+  top: 0;
+  width: 3px;
+  height: 100%;
+  background: #0D0D0D;
+  border-radius: 50px;
+  animation: shine 2s infinite linear;
 }
 
 /* Левые элементы */
 .whiteAnimate.left-1 {
-    left: 10px;
-    animation-delay: 0s;
+  left: 10px;
+  animation-delay: 0s;
 }
 
 .whiteAnimate.left-2 {
-    left: 20px;
-    animation-delay: 0.2s;
+  left: 20px;
+  animation-delay: 0.2s;
 }
 
 .whiteAnimate.left-3 {
-    left: 30px;
-    animation-delay: 0.4s;
+  left: 30px;
+  animation-delay: 0.4s;
 }
 
 .whiteAnimate.left-4 {
-    left: 40px;
-    animation-delay: 0.6s;
+  left: 40px;
+  animation-delay: 0.6s;
 }
 
 .whiteAnimate.left-5 {
-    left: 50px;
-    animation-delay: 0.8s;
+  left: 50px;
+  animation-delay: 0.8s;
 }
 
 /* Правые элементы */
 .whiteAnimate.right-1 {
-    right: 10px;
-    animation-delay: 0s;
+  right: 10px;
+  animation-delay: 0s;
 }
 
 .whiteAnimate.right-2 {
-    right: 20px;
-    animation-delay: 0.2s;
+  right: 20px;
+  animation-delay: 0.2s;
 }
 
 .whiteAnimate.right-3 {
-    right: 30px;
-    animation-delay: 0.4s;
+  right: 30px;
+  animation-delay: 0.4s;
 }
 
 .whiteAnimate.right-4 {
-    right: 40px;
-    animation-delay: 0.6s;
+  right: 40px;
+  animation-delay: 0.6s;
 }
 
 .whiteAnimate.right-5 {
-    right: 50px;
-    animation-delay: 0.8s;
+  right: 50px;
+  animation-delay: 0.8s;
 }
 
 .exitHistory {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 24px;
-    height: 24px;
-    background: #fff;
-    border-radius: 50px;
-    cursor: pointer;
-    border: none;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 24px;
+  height: 24px;
+  background: #fff;
+  border-radius: 50px;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .exitHistory img {
-    width: 22px;
-    height: 22px;
+  width: 22px;
+  height: 22px;
 }
 
 .exitHistoryBtn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px;
-    border-radius: 50px;
-    box-sizing: border-box;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
-    background: #fff;
-    width: 100%;
-    gap: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50px;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+  background: #fff;
+  width: 100%;
+  gap: 4px;
 }
 
 .exitHistoryBtn p {
-    font-size: 14px;
-    color: #0D0D0D;
-    font-weight: 700;
+  font-size: 14px;
+  color: #0D0D0D;
+  font-weight: 700;
 }
 
 .exitHistoryBtn img {
-    width: 18px;
-    height: 18px;
+  width: 18px;
+  height: 18px;
 }
 
 @keyframes shine {
-    0% {
-        transform: translateY(-100%);
-    }
-    100% {
-        transform: translateY(200%);
-    }
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(200%);
+  }
 }
+
 /* Блокировка скролла при открытом модальном окне */
 body.history-open {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 @keyframes swipe {
-    0% {
-        top: -100%;
-    }
-    100% {
-        top: 0;
-    }
+  0% {
+    top: -100%;
+  }
+
+  100% {
+    top: 0;
+  }
 }
 
 @keyframes swipeOut {
-    0% {
-        top: 0;
-    }
-    100% {
-        top: -100%;
-    }
+  0% {
+    top: 0;
+  }
+
+  100% {
+    top: -100%;
+  }
 }
 
 .profileHistoryContainer.closing {
-    animation: swipeOut 0.8s cubic-bezier(0.64, 0.02, 0.22, 0.96) forwards;
+  animation: swipeOut 0.8s cubic-bezier(0.64, 0.02, 0.22, 0.96) forwards;
 }

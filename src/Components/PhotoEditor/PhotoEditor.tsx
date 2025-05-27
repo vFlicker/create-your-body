@@ -1,12 +1,13 @@
+import styled from '@emotion/styled';
 import { useRef } from 'react';
 
 import { useTransformationPhotos } from '~/entities/user/api/useTransformationPhoto';
 import { useUpdateTransformationPhotos } from '~/entities/user/api/useUpdateTransformationPhotos';
-import edit from '~/shared/assets/svg/editSmall.svg';
+import editIconSrc from '~/shared/assets/svg/editSmall.svg';
 import photoNone from '~/shared/assets/svg/photoNone.svg';
+import { IconButton } from '~/shared/ui/IconButton';
 import { Loader } from '~/shared/ui/Loader';
-
-import ButtonEdit from '../Button/ButtonEdit';
+import { withAttrs } from '~/shared/ui/withAttrs';
 
 export default function PhotoEditor({ label, userQuery, stage }) {
   const fileInputRef = useRef(null);
@@ -91,15 +92,7 @@ export default function PhotoEditor({ label, userQuery, stage }) {
             }}
           />
         )}
-        <div className="forEdit">
-          <ButtonEdit
-            icon={edit}
-            size={30}
-            sizeIcon={16}
-            onClick={handleEditClick}
-            disabled={isLoading}
-          />
-        </div>
+        <StyledEditButton disabled={isLoading} onClick={handleEditClick} />
       </div>
       <input
         type="file"
@@ -112,3 +105,22 @@ export default function PhotoEditor({ label, userQuery, stage }) {
     </div>
   );
 }
+
+const StyledEditButton = withAttrs(
+  { iconSrc: editIconSrc },
+  styled(IconButton)`
+    position: absolute;
+    top: 16px;
+    right: 16px;
+
+    button {
+      width: 30px;
+      height: 30px;
+    }
+
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  `,
+);

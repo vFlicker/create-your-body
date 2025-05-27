@@ -1,18 +1,38 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { Color } from '~/shared/theme/colors';
-import { NavButton } from '~/widget/nav/NavButton';
+import { IconButton } from '~/shared/ui/IconButton';
 
 import { navConfig } from './navConfig';
 
 export function Nav(): JSX.Element {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
   return (
     <StyledNavWrapper>
       <StyledNavMenu>
-        {navConfig.map((navItem) => (
-          <NavButton {...navItem} />
-        ))}
+        {navConfig.map(({ iconSrc, text, to, disabled }) => {
+          const isActive = pathname === to;
+
+          const handleNavItemClick = () => {
+            if (disabled || isActive) return;
+            navigate(to);
+          };
+
+          return (
+            <IconButton
+              key={text}
+              iconSrc={iconSrc}
+              text={text}
+              disabled={disabled}
+              isActive={isActive}
+              onClick={handleNavItemClick}
+            />
+          );
+        })}
       </StyledNavMenu>
     </StyledNavWrapper>
   );

@@ -7,7 +7,6 @@ import { Profile } from '~/entities/user';
 import { useCreateBodyMeasurements } from '~/entities/user/api/useCreateBodyMeasurements';
 
 // import Selecter from '../../Components/Selecter/Selecter';
-// import ButtonEdit from '../../Components/Button/ButtonEdit';
 import Button from '../../Components/Button/Button';
 
 // import settings from '~/shared/assets/svg/settings.svg';
@@ -146,7 +145,6 @@ export function RecordPage({ userQuery, userId, data }) {
               <span>{data?.user_level || 'Уровень'}</span>
             </div>
           </div>
-          {/* <ButtonEdit onClick={() => navigate('/parameters')} /> */}
         </div>
         {/* <div className="settings">
           <div className="set" onClick={() => setOpen(!open)}>
