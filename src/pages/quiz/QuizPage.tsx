@@ -8,8 +8,8 @@ import { useUpdateUser } from '~/entities/user';
 import { BackButton } from '~/features/BackButton';
 import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/Button';
+import { Progress } from '~/shared/ui/Progress';
 
-import Progress from '../../Components/Progress/Progress';
 import {
   slideVariants,
   titleTransition,
@@ -380,7 +380,7 @@ export function QuizPage({ data, userQuery }) {
             </motion.h1>
           </AnimatePresence>
         </div>
-        <Progress title={'Шаг'} count_all={8} count_complited={step} />
+        <Progress label="Шаг" steps={8} completedSteps={step} />
       </div>
       <div className={`bottomPage ${step > 1 ? 'expanded' : ''}`}>
         <div
