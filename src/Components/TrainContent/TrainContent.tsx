@@ -4,7 +4,7 @@ import '~/pages/train/TrainPage.css';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 
-import { apiService } from '~/shared/api';
+import { trainingApiService } from '~/entities/training';
 import pdfSrc from '~/shared/assets/pdf/trane.pdf';
 import checkIconSrc from '~/shared/assets/svg/check.svg';
 import { Button } from '~/shared/ui/Button';
@@ -95,7 +95,7 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
       setIsLoading(true);
       try {
         // Получаем список недель
-        const weeksResponse = await apiService.getAllTrainingWeeks(
+        const weeksResponse = await trainingApiService.getAllTrainingWeeks(
           userQuery,
           stream,
         );
@@ -109,7 +109,7 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
 
         for (const { week } of weeks) {
           try {
-            const response = await apiService.getAllTrainingsByWeek(
+            const response = await trainingApiService.getAllTrainingsByWeek(
               userQuery,
               week,
               {
@@ -157,7 +157,7 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
       try {
         const mappedLevel = level === 'Новичок' ? 'noob' : 'pro';
 
-        const response = await apiService.getAllTrainingsByWeek(
+        const response = await trainingApiService.getAllTrainingsByWeek(
           userQuery,
           selectedWeek.week,
           {
@@ -181,10 +181,11 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
         const details = {};
         for (const training of filteredTrainings) {
           try {
-            const detailResponse = await apiService.getTrainingDetailsById(
-              userQuery,
-              training._id,
-            );
+            const detailResponse =
+              await trainingApiService.getTrainingDetailsById(
+                userQuery,
+                training._id,
+              );
             details[training._id] = {
               stepsCount: detailResponse.data.data.steps?.length || 0,
               coverUrl: detailResponse.data.data.coverImage?.url,
@@ -228,7 +229,7 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
 
   const handleTrainingSelect = async (training) => {
     try {
-      const response = await apiService.getTrainingDetailsById(
+      const response = await trainingApiService.getTrainingDetailsById(
         userQuery,
         training._id,
       );

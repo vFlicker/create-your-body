@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { userApiService } from './userApi';
+import { userApiService } from './userApiService';
 
 export const useUpdateBodyMeasurements = () => {
   const queryClient = useQueryClient();

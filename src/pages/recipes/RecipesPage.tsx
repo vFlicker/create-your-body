@@ -3,8 +3,8 @@ import './RecipesPage.css';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 
+import { recipeApiService } from '~/entities/recipe';
 import { Profile } from '~/entities/user';
-import { apiService } from '~/shared/api';
 import breakfast from '~/shared/assets/svg/avocado.svg';
 import dessert from '~/shared/assets/svg/croissant.svg';
 import dinner from '~/shared/assets/svg/meat.svg';
@@ -62,7 +62,7 @@ export function RecipesPage({ userQuery, data }) {
     setPage([2, 1]);
     setIsLoadingRecipe(true);
     try {
-      const response = await apiService.getRecipeDetailsById(
+      const response = await recipeApiService.getRecipeDetailsById(
         userQuery,
         recipe.id,
       );
@@ -107,7 +107,7 @@ export function RecipesPage({ userQuery, data }) {
     const fetchRecipes = async () => {
       setIsLoading(true);
       try {
-        const response = await apiService.getRecipesCategories(userQuery);
+        const response = await recipeApiService.getRecipesCategories(userQuery);
         setCategories(response.data.data);
       } catch (error) {
         console.error('Error fetching recipes:', error);
@@ -120,7 +120,7 @@ export function RecipesPage({ userQuery, data }) {
 
   const fetchCategoryRecipes = async (categoryName, page = 1) => {
     try {
-      const response = await apiService.getRecipesByCategoryName(
+      const response = await recipeApiService.getRecipesByCategoryName(
         userQuery,
         categoryName,
         page,

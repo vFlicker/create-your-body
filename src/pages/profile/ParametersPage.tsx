@@ -6,9 +6,9 @@ import { useNavigate } from 'react-router-dom';
 
 import { useUpdateUser } from '~/entities/user';
 import { Profile } from '~/entities/user';
+import { userApiService } from '~/entities/user';
 import { useBodyMeasurements } from '~/entities/user/api/useBodyMeasurements';
 import { useCreateBodyMeasurements } from '~/entities/user/api/useCreateBodyMeasurements';
-import { userApiService } from '~/entities/user/api/userApi';
 import { useTransformationPhotos } from '~/entities/user/api/useTransformationPhoto';
 import { useUpdateBodyMeasurements } from '~/entities/user/api/useUpdateBodyMeasurements';
 import { useUpdateTransformationPhotos } from '~/entities/user/api/useUpdateTransformationPhotos';

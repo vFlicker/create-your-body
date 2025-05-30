@@ -4,8 +4,8 @@ import '../train/TrainPage.css';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
+import { lectureApiService } from '~/entities/lecture';
 import { Profile } from '~/entities/user';
-import { apiService } from '~/shared/api';
 import book from '~/shared/assets/svg/book.svg';
 import { Loader } from '~/shared/ui/Loader';
 
@@ -47,7 +47,8 @@ export function LecturesPage({ userQuery, level, user_photo }) {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const weeksResponse = await apiService.getAllLectureWeeks(userQuery);
+        const weeksResponse =
+          await lectureApiService.getAllLectureWeeks(userQuery);
         const weeks = weeksResponse.data.data || [];
         console.log('Все недели:', weeks);
         setWeeksData(weeks);
@@ -68,7 +69,7 @@ export function LecturesPage({ userQuery, level, user_photo }) {
 
       setIsLoadingLectures(true);
       try {
-        const response = await apiService.getAllLectureByWeek(
+        const response = await lectureApiService.getAllLectureByWeek(
           userQuery,
           selectedWeek,
         );
@@ -97,7 +98,7 @@ export function LecturesPage({ userQuery, level, user_photo }) {
 
       setIsLoadingLectures(true);
       try {
-        const response = await apiService.getLectureDetailsById(
+        const response = await lectureApiService.getLectureDetailsById(
           userQuery,
           selectedLectureId,
         );

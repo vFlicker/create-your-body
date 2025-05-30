@@ -1,0 +1,1 @@
+export { lectureApiService } from './lectureApiService';

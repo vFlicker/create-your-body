@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { AppRoute } from '~/shared/router';
 
-import { userApiService } from './userApi';
+import { userApiService } from './userApiService';
 
 export const useUpdateUser = (navigateTo?: AppRoute) => {
   const navigate = useNavigate();

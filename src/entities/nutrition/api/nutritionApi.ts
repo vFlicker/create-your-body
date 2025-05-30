@@ -5,7 +5,7 @@ import {
   NutritionPlanResponse,
 } from '../nutritionTypes';
 
-export const nutritionApi = {
+export const nutritionApiService = {
   getNutritionCategories: async (userQuery: string) => {
     try {
       const { data } = await httpClient.get<NutritionCategoriesResponse>(
