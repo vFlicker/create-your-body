@@ -54,6 +54,7 @@ export function CommunicationPage({ data }) {
 
   const firstSteamIsPro = firstSteam && firstSteam.plan === 'Pro';
   const secondSteamIsPro = secondSteam && secondSteam.plan === 'Pro';
+  const isPro = firstSteamIsPro || secondSteamIsPro;
 
   return (
     <div className="comPage">
@@ -69,18 +70,20 @@ export function CommunicationPage({ data }) {
           Присоединяйся к нашему сообществу и задавай вопросы. Мы здесь, чтобы
           помочь тебе 💜
         </p>
-        <div className="hiteTgBtn">
-          <TelegramLinkButton
-            username="+4IrED7hVDX9jMTAy"
-            buttonText="Чат в Telegram"
-            icon={chat}
-          />
-          <TelegramLinkButton
-            username="+g6mGqc6fOUNjNDdi"
-            buttonText="Инфо канал"
-            icon={channel}
-          />
-        </div>
+        {isPro && (
+          <div className="hiteTgBtn">
+            <TelegramLinkButton
+              username="+4IrED7hVDX9jMTAy"
+              buttonText="Чат в Telegram"
+              icon={chat}
+            />
+            <TelegramLinkButton
+              username="+g6mGqc6fOUNjNDdi"
+              buttonText="Инфо канал"
+              icon={channel}
+            />
+          </div>
+        )}
         <TelegramLinkButton
           username={'zabotaCYB'}
           buttonText="Поддержка"
