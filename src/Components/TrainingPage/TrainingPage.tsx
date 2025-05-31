@@ -132,9 +132,7 @@ export default function TrainingPage({ trainingData, onBack, lectures, jcsb }) {
     return <div>Загрузка...</div>;
   }
 
-  const currentStep = lectures
-    ? trainingData.data
-    : trainingData[currentStepIndex];
+  const currentStep = lectures ? trainingData : trainingData[currentStepIndex];
   const isLastStep = lectures
     ? true
     : currentStepIndex === trainingData.length - 1;

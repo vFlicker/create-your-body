@@ -4,7 +4,11 @@ import '../train/TrainPage.css';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
-import { lectureApiService } from '~/entities/lecture';
+import {
+  useAllLecturesByWeek,
+  useAllWeeks,
+  useLectureDetailsById,
+} from '~/entities/lecture';
 import { Profile } from '~/entities/user';
 import book from '~/shared/assets/svg/book.svg';
 import { Loader } from '~/shared/ui/Loader';
@@ -35,85 +39,18 @@ const transition = {
 
 export function LecturesPage({ userQuery, level, user_photo }) {
   const [[page, direction], setPage] = useState([0, 0]);
-  const [selectedWeek, setSelectedWeek] = useState(null);
-  const [selectedLectureId, setSelectedLectureId] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [weeksData, setWeeksData] = useState(null);
-  const [lecturesData, setLecturesData] = useState(null);
-  const [lecture, setLecture] = useState(null);
-  const [isLoadingLectures, setIsLoadingLectures] = useState(false);
+  const [selectedWeek, setSelectedWeek] = useState();
+  const [selectedLectureId, setSelectedLectureId] = useState();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const weeksResponse =
-          await lectureApiService.getAllLectureWeeks(userQuery);
-        const weeks = weeksResponse.data.data || [];
-        console.log('Все недели:', weeks);
-        setWeeksData(weeks);
-      } catch (error) {
-        console.error('Ошибка при загрузке данных:', error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [level]);
-
-  // Получение данных тренировок для выбранной недели
-  useEffect(() => {
-    const fetchWeekLectures = async () => {
-      if (!selectedWeek || page !== 1) return;
-
-      setIsLoadingLectures(true);
-      try {
-        const response = await lectureApiService.getAllLectureByWeek(
-          userQuery,
-          selectedWeek,
-        );
-
-        setLecturesData(response.data);
-        console.log(
-          `Получены лекции для недели ${selectedWeek}:`,
-          response.data,
-        );
-      } catch (error) {
-        console.error(
-          `Ошибка при получении лекций для недели ${selectedWeek.week}:`,
-          error.message,
-        );
-      } finally {
-        setIsLoadingLectures(false);
-      }
-    };
-
-    fetchWeekLectures();
-  }, [selectedWeek, page, level]);
-
-  useEffect(() => {
-    const fetchWeekLectures = async () => {
-      if (!selectedLectureId) return;
-
-      setIsLoadingLectures(true);
-      try {
-        const response = await lectureApiService.getLectureDetailsById(
-          userQuery,
-          selectedLectureId,
-        );
-
-        setLecture(response.data);
-        console.log(`Получили лекцию:`, response.data);
-      } catch (error) {
-        console.error(`Ошибка при получении лекции`, error.message);
-      } finally {
-        setIsLoadingLectures(false);
-      }
-    };
-
-    fetchWeekLectures();
-  }, [selectedLectureId]);
+  const { weeks, isWeeksPending } = useAllWeeks(userQuery);
+  const { lecturesByWeek, isLecturesByWeekPending } = useAllLecturesByWeek(
+    userQuery,
+    selectedWeek,
+  );
+  const { lectureDetails, isLectureDetailsPending } = useLectureDetailsById(
+    userQuery,
+    selectedLectureId,
+  );
 
   const handleWeekSelect = (week) => {
     setSelectedWeek(week);
@@ -171,11 +108,11 @@ export function LecturesPage({ userQuery, level, user_photo }) {
               exit="exit"
               transition={transition}
             >
-              {isLoading ? (
+              {isWeeksPending ? (
                 <Loader />
               ) : (
                 Array.from({ length: 4 }).map((_, index) => {
-                  const weekData = weeksData?.find(
+                  const weekData = weeks?.find(
                     (item) => item.week === index + 1,
                   );
                   return (
@@ -205,11 +142,11 @@ export function LecturesPage({ userQuery, level, user_photo }) {
               exit="exit"
               transition={transition}
             >
-              {isLoadingLectures ? (
+              {isLecturesByWeekPending ? (
                 <Loader />
               ) : (
                 <div className="trainingsGrid">
-                  {lecturesData?.data?.map((lecture, index) => {
+                  {lecturesByWeek.map((lecture, index) => {
                     return (
                       <TrainBox
                         key={index}
@@ -235,13 +172,17 @@ export function LecturesPage({ userQuery, level, user_photo }) {
               exit="exit"
               transition={transition}
             >
-              <TrainingPage
-                trainingData={lecture}
-                onBack={handleBack}
-                level="Профи"
-                lectures={true}
-                jcsb={true}
-              />
+              {isLectureDetailsPending ? (
+                <Loader />
+              ) : (
+                <TrainingPage
+                  trainingData={lectureDetails}
+                  onBack={handleBack}
+                  level="Профи"
+                  lectures={true}
+                  jcsb={true}
+                />
+              )}
             </motion.div>
           )}
         </AnimatePresence>
