@@ -5,9 +5,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 import {
-  useAllLecturesByWeek,
-  useAllWeeks,
   useLectureDetailsById,
+  useLecturesByWeek,
+  useLectureWeeks,
 } from '~/entities/lecture';
 import { Profile } from '~/entities/user';
 import book from '~/shared/assets/svg/book.svg';
@@ -42,8 +42,8 @@ export function LecturesPage({ userQuery, level, user_photo }) {
   const [selectedWeek, setSelectedWeek] = useState();
   const [selectedLectureId, setSelectedLectureId] = useState();
 
-  const { weeks, isWeeksPending } = useAllWeeks(userQuery);
-  const { lecturesByWeek, isLecturesByWeekPending } = useAllLecturesByWeek(
+  const { weeks, isWeeksPending } = useLectureWeeks(userQuery);
+  const { lecturesByWeek, isLecturesByWeekPending } = useLecturesByWeek(
     userQuery,
     selectedWeek,
   );

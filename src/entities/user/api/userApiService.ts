@@ -93,7 +93,13 @@ export const userApiService = {
     }
   },
 
-  updateUser: async ({ userQuery, userData }) => {
+  updateUser: async ({
+    userQuery,
+    userData,
+  }: {
+    userQuery: string;
+    userData: any;
+  }) => {
     try {
       const adaptedUserData = updateUserAdapter(userData);
       const response = await httpClient.patch(
@@ -107,7 +113,7 @@ export const userApiService = {
     }
   },
 
-  getTransformationPhotos: async (userQuery) => {
+  getTransformationPhotos: async (userQuery: string) => {
     try {
       const response = await httpClient.get(
         `/v2/api/client/user/photos?${userQuery}`,
@@ -172,7 +178,7 @@ export const userApiService = {
     }
   },
 
-  getBodyMeasurements: async (userQuery) => {
+  getBodyMeasurements: async (userQuery: string) => {
     try {
       const response = await httpClient.get(
         `/v2/api/client/user/measurements?${userQuery}`,

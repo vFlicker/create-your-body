@@ -3,7 +3,7 @@ import './RecipesPage.css';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 
-import { recipeApiService } from '~/entities/recipe';
+import { recipeApiService, useRecipeCategories } from '~/entities/recipe';
 import { Profile } from '~/entities/user';
 import breakfast from '~/shared/assets/svg/avocado.svg';
 import dessert from '~/shared/assets/svg/croissant.svg';
@@ -41,8 +41,6 @@ const transition = {
 };
 
 export function RecipesPage({ userQuery, data }) {
-  const [categories, setCategories] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [[page, direction], setPage] = useState([0, 0]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [recipes, setRecipes] = useState([]);
@@ -66,7 +64,7 @@ export function RecipesPage({ userQuery, data }) {
         userQuery,
         recipe.id,
       );
-      setSelectedRecipe(response.data.data);
+      setSelectedRecipe(response);
     } catch (error) {
       console.error('Error fetching recipe details:', error);
     } finally {
@@ -103,29 +101,17 @@ export function RecipesPage({ userQuery, data }) {
     };
   }, [page]); // Убираем handleBack из зависимостей
 
-  useEffect(() => {
-    const fetchRecipes = async () => {
-      setIsLoading(true);
-      try {
-        const response = await recipeApiService.getRecipesCategories(userQuery);
-        setCategories(response.data.data);
-      } catch (error) {
-        console.error('Error fetching recipes:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchRecipes();
-  }, []);
+  const { recipeCategories, isRecipeCategoriesPending } =
+    useRecipeCategories(userQuery);
 
   const fetchCategoryRecipes = async (categoryName, page = 1) => {
     try {
-      const response = await recipeApiService.getRecipesByCategoryName(
+      const response = await recipeApiService.getRecipesByCategory(
         userQuery,
         categoryName,
         page,
       );
-      const { data, meta } = response.data;
+      const { data, meta } = response;
       if (page === 1) {
         setRecipes(data);
       } else {
@@ -168,7 +154,7 @@ export function RecipesPage({ userQuery, data }) {
         </div>
       </div>
       <div className="botRecipes">
-        {isLoading ? (
+        {isRecipeCategoriesPending ? (
           <Loader />
         ) : (
           <AnimatePresence initial={false} custom={direction} mode="wait">
@@ -183,7 +169,7 @@ export function RecipesPage({ userQuery, data }) {
                 transition={transition}
                 className="botRecipesContent"
               >
-                {categories
+                {recipeCategories
                   ?.sort((a, b) => {
                     const order = ['Завтраки', 'Обеды и ужины', 'Десерты'];
                     return order.indexOf(a.name) - order.indexOf(b.name);

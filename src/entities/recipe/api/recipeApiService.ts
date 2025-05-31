@@ -1,30 +1,36 @@
 import { httpClient } from '~/shared/api';
 
+import {
+  RecipeCategoriesResponse,
+  RecipeDetailsResponse,
+  RecipesResponse,
+} from '../recipeTypes';
+
 export const recipeApiService = {
-  getRecipesCategories: async (userQuery: string) => {
+  getRecipeCategories: async (userQuery: string) => {
     try {
-      const { data } = await httpClient.get(
+      const { data } = await httpClient.get<RecipeCategoriesResponse>(
         `/cms/api/recipes/client/categories`,
         {
           headers: { 'x-telegram-init': userQuery },
         },
       );
 
-      return data;
+      return data.data;
     } catch (error) {
       console.error('Error fetching recipes categories:', error);
       throw error;
     }
   },
 
-  getRecipesByCategoryName: async (
+  getRecipesByCategory: async (
     userQuery: string,
-    name: string,
+    category: string,
     page: string,
   ) => {
     try {
-      const { data } = await httpClient.get(
-        `/cms/api/recipes/client/category/${name}?page=${page}`,
+      const { data } = await httpClient.get<RecipesResponse>(
+        `/cms/api/recipes/client/category/${category}?page=${page}`,
         {
           headers: { 'x-telegram-init': userQuery },
         },
@@ -37,14 +43,16 @@ export const recipeApiService = {
     }
   },
 
-  getRecipeDetailsById: async (userQuery: string, recipeId: string) => {
+  getRecipeDetailsById: async (userQuery: string, id: string) => {
     try {
-      const { data } = await httpClient.get(
-        `/cms/api/recipes/client/${recipeId}`,
-        { headers: { 'x-telegram-init': userQuery } },
+      const { data } = await httpClient.get<RecipeDetailsResponse>(
+        `/cms/api/recipes/client/${id}`,
+        {
+          headers: { 'x-telegram-init': userQuery },
+        },
       );
 
-      return data;
+      return data.data;
     } catch (error) {
       console.error('Error fetching recipe details by id:', error);
       throw error;
