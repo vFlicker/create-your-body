@@ -10,8 +10,7 @@ import dessert from '~/shared/assets/svg/croissant.svg';
 import dinner from '~/shared/assets/svg/meat.svg';
 import recipesSvg from '~/shared/assets/svg/recipes.svg';
 import { Loader } from '~/shared/ui/Loader';
-
-import FoodContainer from '../../Components/Container/FoodContainer';
+import { TitleCard } from '~/shared/ui/TitleCard';
 
 const categoryIcons = {
   Десерты: dessert,
@@ -175,12 +174,11 @@ export function RecipesPage({ userQuery, data }) {
                     return order.indexOf(a.name) - order.indexOf(b.name);
                   })
                   .map((category, index) => (
-                    <FoodContainer
+                    <TitleCard
                       key={index}
                       title={category.name}
+                      iconSrc={categoryIcons[category.name]}
                       onClick={() => handleCategorySelect(category)}
-                      icon={categoryIcons[category.name]}
-                      iconAlt={category.name}
                     />
                   ))}
               </motion.div>

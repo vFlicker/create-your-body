@@ -5,8 +5,17 @@ import muscules from '~/shared/assets/svg/musclesBlack.svg';
 import recipes from '~/shared/assets/svg/recipes.svg';
 import { AppRoute } from '~/shared/router';
 
+type CardData = {
+  name: string;
+  icon: string;
+  closed: string | null;
+  buy: boolean;
+  to: AppRoute;
+  highlighted: boolean;
+};
+
 export const getTitleCards = (subscriptions) => {
-  const pageContainersData = [];
+  const pageContainersData: CardData[] = [];
 
   const firstSteam = subscriptions.find((sub) => sub.stream === 1);
   const secondSteam = subscriptions.find((sub) => sub.stream === 2);
@@ -22,8 +31,8 @@ export const getTitleCards = (subscriptions) => {
     icon: health,
     closed: null,
     buy: false,
-    instruction: true,
     to: AppRoute.Begin,
+    highlighted: true,
   });
 
   if (firstSteamIsPro) {
@@ -34,32 +43,32 @@ export const getTitleCards = (subscriptions) => {
         icon: muscules,
         closed: null,
         buy: false,
-        instruction: false,
         to: AppRoute.Traning,
+        highlighted: false,
       },
       {
         name: 'Питание',
         icon: food,
         closed: null,
         buy: false,
-        instruction: false,
         to: AppRoute.Food,
+        highlighted: false,
       },
       {
         name: 'Лекции',
         icon: book,
         closed: null,
         buy: false,
-        instruction: false,
         to: AppRoute.Lectures,
+        highlighted: false,
       },
       {
         name: 'Рецепты',
         icon: recipes,
         closed: null,
         buy: false,
-        instruction: false,
         to: AppRoute.Recipes,
+        highlighted: false,
       },
     );
   } else if (secondSteamIsPro) {
@@ -70,32 +79,32 @@ export const getTitleCards = (subscriptions) => {
         icon: muscules,
         closed: null,
         buy: false,
-        instruction: false,
         to: AppRoute.Traning,
+        highlighted: false,
       },
       {
         name: 'Питание',
         icon: food,
         closed: null,
         buy: false,
-        instruction: false,
         to: AppRoute.Food,
+        highlighted: false,
       },
       {
         name: 'Лекции',
         icon: book,
         closed: null,
         buy: false,
-        instruction: false,
         to: AppRoute.Lectures,
+        highlighted: false,
       },
       {
         name: 'Рецепты',
         icon: recipes,
         closed: null,
         buy: false,
-        instruction: false,
         to: AppRoute.Recipes,
+        highlighted: false,
       },
     );
   } else if (firstSteamBase) {
@@ -106,32 +115,32 @@ export const getTitleCards = (subscriptions) => {
         icon: muscules,
         closed: null,
         buy: false,
-        instruction: false,
         to: AppRoute.Traning,
+        highlighted: false,
       },
       {
         name: 'Питание',
         icon: food,
         closed: null,
         buy: false,
-        instruction: false,
         to: AppRoute.Food,
+        highlighted: false,
       },
       {
         name: 'Лекции',
         icon: book,
         closed: '',
         buy: true,
-        instruction: false,
         to: AppRoute.Lectures,
+        highlighted: false,
       },
       {
         name: 'Рецепты',
         icon: recipes,
         closed: '',
         buy: true,
-        instruction: false,
         to: AppRoute.Recipes,
+        highlighted: false,
       },
     );
   } else if (secondSteamBase) {
@@ -142,32 +151,32 @@ export const getTitleCards = (subscriptions) => {
         icon: muscules,
         closed: null,
         buy: false,
-        instruction: false,
         to: AppRoute.Traning,
+        highlighted: false,
       },
       {
         name: 'Питание',
         icon: food,
         closed: null,
         buy: false,
-        instruction: false,
         to: AppRoute.Food,
+        highlighted: false,
       },
       {
         name: 'Лекции',
         icon: book,
         closed: '',
         buy: true,
-        instruction: false,
         to: AppRoute.Lectures,
+        highlighted: false,
       },
       {
         name: 'Рецепты',
         icon: recipes,
         closed: '',
         buy: true,
-        instruction: false,
         to: AppRoute.Recipes,
+        highlighted: false,
       },
     );
   }

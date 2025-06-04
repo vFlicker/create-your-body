@@ -1,12 +1,13 @@
 import './DashboardPage.css';
 
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Profile } from '~/entities/user';
 import { Label } from '~/shared/ui/label';
 import { LabelLink } from '~/shared/ui/label/Label';
+import { TitleCard } from '~/shared/ui/TitleCard';
 
-import Container from '../../Components/Container/Container';
 import History from '../../Components/History/History';
 import { formatTimeFromString } from './formatTimeFromString';
 import { getTitleCards } from './getContainerData';
@@ -97,6 +98,8 @@ function SubscriptionStatus({ subscriptions }) {
 }
 
 export function DashboardPage({ data }) {
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.setBackgroundColor('#F2F2F2');
@@ -130,9 +133,20 @@ export function DashboardPage({ data }) {
             </div>
           )}
         <div className="dashMenu">
-          {pageContainersData.map((container, index) => (
-            <Container key={index} data={container} />
-          ))}
+          {pageContainersData.map(
+            ({ name, icon, closed, buy, to, highlighted }) => (
+              <TitleCard
+                key={name}
+                title={name}
+                labelText={buy && 'Доступно в PRO'}
+                labelIconSrc={buy && icon}
+                iconSrc={icon}
+                disabled={closed !== null || buy}
+                highlighted={highlighted}
+                onClick={() => navigate(to)}
+              />
+            ),
+          )}
         </div>
       </div>
     </div>
