@@ -2,7 +2,6 @@ import './index.css';
 
 import styled from '@emotion/styled';
 import axios from 'axios';
-import { AnimatePresence } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 import { Outlet, Route, Routes, useLocation } from 'react-router-dom';
 
@@ -26,7 +25,6 @@ import { AppRoute } from '~/shared/router';
 import { Loader } from '~/shared/ui/Loader';
 import { Nav } from '~/shared/ui/nav';
 
-import PageTransition from '../Components/PageTransition/PageTransition';
 import { withProviders } from './providers';
 
 const QUERY_ID =
@@ -48,13 +46,11 @@ function Layout() {
         <CloseButton />
       </StyledHeader>
       <StyledMain>
-        <div className="page-transition-container">
-          <AnimatePresence mode="sync">
-            <PageTransition key={location.pathname}>
-              <Outlet />
-            </PageTransition>
-          </AnimatePresence>
-        </div>
+        <StyledPageContainer>
+          <StyledPage>
+            <Outlet />
+          </StyledPage>
+        </StyledPageContainer>
         {showControlsNav && <Nav />}
       </StyledMain>
     </>
@@ -289,6 +285,22 @@ export function App() {
     </>
   );
 }
+
+const StyledPageContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  overflow-x: hidden;
+`;
+
+const StyledPage = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  will-change: transform, opacity;
+  display: flex;
+`;
 
 const StyledHeader = styled.div`
   position: absolute;

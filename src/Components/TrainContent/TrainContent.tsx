@@ -1,7 +1,6 @@
 import './TrainContent.css';
 import '~/pages/train/TrainPage.css';
 
-import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 
 import { trainingApiService } from '~/entities/training';
@@ -285,78 +284,68 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
             onClick={setActiveValue}
           />
         )}
-        <AnimatePresence initial={false} custom={direct} mode="wait">
-          <motion.div
-            key={activeValue}
-            className="warmup-screen"
-            custom={direct}
-            variants={slideVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={transition}
-          >
-            {activeValue === 'Разминка' ? (
-              <div className="warmup-content">
-                <div className="warmup-videos">
-                  {warmup.Z.map((item, index) => (
-                    <div key={index} className="videoContent">
-                      <div className="video-section">
-                        <div className="videoContainer">
-                          <iframe
-                            src={item.videoUrl}
-                            allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
-                            frameBorder="0"
-                            allowFullScreen
-                            title={`Разминка ${index + 1}`}
-                          />
-                        </div>
+
+        <div className="warmup-screen">
+          {activeValue === 'Разминка' ? (
+            <div className="warmup-content">
+              <div className="warmup-videos">
+                {warmup.Z.map((item, index) => (
+                  <div key={index} className="videoContent">
+                    <div className="video-section">
+                      <div className="videoContainer">
+                        <iframe
+                          src={item.videoUrl}
+                          allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
+                          frameBorder="0"
+                          allowFullScreen
+                          title={`Разминка ${index + 1}`}
+                        />
                       </div>
-                      <p style={{ color: '#0D0D0D', fontSize: '16px' }}>
-                        {item.text}
-                      </p>
                     </div>
-                  ))}
-                </div>
-                <div className="warmup-navigation">
-                  <Button
-                    color="secondary"
-                    iconSrc={checkIconSrc}
-                    onClick={handleComplete}
-                  >
-                    Завершить разминку
-                  </Button>
-                </div>
-              </div>
-            ) : (
-              <div className="warmup-content">
-                {warmup.M.map((item, index) => (
-                  <div key={index} className="video-section">
-                    <div className="videoContainer">
-                      <iframe
-                        src={item.videoUrl}
-                        allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
-                        frameBorder="0"
-                        allowFullScreen
-                        title={`МФР ${index + 1}`}
-                      />
-                    </div>
-                    <p>{item.text}</p>
+                    <p style={{ color: '#0D0D0D', fontSize: '16px' }}>
+                      {item.text}
+                    </p>
                   </div>
                 ))}
-                <div className="warmup-navigation">
-                  <Button
-                    color="secondary"
-                    iconSrc={checkIconSrc}
-                    onClick={handleComplete}
-                  >
-                    Завершить МФР
-                  </Button>
-                </div>
               </div>
-            )}
-          </motion.div>
-        </AnimatePresence>
+              <div className="warmup-navigation">
+                <Button
+                  color="secondary"
+                  iconSrc={checkIconSrc}
+                  onClick={handleComplete}
+                >
+                  Завершить разминку
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="warmup-content">
+              {warmup.M.map((item, index) => (
+                <div key={index} className="video-section">
+                  <div className="videoContainer">
+                    <iframe
+                      src={item.videoUrl}
+                      allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
+                      frameBorder="0"
+                      allowFullScreen
+                      title={`МФР ${index + 1}`}
+                    />
+                  </div>
+                  <p>{item.text}</p>
+                </div>
+              ))}
+              <div className="warmup-navigation">
+                <Button
+                  color="secondary"
+                  iconSrc={checkIconSrc}
+                  onClick={handleComplete}
+                >
+                  Завершить МФР
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     );
   }
@@ -372,123 +361,84 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
 
   return (
     <div className="trainContent">
-      <AnimatePresence initial={false} custom={direction}>
-        {page === 0 && (
-          <motion.div
-            key="weeks"
-            className="weeks-screen"
-            custom={direction}
-            variants={slideVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={transition}
-            style={{
-              transition: 'all 0.6s ease-in-out',
-              gridTemplateColumns: isLoading ? '1fr' : '',
-              height: isLoading ? '100%' : '',
-              flexGrow: isLoading ? 1 : 0,
-            }}
-          >
-            {isLoading ? (
-              <Loader />
-            ) : (
-              Array.from({ length: 4 }, (_, index) => {
-                const weekNumber = index + 1;
-                const weekData = weeksData.find(
-                  (week) => week.week === weekNumber,
-                );
+      {page === 0 && (
+        <div className="weeks-screen">
+          {isLoading ? (
+            <Loader />
+          ) : (
+            Array.from({ length: 4 }, (_, index) => {
+              const weekNumber = index + 1;
+              const weekData = weeksData.find(
+                (week) => week.week === weekNumber,
+              );
 
-                return (
-                  <TrainBox
-                    key={weekNumber}
-                    data={{
-                      week: weekNumber,
-                      title: `Неделя ${weekNumber}`,
-                      count: weekData ? weekDetails[weekNumber]?.count || 0 : 4,
-                      coverUrl: weekData
-                        ? weekDetails[weekNumber]?.coverUrl
-                        : null,
-                    }}
-                    isClosed={!weekData}
-                    onClick={() => weekData && handleWeekSelect(weekData)}
-                  />
-                );
-              })
-            )}
-          </motion.div>
-        )}
+              return (
+                <TrainBox
+                  key={weekNumber}
+                  data={{
+                    week: weekNumber,
+                    title: `Неделя ${weekNumber}`,
+                    count: weekData ? weekDetails[weekNumber]?.count || 0 : 4,
+                    coverUrl: weekData
+                      ? weekDetails[weekNumber]?.coverUrl
+                      : null,
+                  }}
+                  isClosed={!weekData}
+                  onClick={() => weekData && handleWeekSelect(weekData)}
+                />
+              );
+            })
+          )}
+        </div>
+      )}
 
-        {page === 1 && selectedWeek && (
-          <motion.div
-            key="trainings"
-            className="trainings-screen"
-            custom={direction}
-            variants={slideVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={transition}
+      {page === 1 && selectedWeek && (
+        <div className="trainings-screen">
+          <div
+            className="trainings-grid"
             style={{
               transition: 'all 0.3s ease-in-out',
+              gridTemplateColumns: isLoadingTrainings ? '1fr' : '',
               height: isLoadingTrainings ? '100%' : '',
             }}
           >
-            <div
-              className="trainings-grid"
-              style={{
-                transition: 'all 0.3s ease-in-out',
-                gridTemplateColumns: isLoadingTrainings ? '1fr' : '',
-                height: isLoadingTrainings ? '100%' : '',
-              }}
-            >
-              {isLoadingTrainings ? (
-                <Loader />
-              ) : (
-                selectedWeekTrainings
-                  .sort((a, b) => {
-                    const numA = parseInt(a.title.match(/\d+/)?.[0] || '0');
-                    const numB = parseInt(b.title.match(/\d+/)?.[0] || '0');
-                    return numA - numB;
-                  })
-                  .map((training, index) => (
-                    <TrainBox
-                      key={index}
-                      data={{
-                        ...training,
-                        count: trainingDetails[training._id]?.stepsCount || 0,
-                        coverUrl: trainingDetails[training._id]?.coverUrl,
-                      }}
-                      steps={true}
-                      onClick={() => handleTrainingSelect(training)}
-                      level={level}
-                      isBonus={index === 3}
-                    />
-                  ))
-              )}
-            </div>
-          </motion.div>
-        )}
+            {isLoadingTrainings ? (
+              <Loader />
+            ) : (
+              selectedWeekTrainings
+                .sort((a, b) => {
+                  const numA = parseInt(a.title.match(/\d+/)?.[0] || '0');
+                  const numB = parseInt(b.title.match(/\d+/)?.[0] || '0');
+                  return numA - numB;
+                })
+                .map((training, index) => (
+                  <TrainBox
+                    key={index}
+                    data={{
+                      ...training,
+                      count: trainingDetails[training._id]?.stepsCount || 0,
+                      coverUrl: trainingDetails[training._id]?.coverUrl,
+                    }}
+                    steps={true}
+                    onClick={() => handleTrainingSelect(training)}
+                    level={level}
+                    isBonus={index === 3}
+                  />
+                ))
+            )}
+          </div>
+        </div>
+      )}
 
-        {page === 2 && originalTrainingData && (
-          <motion.div
-            key="training-details"
-            className="screen training-details-screen"
-            custom={direction}
-            variants={slideVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={transition}
-          >
-            <TrainingPage
-              trainingData={originalTrainingData.steps}
-              level={level}
-              onBack={handleBack}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {page === 2 && originalTrainingData && (
+        <div className="screen training-details-screen">
+          <TrainingPage
+            trainingData={originalTrainingData.steps}
+            level={level}
+            onBack={handleBack}
+          />
+        </div>
+      )}
     </div>
   );
 }

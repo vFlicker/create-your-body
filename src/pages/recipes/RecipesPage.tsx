@@ -1,6 +1,5 @@
 import './RecipesPage.css';
 
-import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 
 import { recipeApiService, useRecipeCategories } from '~/entities/recipe';
@@ -18,29 +17,8 @@ const categoryIcons = {
   'Обеды и ужины': dinner,
 };
 
-const slideVariants = {
-  enter: (direction) => ({
-    x: direction > 0 ? '100%' : '-100%',
-    opacity: 0,
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
-  },
-  exit: (direction) => ({
-    x: direction < 0 ? '100%' : '-100%',
-    opacity: 0,
-  }),
-};
-
-const transition = {
-  type: 'tween',
-  ease: 'easeInOut',
-  duration: 0.3,
-};
-
 export function RecipesPage({ userQuery, data }) {
-  const [[page, direction], setPage] = useState([0, 0]);
+  const [page, setPage] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [recipes, setRecipes] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -51,12 +29,12 @@ export function RecipesPage({ userQuery, data }) {
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
-    setPage([1, 1]);
+    setPage(1);
   };
 
   const handleRecipeSelect = async (recipe) => {
     setSelectedRecipe(recipe);
-    setPage([2, 1]);
+    setPage(2);
     setIsLoadingRecipe(true);
     try {
       const response = await recipeApiService.getRecipeDetailsById(
@@ -74,10 +52,10 @@ export function RecipesPage({ userQuery, data }) {
   const handleBack = useCallback(() => {
     if (page === 2) {
       setSelectedRecipe(null);
-      setPage([1, -1]);
+      setPage(1);
     } else if (page === 1) {
       setSelectedCategory(null);
-      setPage([0, -1]);
+      setPage(0);
     } else if (page === 0) {
       window.showContent = false;
       window.dispatchEvent(new Event('showContentChange'));
@@ -156,18 +134,9 @@ export function RecipesPage({ userQuery, data }) {
         {isRecipeCategoriesPending ? (
           <Loader />
         ) : (
-          <AnimatePresence initial={false} custom={direction} mode="wait">
+          <>
             {page === 0 ? (
-              <motion.div
-                key="categories"
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={transition}
-                className="botRecipesContent"
-              >
+              <div className="botRecipesContent">
                 {recipeCategories
                   ?.sort((a, b) => {
                     const order = ['Завтраки', 'Обеды и ужины', 'Десерты'];
@@ -181,22 +150,13 @@ export function RecipesPage({ userQuery, data }) {
                       onClick={() => handleCategorySelect(category)}
                     />
                   ))}
-              </motion.div>
+              </div>
             ) : page === 1 ? (
-              <motion.div
-                key="category-content"
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={transition}
-                className="categoryContent"
-              >
+              <div className="categoryContent">
                 <button
                   onClick={() => {
                     setSelectedCategory(null);
-                    setPage([0, -1]);
+                    setPage(0);
                   }}
                   className="backBtn"
                   style={{ position: 'unset', width: 'fit-content' }}
@@ -221,22 +181,13 @@ export function RecipesPage({ userQuery, data }) {
                     </button>
                   )}
                 </div>
-              </motion.div>
+              </div>
             ) : (
-              <motion.div
-                key="recipe-content"
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={transition}
-                className="recipeContent"
-              >
+              <div className="recipeContent">
                 <button
                   onClick={() => {
                     setSelectedRecipe(null);
-                    setPage([1, -1]);
+                    setPage(1);
                   }}
                   className="backBtn"
                   style={{ position: 'unset', width: 'fit-content' }}
@@ -317,9 +268,9 @@ export function RecipesPage({ userQuery, data }) {
                     </div>
                   </div>
                 )}
-              </motion.div>
+              </div>
             )}
-          </AnimatePresence>
+          </>
         )}
       </div>
     </div>

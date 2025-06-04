@@ -1,7 +1,6 @@
 import './LecturesPage.css';
 import '../train/TrainPage.css';
 
-import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 import {
@@ -15,27 +14,6 @@ import { Loader } from '~/shared/ui/Loader';
 
 import TrainBox from '../../Components/TrainBox/TrainBox';
 import TrainingPage from '../../Components/TrainingPage/TrainingPage';
-
-const slideVariants = {
-  enter: (direction) => ({
-    x: direction > 0 ? '100%' : '-100%',
-    opacity: 0,
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
-  },
-  exit: (direction) => ({
-    x: direction < 0 ? '100%' : '-100%',
-    opacity: 0,
-  }),
-};
-
-const transition = {
-  type: 'tween',
-  ease: 'easeInOut',
-  duration: 0.3,
-};
 
 export function LecturesPage({ userQuery, level, user_photo }) {
   const [[page, direction], setPage] = useState([0, 0]);
@@ -96,96 +74,63 @@ export function LecturesPage({ userQuery, level, user_photo }) {
         </div>
       </div>
       <div className="bottomLectures">
-        <AnimatePresence initial={false} custom={direction}>
-          {page === 0 && (
-            <motion.div
-              key="weeks"
-              className="weeksScreen"
-              custom={direction}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={transition}
-            >
-              {isWeeksPending ? (
-                <Loader />
-              ) : (
-                Array.from({ length: 4 }).map((_, index) => {
-                  const weekData = weeks?.find(
-                    (item) => item.week === index + 1,
-                  );
+        {page === 0 && (
+          <div className="weeksScreen">
+            {isWeeksPending ? (
+              <Loader />
+            ) : (
+              Array.from({ length: 4 }).map((_, index) => {
+                const weekData = weeks?.find((item) => item.week === index + 1);
+                return (
+                  <TrainBox
+                    key={index}
+                    lectures={weekData || { week: index + 1 }}
+                    train_count={weekData?.count}
+                    onClick={() => weekData && handleWeekSelect(weekData.week)}
+                    isClosed={!weekData}
+                  />
+                );
+              })
+            )}
+          </div>
+        )}
+
+        {page === 1 && selectedWeek && (
+          <div className="trainingsScreen">
+            {isLecturesByWeekPending ? (
+              <Loader />
+            ) : (
+              <div className="trainingsGrid">
+                {lecturesByWeek.map((lecture, index) => {
                   return (
                     <TrainBox
                       key={index}
-                      lectures={weekData || { week: index + 1 }}
-                      train_count={weekData?.count}
-                      onClick={() =>
-                        weekData && handleWeekSelect(weekData.week)
-                      }
-                      isClosed={!weekData}
+                      lectures={lecture}
+                      onClick={() => handleLectureSelect(lecture._id)}
+                      train_count={0}
                     />
                   );
-                })
-              )}
-            </motion.div>
-          )}
+                })}
+              </div>
+            )}
+          </div>
+        )}
 
-          {page === 1 && selectedWeek && (
-            <motion.div
-              key="trainings"
-              className="trainingsScreen"
-              custom={direction}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={transition}
-            >
-              {isLecturesByWeekPending ? (
-                <Loader />
-              ) : (
-                <div className="trainingsGrid">
-                  {lecturesByWeek.map((lecture, index) => {
-                    return (
-                      <TrainBox
-                        key={index}
-                        lectures={lecture}
-                        onClick={() => handleLectureSelect(lecture._id)}
-                        train_count={0}
-                      />
-                    );
-                  })}
-                </div>
-              )}
-            </motion.div>
-          )}
-
-          {page === 2 && selectedLectureId && (
-            <motion.div
-              key="trainingDetails"
-              className="trainingDetailsScreen"
-              custom={direction}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={transition}
-            >
-              {isLectureDetailsPending ? (
-                <Loader />
-              ) : (
-                <TrainingPage
-                  trainingData={lectureDetails}
-                  onBack={handleBack}
-                  level="Профи"
-                  lectures={true}
-                  jcsb={true}
-                />
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {page === 2 && selectedLectureId && (
+          <div className="trainingDetailsScreen">
+            {isLectureDetailsPending ? (
+              <Loader />
+            ) : (
+              <TrainingPage
+                trainingData={lectureDetails}
+                onBack={handleBack}
+                level="Профи"
+                lectures={true}
+                jcsb={true}
+              />
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

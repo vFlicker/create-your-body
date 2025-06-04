@@ -1,7 +1,6 @@
 import './QuizPage.css';
 
 import styled from '@emotion/styled';
-import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
 import { useUpdateUser } from '~/entities/user';
@@ -10,18 +9,11 @@ import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/Button';
 import { Progress } from '~/shared/ui/Progress';
 
-import {
-  slideVariants,
-  titleTransition,
-  titleVariants,
-  transition,
-} from './quizConfig';
 import { quizData } from './quizData';
 import { isDateValid, validateName, validatePhone } from './quizValidators';
 
 export function QuizPage({ data, userQuery }) {
   const [step, setStep] = useState(1);
-  const [direction, setDirection] = useState('forward');
   const [name, setName] = useState('');
   const [gen, setGen] = useState('');
   const [tel, setTel] = useState('');
@@ -178,7 +170,6 @@ export function QuizPage({ data, userQuery }) {
 
   const handleNext = () => {
     if (step < 8) {
-      setDirection('forward');
       setAnswers([...answers, selectedOption]);
       setSelectedOption(null);
       setTimeout(() => {
@@ -235,7 +226,6 @@ export function QuizPage({ data, userQuery }) {
 
   const handleBack = () => {
     if (step > 1) {
-      setDirection('backward');
       setTimeout(() => {
         setStep(step - 1);
         setSelectedOption(answers[step - 2]);
@@ -245,18 +235,7 @@ export function QuizPage({ data, userQuery }) {
   };
 
   const renderStep1 = () => (
-    <motion.div
-      key="step1"
-      custom={direction}
-      variants={slideVariants}
-      initial="enter"
-      animate="center"
-      exit="exit"
-      transition={transition}
-      className="quizStep1"
-      // whileHover={{ scale: 1.02 }}
-      // whileTap={{ scale: 0.98 }}
-    >
+    <div className="quizStep1">
       <div className="name">
         <p className="titleInput">Имя</p>
         <input
@@ -325,22 +304,11 @@ export function QuizPage({ data, userQuery }) {
           {birthdayError}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 
   const renderQuizStep = () => (
-    <motion.div
-      key={`step${step}`}
-      custom={direction}
-      variants={slideVariants}
-      initial="enter"
-      animate="center"
-      exit="exit"
-      transition={transition}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      className="quizStep"
-    >
+    <div className="quizStep">
       <div className="quizOptions">
         {quizData[step - 2].options.map((option, index) => (
           <button
@@ -353,7 +321,7 @@ export function QuizPage({ data, userQuery }) {
           </button>
         ))}
       </div>
-    </motion.div>
+    </div>
   );
 
   return (
@@ -363,22 +331,9 @@ export function QuizPage({ data, userQuery }) {
       </div>
       <div className={`topPage ${step > 1 ? 'expanded' : ''}`}>
         <div className="titleContainer">
-          <AnimatePresence initial={false} mode="sync">
-            <motion.h1
-              key={step}
-              custom={direction}
-              variants={titleVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={titleTransition}
-              className="titleAnimate"
-            >
-              {step === 1
-                ? 'Давайте знакомиться!'
-                : quizData[step - 2].question}
-            </motion.h1>
-          </AnimatePresence>
+          <h1 className="titleAnimate">
+            {step === 1 ? 'Давайте знакомиться!' : quizData[step - 2].question}
+          </h1>
         </div>
         <Progress label="Шаг" steps={8} completedSteps={step} />
       </div>
@@ -389,9 +344,7 @@ export function QuizPage({ data, userQuery }) {
             minHeight: step > 1 ? 'auto' : '',
           }}
         >
-          <AnimatePresence initial={false} mode="sync">
-            {step === 1 ? renderStep1() : renderQuizStep()}
-          </AnimatePresence>
+          {step === 1 ? renderStep1() : renderQuizStep()}
           <StyledButton
             disabled={!isValid}
             color="neutral"

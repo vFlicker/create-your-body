@@ -1,6 +1,5 @@
 import './TrainingPage.css';
 
-import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import arrowIconSrc from '~/shared/assets/svg/arrow.svg';
@@ -10,30 +9,8 @@ import checkIconSrc from '~/shared/assets/svg/check.svg';
 import { Button } from '~/shared/ui/Button';
 import { Notification } from '~/shared/ui/Notification';
 
-const slideVariants = {
-  enter: (direction) => ({
-    x: direction > 0 ? '100%' : '-100%',
-    opacity: 0,
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
-  },
-  exit: (direction) => ({
-    x: direction < 0 ? '100%' : '-100%',
-    opacity: 0,
-  }),
-};
-
-const transition = {
-  type: 'tween',
-  ease: 'easeInOut',
-  duration: 0.3,
-};
-
 export default function TrainingPage({ trainingData, onBack, lectures, jcsb }) {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
   const [isBonus, setIsBonus] = useState(false);
   const contentRef = useRef(null);
 
@@ -77,7 +54,6 @@ export default function TrainingPage({ trainingData, onBack, lectures, jcsb }) {
     if (lectures || currentStepIndex === trainingData.length - 1) {
       onBack();
     } else {
-      setDirection(1);
       setCurrentStepIndex((prev) => prev + 1);
       // Сбрасываем состояния загрузки для нового шага
       const newLoadingStates = {};
@@ -94,7 +70,6 @@ export default function TrainingPage({ trainingData, onBack, lectures, jcsb }) {
     if (!trainingData) return;
 
     if (currentStepIndex > 0) {
-      setDirection(-1);
       setCurrentStepIndex((prev) => prev - 1);
       // Сбрасываем состояния загрузки для предыдущего шага
       const newLoadingStates = {};
@@ -181,26 +156,15 @@ export default function TrainingPage({ trainingData, onBack, lectures, jcsb }) {
       )}
 
       <div className="training-content-wrapper">
-        <AnimatePresence initial={false} custom={direction} mode="wait">
-          <motion.div
-            key={currentStepIndex}
-            className="training-content"
-            custom={direction}
-            variants={slideVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={transition}
-          >
-            {lectures
-              ? currentStep?.blocks?.map((block, index) => (
-                  <div key={block._id || index}>{renderBlock(block)}</div>
-                ))
-              : currentStep?.blocks?.map((block, index) => (
-                  <div key={block._id || index}>{renderBlock(block)}</div>
-                ))}
-          </motion.div>
-        </AnimatePresence>
+        <div className="training-content">
+          {lectures
+            ? currentStep?.blocks?.map((block, index) => (
+                <div key={block._id || index}>{renderBlock(block)}</div>
+              ))
+            : currentStep?.blocks?.map((block, index) => (
+                <div key={block._id || index}>{renderBlock(block)}</div>
+              ))}
+        </div>
       </div>
 
       <div className="training-navigation">
