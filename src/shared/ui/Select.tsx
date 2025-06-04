@@ -1,15 +1,27 @@
 import styled from '@emotion/styled';
-import { JSX } from 'react';
+import { ChangeEvent, JSX } from 'react';
 
 import { Color } from '../theme/colors';
 
-export function Select({ className, value, options, onChange }): JSX.Element {
+type SelectProps = {
+  className?: string;
+  value: string;
+  options: { value: string; label: string }[];
+  onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
+};
+
+export function Select({
+  className,
+  value,
+  options,
+  onChange,
+}: SelectProps): JSX.Element {
   return (
     <div>
       <StyledSelect className={className} value={value} onChange={onChange}>
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
+        {options.map(({ label, value }) => (
+          <option key={value} value={value}>
+            {label}
           </option>
         ))}
       </StyledSelect>

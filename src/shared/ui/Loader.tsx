@@ -3,9 +3,13 @@ import { JSX } from 'react';
 
 import { Color } from '../theme/colors';
 
-export function Loader(): JSX.Element {
+type LoaderProps = {
+  className?: string;
+};
+
+export function Loader({ className }: LoaderProps): JSX.Element {
   return (
-    <StyledLoaderContainer>
+    <StyledLoaderContainer className={className}>
       <StyledSpinner />
     </StyledLoaderContainer>
   );

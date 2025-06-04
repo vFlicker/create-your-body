@@ -6,11 +6,17 @@ type ProgressProps = {
   label: string;
   steps: number;
   completedSteps: number;
+  className?: string;
 };
 
-export function Progress({ label, steps, completedSteps }: ProgressProps) {
+export function Progress({
+  className,
+  label,
+  steps,
+  completedSteps,
+}: ProgressProps) {
   return (
-    <StyledProgressWrapper>
+    <StyledProgressWrapper className={className}>
       <StyledProgressInfo>
         <StyledProgressTitle>{label}</StyledProgressTitle>
         <StyledProgressCount>

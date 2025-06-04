@@ -9,10 +9,12 @@ import { Color } from '../theme/colors';
 const DEFAULT_DURATION = 5000;
 
 type NotificationProps = PropsWithChildren<{
+  className?: string;
   duration?: number;
 }>;
 
 export function Notification({
+  className,
   children,
   duration = DEFAULT_DURATION,
 }: NotificationProps): JSX.Element {
@@ -33,7 +35,7 @@ export function Notification({
   if (!isVisible) return null;
 
   return createPortal(
-    <StyledNotificationWrapper>
+    <StyledNotificationWrapper className={className}>
       {children}
       <StyledCloseButton onClick={handleCloseClick}>
         <img src={exit} alt="Убрать сообщение" />

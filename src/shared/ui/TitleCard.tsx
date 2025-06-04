@@ -4,6 +4,7 @@ import { JSX } from 'react';
 import { Color } from '../theme/colors';
 
 type TitleCardProps = {
+  className?: string;
   title: string;
   iconSrc: string;
   highlighted?: boolean;
@@ -19,6 +20,7 @@ type StyledTitleCardWrapperProps = Pick<
 >;
 
 export function TitleCard({
+  className,
   title,
   iconSrc,
   labelText,
@@ -29,6 +31,7 @@ export function TitleCard({
 }: TitleCardProps): JSX.Element {
   return (
     <StyledTitleCardWrapper
+      className={className}
       disabled={disabled}
       highlighted={highlighted}
       onClick={onClick}

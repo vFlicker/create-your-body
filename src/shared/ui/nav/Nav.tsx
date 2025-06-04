@@ -7,12 +7,16 @@ import { IconButton } from '~/shared/ui/IconButton';
 
 import { navConfig } from './navConfig';
 
-export function Nav(): JSX.Element {
+type NavProps = {
+  className?: string;
+};
+
+export function Nav({ className }: NavProps): JSX.Element {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
   return (
-    <StyledNavWrapper>
+    <StyledNavWrapper className={className}>
       <StyledNavMenu>
         {navConfig.map(({ iconSrc, text, to, disabled }) => {
           const isActive = pathname === to;
