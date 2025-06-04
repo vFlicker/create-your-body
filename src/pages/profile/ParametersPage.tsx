@@ -15,6 +15,7 @@ import { useUpdateTransformationPhotos } from '~/entities/user/api/useUpdateTran
 import example from '~/shared/assets/img/example.jpeg';
 import add from '~/shared/assets/svg/addImg.svg';
 import close from '~/shared/assets/svg/closeWhite.svg';
+import { showTelegramAlert } from '~/shared/libs';
 import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/Button';
 import { Loader } from '~/shared/ui/Loader';
@@ -339,40 +340,25 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
   };
 
   const handleFileChange = (field) => (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 2 * 1024 * 1024) {
-        if (window.Telegram?.WebApp) {
-          window.Telegram.WebApp.showAlert(
-            'Максимальный размер фотографии 2 МБ',
-          );
-        } else {
-          alert('Максимальный размер фотографии 2 МБ');
-        }
-        return;
-      }
+    const file = e.target.files[0];
 
-      if (!file.type.startsWith('image/')) {
-        if (window.Telegram?.WebApp) {
-          window.Telegram.WebApp.showAlert('Пожалуйста, загрузите изображение');
-        } else {
-          alert('Пожалуйста, загрузите изображение');
-        }
-        return;
-      }
+    if (!file) return;
 
-      setFormData((prev) => ({
-        ...prev,
-        [field]: file,
-      }));
+    if (file.size > 2 * 1024 * 1024) {
+      showTelegramAlert('Максимальный размер фотографии 2 МБ');
+      return;
     }
+
+    if (!file.type.startsWith('image/')) {
+      showTelegramAlert('Пожалуйста, загрузите изображение');
+      return;
+    }
+
+    setFormData((prev) => ({ ...prev, [field]: file }));
   };
 
   const handleRemovePhoto = (field) => () => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: null,
-    }));
+    setFormData((prev) => ({ ...prev, [field]: null }));
   };
 
   const handleSubmit = async () => {
@@ -385,20 +371,12 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
     });
 
     if (!isAllFilled) {
-      if (window.Telegram?.WebApp) {
-        window.Telegram.WebApp.showAlert('Добавьте все параметры');
-      } else {
-        alert('Добавьте все параметры');
-      }
+      showTelegramAlert('Добавьте все параметры');
       return;
     }
 
     if (!isDateValid(birthday)) {
-      if (window.Telegram?.WebApp) {
-        window.Telegram.WebApp.showAlert('Введите корректную дату рождения');
-      } else {
-        alert('Введите корректную дату рождения');
-      }
+      showTelegramAlert('Введите корректную дату рождения');
       return;
     }
 
@@ -472,11 +450,7 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
         'Ошибка при сохранении:',
         error.response?.data || error.message,
       );
-      if (window.Telegram?.WebApp) {
-        window.Telegram.WebApp.showAlert('Ошибка при сохранении данных');
-      } else {
-        alert('Ошибка при сохранении данных');
-      }
+      showTelegramAlert('Ошибка при сохранении данных');
     } finally {
       setIsSaving(false);
     }

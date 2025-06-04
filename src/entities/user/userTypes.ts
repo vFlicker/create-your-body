@@ -28,3 +28,21 @@ export type User = {
   role: string;
   subscriptions: Subscription[];
 };
+
+type TransformationPhoto = {
+  id: number;
+  userId: number;
+  type: 'before' | 'after';
+  fileId: string;
+  url: string;
+  uploadedAt: string;
+};
+
+export type TransformationPhotosResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    before: TransformationPhoto | null;
+    after: TransformationPhoto | null;
+  };
+};

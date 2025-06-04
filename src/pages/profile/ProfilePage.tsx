@@ -19,8 +19,8 @@ import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/Button';
 import { IconButton } from '~/shared/ui/IconButton';
 import { Loader } from '~/shared/ui/Loader';
+import { PhotoEditor } from '~/shared/ui/PhotoEditor';
 
-import PhotoEditor from '../../Components/PhotoEditor/PhotoEditor';
 import { Toggler } from '../../shared/ui/Toggler';
 
 export function ProfilePage({ userQuery, data }) {

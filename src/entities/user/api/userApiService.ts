@@ -1,6 +1,6 @@
 import { httpClient } from '~/shared/api/httpClient';
 
-import { User } from '../userTypes';
+import { TransformationPhotosResponse, User } from '../userTypes';
 
 const getUserAdapter = (user: User) => ({
   born_date: user.bornDate ? user.bornDate.split('T')[0] : null,
@@ -115,7 +115,7 @@ export const userApiService = {
 
   getTransformationPhotos: async (userQuery: string) => {
     try {
-      const response = await httpClient.get(
+      const response = await httpClient.get<TransformationPhotosResponse>(
         `/v2/api/client/user/photos?${userQuery}`,
       );
       return response.data.data;
