@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import checkIconSrc from '~/shared/assets/svg/check.svg';
 import { Button } from '~/shared/ui/Button';
 
-import VideoViewer from '../VideoViewer/VideoViewer';
+import VideoViewer from './VideoViewer';
 
 export default function VideoPage({ video, page, userId, instruction, text }) {
   const navigate = useNavigate();

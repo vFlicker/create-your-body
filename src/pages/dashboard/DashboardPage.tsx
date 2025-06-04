@@ -8,7 +8,7 @@ import { Label } from '~/shared/ui/label';
 import { LabelLink } from '~/shared/ui/label/Label';
 import { TitleCard } from '~/shared/ui/TitleCard';
 
-import History from '../../Components/History/History';
+import History from '../../Components/VideoPage/History';
 import { formatTimeFromString } from './formatTimeFromString';
 import { getTitleCards } from './getContainerData';
 
