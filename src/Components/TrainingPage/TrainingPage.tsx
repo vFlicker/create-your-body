@@ -8,8 +8,7 @@ import backIconSrc from '~/shared/assets/svg/arrowBack.svg';
 import brainIconSrc from '~/shared/assets/svg/brain.svg';
 import checkIconSrc from '~/shared/assets/svg/check.svg';
 import { Button } from '~/shared/ui/Button';
-
-import Notification from '../Notification/Notification';
+import { Notification } from '~/shared/ui/Notification';
 
 const slideVariants = {
   enter: (direction) => ({
@@ -37,9 +36,6 @@ export default function TrainingPage({ trainingData, onBack, lectures, jcsb }) {
   const [direction, setDirection] = useState(0);
   const [isBonus, setIsBonus] = useState(false);
   const contentRef = useRef(null);
-  const [notice, setNotice] = useState(true);
-
-  console.log(trainingData);
 
   useEffect(() => {
     setTimeout(() => {
@@ -178,8 +174,8 @@ export default function TrainingPage({ trainingData, onBack, lectures, jcsb }) {
           {currentStep.title} {isBonus && 'БОНУС'}
         </h1>
       )}
-      {!lectures && notice && (
-        <Notification onClose={() => setNotice(false)}>
+      {!lectures && (
+        <Notification>
           <p>Когда закончишь - долистай до конца для продолжения тренировки</p>
         </Notification>
       )}
