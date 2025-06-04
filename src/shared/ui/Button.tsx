@@ -37,7 +37,7 @@ const ButtonColorToCss = {
   `,
   [ButtonColor.Secondary]: css`
     --color-button: ${Color.Green_500};
-    --color-text: ${Color.Black_950};};
+    --color-text: ${Color.Black_950};
   `,
   [ButtonColor.Neutral]: css`
     --color-button: ${Color.Black_950};

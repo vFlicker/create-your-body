@@ -4,8 +4,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Profile } from '~/entities/user';
-import { Label } from '~/shared/ui/label';
-import { LabelLink } from '~/shared/ui/label/Label';
+import { Chip, ChipLink } from '~/shared/ui/Chip';
 import { TitleCard } from '~/shared/ui/TitleCard';
 
 import History from '../../Components/VideoPage/History';
@@ -16,9 +15,9 @@ function SubscriptionStatus({ subscriptions }) {
   if (subscriptions.length === 1 && subscriptions[0].stream === 1) {
     return (
       <div className="dashLabels">
-        <Label color="green">Поток 1</Label>
-        <LabelLink
-          color="violet"
+        <Chip color="secondary">Поток 1</Chip>
+        <ChipLink
+          color="accent"
           to="https://t.me/cybpayments_bot?start=startnewstream"
         >
           Перейти на 2 поток
@@ -36,7 +35,7 @@ function SubscriptionStatus({ subscriptions }) {
               strokeLinejoin="round"
             />
           </svg>
-        </LabelLink>
+        </ChipLink>
       </div>
     );
   }
@@ -44,7 +43,7 @@ function SubscriptionStatus({ subscriptions }) {
   if (subscriptions.length === 1 && subscriptions[0].stream === 2) {
     return (
       <div className="dashLabels">
-        <Label color="violet">
+        <Chip color="accent">
           Поток 2{' '}
           <svg
             className="spinnerSvg"
@@ -68,15 +67,15 @@ function SubscriptionStatus({ subscriptions }) {
               </clipPath>
             </defs>
           </svg>
-        </Label>
+        </Chip>
       </div>
     );
   }
 
   return (
     <div className="dashLabels">
-      <Label color="green">Поток 1</Label>
-      <Label color="violet">
+      <Chip color="secondary">Поток 1</Chip>
+      <Chip color="accent">
         Вы перешли на 2 поток{' '}
         <svg
           width="12"
@@ -92,7 +91,7 @@ function SubscriptionStatus({ subscriptions }) {
             strokeLinejoin="round"
           />
         </svg>
-      </Label>
+      </Chip>
     </div>
   );
 }
