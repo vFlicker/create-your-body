@@ -95,12 +95,12 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
       setIsLoading(true);
       try {
         // Получаем список недель
-        const weeksResponse = await trainingApiService.getAllTrainingWeeks(
+        const weeksResponse = await trainingApiService.getTrainingWeeks(
           userQuery,
           stream,
         );
 
-        const weeks = weeksResponse.data.data || [];
+        const weeks = weeksResponse || [];
         console.log('Получен список недель:', weeks.length);
 
         // Получаем детали для каждой недели
@@ -109,7 +109,7 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
 
         for (const { week } of weeks) {
           try {
-            const response = await trainingApiService.getAllTrainingsByWeek(
+            const response = await trainingApiService.getTrainingsByWeek(
               userQuery,
               week,
               {
@@ -119,7 +119,7 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
               },
             );
 
-            const filteredTrainings = response.data.data.filter(
+            const filteredTrainings = response.filter(
               (training) =>
                 training.type === view && training.level === mappedLevel,
             );
@@ -157,7 +157,7 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
       try {
         const mappedLevel = level === 'Новичок' ? 'noob' : 'pro';
 
-        const response = await trainingApiService.getAllTrainingsByWeek(
+        const response = await trainingApiService.getTrainingsByWeek(
           userQuery,
           selectedWeek.week,
           {
@@ -167,7 +167,7 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
           },
         );
 
-        const filteredTrainings = response.data.data.filter(
+        const filteredTrainings = response.filter(
           (training) =>
             training.type === view && training.level === mappedLevel,
         );
@@ -187,21 +187,15 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
                 training._id,
               );
             details[training._id] = {
-              stepsCount: detailResponse.data.data.steps?.length || 0,
-              coverUrl: detailResponse.data.data.coverImage?.url,
+              stepsCount: detailResponse.steps?.length || 0,
+              coverUrl: detailResponse.coverImage?.url,
               ...training,
             };
-            console.log('Детали тренировки', detailResponse.data);
           } catch (error) {
             console.error(
               `Ошибка при получении деталей тренировки ${training._id}:`,
               error.message,
             );
-            details[training._id] = {
-              stepsCount: 0,
-              coverUrl: null,
-              ...training,
-            };
           }
         }
 
@@ -233,7 +227,7 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
         userQuery,
         training._id,
       );
-      setOriginalTrainingData(response.data.data);
+      setOriginalTrainingData(response);
       window.handleBack = null;
       document.body.removeAttribute('data-handle-back');
       setPage([2, 1]);
