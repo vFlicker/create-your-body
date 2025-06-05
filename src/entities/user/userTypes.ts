@@ -1,4 +1,4 @@
-type Subscription = {
+export type Subscription = {
   id: number;
   userId: number;
   plan: string;
