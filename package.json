@@ -30,6 +30,7 @@
     "@types/compose-function": "0.0.33",
     "@types/react": "19.1.5",
     "@types/react-dom": "19.1.5",
+    "@types/telegram-web-app": "7.10.1",
     "@vitejs/plugin-react": "4.4.1",
     "eslint": "9.25.1",
     "eslint-config-prettier": "10.1.2",
