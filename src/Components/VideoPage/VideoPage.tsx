@@ -8,7 +8,7 @@ import { Button } from '~/shared/ui/Button';
 
 import VideoViewer from './VideoViewer';
 
-export default function VideoPage({ video, page, userId, instruction, text }) {
+export default function VideoPage({ video, page, userId, instruction }) {
   const navigate = useNavigate();
   const [isVideoEnded, setIsVideoEnded] = useState(false); // Состояние завершения видео
   const togglePlayRef = useRef(null); // Реф для вызова togglePlay из VideoViewer
@@ -39,9 +39,7 @@ export default function VideoPage({ video, page, userId, instruction, text }) {
           togglePlayRef={togglePlayRef} // Передаем реф для управления воспроизведением
         />
         <p className="beginDescription">
-          {instruction
-            ? 'В этом видео я расскажу как подготовиться к старту программы'
-            : text}
+          В этом видео я расскажу как подготовиться к старту программы'
         </p>
       </div>
       <Button

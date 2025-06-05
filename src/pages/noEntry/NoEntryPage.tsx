@@ -15,17 +15,6 @@ import { TelegramLinkButton } from '../communication/CommunicationPage';
 export function NoEntryPage({ logs, addLog }) {
   const [errorsContainer, setErrorsContainer] = useState(false);
   const tg = window.Telegram?.WebApp;
-  const username = 'zabotaCYB';
-  const link = `https://t.me/${username}`;
-
-  const handleOpenTelegramLink = () => {
-    if (tg) {
-      tg.ready();
-      tg.openTelegramLink(link);
-    } else {
-      window.location.href = `https://t.me/${username}`;
-    }
-  };
 
   const openLogs = () => {
     setErrorsContainer(!errorsContainer);
@@ -79,7 +68,6 @@ export function NoEntryPage({ logs, addLog }) {
               <TelegramLinkButton
                 username={'zabotaCYB'}
                 buttonText="Поддержка"
-                onClick={handleOpenTelegramLink}
                 icon={helpIconSrc}
                 style={{ width: '100%' }}
               />

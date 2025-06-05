@@ -1,6 +1,6 @@
 import './CommunicationPage.css';
 
-import { useEffect } from 'react';
+import { CSSProperties, useEffect } from 'react';
 
 import { Profile } from '~/entities/user';
 import chat from '~/shared/assets/nav/chat.svg';
@@ -8,13 +8,21 @@ import bot from '~/shared/assets/svg/bot.svg';
 import channel from '~/shared/assets/svg/channel.svg';
 import help from '~/shared/assets/svg/help.svg';
 
+type TelegramLinkButtonProps = {
+  username: string;
+  icon: string;
+  buttonText?: string;
+  disabled?: boolean;
+  style?: CSSProperties;
+};
+
 export const TelegramLinkButton = ({
   username,
   icon,
   buttonText = 'Перейти в Telegram',
   disabled,
   style,
-}) => {
+}: TelegramLinkButtonProps) => {
   const handleOpenTelegramLink = () => {
     const tg = window.Telegram?.WebApp;
     if (tg) {

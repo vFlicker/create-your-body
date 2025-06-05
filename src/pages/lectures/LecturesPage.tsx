@@ -15,8 +15,8 @@ import { Loader } from '~/shared/ui/Loader';
 import TrainBox from '../../Components/TrainBox/TrainBox';
 import TrainingPage from '../../Components/TrainingPage/TrainingPage';
 
-export function LecturesPage({ userQuery, level, user_photo }) {
-  const [[page, direction], setPage] = useState([0, 0]);
+export function LecturesPage({ userQuery, level, userPhotoSrc }) {
+  const [page, setPage] = useState(0);
   const [selectedWeek, setSelectedWeek] = useState();
   const [selectedLectureId, setSelectedLectureId] = useState();
 
@@ -32,22 +32,22 @@ export function LecturesPage({ userQuery, level, user_photo }) {
 
   const handleWeekSelect = (week) => {
     setSelectedWeek(week);
-    setPage([1, 1]);
+    setPage(1);
   };
 
   const handleLectureSelect = (lectureId) => {
     setSelectedLectureId(lectureId);
-    setPage([2, 1]);
+    setPage(2);
   };
 
   const handleBack = () => {
     if (page === 2) {
       setSelectedLectureId(null);
       setSelectedWeek(null);
-      setPage([0, -1]);
+      setPage(0);
     } else if (page === 1) {
       setSelectedWeek(null);
-      setPage([0, -1]);
+      setPage(0);
     } else if (page === 0) {
       window.handleBack = null;
       window.showContent = false;
@@ -67,7 +67,7 @@ export function LecturesPage({ userQuery, level, user_photo }) {
   return (
     <div className="lecturesPage">
       <div className="topLectures">
-        <Profile level={level} photoSrc={user_photo} />
+        <Profile level={level} photoSrc={userPhotoSrc} />
         <div className="lecturesTitle">
           <img src={book} alt="Лекции" />
           <h1 style={{ fontSize: '24px' }}>Лекции</h1>
@@ -124,7 +124,6 @@ export function LecturesPage({ userQuery, level, user_photo }) {
               <TrainingPage
                 trainingData={lectureDetails}
                 onBack={handleBack}
-                level="Профи"
                 lectures={true}
                 jcsb={true}
               />

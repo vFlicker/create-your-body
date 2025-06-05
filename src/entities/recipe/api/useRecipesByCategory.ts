@@ -4,7 +4,7 @@ import { recipeApiService } from './recipeApiService';
 
 export const useRecipesByCategory = (
   userQuery: string,
-  page: string,
+  page: number,
   category?: string,
 ) => {
   const { data, isPending } = useQuery({

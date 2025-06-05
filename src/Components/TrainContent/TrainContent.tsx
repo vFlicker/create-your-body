@@ -53,33 +53,11 @@ const warmup = {
   ],
 };
 
-const slideVariants = {
-  enter: (direction) => ({
-    x: direction > 0 ? '100%' : '-100%',
-    opacity: 0,
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
-  },
-  exit: (direction) => ({
-    x: direction < 0 ? '100%' : '-100%',
-    opacity: 0,
-  }),
-};
-
-const transition = {
-  type: 'tween',
-  ease: 'easeInOut',
-  duration: 0.3,
-};
-
 export default function TrainContent({ userQuery, stream, view, level, base }) {
-  const [[page, direction], setPage] = useState([0, 0]);
+  const [page, setPage] = useState(0);
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [originalTrainingData, setOriginalTrainingData] = useState(null);
   const [activeValue, setActiveValue] = useState('Разминка');
-  const [direct, setDirect] = useState(0);
   const [weeksData, setWeeksData] = useState([]);
   const [weekDetails, setWeekDetails] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -217,7 +195,7 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
   const handleWeekSelect = (weekData) => {
     setIsLoadingTrainings(true);
     setSelectedWeek(weekData);
-    setPage([1, 1]);
+    setPage(1);
   };
 
   const handleTrainingSelect = async (training) => {
@@ -229,7 +207,7 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
       setOriginalTrainingData(response);
       window.handleBack = null;
       document.body.removeAttribute('data-handle-back');
-      setPage([2, 1]);
+      setPage(2);
     } catch (error) {
       console.error(
         `Ошибка при получении данных тренировки ${training._id}:`,
@@ -241,10 +219,10 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
   const handleBack = useCallback(() => {
     if (page === 2) {
       setOriginalTrainingData(null);
-      setPage([1, -1]);
+      setPage(1);
     } else if (page === 1) {
       setSelectedWeek(null);
-      setPage([0, -1]);
+      setPage(0);
     } else if (page === 0) {
       window.showContent = false;
       window.dispatchEvent(new Event('showContentChange'));
@@ -434,7 +412,6 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
         <div className="screen training-details-screen">
           <TrainingPage
             trainingData={originalTrainingData.steps}
-            level={level}
             onBack={handleBack}
           />
         </div>

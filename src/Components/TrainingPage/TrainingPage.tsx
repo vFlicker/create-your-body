@@ -107,7 +107,6 @@ export default function TrainingPage({ trainingData, onBack, lectures, jcsb }) {
   const isLastStep = lectures
     ? true
     : currentStepIndex === trainingData.length - 1;
-  // const isFirstStep = currentStepIndex === 0;
 
   const renderBlock = (block) => {
     switch (block.type) {

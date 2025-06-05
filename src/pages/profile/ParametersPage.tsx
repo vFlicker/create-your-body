@@ -1,6 +1,5 @@
 import './profile.css';
 
-import styled from '@emotion/styled';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -29,7 +28,7 @@ const InputPair = ({
   handleBlur,
   handleFocus,
   type = 'text',
-}) => {
+}: InputPairProps) => {
   if (Array.isArray(type)) {
     return (
       <div className="inputPair">
@@ -113,7 +112,7 @@ const InputPair = ({
           <input
             type="text"
             value={values[0] || ''}
-            onChange={(e) => onChange(e)}
+            onChange={onChange}
             placeholder="дд.мм.гггг"
             onFocus={handleFocus}
             onBlur={handleBlur}
@@ -172,13 +171,12 @@ const PhotoUploader = ({ label, src, onChange, onRemove, isLoading }) => {
             alignItems: 'center',
           }}
         >
-          {/* TODO: I remove width  <Loader width="20px"  */}
           <Loader />
         </div>
       ) : src ? (
         <div className="uploadContainer">
           <img
-            src={typeof src === 'string' ? src : URL.createObjectURL(value)}
+            src={src}
             alt={label}
             className="previewImage"
             onClick={(e) => e.stopPropagation()}
@@ -561,25 +559,6 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
             >
               Сохранить
             </Button>
-            {isSaving && (
-              <div
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: '50px',
-                  width: '100%',
-                }}
-              >
-                <Loader width="20px" />
-              </div>
-            )}
           </div>
           <div
             className="error-message-parameters"
@@ -592,7 +571,3 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
     </div>
   );
 }
-
-const StyledSaveButton = styled(Button)`
-  width: 100%;
-`;

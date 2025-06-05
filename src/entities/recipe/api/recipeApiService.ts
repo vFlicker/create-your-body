@@ -26,7 +26,7 @@ export const recipeApiService = {
   getRecipesByCategory: async (
     userQuery: string,
     category: string,
-    page: string,
+    page: number,
   ) => {
     try {
       const { data } = await httpClient.get<RecipesResponse>(

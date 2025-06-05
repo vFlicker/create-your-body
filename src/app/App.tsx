@@ -58,7 +58,7 @@ function Layout() {
 }
 
 export function App() {
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState<number | undefined>();
   const [userQuery, setUserQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [logs, setLogs] = useState([]);
@@ -93,18 +93,19 @@ export function App() {
       window.Telegram.WebApp,
     );
     addLog('User Agent:', navigator.userAgent);
-    addLog('Платформа:', navigator.userAgentData?.platform || 'Неизвестно');
+    addLog('Платформа:', navigator.platform || 'Неизвестно');
 
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.ready();
       window.Telegram.WebApp.expand();
       window.Telegram.WebApp.disableVerticalSwipes();
 
-      const telegramUser = window.Telegram.WebApp.initDataUnsafe.user || {};
+      const telegramUser =
+        window.Telegram.WebApp.initDataUnsafe.user || ({} as WebAppUser);
       const currentUserQuery = window.Telegram.WebApp.initData || QUERY_ID;
       console.log({ telegram: window.Telegram });
 
-      setUserId(telegramUser.id || '5003100894');
+      setUserId(telegramUser.id || 5003100894);
       setUserQuery(currentUserQuery);
       addLog('Telegram User ID:', telegramUser.id);
       addLog('Telegram User Photo URL:', telegramUser.photo_url);
@@ -193,13 +194,11 @@ export function App() {
               />
               <Route
                 path={AppRoute.Result}
-                element={<ResultPage userQuery={userQuery} userId={userId} />}
+                element={<ResultPage userQuery={userQuery} />}
               />
               <Route
                 path={AppRoute.Dashboard}
-                element={
-                  <DashboardPage data={user} userId={userId} base={base} />
-                }
+                element={<DashboardPage data={user} />}
               />
               <Route
                 path={AppRoute.Begin}
@@ -207,13 +206,7 @@ export function App() {
               />
               <Route
                 path={AppRoute.Profile}
-                element={
-                  <ProfilePage
-                    data={user}
-                    userQuery={userQuery}
-                    setData={setData}
-                  />
-                }
+                element={<ProfilePage data={user} userQuery={userQuery} />}
               />
               <Route
                 path={AppRoute.Parameters}
@@ -246,7 +239,6 @@ export function App() {
                   <TrainPage
                     userQuery={userQuery}
                     data={user}
-                    userId={userId}
                     level={user.user_level}
                     base={base}
                   />
@@ -262,10 +254,9 @@ export function App() {
                 path={AppRoute.Lectures}
                 element={
                   <LecturesPage
-                    data={user}
-                    userId={userId}
                     userQuery={userQuery}
                     level={user.user_level}
+                    userPhotoSrc={user.image}
                   />
                 }
               />

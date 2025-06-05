@@ -519,7 +519,7 @@ export function ProfilePage({ userQuery, data }) {
         ) : (
           <>
             <div className="profile">
-              <Profile level={data?.user_level} user_photo={data?.image} />
+              <Profile level={data?.user_level} photoSrc={data?.image} />
               <div className="profileName">
                 <p>{data?.name || 'Имя'}</p>
                 <span>{data?.user_level || 'Уровень'}</span>
