@@ -51,7 +51,7 @@ export const getTitleCards = (subscriptions) => {
         icon: food,
         closed: null,
         buy: false,
-        to: AppRoute.Food,
+        to: AppRoute.FoodCategories,
         highlighted: false,
       },
       {
@@ -87,7 +87,7 @@ export const getTitleCards = (subscriptions) => {
         icon: food,
         closed: null,
         buy: false,
-        to: AppRoute.Food,
+        to: AppRoute.FoodCategories,
         highlighted: false,
       },
       {
@@ -123,7 +123,7 @@ export const getTitleCards = (subscriptions) => {
         icon: food,
         closed: null,
         buy: false,
-        to: AppRoute.Food,
+        to: AppRoute.FoodCategories,
         highlighted: false,
       },
       {
@@ -159,7 +159,7 @@ export const getTitleCards = (subscriptions) => {
         icon: food,
         closed: null,
         buy: false,
-        to: AppRoute.Food,
+        to: AppRoute.FoodCategories,
         highlighted: false,
       },
       {

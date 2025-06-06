@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import { BeginPage } from '~/pages/begin';
 import { CommunicationPage } from '~/pages/communication';
 import { DashboardPage } from '~/pages/dashboard';
-import { FoodPage } from '~/pages/food';
+import { FoodCategoriesPage, FoodPage } from '~/pages/food';
 import { LecturesPage } from '~/pages/lectures';
 import { ParametersPage, ProfilePage, RecordPage } from '~/pages/profile';
 import { QuizPage } from '~/pages/quiz';
@@ -30,6 +30,10 @@ export function Routing(): JSX.Element {
         <Route path={AppRoute.Record} element={<RecordPage />} />
         <Route path={AppRoute.Communication} element={<CommunicationPage />} />
         <Route path={AppRoute.Training} element={<TrainPage />} />
+        <Route
+          path={AppRoute.FoodCategories}
+          element={<FoodCategoriesPage />}
+        />
         <Route path={AppRoute.Food} element={<FoodPage />} />
         <Route path={AppRoute.Lectures} element={<LecturesPage />} />
         <Route path={AppRoute.Recipes} element={<RecipesPage />} />
