@@ -2,7 +2,7 @@ import './DashboardPage.css';
 
 import { useNavigate } from 'react-router-dom';
 
-import { Profile, StreamsInfo, useUser } from '~/entities/user';
+import { StreamsInfo, UserMeta, useUser } from '~/entities/user';
 import { TitleCard } from '~/shared/ui/TitleCard';
 
 import History from '../../Components/VideoPage/History';
@@ -19,7 +19,7 @@ export function DashboardPage() {
     <div className="dashboard">
       <div className="dashTop">
         <div className="dashHeader">
-          <Profile level={user.user_level} photoSrc={user.image} />
+          <UserMeta />
           <StreamsInfo subscriptions={user.subscriptions} />
         </div>
         <div className="hello">

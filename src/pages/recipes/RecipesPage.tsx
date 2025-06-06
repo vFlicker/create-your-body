@@ -3,7 +3,7 @@ import './RecipesPage.css';
 import { useCallback, useEffect, useState } from 'react';
 
 import { recipeApiService, useRecipeCategories } from '~/entities/recipe';
-import { Profile, useUser } from '~/entities/user';
+import { UserMeta } from '~/entities/user';
 import breakfast from '~/shared/assets/svg/avocado.svg';
 import dessert from '~/shared/assets/svg/croissant.svg';
 import dinner from '~/shared/assets/svg/meat.svg';
@@ -29,7 +29,6 @@ export function RecipesPage() {
   const [isLoadingRecipe, setIsLoadingRecipe] = useState(false);
 
   const { query } = useUserSession();
-  const { user } = useUser();
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
@@ -125,7 +124,7 @@ export function RecipesPage() {
   return (
     <div className="recipesPage">
       <div className="topRecipes">
-        <Profile level={user.user_level} photoSrc={user.image} />
+        <UserMeta />
         <div className="topRecipesTitle">
           <img src={recipesSvg} alt="logo" />
           <h1>

@@ -4,7 +4,7 @@ import '../communication/CommunicationPage.css';
 import { useEffect, useState } from 'react';
 
 import { useNutritionCategories, useNutritionPlan } from '~/entities/nutrition';
-import { Profile, useUser } from '~/entities/user';
+import { UserMeta } from '~/entities/user';
 import food from '~/shared/assets/nav/food.svg';
 import { Loader } from '~/shared/ui/Loader';
 import { PdfViewer } from '~/shared/ui/pdfViewer';
@@ -13,7 +13,6 @@ import { TitleCard } from '~/shared/ui/TitleCard';
 export function FoodPage() {
   const [selectedPdfId, setSelectedPdfId] = useState(null);
 
-  const { user } = useUser();
   const { isNutritionCategoriesPending, nutritionCategories } =
     useNutritionCategories();
   const { isNutritionPlanLoading, nutritionPlan } =
@@ -40,7 +39,7 @@ export function FoodPage() {
   return (
     <div className="foodPage">
       <div className="topFood">
-        <Profile level={user.user_level} photoSrc={user.image} />
+        <UserMeta />
         <div className="topFoodTitle">
           <img src={food} alt="logo" />
           <h1 style={{ fontSize: '24px' }}>Питание</h1>

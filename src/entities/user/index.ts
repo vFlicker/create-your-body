@@ -6,5 +6,5 @@ export { useUpdateTransformationPhoto } from './api/useUpdateTransformationPhoto
 export { useUpdateUser } from './api/useUpdateUser';
 export { useUpdateUserAvatar } from './api/useUpdateUserAvatar';
 export { useUser } from './api/useUser';
-export { Profile } from './ui/Profile';
 export { StreamsInfo } from './ui/StreamsInfo';
+export { UserMeta } from './ui/UserMeta';

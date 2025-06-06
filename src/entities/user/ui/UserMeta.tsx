@@ -1,63 +1,54 @@
 import styled from '@emotion/styled';
-import { JSX, useEffect, useState } from 'react';
+import { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import defaultAvatarSrc from '~/shared/assets/nav/user.svg';
 import { AppRoute } from '~/shared/router';
-import { Loader } from '~/shared/ui/Loader';
 
-type ProfileProps = {
-  level: 'Профи' | 'Новичок';
-  photoSrc: string;
-  isShowInfo?: boolean;
+import { useUser } from '../api/useUser';
+
+type UserMetaProps = {
+  view?: 'level' | 'name';
 };
 
-export function Profile({
-  level,
-  photoSrc,
-  isShowInfo = true,
-}: ProfileProps): JSX.Element {
+export function UserMeta({ view = 'level' }: UserMetaProps): JSX.Element {
   const navigate = useNavigate();
 
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    if (photoSrc) {
-      const img = new Image();
-      img.src = photoSrc;
-      img.onload = () => setIsLoading(false);
-      img.onerror = () => setIsLoading(false);
-    } else {
-      setIsLoading(false);
-    }
-  }, [photoSrc]);
+  const { user } = useUser();
 
   return (
-    <StyledProfileWrapper>
-      <StyledButton level={level} onClick={() => navigate(AppRoute.Profile)}>
-        {isLoading && <Loader />}
-        {!isLoading && (
-          <StyledAvatar src={photoSrc ?? defaultAvatarSrc} alt="Ваш аватар" />
-        )}
+    <StyledUserMetaWrapper>
+      <StyledButton
+        level={user.user_level}
+        onClick={() => navigate(AppRoute.Profile)}
+      >
+        <StyledAvatar src={user.image ?? defaultAvatarSrc} alt="Ваш аватар" />
       </StyledButton>
 
-      {isShowInfo && (
-        <StyledInfoWrapper>
-          Уровень: <span>{level}</span>
-        </StyledInfoWrapper>
+      {view === 'level' && (
+        <StyledLevelWrapper>
+          Уровень: <span>{user.user_level}</span>
+        </StyledLevelWrapper>
       )}
-    </StyledProfileWrapper>
+
+      {view === 'name' && (
+        <StyledNameWrapper>
+          <p>{user?.name || 'Имя'}</p>
+          <span>{user?.user_level || 'Уровень'}</span>
+        </StyledNameWrapper>
+      )}
+    </StyledUserMetaWrapper>
   );
 }
 
-const StyledProfileWrapper = styled.div`
+const StyledUserMetaWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 8px;
 `;
 
-const StyledButton = styled.button<Pick<ProfileProps, 'level'>>`
+const StyledButton = styled.button<{ level: string }>`
   position: relative;
 
   width: 40px;
@@ -95,7 +86,7 @@ const StyledAvatar = styled.img`
   border-radius: 50px;
 `;
 
-const StyledInfoWrapper = styled.div`
+const StyledLevelWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -108,5 +99,22 @@ const StyledInfoWrapper = styled.div`
   span {
     color: #0d0d0d;
     font-weight: 600;
+  }
+`;
+
+const StyledNameWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  p {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0d0d0d;
+  }
+
+  span {
+    font-size: 12px;
+    color: #999999;
   }
 `;

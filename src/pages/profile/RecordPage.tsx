@@ -3,7 +3,7 @@ import './profile.css';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Profile, useCreateBodyMeasurements, useUser } from '~/entities/user';
+import { useCreateBodyMeasurements, UserMeta, useUser } from '~/entities/user';
 import { useUserSession } from '~/shared/store';
 import { Button } from '~/shared/ui/Button';
 
@@ -127,19 +127,7 @@ export function RecordPage() {
       style={{ flex: '1', display: 'flex', height: 'calc(100% - 70px)' }}
     >
       <div className="profileContainer">
-        <div className="profile" style={{ justifyContent: 'space-between' }}>
-          <div className="profileData">
-            <Profile
-              level={user.user_level}
-              photoSrc={user.image}
-              isShowInfo={false}
-            />
-            <div className="profileName">
-              <p>{user?.name || 'Имя'}</p>
-              <span>{user?.user_level || 'Уровень'}</span>
-            </div>
-          </div>
-        </div>
+        <UserMeta view="name" />
         <div className="recordYourProgress">
           <h3>Запишите свой прогресс</h3>
           <div className="inputsSection">

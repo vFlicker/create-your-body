@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 
 import { useUpdateUser, useUser } from '~/entities/user';
-import { Profile } from '~/entities/user';
+import { UserMeta } from '~/entities/user';
 import { useBodyMeasurements } from '~/entities/user/api/useBodyMeasurements';
 import zamer from '~/shared/assets/img/zamer.jpeg';
 import chart from '~/shared/assets/svg/chart.svg';
@@ -286,17 +286,8 @@ export function ProfilePage(): JSX.Element {
               className="profile"
               style={{ justifyContent: 'space-between' }}
             >
-              <div className="profileData">
-                <Profile
-                  level={user?.user_level}
-                  photoSrc={user?.image}
-                  isShowInfo={false}
-                />
-                <div className="profileName">
-                  <p>{user?.name || 'Имя'}</p>
-                  <span>{user?.user_level || 'Уровень'}</span>
-                </div>
-              </div>
+              <UserMeta view="name" />
+
               <IconButton
                 iconSrc={editIconSrc}
                 onClick={() => navigate('/parameters')}
@@ -509,13 +500,8 @@ export function ProfilePage(): JSX.Element {
           </div>
         ) : (
           <>
-            <div className="profile">
-              <Profile level={user?.user_level} photoSrc={user?.image} />
-              <div className="profileName">
-                <p>{user?.name || 'Имя'}</p>
-                <span>{user?.user_level || 'Уровень'}</span>
-              </div>
-            </div>
+            <UserMeta />
+
             <div className="settings">
               <div className="set" onClick={() => setOpen(!open)}>
                 <img src={settings} alt="Настройки" />

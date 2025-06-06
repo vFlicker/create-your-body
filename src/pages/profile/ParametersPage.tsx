@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
-  Profile,
   useBodyMeasurements,
   useCreateBodyMeasurements,
+  UserMeta,
   useTransformationPhoto,
   useUpdateBodyMeasurements,
   useUpdateTransformationPhoto,
@@ -498,17 +498,8 @@ export function ParametersPage() {
   return (
     <div className="profilePage" ref={formRef}>
       <div className="profileContainer">
-        <div className="profile">
-          <Profile
-            level={user.user_level}
-            photoSrc={user.image}
-            isShowInfo={false}
-          />
-          <div className="profileName">
-            <p>{user?.name || 'Имя'}</p>
-            <span>{user?.user_level || 'Уровень'}</span>
-          </div>
-        </div>
+        <UserMeta view="name" />
+
         <div className="howSize">
           <h3>Как измерить параметры?</h3>
           <div className="example">

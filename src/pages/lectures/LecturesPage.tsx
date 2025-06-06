@@ -8,7 +8,7 @@ import {
   useLecturesByWeek,
   useLectureWeeks,
 } from '~/entities/lecture';
-import { Profile, useUser } from '~/entities/user';
+import { UserMeta, useUser } from '~/entities/user';
 import book from '~/shared/assets/svg/book.svg';
 import { Loader } from '~/shared/ui/Loader';
 
@@ -66,7 +66,7 @@ export function LecturesPage() {
   return (
     <div className="lecturesPage">
       <div className="topLectures">
-        <Profile level={user.user_level} photoSrc={user.image} />
+        <UserMeta />
         <div className="lecturesTitle">
           <img src={book} alt="Лекции" />
           <h1 style={{ fontSize: '24px' }}>Лекции</h1>

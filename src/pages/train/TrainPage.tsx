@@ -2,7 +2,7 @@ import './TrainPage.css';
 
 import { useEffect, useState } from 'react';
 
-import { Profile, useUser } from '~/entities/user';
+import { UserMeta, useUser } from '~/entities/user';
 import muscules from '~/shared/assets/svg/musclesBlack.svg';
 import back from '~/shared/assets/train/back.svg';
 import dumbbells from '~/shared/assets/train/dumbbells.svg';
@@ -84,7 +84,7 @@ export function TrainPage() {
   return (
     <div className="trainPage">
       <div className="topTrain">
-        <Profile level={user?.user_level} photoSrc={user.image} />
+        <UserMeta />
         <div className="trainTitleWrapper">
           <div className="trainTitle">
             <img src={muscules} alt="Тренировка" />
