@@ -50,12 +50,6 @@ export const TelegramLinkButton = ({
 };
 
 export function CommunicationPage({ data }) {
-  useEffect(() => {
-    if (window.Telegram && window.Telegram.WebApp) {
-      window.Telegram.WebApp.setBackgroundColor('#F2F2F2');
-    }
-  }, []);
-
   return (
     <div className="comPage">
       <div className="topCom">

@@ -1,9 +1,9 @@
 import './BeginPage.css';
 
-import { useEffect, useState } from 'react';
+import { JSX, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { Profile } from '~/entities/user';
+import { Profile, useUser } from '~/entities/user';
 import pdfSrc from '~/shared/assets/pdf/begin.pdf';
 import health from '~/shared/assets/svg/health.svg';
 import begin from '~/shared/assets/video/begin.mp4';
@@ -12,9 +12,10 @@ import { Toggler } from '~/shared/ui/Toggler';
 
 import VideoPage from '../../Components/VideoPage/VideoPage';
 
-export function BeginPage({ userId, data }) {
-  // Получаем query-параметры из URL
+export function BeginPage(): JSX.Element {
   const location = useLocation();
+
+  const { user } = useUser();
 
   // Парсим query-параметр view
   const queryParams = new URLSearchParams(location.search);
@@ -25,18 +26,12 @@ export function BeginPage({ userId, data }) {
     viewParam === 'video' ? 'Видео' : 'Подготовка',
   );
 
-  useEffect(() => {
-    if (window.Telegram && window.Telegram.WebApp) {
-      window.Telegram.WebApp.setBackgroundColor('#F2F2F2');
-    }
-  }, []);
-
   const isVideoView = activeToggler === 'Видео';
 
   return (
     <div className="beginPage">
       <div className="topBegin">
-        <Profile level={data.user_level} photoSrc={data.image} />
+        <Profile level={user.user_level} photoSrc={user.image} />
         <div className="beginTitle">
           <img src={health} alt="Введение" />
           <h1 style={{ fontSize: '24px' }}>Введение</h1>
@@ -50,12 +45,7 @@ export function BeginPage({ userId, data }) {
         />
 
         {isVideoView && (
-          <VideoPage
-            video={begin}
-            page="/begin"
-            userId={userId}
-            instruction={true}
-          />
+          <VideoPage video={begin} page="/begin" instruction={true} />
         )}
 
         {!isVideoView && <PdfViewer pdfSrc={pdfSrc} />}

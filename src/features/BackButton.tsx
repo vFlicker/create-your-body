@@ -18,16 +18,14 @@ export function BackButton({ onClick }: BackButtonProps): JSX.Element {
   const handleClick = onClick || defaultOnClick;
 
   useEffect(() => {
-    if (window.Telegram && window.Telegram.WebApp) {
-      const backButton = window.Telegram.WebApp.BackButton;
-      backButton.show();
-      backButton.onClick(handleClick);
+    const backButton = Telegram.WebApp.BackButton;
+    backButton.show();
+    backButton.onClick(handleClick);
 
-      return () => {
-        backButton.offClick(handleClick);
-        backButton.hide();
-      };
-    }
+    return () => {
+      backButton.offClick(handleClick);
+      backButton.hide();
+    };
   }, [handleClick]);
 
   return (

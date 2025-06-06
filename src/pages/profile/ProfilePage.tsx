@@ -50,12 +50,6 @@ export function ProfilePage({ userQuery, data }) {
     useBodyMeasurements(userQuery);
 
   useEffect(() => {
-    if (window.Telegram && window.Telegram.WebApp) {
-      window.Telegram.WebApp.setBackgroundColor('#F2F2F2');
-    }
-  }, []);
-
-  useEffect(() => {
     if (historyOpen) {
       document.body.classList.add('history-open');
     } else {

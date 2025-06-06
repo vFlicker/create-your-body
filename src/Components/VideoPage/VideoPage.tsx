@@ -4,12 +4,14 @@ import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import checkIconSrc from '~/shared/assets/svg/check.svg';
+import { useUserSession } from '~/shared/store';
 import { Button } from '~/shared/ui/Button';
 
 import VideoViewer from './VideoViewer';
 
-export default function VideoPage({ video, page, userId, instruction }) {
+export default function VideoPage({ video, page, instruction }) {
   const navigate = useNavigate();
+  const { id } = useUserSession();
   const [isVideoEnded, setIsVideoEnded] = useState(false); // Состояние завершения видео
   const togglePlayRef = useRef(null); // Реф для вызова togglePlay из VideoViewer
 
@@ -32,7 +34,7 @@ export default function VideoPage({ video, page, userId, instruction }) {
         <VideoViewer
           videoSrc={video}
           page={page}
-          userId={userId}
+          userId={id}
           instruction={instruction}
           lastVideo={page}
           onVideoEnd={setIsVideoEnded} // Обновляем состояние, когда видео заканчивается

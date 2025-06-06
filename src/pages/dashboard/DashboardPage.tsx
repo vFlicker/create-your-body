@@ -13,12 +13,6 @@ import { getTitleCards } from './getContainerData';
 export function DashboardPage({ data }) {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (window.Telegram && window.Telegram.WebApp) {
-      window.Telegram.WebApp.setBackgroundColor('#F2F2F2');
-    }
-  }, []);
-
   const pageContainersData = getTitleCards(data.subscriptions);
 
   return (

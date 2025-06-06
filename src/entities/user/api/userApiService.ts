@@ -33,7 +33,7 @@ const getUserAdapter = (user: User) => ({
   phone: user.phone,
   sex: user.sex,
   tg_id: user.tgId ? String(user.tgId) : null,
-  user_level: user.level,
+  user_level: user.level as 'Профи' | 'Новичок',
   user_tarif:
     user.subscriptions && user.subscriptions[0]
       ? `Тариф ${user.subscriptions[0].plan}`

@@ -16,12 +16,6 @@ type StartPageProps = {
 export function StartPage({ type }: StartPageProps): JSX.Element {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (window.Telegram && window.Telegram.WebApp) {
-      window.Telegram.WebApp.setBackgroundColor('#fff');
-    }
-  }, []);
-
   const { buttonText, buttonIconSrc, onButtonClick } = buttonConfig[type];
 
   return (

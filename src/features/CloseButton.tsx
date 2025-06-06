@@ -10,7 +10,7 @@ export function CloseButton(): JSX.Element {
   const location = useLocation();
 
   return (
-    <StyledCloseButton onClick={() => window.Telegram.WebApp.close()}>
+    <StyledCloseButton onClick={() => Telegram.WebApp.close()}>
       <img src={location.pathname === '/' ? closeStartIconSrc : closeIconSrc} />
     </StyledCloseButton>
   );
