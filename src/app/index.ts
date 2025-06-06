@@ -1,1 +1,1 @@
-export { AppWithProviders } from './App';
+export { AppWithProviders } from './ui/App';

@@ -1,4 +1,6 @@
-import { httpClient } from '~/shared/api/httpClient';
+import axios from 'axios';
+
+import { BASE_API_URL, httpClient } from '~/shared/api/httpClient';
 
 import { TransformationPhotosResponse, User } from '../userTypes';
 
@@ -218,6 +220,21 @@ export const userApiService = {
       return response;
     } catch (error) {
       console.error('Error updating user parameters:', error);
+      throw error;
+    }
+  },
+
+  addUserAvatarById: async ({ id, image }: { id: number; image: string }) => {
+    console.info('This method is deprecated');
+
+    try {
+      await axios.post(
+        `${BASE_API_URL}/api/v1/user/image?user_tg_id=${id}&image=${image}`,
+        null,
+        { headers: { 'Content-Type': 'application/json' } },
+      );
+    } catch (error) {
+      console.error('Error adding user avatar:', error);
       throw error;
     }
   },
