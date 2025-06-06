@@ -1,10 +1,10 @@
 import './profile.css';
 
-import { useEffect, useState } from 'react';
+import { JSX, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 
-import { useUpdateUser } from '~/entities/user';
+import { useUpdateUser, useUser } from '~/entities/user';
 import { Profile } from '~/entities/user';
 import { useBodyMeasurements } from '~/entities/user/api/useBodyMeasurements';
 import zamer from '~/shared/assets/img/zamer.jpeg';
@@ -15,6 +15,7 @@ import exit from '~/shared/assets/svg/exit.svg';
 import history from '~/shared/assets/svg/history.svg';
 import right from '~/shared/assets/svg/right.svg';
 import settings from '~/shared/assets/svg/settings.svg';
+import { useUserSession } from '~/shared/store';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/Button';
 import { IconButton } from '~/shared/ui/IconButton';
@@ -23,14 +24,16 @@ import { PhotoEditor } from '~/shared/ui/PhotoEditor';
 
 import { Toggler } from '../../shared/ui/Toggler';
 
-export function ProfilePage({ userQuery, data }) {
+export function ProfilePage(): JSX.Element {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [activeLevel, setActiveLevel] = useState(data.user_level);
   const [isPressed, setIsPressed] = useState(false);
   const [isHistoryPressed, setIsHistoryPressed] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+
+  const { user } = useUser();
+  const { query } = useUserSession();
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -46,8 +49,7 @@ export function ProfilePage({ userQuery, data }) {
     return diff > 0 ? `+${diff}` : diff;
   };
 
-  const { bodyMeasurements, isBodyMeasurementsPending } =
-    useBodyMeasurements(userQuery);
+  const { bodyMeasurements, isBodyMeasurementsPending } = useBodyMeasurements();
 
   useEffect(() => {
     if (historyOpen) {
@@ -74,8 +76,7 @@ export function ProfilePage({ userQuery, data }) {
   const { updateUserMutate } = useUpdateUser();
 
   const handleSelectorClick = async (level) => {
-    setActiveLevel(level);
-    updateUserMutate({ userQuery, userData: { user_level: level } });
+    updateUserMutate({ userQuery: query, userData: { user_level: level } });
   };
 
   const handleCloseHistory = () => {
@@ -287,13 +288,13 @@ export function ProfilePage({ userQuery, data }) {
             >
               <div className="profileData">
                 <Profile
-                  level={data?.user_level}
-                  photoSrc={data?.image}
+                  level={user?.user_level}
+                  photoSrc={user?.image}
                   isShowInfo={false}
                 />
                 <div className="profileName">
-                  <p>{data?.name || 'Имя'}</p>
-                  <span>{data?.user_level || 'Уровень'}</span>
+                  <p>{user?.name || 'Имя'}</p>
+                  <span>{user?.user_level || 'Уровень'}</span>
                 </div>
               </div>
               <IconButton
@@ -322,7 +323,7 @@ export function ProfilePage({ userQuery, data }) {
                 <Toggler
                   backgroundColor={Color.White}
                   values={['Новичок', 'Профи']}
-                  activeValue={activeLevel}
+                  activeValue={user.user_level}
                   onClick={handleSelectorClick}
                 />
               )}
@@ -372,9 +373,9 @@ export function ProfilePage({ userQuery, data }) {
                   <div className="value">
                     <span>Возраст</span>
                     <p>
-                      {data?.born_date
+                      {user?.born_date
                         ? (() => {
-                            const birthDate = new Date(data.born_date);
+                            const birthDate = new Date(user.born_date);
                             const today = new Date();
                             let age =
                               today.getFullYear() - birthDate.getFullYear();
@@ -395,9 +396,9 @@ export function ProfilePage({ userQuery, data }) {
                   <div className="value">
                     <span>Пол</span>
                     <p>
-                      {data?.sex === 'male'
+                      {user?.sex === 'male'
                         ? 'Мужской'
-                        : data?.sex === 'female'
+                        : user?.sex === 'female'
                           ? 'Женский'
                           : '-'}
                     </p>
@@ -497,14 +498,10 @@ export function ProfilePage({ userQuery, data }) {
               <h3>Фотографии</h3>
               <p>До и после тренировочной недели</p>
               <div className="photosBefore">
-                <PhotoEditor
-                  label="Фото до"
-                  userQuery={userQuery}
-                  stage="before"
-                />
+                <PhotoEditor label="Фото до" userQuery={query} stage="before" />
                 <PhotoEditor
                   label="Фото после"
-                  userQuery={userQuery}
+                  userQuery={query}
                   stage="after"
                 />
               </div>
@@ -513,10 +510,10 @@ export function ProfilePage({ userQuery, data }) {
         ) : (
           <>
             <div className="profile">
-              <Profile level={data?.user_level} photoSrc={data?.image} />
+              <Profile level={user?.user_level} photoSrc={user?.image} />
               <div className="profileName">
-                <p>{data?.name || 'Имя'}</p>
-                <span>{data?.user_level || 'Уровень'}</span>
+                <p>{user?.name || 'Имя'}</p>
+                <span>{user?.user_level || 'Уровень'}</span>
               </div>
             </div>
             <div className="settings">
@@ -540,7 +537,7 @@ export function ProfilePage({ userQuery, data }) {
                 <Toggler
                   backgroundColor={Color.White}
                   values={['Новичок', 'Профи']}
-                  activeValue={activeLevel}
+                  activeValue={user.user_level}
                   onClick={handleSelectorClick}
                 />
               )}

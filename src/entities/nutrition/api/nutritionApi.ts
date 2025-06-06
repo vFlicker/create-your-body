@@ -21,7 +21,7 @@ export const nutritionApiService = {
 
   getNutritionPlanByPdfId: async (
     userQuery: string,
-    userId: string,
+    userId: number,
     pdfId: string,
   ) => {
     try {

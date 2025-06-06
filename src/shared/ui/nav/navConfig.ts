@@ -15,7 +15,7 @@ type NavItem = {
 export const navConfig: NavItem[] = [
   { to: AppRoute.Dashboard, iconSrc: dashboard, text: 'Меню' },
   {
-    to: AppRoute.Traning,
+    to: AppRoute.Training,
     iconSrc: muscles,
     text: 'Тренировки',
   },

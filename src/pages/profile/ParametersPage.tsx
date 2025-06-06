@@ -3,19 +3,22 @@ import './profile.css';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useUpdateUser } from '~/entities/user';
-import { Profile } from '~/entities/user';
-import { userApiService } from '~/entities/user';
-import { useBodyMeasurements } from '~/entities/user/api/useBodyMeasurements';
-import { useCreateBodyMeasurements } from '~/entities/user/api/useCreateBodyMeasurements';
-import { useTransformationPhotos } from '~/entities/user/api/useTransformationPhoto';
-import { useUpdateBodyMeasurements } from '~/entities/user/api/useUpdateBodyMeasurements';
-import { useUpdateTransformationPhotos } from '~/entities/user/api/useUpdateTransformationPhotos';
+import {
+  Profile,
+  useBodyMeasurements,
+  useCreateBodyMeasurements,
+  useTransformationPhoto,
+  useUpdateBodyMeasurements,
+  useUpdateTransformationPhoto,
+  useUpdateUser,
+  useUser,
+} from '~/entities/user';
 import example from '~/shared/assets/img/example.jpeg';
 import add from '~/shared/assets/svg/addImg.svg';
 import close from '~/shared/assets/svg/closeWhite.svg';
 import { showTelegramAlert } from '~/shared/libs';
 import { AppRoute } from '~/shared/router';
+import { useUserSession } from '~/shared/store';
 import { Button } from '~/shared/ui/Button';
 import { Loader } from '~/shared/ui/Loader';
 
@@ -200,10 +203,16 @@ const PhotoUploader = ({ label, src, onChange, onRemove, isLoading }) => {
   );
 };
 
-export function ParametersPage({ userId, userQuery, data, setData }) {
-  const [isMobile, setIsMobile] = useState(false);
+export function ParametersPage() {
   const formRef = useRef(null);
+
   const navigate = useNavigate();
+
+  const { user } = useUser();
+  const { id, query } = useUserSession();
+
+  const [isMobile, setIsMobile] = useState(false);
+
   const [formData, setFormData] = useState({
     chest: '',
     waist: '',
@@ -215,10 +224,10 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
     photoAfter: null,
   });
   const [latestParameters, setLatestParameters] = useState(null);
-  const [gen, setGen] = useState(data?.sex === 'male' ? 'm' : 'w');
+  const [gen, setGen] = useState(user?.sex === 'male' ? 'm' : 'w');
   const [birthday, setBirthday] = useState(
-    data?.born_date
-      ? new Date(data.born_date)
+    user?.born_date
+      ? new Date(user.born_date)
           .toLocaleDateString('ru-RU', {
             day: '2-digit',
             month: '2-digit',
@@ -239,7 +248,7 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
     }
   }, []);
 
-  const { bodyMeasurements } = useBodyMeasurements(userQuery);
+  const { bodyMeasurements } = useBodyMeasurements();
 
   useEffect(() => {
     const loadUserMeasurements = async () => {
@@ -268,13 +277,13 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
     loadUserMeasurements();
   }, [bodyMeasurements]);
 
-  const { isTransformationPhotosPending, transformationPhotos } =
-    useTransformationPhotos(userQuery);
+  const { transformationPhoto, isTransformationPhotoPending } =
+    useTransformationPhoto();
 
   const { updateBodyMeasurementsMutate } = useUpdateBodyMeasurements();
   const { createBodyMeasurementsMutate } = useCreateBodyMeasurements();
 
-  const { updateTransformationPhotosMutate } = useUpdateTransformationPhotos();
+  const { updateTransformationPhotoMutate } = useUpdateTransformationPhoto();
 
   const { updateUserMutate } = useUpdateUser();
 
@@ -389,11 +398,11 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
         born_date: formattedBirthday,
       };
 
-      updateUserMutate({ userQuery, userData });
+      updateUserMutate({ userQuery: query, userData });
 
       // Обновление параметров
       const parametersData = {
-        tg_id: String(userId),
+        tg_id: String(id),
         chest: parseInt(formData.chest, 10) || 0,
         waist: parseInt(formData.waist, 10) || 0,
         abdominal_circumference: parseInt(formData.belly, 10) || 0,
@@ -404,13 +413,13 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
 
       if (hasParameters) {
         updateBodyMeasurementsMutate({
-          userQuery,
+          userQuery: query,
           id: latestParameters.id,
           parameters: parametersData,
         });
       } else {
         createBodyMeasurementsMutate({
-          userQuery,
+          userQuery: query,
           parameters: parametersData,
         });
       }
@@ -419,8 +428,8 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
       if (formData.photoBefore instanceof File) {
         const formDataPost = new FormData();
         formDataPost.append('image', formData.photoBefore);
-        updateTransformationPhotosMutate({
-          userQuery,
+        updateTransformationPhotoMutate({
+          userQuery: query,
           formData: formDataPost,
           stage: 'before',
         });
@@ -429,19 +438,13 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
       if (formData.photoAfter instanceof File) {
         const formDataPost = new FormData();
         formDataPost.append('image', formData.photoAfter);
-        updateTransformationPhotosMutate({
-          userQuery,
+        updateTransformationPhotoMutate({
+          userQuery: query,
           formData: formDataPost,
           stage: 'after',
         });
       }
 
-      console.log('Данные сохранены!');
-
-      // Обновляем данные пользователя перед переходом
-      // TODO: remove this method, we can invalidate cache
-      const user = await userApiService.getUser(userQuery);
-      setData(user);
       navigate(AppRoute.Profile);
     } catch (error) {
       console.error(
@@ -497,13 +500,13 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
       <div className="profileContainer">
         <div className="profile">
           <Profile
-            level={data.user_level}
-            photoSrc={data.image}
+            level={user.user_level}
+            photoSrc={user.image}
             isShowInfo={false}
           />
           <div className="profileName">
-            <p>{data?.name || 'Имя'}</p>
-            <span>{data?.user_level || 'Уровень'}</span>
+            <p>{user?.name || 'Имя'}</p>
+            <span>{user?.user_level || 'Уровень'}</span>
           </div>
         </div>
         <div className="howSize">
@@ -538,17 +541,17 @@ export function ParametersPage({ userId, userQuery, data, setData }) {
           <div className="loadPhotos">
             <PhotoUploader
               label="Фото до"
-              src={transformationPhotos?.before?.url}
+              src={transformationPhoto?.before?.url}
               onChange={handleFileChange('photoBefore')}
               onRemove={handleRemovePhoto('photoBefore')}
-              isLoading={isTransformationPhotosPending}
+              isLoading={isTransformationPhotoPending}
             />
             <PhotoUploader
               label="Фото после"
-              src={transformationPhotos?.after?.url}
+              src={transformationPhoto?.after?.url}
               onChange={handleFileChange('photoAfter')}
               onRemove={handleRemovePhoto('photoAfter')}
-              isLoading={isTransformationPhotosPending}
+              isLoading={isTransformationPhotoPending}
             />
           </div>
           <div style={{ position: 'relative', width: '100%' }}>

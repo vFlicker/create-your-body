@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { userApiService } from './userApiService';
 
-export const useUpdateTransformationPhotos = () => {
+export const useUpdateTransformationPhoto = () => {
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
@@ -15,7 +15,7 @@ export const useUpdateTransformationPhotos = () => {
   });
 
   return {
-    updateTransformationPhotosMutate: mutate,
-    isUpdateTransformationPhotosPending: isPending,
+    updateTransformationPhotoMutate: mutate,
+    isUpdateTransformationPhotoPending: isPending,
   };
 };

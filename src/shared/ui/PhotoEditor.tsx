@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
 import { ChangeEvent, useRef } from 'react';
 
-import { useTransformationPhotos } from '~/entities/user/api/useTransformationPhoto';
-import { useUpdateTransformationPhotos } from '~/entities/user/api/useUpdateTransformationPhotos';
+import {
+  useTransformationPhoto,
+  useUpdateTransformationPhoto,
+} from '~/entities/user';
 import editIconSrc from '~/shared/assets/svg/editSmall.svg';
 import emptyPhotoIconSrc from '~/shared/assets/svg/photoNone.svg';
 import { IconButton } from '~/shared/ui/IconButton';
@@ -23,13 +25,13 @@ type PhotoEditorProps = {
 export function PhotoEditor({ userQuery, label, stage }: PhotoEditorProps) {
   const fileInputRef = useRef(null);
 
-  const { isTransformationPhotosPending, transformationPhotos } =
-    useTransformationPhotos(userQuery);
+  const { isTransformationPhotoPending, transformationPhoto } =
+    useTransformationPhoto();
 
   const {
-    updateTransformationPhotosMutate,
-    isUpdateTransformationPhotosPending,
-  } = useUpdateTransformationPhotos();
+    updateTransformationPhotoMutate,
+    isUpdateTransformationPhotoPending,
+  } = useUpdateTransformationPhoto();
 
   const handleEditClick = () => {
     fileInputRef.current?.click();
@@ -54,16 +56,16 @@ export function PhotoEditor({ userQuery, label, stage }: PhotoEditorProps) {
     formData.append('image', file);
 
     try {
-      updateTransformationPhotosMutate({ userQuery, formData, stage });
+      updateTransformationPhotoMutate({ userQuery, formData, stage });
     } catch {
       showTelegramAlert('Ошибка при загрузке фотографии');
     }
   };
 
   const isLoading =
-    isTransformationPhotosPending || isUpdateTransformationPhotosPending;
+    isTransformationPhotoPending || isUpdateTransformationPhotoPending;
 
-  const photoData = transformationPhotos && transformationPhotos[stage];
+  const photoData = transformationPhoto && transformationPhoto[stage];
   const hasPhoto = !!photoData;
   const photoUrl = hasPhoto ? photoData.url : emptyPhotoIconSrc;
 

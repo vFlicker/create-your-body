@@ -29,7 +29,7 @@ function App() {
   const hasAccess = !!user.user_tarif;
   if (!hasAccess) return <NoEntryPage />;
 
-  return <Routing user={user} />;
+  return <Routing />;
 }
 
 export const AppWithProviders = withProviders(App);

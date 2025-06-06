@@ -1,7 +1,7 @@
 export const enum AppRoute {
   Profile = '/profile',
   Dashboard = '/dashboard',
-  Traning = '/training',
+  Training = '/training',
   Food = '/food',
   Communication = '/communication',
   Quiz = '/quiz',

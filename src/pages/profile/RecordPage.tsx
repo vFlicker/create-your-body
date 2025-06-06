@@ -3,8 +3,8 @@ import './profile.css';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Profile } from '~/entities/user';
-import { useCreateBodyMeasurements } from '~/entities/user/api/useCreateBodyMeasurements';
+import { Profile, useCreateBodyMeasurements, useUser } from '~/entities/user';
+import { useUserSession } from '~/shared/store';
 import { Button } from '~/shared/ui/Button';
 
 const InputPair = ({ labels, values, onChange, handleBlur, handleFocus }) => (
@@ -25,12 +25,16 @@ const InputPair = ({ labels, values, onChange, handleBlur, handleFocus }) => (
   </div>
 );
 
-export function RecordPage({ userQuery, userId, data }) {
-  const [isMobile, setIsMobile] = useState(false);
-  const formRef = useRef(null);
+export function RecordPage() {
   const navigate = useNavigate();
-  // const [open, setOpen] = useState(false);
-  // const [activeIndex, setActiveIndex] = useState(0);
+
+  const { id, query } = useUserSession();
+  const { user } = useUser();
+
+  const formRef = useRef(null);
+
+  const [isMobile, setIsMobile] = useState(false);
+
   const [formData, setFormData] = useState({
     chest: '',
     waist: '',
@@ -50,10 +54,6 @@ export function RecordPage({ userQuery, userId, data }) {
 
   const { createBodyMeasurementsMutate } = useCreateBodyMeasurements();
 
-  // const handleSelecterClick = (index) => {
-  //   setActiveIndex(index);
-  // };
-
   const handleChange = (field) => (e) => {
     setFormData({ ...formData, [field]: e.target.value });
   };
@@ -61,7 +61,7 @@ export function RecordPage({ userQuery, userId, data }) {
   const handleSubmit = async () => {
     try {
       const userBodyParameters = {
-        tg_id: String(userId),
+        tg_id: String(id),
         chest: parseInt(formData.chest, 10) || 0,
         waist: parseInt(formData.waist, 10) || 0,
         abdominal_circumference:
@@ -72,7 +72,7 @@ export function RecordPage({ userQuery, userId, data }) {
       };
 
       createBodyMeasurementsMutate({
-        userQuery,
+        userQuery: query,
         parameters: userBodyParameters,
       });
 
@@ -130,13 +130,13 @@ export function RecordPage({ userQuery, userId, data }) {
         <div className="profile" style={{ justifyContent: 'space-between' }}>
           <div className="profileData">
             <Profile
-              level={data.user_level}
-              photoSrc={data.image}
+              level={user.user_level}
+              photoSrc={user.image}
               isShowInfo={false}
             />
             <div className="profileName">
-              <p>{data?.name || 'Имя'}</p>
-              <span>{data?.user_level || 'Уровень'}</span>
+              <p>{user?.name || 'Имя'}</p>
+              <span>{user?.user_level || 'Уровень'}</span>
             </div>
           </div>
         </div>

@@ -16,86 +16,23 @@ import { AppRoute } from '~/shared/router';
 
 import { Layout } from './Layout';
 
-export function Routing(user): JSX.Element {
+export function Routing(): JSX.Element {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route
-          index
-          element={<StartPage type={user.born_date ? 'training' : 'start'} />}
-        />
-        {/* <Route
-          path={AppRoute.Quiz}
-          element={<QuizPage userQuery={userQuery} data={user} />}
-        />
-        <Route
-          path={AppRoute.Result}
-          element={<ResultPage userQuery={userQuery} />}
-        />
-        <Route
-          path={AppRoute.Dashboard}
-          element={<DashboardPage data={user} />}
-        />
-        <Route
-          path={AppRoute.Begin}
-          element={<BeginPage data={user} userId={userId} />}
-        />
-        <Route
-          path={AppRoute.Profile}
-          element={<ProfilePage data={user} userQuery={userQuery} />}
-        />
-        <Route
-          path={AppRoute.Parameters}
-          element={
-            <ParametersPage
-              data={user}
-              userId={userId}
-              userQuery={userQuery}
-              setData={setData}
-            />
-          }
-        />
-        <Route
-          path={AppRoute.Record}
-          element={
-            <RecordPage data={user} userQuery={userQuery} userId={userId} />
-          }
-        />
-        <Route
-          path={AppRoute.Communication}
-          element={<CommunicationPage data={user} />}
-        />
-        <Route
-          path={AppRoute.Traning}
-          element={
-            <TrainPage
-              userQuery={userQuery}
-              data={user}
-              level={user.user_level}
-              base={base}
-            />
-          }
-        />
-        <Route
-          path={AppRoute.Food}
-          element={
-            <FoodPage data={user} userId={userId} userQuery={userQuery} />
-          }
-        />
-        <Route
-          path={AppRoute.Lectures}
-          element={
-            <LecturesPage
-              userQuery={userQuery}
-              level={user.user_level}
-              userPhotoSrc={user.image}
-            />
-          }
-        />
-        <Route
-          path={AppRoute.Recipes}
-          element={<RecipesPage data={user} userQuery={userQuery} />}
-        /> */}
+        <Route index element={<StartPage />} />
+        <Route path={AppRoute.Quiz} element={<QuizPage />} />
+        <Route path={AppRoute.Result} element={<ResultPage />} />
+        <Route path={AppRoute.Dashboard} element={<DashboardPage />} />
+        <Route path={AppRoute.Begin} element={<BeginPage />} />
+        <Route path={AppRoute.Profile} element={<ProfilePage />} />
+        <Route path={AppRoute.Parameters} element={<ParametersPage />} />
+        <Route path={AppRoute.Record} element={<RecordPage />} />
+        <Route path={AppRoute.Communication} element={<CommunicationPage />} />
+        <Route path={AppRoute.Training} element={<TrainPage />} />
+        <Route path={AppRoute.Food} element={<FoodPage />} />
+        <Route path={AppRoute.Lectures} element={<LecturesPage />} />
+        <Route path={AppRoute.Recipes} element={<RecipesPage />} />
       </Route>
     </Routes>
   );

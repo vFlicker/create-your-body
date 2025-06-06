@@ -1,8 +1,8 @@
 import './CommunicationPage.css';
 
-import { CSSProperties, useEffect } from 'react';
+import { CSSProperties } from 'react';
 
-import { Profile } from '~/entities/user';
+import { Profile, useUser } from '~/entities/user';
 import chat from '~/shared/assets/nav/chat.svg';
 import bot from '~/shared/assets/svg/bot.svg';
 import channel from '~/shared/assets/svg/channel.svg';
@@ -49,11 +49,13 @@ export const TelegramLinkButton = ({
   );
 };
 
-export function CommunicationPage({ data }) {
+export function CommunicationPage() {
+  const { user } = useUser();
+
   return (
     <div className="comPage">
       <div className="topCom">
-        <Profile level={data.user_level} photoSrc={data.image} />
+        <Profile level={user.user_level} photoSrc={user.image} />
         <div className="comTitle">
           <img src={chat} alt="Общение и поддержка" />
           <h1 style={{ fontSize: '24px' }}>Общение и поддержка</h1>

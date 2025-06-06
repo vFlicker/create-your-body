@@ -8,27 +8,26 @@ import {
   useLecturesByWeek,
   useLectureWeeks,
 } from '~/entities/lecture';
-import { Profile } from '~/entities/user';
+import { Profile, useUser } from '~/entities/user';
 import book from '~/shared/assets/svg/book.svg';
 import { Loader } from '~/shared/ui/Loader';
 
 import TrainBox from '../../Components/TrainBox/TrainBox';
 import TrainingPage from '../../Components/TrainingPage/TrainingPage';
 
-export function LecturesPage({ userQuery, level, userPhotoSrc }) {
+export function LecturesPage() {
   const [page, setPage] = useState(0);
   const [selectedWeek, setSelectedWeek] = useState();
   const [selectedLectureId, setSelectedLectureId] = useState();
 
-  const { weeks, isWeeksPending } = useLectureWeeks(userQuery);
-  const { lecturesByWeek, isLecturesByWeekPending } = useLecturesByWeek(
-    userQuery,
-    selectedWeek,
-  );
-  const { lectureDetails, isLectureDetailsPending } = useLectureDetailsById(
-    userQuery,
-    selectedLectureId,
-  );
+  const { user } = useUser();
+
+  const { weeks, isWeeksPending } = useLectureWeeks();
+  const { lecturesByWeek, isLecturesByWeekPending } =
+    useLecturesByWeek(selectedWeek);
+
+  const { lectureDetails, isLectureDetailsPending } =
+    useLectureDetailsById(selectedLectureId);
 
   const handleWeekSelect = (week) => {
     setSelectedWeek(week);
@@ -67,7 +66,7 @@ export function LecturesPage({ userQuery, level, userPhotoSrc }) {
   return (
     <div className="lecturesPage">
       <div className="topLectures">
-        <Profile level={level} photoSrc={userPhotoSrc} />
+        <Profile level={user.user_level} photoSrc={user.image} />
         <div className="lecturesTitle">
           <img src={book} alt="Лекции" />
           <h1 style={{ fontSize: '24px' }}>Лекции</h1>

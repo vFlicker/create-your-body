@@ -1,4 +1,8 @@
-export { userApiService } from './api/userApiService';
+export { useBodyMeasurements } from './api/useBodyMeasurements';
+export { useCreateBodyMeasurements } from './api/useCreateBodyMeasurements';
+export { useTransformationPhoto } from './api/useTransformationPhoto';
+export { useUpdateBodyMeasurements } from './api/useUpdateBodyMeasurements';
+export { useUpdateTransformationPhoto } from './api/useUpdateTransformationPhoto';
 export { useUpdateUser } from './api/useUpdateUser';
 export { useUpdateUserAvatar } from './api/useUpdateUserAvatar';
 export { useUser } from './api/useUser';

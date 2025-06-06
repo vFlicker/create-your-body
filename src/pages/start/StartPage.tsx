@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
-import { JSX, useEffect } from 'react';
+import { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useUser } from '~/entities/user';
 import element from '~/shared/assets/img/element.png';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/Button';
@@ -9,13 +10,11 @@ import { Button } from '~/shared/ui/Button';
 import { ImageOverlay } from './ImageOverlay';
 import { buttonConfig } from './startPageConfig';
 
-type StartPageProps = {
-  type: 'start' | 'training';
-};
-
-export function StartPage({ type }: StartPageProps): JSX.Element {
+export function StartPage(): JSX.Element {
   const navigate = useNavigate();
+  const { user } = useUser();
 
+  const type = user.born_date ? 'training' : 'start';
   const { buttonText, buttonIconSrc, onButtonClick } = buttonConfig[type];
 
   return (

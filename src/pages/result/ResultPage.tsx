@@ -1,5 +1,6 @@
 import './ResultPage.css';
 
+import { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useUser } from '~/entities/user';
@@ -15,10 +16,10 @@ const description = {
     'Вы только начинаете свой путь в фитнесе. Мы подготовили для вас программы с упором на технику, постепенную адаптацию и безопасное повышение нагрузки.',
 };
 
-export function ResultPage({ userQuery }) {
+export function ResultPage(): JSX.Element {
   const navigate = useNavigate();
 
-  const { user } = useUser(userQuery);
+  const { user } = useUser();
   const level = user?.user_level || 'pro';
 
   return (

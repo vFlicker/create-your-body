@@ -1,18 +1,19 @@
 import './QuizPage.css';
 
 import styled from '@emotion/styled';
-import { useEffect, useRef, useState } from 'react';
+import { JSX, useEffect, useRef, useState } from 'react';
 
-import { useUpdateUser } from '~/entities/user';
+import { useUpdateUser, useUser } from '~/entities/user';
 import { BackButton } from '~/features/BackButton';
 import { AppRoute } from '~/shared/router';
+import { useUserSession } from '~/shared/store';
 import { Button } from '~/shared/ui/Button';
 import { Progress } from '~/shared/ui/Progress';
 
 import { quizData } from './quizData';
 import { isDateValid, validateName, validatePhone } from './quizValidators';
 
-export function QuizPage({ data, userQuery }) {
+export function QuizPage(): JSX.Element {
   const [step, setStep] = useState(1);
   const [name, setName] = useState('');
   const [gen, setGen] = useState('');
@@ -32,13 +33,16 @@ export function QuizPage({ data, userQuery }) {
   const telRef = useRef(null);
   const birthdayRef = useRef(null);
 
+  const { user } = useUser();
+  const { query } = useUserSession();
+
   useEffect(() => {
-    if (data) {
-      setName(data.name || '');
-      setTel(data.phone ? data.phone.replace(/\s/g, '') : '');
+    if (user) {
+      setName(user.name || '');
+      setTel(user.phone ? user.phone.replace(/\s/g, '') : '');
       setBirthday(
-        data.born_date
-          ? new Date(data.born_date)
+        user.born_date
+          ? new Date(user.born_date)
               .toLocaleDateString('ru-RU', {
                 day: '2-digit',
                 month: '2-digit',
@@ -48,7 +52,7 @@ export function QuizPage({ data, userQuery }) {
           : '',
       );
     }
-  }, [data]);
+  }, [user]);
 
   useEffect(() => {
     if (step === 1) {
@@ -210,7 +214,7 @@ export function QuizPage({ data, userQuery }) {
             throw new Error(`Некорректные поля: ${invalidFields.join(', ')}`);
           }
 
-          updateUserMutate({ userQuery, userData });
+          updateUserMutate({ userQuery: query, userData });
           console.log('Данные успешно обновлены');
         } catch (error) {
           console.error(

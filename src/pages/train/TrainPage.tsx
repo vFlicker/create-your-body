@@ -2,12 +2,13 @@ import './TrainPage.css';
 
 import { useEffect, useState } from 'react';
 
-import { Profile } from '~/entities/user';
+import { Profile, useUser } from '~/entities/user';
 import muscules from '~/shared/assets/svg/musclesBlack.svg';
 import back from '~/shared/assets/train/back.svg';
 import dumbbells from '~/shared/assets/train/dumbbells.svg';
 import question from '~/shared/assets/train/question.svg';
 import sport from '~/shared/assets/train/sport.svg';
+import { useUserSession } from '~/shared/store';
 import { Select } from '~/shared/ui/Select';
 import { TitleCard } from '~/shared/ui/TitleCard';
 
@@ -36,16 +37,19 @@ const pageContainersData = [
   },
 ];
 
-export function TrainPage({ userQuery, data, level, base }) {
+export function TrainPage() {
+  const { user } = useUser();
+  const { query } = useUserSession();
+
   const [showContent, setShowContent] = useState(false);
   const [selectedView, setSelectedView] = useState(null);
 
-  const streamOptions = data.subscriptions.map(({ stream }) => ({
+  const streamOptions = user.subscriptions.map(({ stream }) => ({
     value: stream,
     label: `Поток ${stream}`,
   }));
 
-  const maxStreamSubscription = data.subscriptions.reduce((max, sub) => {
+  const maxStreamSubscription = user.subscriptions.reduce((max, sub) => {
     return sub.stream > max.stream ? sub : max;
   });
 
@@ -75,10 +79,12 @@ export function TrainPage({ userQuery, data, level, base }) {
     setSelectedStream(evt.target.value);
   };
 
+  const base = user.user_tarif.includes('Base');
+
   return (
     <div className="trainPage">
       <div className="topTrain">
-        <Profile level={data?.user_level} photoSrc={data.image} />
+        <Profile level={user?.user_level} photoSrc={user.image} />
         <div className="trainTitleWrapper">
           <div className="trainTitle">
             <img src={muscules} alt="Тренировка" />
@@ -112,10 +118,10 @@ export function TrainPage({ userQuery, data, level, base }) {
               className={`train-details-content ${showContent ? 'slide-in' : ''}`}
             >
               <TrainContent
-                userQuery={userQuery}
+                userQuery={query}
                 stream={selectedStream}
                 view={selectedView}
-                level={level}
+                level={user.user_level}
                 base={base}
               />
             </div>

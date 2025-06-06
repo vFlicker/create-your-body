@@ -3,11 +3,12 @@ import './RecipesPage.css';
 import { useCallback, useEffect, useState } from 'react';
 
 import { recipeApiService, useRecipeCategories } from '~/entities/recipe';
-import { Profile } from '~/entities/user';
+import { Profile, useUser } from '~/entities/user';
 import breakfast from '~/shared/assets/svg/avocado.svg';
 import dessert from '~/shared/assets/svg/croissant.svg';
 import dinner from '~/shared/assets/svg/meat.svg';
 import recipesSvg from '~/shared/assets/svg/recipes.svg';
+import { useUserSession } from '~/shared/store';
 import { Loader } from '~/shared/ui/Loader';
 import { TitleCard } from '~/shared/ui/TitleCard';
 
@@ -17,7 +18,7 @@ const categoryIcons = {
   'Обеды и ужины': dinner,
 };
 
-export function RecipesPage({ userQuery, data }) {
+export function RecipesPage() {
   const [page, setPage] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [recipes, setRecipes] = useState([]);
@@ -26,6 +27,9 @@ export function RecipesPage({ userQuery, data }) {
   const [hasMore, setHasMore] = useState(true);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [isLoadingRecipe, setIsLoadingRecipe] = useState(false);
+
+  const { query } = useUserSession();
+  const { user } = useUser();
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
@@ -38,7 +42,7 @@ export function RecipesPage({ userQuery, data }) {
     setIsLoadingRecipe(true);
     try {
       const response = await recipeApiService.getRecipeDetailsById(
-        userQuery,
+        query,
         recipe.id,
       );
       setSelectedRecipe(response);
@@ -78,13 +82,12 @@ export function RecipesPage({ userQuery, data }) {
     };
   }, [page]); // Убираем handleBack из зависимостей
 
-  const { recipeCategories, isRecipeCategoriesPending } =
-    useRecipeCategories(userQuery);
+  const { recipeCategories, isRecipeCategoriesPending } = useRecipeCategories();
 
   const fetchCategoryRecipes = async (categoryName, page = 1) => {
     try {
       const response = await recipeApiService.getRecipesByCategory(
-        userQuery,
+        query,
         categoryName,
         page,
       );
@@ -122,7 +125,7 @@ export function RecipesPage({ userQuery, data }) {
   return (
     <div className="recipesPage">
       <div className="topRecipes">
-        <Profile level={data.user_level} photoSrc={data.image} />
+        <Profile level={user.user_level} photoSrc={user.image} />
         <div className="topRecipesTitle">
           <img src={recipesSvg} alt="logo" />
           <h1>

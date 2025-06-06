@@ -43,7 +43,7 @@ export const getTitleCards = (subscriptions) => {
         icon: muscules,
         closed: null,
         buy: false,
-        to: AppRoute.Traning,
+        to: AppRoute.Training,
         highlighted: false,
       },
       {
@@ -79,7 +79,7 @@ export const getTitleCards = (subscriptions) => {
         icon: muscules,
         closed: null,
         buy: false,
-        to: AppRoute.Traning,
+        to: AppRoute.Training,
         highlighted: false,
       },
       {
@@ -115,7 +115,7 @@ export const getTitleCards = (subscriptions) => {
         icon: muscules,
         closed: null,
         buy: false,
-        to: AppRoute.Traning,
+        to: AppRoute.Training,
         highlighted: false,
       },
       {
@@ -151,7 +151,7 @@ export const getTitleCards = (subscriptions) => {
         icon: muscules,
         closed: null,
         buy: false,
-        to: AppRoute.Traning,
+        to: AppRoute.Training,
         highlighted: false,
       },
       {

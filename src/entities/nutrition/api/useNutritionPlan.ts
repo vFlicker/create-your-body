@@ -1,16 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { useUserSession } from '~/shared/store';
+
 import { nutritionApiService } from './nutritionApi';
 
-export const useNutritionPlan = (
-  userQuery: string,
-  userId: string,
-  pdfId: string,
-) => {
+export const useNutritionPlan = (pdfId: string) => {
+  const { query, id } = useUserSession();
+
   const { data, isLoading } = useQuery({
     queryKey: ['nutrition-plan', pdfId],
     queryFn: () =>
-      nutritionApiService.getNutritionPlanByPdfId(userQuery, userId, pdfId),
+      nutritionApiService.getNutritionPlanByPdfId(query, id, pdfId),
     enabled: !!pdfId,
   });
 
