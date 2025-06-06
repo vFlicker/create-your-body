@@ -2,13 +2,12 @@ import { JSX } from 'react';
 
 import { Chip, ChipLink } from '~/shared/ui/Chip';
 
-import { Subscription } from '../userTypes';
+import { useUser } from '../api/useUser';
 
-type StreamsInfoProps = {
-  subscriptions?: Subscription[];
-};
+export function StreamsInfo(): JSX.Element {
+  const { user } = useUser();
+  const { subscriptions } = user;
 
-export function StreamsInfo({ subscriptions }: StreamsInfoProps): JSX.Element {
   if (subscriptions.length === 1 && subscriptions[0].stream === 1) {
     return (
       <div className="dashLabels">

@@ -20,7 +20,7 @@ export function DashboardPage() {
       <div className="dashTop">
         <div className="dashHeader">
           <UserMeta />
-          <StreamsInfo subscriptions={user.subscriptions} />
+          <StreamsInfo />
         </div>
         <div className="hello">
           <h1>Привет, {user?.name || 'Неизвестный'}!</h1>
