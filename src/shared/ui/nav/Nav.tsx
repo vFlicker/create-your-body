@@ -19,7 +19,7 @@ export function Nav({ className }: NavProps): JSX.Element {
     <StyledNavWrapper className={className}>
       <StyledNavMenu>
         {navConfig.map(({ iconSrc, text, to, disabled }) => {
-          const isActive = pathname === to;
+          const isActive = pathname === to || pathname.startsWith(`${to}/`);
 
           const handleNavItemClick = () => {
             if (disabled || isActive) return;
@@ -52,7 +52,7 @@ const StyledNavWrapper = styled.div`
   height: 90px;
 
   background-color: ${Color.Black_50};
-  z-index: 1000;
+  z-index: 2;
 `;
 
 const StyledNavMenu = styled.div`

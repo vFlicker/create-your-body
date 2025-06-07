@@ -20,7 +20,7 @@ export const navConfig: NavItem[] = [
     text: 'Тренировки',
   },
   {
-    to: AppRoute.Food,
+    to: AppRoute.FoodCategories,
     iconSrc: food,
     text: 'Питание',
   },

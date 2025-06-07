@@ -1,4 +1,5 @@
 export const enum AppRoute {
+  Start = '/',
   Profile = '/profile',
   Dashboard = '/dashboard',
   Training = '/training',
@@ -12,4 +13,5 @@ export const enum AppRoute {
   Record = '/record',
   Lectures = '/lectures',
   Recipes = '/recipes',
+  NoEntry = '/no-entry',
 }

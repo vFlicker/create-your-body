@@ -1,15 +1,13 @@
-import './FoodPage.css';
-import '../communication/CommunicationPage.css';
-
+import styled from '@emotion/styled';
+import { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useNutritionCategories } from '~/entities/nutrition';
-import { UserMeta } from '~/entities/user';
-import food from '~/shared/assets/nav/food.svg';
-import { Loader } from '~/shared/ui/Loader';
+import foodIconSrc from '~/shared/assets/nav/food.svg';
 import { TitleCard } from '~/shared/ui/TitleCard';
+import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
-export function FoodCategoriesPage() {
+export function FoodCategoriesPage(): JSX.Element {
   const navigate = useNavigate();
 
   const { isNutritionCategoriesPending, nutritionCategories } =
@@ -20,38 +18,27 @@ export function FoodCategoriesPage() {
   };
 
   return (
-    <div className="foodPage">
-      <div className="topFood">
-        <UserMeta />
-        <div className="topFoodTitle">
-          <img src={food} alt="logo" />
-          <h1 style={{ fontSize: '24px' }}>Питание</h1>
-        </div>
-      </div>
-      <div className="botFood">
-        <div
-          className="content-wrapper-food"
-          style={{
-            width: isNutritionCategoriesPending ? '100%' : '',
-            height: isNutritionCategoriesPending ? '100%' : '',
-          }}
-        >
-          {isNutritionCategoriesPending ? (
-            <Loader />
-          ) : (
-            <div className="foodList">
-              {nutritionCategories.data.map(({ iconUrl, id, title }) => (
-                <TitleCard
-                  key={id}
-                  title={title}
-                  iconSrc={iconUrl}
-                  onClick={() => handleCategoryClick(id)}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
+    <CommonPageLayout
+      title="Питание"
+      iconSrc={foodIconSrc}
+      isLoading={isNutritionCategoriesPending}
+    >
+      <StyledFoodList>
+        {nutritionCategories?.map(({ iconUrl, id, title }) => (
+          <TitleCard
+            key={id}
+            title={title}
+            iconSrc={iconUrl}
+            onClick={() => handleCategoryClick(id)}
+          />
+        ))}
+      </StyledFoodList>
+    </CommonPageLayout>
   );
 }
+
+const StyledFoodList = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+`;

@@ -12,7 +12,7 @@ export const nutritionApiService = {
         `/cms/api/nutrition/client/category/nutrition`,
         { headers: { 'x-telegram-init': userQuery } },
       );
-      return data;
+      return data.data;
     } catch (error) {
       console.error('Error fetching nutrition plan categories:', error);
       throw error;

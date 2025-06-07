@@ -37,10 +37,6 @@ export function BackButton({ onClick }: BackButtonProps): JSX.Element {
 }
 
 const StyledBackButton = styled.button`
-  position: absolute;
-  top: 0;
-  left: 16px;
-
   display: flex;
   align-items: center;
   gap: 4px;
@@ -54,7 +50,6 @@ const StyledBackButton = styled.button`
   font-size: 14px;
 
   background-color: ${Color.Black_100};
-  backdrop-filter: blur(4px);
 
-  z-index: 1000;
+  z-index: 2;
 `;

@@ -17,10 +17,6 @@ export function CloseButton(): JSX.Element {
 }
 
 const StyledCloseButton = styled.button`
-  position: absolute;
-  top: 0;
-  right: 16px;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,7 +26,6 @@ const StyledCloseButton = styled.button`
   border-radius: 50px;
 
   background-color: ${Color.Black_100};
-  backdrop-filter: blur(4px);
 
-  z-index: 1000;
+  z-index: 2;
 `;
