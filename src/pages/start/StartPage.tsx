@@ -3,11 +3,10 @@ import { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useUser } from '~/entities/user';
-import element from '~/shared/assets/img/element.png';
+import backgroundImageSrc from '~/shared/assets/img/background-image.webp';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/Button';
 
-import { ImageOverlay } from './ImageOverlay';
 import { buttonConfig } from './startPageConfig';
 
 export function StartPage(): JSX.Element {
@@ -19,31 +18,24 @@ export function StartPage(): JSX.Element {
 
   return (
     <StyledStartPage>
-      <StyledImgContainer>
-        <StyledGreenImg className="green" src={element} />
-        <ImageOverlay />
-      </StyledImgContainer>
+      <StyledImage src={backgroundImageSrc} />
 
-      <StyledStartDown>
-        <StyledStartPadding>
-          <StyledStartText>
-            <StyledH1>
-              CREATE
-              <br />
-              YOUR <span>BODY</span>
-            </StyledH1>
-            <p>Построй тело своей мечты</p>
-          </StyledStartText>
+      <StyledContentWrapper>
+        <StyledTextWrapper>
+          <StyledTitle>
+            CREATE <br /> YOUR <span>BODY</span>
+          </StyledTitle>
+          <p>Построй тело своей мечты</p>
+        </StyledTextWrapper>
 
-          <Button
-            color="neutral"
-            iconSrc={buttonIconSrc}
-            onClick={() => onButtonClick(navigate)}
-          >
-            {buttonText}
-          </Button>
-        </StyledStartPadding>
-      </StyledStartDown>
+        <Button
+          color="neutral"
+          iconSrc={buttonIconSrc}
+          onClick={() => onButtonClick(navigate)}
+        >
+          {buttonText}
+        </Button>
+      </StyledContentWrapper>
     </StyledStartPage>
   );
 }
@@ -51,46 +43,28 @@ export function StartPage(): JSX.Element {
 const StyledStartPage = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 20px;
 
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
+  padding-bottom: 32px;
 `;
 
-const StyledImgContainer = styled.div`
-  position: relative;
-
-  flex: 1;
-  width: 100%;
-
-  overflow: hidden;
-`;
-
-const StyledGreenImg = styled.img`
-  position: absolute;
-  top: 0;
-
+const StyledImage = styled.img`
   width: 100%;
   height: 100%;
 
   z-index: 1;
 `;
 
-const StyledStartDown = styled.div`
-  width: 100%;
-  padding-bottom: 32px;
-`;
-
-const StyledStartPadding = styled.div`
+const StyledContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 32px;
-
   padding: 0 16px;
 `;
 
-const StyledStartText = styled.div`
+const StyledTextWrapper = styled.div`
   display: flex;
   align-items: flex-start;
   flex-direction: column;
@@ -99,7 +73,7 @@ const StyledStartText = styled.div`
   color: ${Color.Black_950};
 `;
 
-const StyledH1 = styled.h1`
+const StyledTitle = styled.h1`
   font-size: 52px;
 
   span {

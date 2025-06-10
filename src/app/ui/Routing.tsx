@@ -27,8 +27,10 @@ import { Layout } from './Layout';
 export function Routing(): JSX.Element {
   return (
     <Routes>
+      {/* TODO: remove <Layout />}> */}
       <Route path="/" element={<Layout />}>
         <Route index element={<StartPage />} />
+
         <Route path={AppRoute.Quiz} element={<QuizPage />} />
         <Route path={AppRoute.Result} element={<ResultPage />} />
         <Route path={AppRoute.Dashboard} element={<DashboardPage />} />
