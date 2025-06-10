@@ -1,13 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { useUserSession } from '~/shared/store';
+
 import { recipeApiService } from './recipeApiService';
 
-export const useRecipeDetailsById = (userQuery: string, id?: string) => {
+export const useRecipeDetailsById = (id: string) => {
+  const { query } = useUserSession();
+
   const { data, isPending } = useQuery({
     queryKey: ['recipe-details-by-id', id],
-    queryFn: () => recipeApiService.getRecipeDetailsById(userQuery, id),
-    enabled: !!id,
+    queryFn: () => recipeApiService.getRecipeDetailsById(query, id),
   });
 
-  return { lectureDetails: data, isLectureDetailsPending: isPending };
+  return { recipeDetails: data, isRecipeDetailsPending: isPending };
 };

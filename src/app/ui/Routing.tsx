@@ -8,7 +8,11 @@ import { FoodCategoriesPage, FoodPage } from '~/pages/food';
 import { LecturesPage } from '~/pages/lectures';
 import { ParametersPage, ProfilePage, RecordPage } from '~/pages/profile';
 import { QuizPage } from '~/pages/quiz';
-import { RecipesPage } from '~/pages/recipes';
+import {
+  RecipeCategoriesPage,
+  RecipeCategoryPage,
+  RecipesPage,
+} from '~/pages/recipes';
 import { ResultPage } from '~/pages/result';
 import { StartPage } from '~/pages/start';
 import { TrainPage } from '~/pages/train';
@@ -36,7 +40,15 @@ export function Routing(): JSX.Element {
         />
         <Route path={AppRoute.Food} element={<FoodPage />} />
         <Route path={AppRoute.Lectures} element={<LecturesPage />} />
-        <Route path={AppRoute.Recipes} element={<RecipesPage />} />
+        <Route
+          path={AppRoute.RecipeCategories}
+          element={<RecipeCategoriesPage />}
+        />
+        <Route
+          path={AppRoute.RecipeCategory}
+          element={<RecipeCategoryPage />}
+        />
+        <Route path={AppRoute.Recipe} element={<RecipesPage />} />
       </Route>
     </Routes>
   );

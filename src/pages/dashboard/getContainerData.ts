@@ -67,7 +67,7 @@ export const getTitleCards = (subscriptions) => {
         icon: recipes,
         closed: null,
         buy: false,
-        to: AppRoute.Recipes,
+        to: AppRoute.RecipeCategories,
         highlighted: false,
       },
     );
@@ -103,7 +103,7 @@ export const getTitleCards = (subscriptions) => {
         icon: recipes,
         closed: null,
         buy: false,
-        to: AppRoute.Recipes,
+        to: AppRoute.RecipeCategories,
         highlighted: false,
       },
     );
@@ -139,7 +139,7 @@ export const getTitleCards = (subscriptions) => {
         icon: recipes,
         closed: '',
         buy: true,
-        to: AppRoute.Recipes,
+        to: AppRoute.RecipeCategories,
         highlighted: false,
       },
     );
@@ -175,7 +175,7 @@ export const getTitleCards = (subscriptions) => {
         icon: recipes,
         closed: '',
         buy: true,
-        to: AppRoute.Recipes,
+        to: AppRoute.RecipeCategories,
         highlighted: false,
       },
     );

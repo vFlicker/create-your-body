@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useNutritionCategories } from '~/entities/nutrition';
 import foodIconSrc from '~/shared/assets/nav/food.svg';
+import { AppRoute } from '~/shared/router';
 import { TitleCard } from '~/shared/ui/TitleCard';
 import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
@@ -14,7 +15,7 @@ export function FoodCategoriesPage(): JSX.Element {
     useNutritionCategories();
 
   const handleCategoryClick = (id: string) => {
-    navigate(`/food/${id}`);
+    navigate(`${AppRoute.FoodCategories}/${id}`);
   };
 
   return (

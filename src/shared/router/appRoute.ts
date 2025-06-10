@@ -12,6 +12,8 @@ export const enum AppRoute {
   Parameters = '/parameters',
   Record = '/record',
   Lectures = '/lectures',
-  Recipes = '/recipes',
+  RecipeCategories = '/recipes',
+  RecipeCategory = '/recipes/:category',
+  Recipe = '/recipes/:category/:id',
   NoEntry = '/no-entry',
 }

@@ -1,18 +1,30 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
+
+import { useUserSession } from '~/shared/store';
 
 import { recipeApiService } from './recipeApiService';
 
-export const useRecipesByCategory = (
-  userQuery: string,
-  page: number,
-  category?: string,
-) => {
-  const { data, isPending } = useQuery({
-    queryKey: ['recipes-by-category', category, page],
-    queryFn: () =>
-      recipeApiService.getRecipesByCategory(userQuery, category, page),
-    enabled: !!category,
-  });
+export const useRecipesByCategory = (category: string) => {
+  const { query } = useUserSession();
 
-  return { lecturesByWeek: data, isLecturesByWeekPending: isPending };
+  const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ['recipes-by-category', category],
+      initialPageParam: 1,
+      queryFn: ({ pageParam }) =>
+        recipeApiService.getRecipesByCategory(query, category, pageParam),
+      getNextPageParam: ({ meta }) => {
+        return meta.page < meta.totalPages ? meta.page + 1 : undefined;
+      },
+    });
+
+  const recipes = data?.pages.flatMap(({ data }) => data) ?? [];
+
+  return {
+    recipes,
+    isRecipesPending: isPending,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  };
 };
