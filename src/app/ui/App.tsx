@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { useUpdateUserAvatar, useUser } from '~/entities/user';
-import { NoEntryPage } from '~/pages/NoEntryPage';
+import { NoEntryPage } from '~/pages/noEntry';
 import { useUserSession } from '~/shared/store';
 import { Loader } from '~/shared/ui/Loader';
 
