@@ -16,7 +16,7 @@ const description = {
     'Вы только начинаете свой путь в фитнесе. Мы подготовили для вас программы с упором на технику, постепенную адаптацию и безопасное повышение нагрузки.',
 };
 
-export function ResultPage(): JSX.Element {
+export function QuizResultPage(): JSX.Element {
   const navigate = useNavigate();
 
   const { user } = useUser();

@@ -7,7 +7,7 @@ export const enum AppRoute {
   Food = '/food/:categoryId',
   Communication = '/communication',
   Quiz = '/quiz',
-  Result = '/result',
+  Result = '/quiz-result',
   Begin = '/begin',
   Parameters = '/parameters',
   Record = '/record',

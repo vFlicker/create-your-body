@@ -11,13 +11,12 @@ import {
   LectureWeeksPage,
 } from '~/pages/lectures';
 import { ParametersPage, ProfilePage, RecordPage } from '~/pages/profile';
-import { QuizPage } from '~/pages/quiz';
+import { QuizPage, QuizResultPage } from '~/pages/quiz';
 import {
   RecipeCategoriesPage,
   RecipeCategoryPage,
   RecipesDetailsPage,
 } from '~/pages/recipes';
-import { ResultPage } from '~/pages/result';
 import { StartPage } from '~/pages/start';
 import { TrainPage } from '~/pages/train';
 import { AppRoute } from '~/shared/router';
@@ -31,8 +30,10 @@ export function Routing(): JSX.Element {
       <Route path="/" element={<Layout />}>
         <Route index element={<StartPage />} />
 
+        {/* Quiz */}
         <Route path={AppRoute.Quiz} element={<QuizPage />} />
-        <Route path={AppRoute.Result} element={<ResultPage />} />
+        <Route path={AppRoute.Result} element={<QuizResultPage />} />
+
         <Route path={AppRoute.Dashboard} element={<DashboardPage />} />
         <Route path={AppRoute.Begin} element={<BeginPage />} />
         <Route path={AppRoute.Profile} element={<ProfilePage />} />
