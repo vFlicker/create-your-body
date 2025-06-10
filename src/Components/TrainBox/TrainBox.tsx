@@ -2,7 +2,7 @@ import './TrainBox.css';
 
 import { useEffect, useState } from 'react';
 
-import mokap from '~/shared/assets/img/mokap.jpeg';
+import mockupImage from '~/shared/assets/img/mockup.jpeg';
 import close from '~/shared/assets/svg/closeTrain.svg';
 import bonus from '~/shared/assets/svg/gift.svg';
 import play from '~/shared/assets/svg/play.svg';
@@ -92,7 +92,7 @@ export default function TrainBox({
         </div>
       )}
       <div className="forTrainImg">
-        <img src={currentData?.coverUrl || mokap} alt="play" />
+        <img src={currentData?.coverUrl || mockupImage} alt="play" />
       </div>
       <div className="forTrainText">
         <div className="trainText">

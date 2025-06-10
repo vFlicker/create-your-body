@@ -10,7 +10,7 @@ import {
 import recipesIconSrc from '~/shared/assets/svg/recipes.svg';
 import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
-export function RecipesPage(): JSX.Element {
+export function RecipesDetailsPage(): JSX.Element {
   const { id } = useParams<{ id: string }>();
 
   const { recipeDetails, isRecipeDetailsPending } = useRecipeDetailsById(id);

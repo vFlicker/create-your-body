@@ -5,13 +5,17 @@ import { BeginPage } from '~/pages/begin';
 import { CommunicationPage } from '~/pages/communication';
 import { DashboardPage } from '~/pages/dashboard';
 import { FoodCategoriesPage, FoodPage } from '~/pages/food';
-import { LecturesPage } from '~/pages/lectures';
+import {
+  LectureDetailsPage,
+  LectureWeekPage,
+  LectureWeeksPage,
+} from '~/pages/lectures';
 import { ParametersPage, ProfilePage, RecordPage } from '~/pages/profile';
 import { QuizPage } from '~/pages/quiz';
 import {
   RecipeCategoriesPage,
   RecipeCategoryPage,
-  RecipesPage,
+  RecipesDetailsPage,
 } from '~/pages/recipes';
 import { ResultPage } from '~/pages/result';
 import { StartPage } from '~/pages/start';
@@ -34,12 +38,23 @@ export function Routing(): JSX.Element {
         <Route path={AppRoute.Record} element={<RecordPage />} />
         <Route path={AppRoute.Communication} element={<CommunicationPage />} />
         <Route path={AppRoute.Training} element={<TrainPage />} />
+
+        {/* Food */}
         <Route
           path={AppRoute.FoodCategories}
           element={<FoodCategoriesPage />}
         />
         <Route path={AppRoute.Food} element={<FoodPage />} />
-        <Route path={AppRoute.Lectures} element={<LecturesPage />} />
+
+        {/* Lectures */}
+        <Route path={AppRoute.LecturesWeeks} element={<LectureWeeksPage />} />
+        <Route path={AppRoute.LectureWeek} element={<LectureWeekPage />} />
+        <Route
+          path={AppRoute.LectureDetails}
+          element={<LectureDetailsPage />}
+        />
+
+        {/* Recipes */}
         <Route
           path={AppRoute.RecipeCategories}
           element={<RecipeCategoriesPage />}
@@ -48,7 +63,7 @@ export function Routing(): JSX.Element {
           path={AppRoute.RecipeCategory}
           element={<RecipeCategoryPage />}
         />
-        <Route path={AppRoute.Recipe} element={<RecipesPage />} />
+        <Route path={AppRoute.RecipeDetails} element={<RecipesDetailsPage />} />
       </Route>
     </Routes>
   );

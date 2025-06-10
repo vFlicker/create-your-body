@@ -41,7 +41,7 @@ export function DashboardPage() {
           )}
         <div className="dashMenu">
           {pageContainersData.map(
-            ({ name, icon, closed, buy, to, highlighted }) => (
+            ({ name, icon, closed, buy, to, isHighlight }) => (
               <TitleCard
                 key={name}
                 title={name}
@@ -49,7 +49,7 @@ export function DashboardPage() {
                 labelIconSrc={buy && icon}
                 iconSrc={icon}
                 disabled={closed !== null || buy}
-                highlighted={highlighted}
+                isHighlight={isHighlight}
                 onClick={() => navigate(to)}
               />
             ),

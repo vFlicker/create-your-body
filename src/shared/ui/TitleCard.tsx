@@ -6,8 +6,10 @@ import { Color } from '../theme/colors';
 type TitleCardProps = {
   className?: string;
   title: string;
+  subTitle?: string;
   iconSrc: string;
-  highlighted?: boolean;
+  isHighlight?: boolean;
+  isFullWidthImage?: boolean;
   disabled?: boolean;
   labelText?: string;
   labelIconSrc?: string;
@@ -16,16 +18,18 @@ type TitleCardProps = {
 
 type StyledTitleCardWrapperProps = Pick<
   TitleCardProps,
-  'disabled' | 'highlighted'
+  'disabled' | 'isHighlight'
 >;
 
 export function TitleCard({
   className,
   title,
+  subTitle,
   iconSrc,
   labelText,
   labelIconSrc,
-  highlighted,
+  isHighlight,
+  isFullWidthImage = false,
   disabled,
   onClick,
 }: TitleCardProps): JSX.Element {
@@ -33,12 +37,13 @@ export function TitleCard({
     <StyledTitleCardWrapper
       className={className}
       disabled={disabled}
-      highlighted={highlighted}
+      isHighlight={isHighlight}
       onClick={onClick}
     >
       <StyledHeader>
-        <StyledImage src={iconSrc} alt={title} />
+        <StyledImage src={iconSrc} alt={title} isFullWith={isFullWidthImage} />
         <StyledTitle>{title}</StyledTitle>
+        {subTitle && <StyledSubTitle>{subTitle}</StyledSubTitle>}
       </StyledHeader>
 
       {labelText && (
@@ -60,20 +65,20 @@ const StyledTitleCardWrapper = styled.div<StyledTitleCardWrapperProps>`
   padding: 16px;
   border: 1px solid;
   border-radius: 14px;
-  border-color: ${({ highlighted }) =>
-    highlighted ? Color.Violet_100 : Color.Black_100};
+  border-color: ${({ isHighlight }) =>
+    isHighlight ? Color.Violet_100 : Color.Black_100};
 
-  background-color: ${({ highlighted }) =>
-    highlighted ? Color.Violet_100 : '#fafafa'};
+  background-color: ${({ isHighlight }) =>
+    isHighlight ? Color.Violet_100 : '#fafafa'};
 
   opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 
   cursor: pointer;
 `;
 
-const StyledImage = styled.img`
-  width: 24px;
-  height: 24px;
+const StyledImage = styled.img<{ isFullWith: boolean }>`
+  width: ${({ isFullWith }) => (isFullWith ? '100%;' : '24px;')};
+  height: ${({ isFullWith }) => (isFullWith ? '100%;' : '24px;')};
 `;
 
 const StyledHeader = styled.div`
@@ -86,6 +91,12 @@ const StyledTitle = styled.h2`
   font-weight: 700;
   font-size: 14px;
   color: ${Color.Black_950};
+`;
+
+const StyledSubTitle = styled.p`
+  font-size: 12px;
+  font-weight: 400;
+  color: #999999;
 `;
 
 const StyledLabel = styled.p`

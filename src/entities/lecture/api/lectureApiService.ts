@@ -23,7 +23,7 @@ export const lectureApiService = {
     }
   },
 
-  getLecturesByWeek: async (userQuery: string, week: number) => {
+  getLecturesByWeek: async (userQuery: string, week: string) => {
     try {
       const { data } = await httpClient.get<LecturesResponse>(
         `/cms/api/lectures/client-week/${week}`,

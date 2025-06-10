@@ -11,9 +11,11 @@ export const enum AppRoute {
   Begin = '/begin',
   Parameters = '/parameters',
   Record = '/record',
-  Lectures = '/lectures',
+  LecturesWeeks = '/lectures',
+  LectureWeek = '/lectures/:week',
+  LectureDetails = '/lectures/:week/:id',
   RecipeCategories = '/recipes',
   RecipeCategory = '/recipes/:category',
-  Recipe = '/recipes/:category/:id',
+  RecipeDetails = '/recipes/:category/:id',
   NoEntry = '/no-entry',
 }

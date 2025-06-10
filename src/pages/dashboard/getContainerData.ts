@@ -11,7 +11,7 @@ type CardData = {
   closed: string | null;
   buy: boolean;
   to: AppRoute;
-  highlighted: boolean;
+  isHighlight: boolean;
 };
 
 export const getTitleCards = (subscriptions) => {
@@ -32,7 +32,7 @@ export const getTitleCards = (subscriptions) => {
     closed: null,
     buy: false,
     to: AppRoute.Begin,
-    highlighted: true,
+    isHighlight: true,
   });
 
   if (firstSteamIsPro) {
@@ -44,7 +44,7 @@ export const getTitleCards = (subscriptions) => {
         closed: null,
         buy: false,
         to: AppRoute.Training,
-        highlighted: false,
+        isHighlight: false,
       },
       {
         name: 'Питание',
@@ -52,15 +52,15 @@ export const getTitleCards = (subscriptions) => {
         closed: null,
         buy: false,
         to: AppRoute.FoodCategories,
-        highlighted: false,
+        isHighlight: false,
       },
       {
         name: 'Лекции',
         icon: book,
         closed: null,
         buy: false,
-        to: AppRoute.Lectures,
-        highlighted: false,
+        to: AppRoute.LecturesWeeks,
+        isHighlight: false,
       },
       {
         name: 'Рецепты',
@@ -68,7 +68,7 @@ export const getTitleCards = (subscriptions) => {
         closed: null,
         buy: false,
         to: AppRoute.RecipeCategories,
-        highlighted: false,
+        isHighlight: false,
       },
     );
   } else if (secondSteamIsPro) {
@@ -80,7 +80,7 @@ export const getTitleCards = (subscriptions) => {
         closed: null,
         buy: false,
         to: AppRoute.Training,
-        highlighted: false,
+        isHighlight: false,
       },
       {
         name: 'Питание',
@@ -88,15 +88,15 @@ export const getTitleCards = (subscriptions) => {
         closed: null,
         buy: false,
         to: AppRoute.FoodCategories,
-        highlighted: false,
+        isHighlight: false,
       },
       {
         name: 'Лекции',
         icon: book,
         closed: null,
         buy: false,
-        to: AppRoute.Lectures,
-        highlighted: false,
+        to: AppRoute.LecturesWeeks,
+        isHighlight: false,
       },
       {
         name: 'Рецепты',
@@ -104,7 +104,7 @@ export const getTitleCards = (subscriptions) => {
         closed: null,
         buy: false,
         to: AppRoute.RecipeCategories,
-        highlighted: false,
+        isHighlight: false,
       },
     );
   } else if (firstSteamBase) {
@@ -116,7 +116,7 @@ export const getTitleCards = (subscriptions) => {
         closed: null,
         buy: false,
         to: AppRoute.Training,
-        highlighted: false,
+        isHighlight: false,
       },
       {
         name: 'Питание',
@@ -124,15 +124,15 @@ export const getTitleCards = (subscriptions) => {
         closed: null,
         buy: false,
         to: AppRoute.FoodCategories,
-        highlighted: false,
+        isHighlight: false,
       },
       {
         name: 'Лекции',
         icon: book,
         closed: '',
         buy: true,
-        to: AppRoute.Lectures,
-        highlighted: false,
+        to: AppRoute.LecturesWeeks,
+        isHighlight: false,
       },
       {
         name: 'Рецепты',
@@ -140,7 +140,7 @@ export const getTitleCards = (subscriptions) => {
         closed: '',
         buy: true,
         to: AppRoute.RecipeCategories,
-        highlighted: false,
+        isHighlight: false,
       },
     );
   } else if (secondSteamBase) {
@@ -152,7 +152,7 @@ export const getTitleCards = (subscriptions) => {
         closed: null,
         buy: false,
         to: AppRoute.Training,
-        highlighted: false,
+        isHighlight: false,
       },
       {
         name: 'Питание',
@@ -160,15 +160,15 @@ export const getTitleCards = (subscriptions) => {
         closed: null,
         buy: false,
         to: AppRoute.FoodCategories,
-        highlighted: false,
+        isHighlight: false,
       },
       {
         name: 'Лекции',
         icon: book,
         closed: '',
         buy: true,
-        to: AppRoute.Lectures,
-        highlighted: false,
+        to: AppRoute.LecturesWeeks,
+        isHighlight: false,
       },
       {
         name: 'Рецепты',
@@ -176,7 +176,7 @@ export const getTitleCards = (subscriptions) => {
         closed: '',
         buy: true,
         to: AppRoute.RecipeCategories,
-        highlighted: false,
+        isHighlight: false,
       },
     );
   }
