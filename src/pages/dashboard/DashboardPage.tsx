@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useUser } from '~/entities/user';
@@ -7,7 +8,7 @@ import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
 import { getTitleCards } from './getContainerData';
 
-export function DashboardPage() {
+export function DashboardPage(): JSX.Element {
   const navigate = useNavigate();
   const { user, isUserPending } = useUser();
 
