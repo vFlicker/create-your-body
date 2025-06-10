@@ -1,5 +1,3 @@
-import './app.css';
-
 import { useEffect } from 'react';
 
 import { useUpdateUserAvatar, useUser } from '~/entities/user';
