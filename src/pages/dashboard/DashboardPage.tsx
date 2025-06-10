@@ -1,45 +1,28 @@
-import './DashboardPage.css';
-
+import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 
-import { StreamsInfo, UserMeta, useUser } from '~/entities/user';
+import { useUser } from '~/entities/user';
 import { TitleCard } from '~/shared/ui/TitleCard';
+import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
-import History from '../../Components/VideoPage/History';
-import { formatTimeFromString } from './formatTimeFromString';
 import { getTitleCards } from './getContainerData';
 
 export function DashboardPage() {
   const navigate = useNavigate();
-  const { user } = useUser();
+  const { user, isUserPending } = useUser();
 
   const pageContainersData = getTitleCards(user.subscriptions);
 
   return (
-    <div className="dashboard">
-      <div className="dashTop">
-        <div className="dashHeader">
-          <UserMeta />
-          <StreamsInfo />
-        </div>
-        <div className="hello">
-          <h1>Привет, {user?.name || 'Неизвестный'}!</h1>
-        </div>
-      </div>
-      <div className="dashBot">
-        {user.greet_video_time_view &&
-          formatTimeFromString(user.greet_video_time_view) <
-            formatTimeFromString('14:55') && (
-            <div className="history">
-              <History
-                text="Инструкция + Вводный урок"
-                viewed={formatTimeFromString(user.greet_video_time_view)}
-                view={formatTimeFromString('14:55')}
-                instruction={true}
-              />
-            </div>
-          )}
-        <div className="dashMenu">
+    <CommonPageLayout
+      title={`Привет, ${user?.name || 'Неизвестный'}!`}
+      hasStreamInfo={true}
+      isLoading={isUserPending}
+    >
+      <StyledContentWrapper>
+        {/* TODO: we can show History component here */}
+
+        <StyledDashboardList>
           {pageContainersData.map(
             ({ name, icon, closed, buy, to, isHighlight }) => (
               <TitleCard
@@ -54,8 +37,20 @@ export function DashboardPage() {
               />
             ),
           )}
-        </div>
-      </div>
-    </div>
+        </StyledDashboardList>
+      </StyledContentWrapper>
+    </CommonPageLayout>
   );
 }
+
+const StyledContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const StyledDashboardList = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+`;

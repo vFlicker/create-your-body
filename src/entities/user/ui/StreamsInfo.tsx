@@ -1,3 +1,4 @@
+import styled from '@emotion/styled';
 import { JSX } from 'react';
 
 import { Chip, ChipLink } from '~/shared/ui/Chip';
@@ -10,7 +11,7 @@ export function StreamsInfo(): JSX.Element {
 
   if (subscriptions.length === 1 && subscriptions[0].stream === 1) {
     return (
-      <div className="dashLabels">
+      <StyledDashLabelsWrapper>
         <Chip color="secondary">Поток 1</Chip>
         <ChipLink
           color="accent"
@@ -32,17 +33,16 @@ export function StreamsInfo(): JSX.Element {
             />
           </svg>
         </ChipLink>
-      </div>
+      </StyledDashLabelsWrapper>
     );
   }
 
   if (subscriptions.length === 1 && subscriptions[0].stream === 2) {
     return (
-      <div className="dashLabels">
+      <StyledDashLabelsWrapper>
         <Chip color="accent">
           Поток 2{' '}
-          <svg
-            className="spinnerSvg"
+          <StyledSpinnerSvg
             width="12"
             height="12"
             viewBox="0 0 12 12"
@@ -62,14 +62,14 @@ export function StreamsInfo(): JSX.Element {
                 <rect width="12" height="12" fill="white" />
               </clipPath>
             </defs>
-          </svg>
+          </StyledSpinnerSvg>
         </Chip>
-      </div>
+      </StyledDashLabelsWrapper>
     );
   }
 
   return (
-    <div className="dashLabels">
+    <StyledDashLabelsWrapper>
       <Chip color="secondary">Поток 1</Chip>
       <Chip color="accent">
         Вы перешли на 2 поток{' '}
@@ -88,6 +88,25 @@ export function StreamsInfo(): JSX.Element {
           />
         </svg>
       </Chip>
-    </div>
+    </StyledDashLabelsWrapper>
   );
 }
+
+const StyledDashLabelsWrapper = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
+const StyledSpinnerSvg = styled.svg`
+  animation: spin 5s linear infinite;
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;

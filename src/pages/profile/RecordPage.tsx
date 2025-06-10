@@ -29,8 +29,6 @@ export function RecordPage() {
   const navigate = useNavigate();
 
   const { id, query } = useUserSession();
-  const { user } = useUser();
-
   const formRef = useRef(null);
 
   const [isMobile, setIsMobile] = useState(false);
