@@ -4,15 +4,28 @@ import { Outlet, useLocation } from 'react-router-dom';
 
 import { BackButton } from '~/features/BackButton';
 import { CloseButton } from '~/features/CloseButton';
+import { AppRoute } from '~/shared/router';
 import { Nav } from '~/shared/ui/nav';
 
 export function Layout(): JSX.Element {
-  const location = useLocation();
+  const { pathname } = useLocation();
 
-  const hiddenPathsBack = ['/', '/quiz', '/result', '/dashboard'];
-  const showControlsBack = !hiddenPathsBack.includes(location.pathname);
-  const hiddenPathsNav = ['/', '/quiz', '/result', '/noentry'];
-  const showControlsNav = !hiddenPathsNav.includes(location.pathname);
+  const hiddenPathsBack = [
+    AppRoute.Start,
+    AppRoute.Quiz,
+    AppRoute.QuizResult,
+    AppRoute.Dashboard,
+  ];
+
+  const hiddenPathsNav = [
+    AppRoute.Start,
+    AppRoute.Quiz,
+    AppRoute.QuizResult,
+    AppRoute.NoEntry,
+  ];
+
+  const showControlsBack = !hiddenPathsBack.includes(pathname as AppRoute);
+  const showControlsNav = !hiddenPathsNav.includes(pathname as AppRoute);
 
   return (
     <>

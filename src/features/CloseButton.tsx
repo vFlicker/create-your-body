@@ -6,11 +6,18 @@ import closeIconSrc from '~/shared/assets/svg/close.svg';
 import closeStartIconSrc from '~/shared/assets/svg/closeWhite.svg';
 import { Color } from '~/shared/theme/colors';
 
-export function CloseButton(): JSX.Element {
+type CloseButtonProps = {
+  className?: string;
+};
+
+export function CloseButton({ className }: CloseButtonProps): JSX.Element {
   const location = useLocation();
 
   return (
-    <StyledCloseButton onClick={() => Telegram.WebApp.close()}>
+    <StyledCloseButton
+      className={className}
+      onClick={() => Telegram.WebApp.close()}
+    >
       <img src={location.pathname === '/' ? closeStartIconSrc : closeIconSrc} />
     </StyledCloseButton>
   );

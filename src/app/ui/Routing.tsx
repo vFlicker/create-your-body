@@ -32,7 +32,7 @@ export function Routing(): JSX.Element {
 
         {/* Quiz */}
         <Route path={AppRoute.Quiz} element={<QuizPage />} />
-        <Route path={AppRoute.Result} element={<QuizResultPage />} />
+        <Route path={AppRoute.QuizResult} element={<QuizResultPage />} />
 
         <Route path={AppRoute.Dashboard} element={<DashboardPage />} />
         <Route path={AppRoute.Begin} element={<BeginPage />} />

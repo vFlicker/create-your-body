@@ -2,6 +2,7 @@ import './QuizPage.css';
 
 import styled from '@emotion/styled';
 import { JSX, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { useUpdateUser, useUser } from '~/entities/user';
 import { BackButton } from '~/features/BackButton';
@@ -14,6 +15,13 @@ import { quizData } from './quizData';
 import { isDateValid, validateName, validatePhone } from './quizValidators';
 
 export function QuizPage(): JSX.Element {
+  const navigate = useNavigate();
+
+  const formRef = useRef(null);
+  const nameRef = useRef(null);
+  const telRef = useRef(null);
+  const birthdayRef = useRef(null);
+
   const [step, setStep] = useState(1);
   const [name, setName] = useState('');
   const [gen, setGen] = useState('');
@@ -26,12 +34,6 @@ export function QuizPage(): JSX.Element {
   const [selectedOption, setSelectedOption] = useState(null);
   const [isValid, setIsValid] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const formRef = useRef(null);
-
-  const nameRef = useRef(null);
-  const telRef = useRef(null);
-  const birthdayRef = useRef(null);
 
   const { user } = useUser();
   const { query } = useUserSession();
@@ -74,17 +76,7 @@ export function QuizPage(): JSX.Element {
     birthdayError,
   ]);
 
-  useEffect(() => {
-    const tg = window.Telegram?.WebApp;
-    if (tg) {
-      tg.expand();
-      tg.setBackgroundColor('#fff');
-      const platform = tg.platform;
-      setIsMobile(platform !== 'tdesktop' && platform !== 'macos');
-    }
-  }, []);
-
-  const { updateUserMutate } = useUpdateUser(AppRoute.Result);
+  const { updateUser } = useUpdateUser();
 
   const handlePhoneChange = (e) => {
     let value = e.target.value.replace(/[^\d+]/g, '');
@@ -143,7 +135,6 @@ export function QuizPage(): JSX.Element {
   };
 
   const handleFocus = (e) => {
-    if (!isMobile) return;
     setIsFocused(true);
     const input = e.target;
     const container = formRef.current;
@@ -165,7 +156,6 @@ export function QuizPage(): JSX.Element {
   };
 
   const handleBlur = () => {
-    if (!isMobile) return;
     setIsFocused(false);
     const container = formRef.current;
     container.style.transform = 'none';
@@ -207,14 +197,17 @@ export function QuizPage(): JSX.Element {
             'user_level',
             'phone',
           ];
+
           const invalidFields = requiredFields.filter(
             (field) => !userData[field] || typeof userData[field] !== 'string',
           );
+
           if (invalidFields.length > 0) {
             throw new Error(`Некорректные поля: ${invalidFields.join(', ')}`);
           }
 
-          updateUserMutate({ userQuery: query, userData });
+          await updateUser({ userQuery: query, userData });
+          navigate(AppRoute.QuizResult);
           console.log('Данные успешно обновлены');
         } catch (error) {
           console.error(

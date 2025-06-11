@@ -1,51 +1,127 @@
-import './ResultPage.css';
-
+import styled from '@emotion/styled';
 import { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useUser } from '~/entities/user';
-import result from '~/shared/assets/img/result.jpg';
-import muscles from '~/shared/assets/svg/musclesBlack.svg';
-import settings from '~/shared/assets/svg/settings.svg';
+import { CloseButton } from '~/features/CloseButton';
+import resultImageSrc from '~/shared/assets/img/result.jpg';
+import musclesIconSrc from '~/shared/assets/svg/musclesBlack.svg';
+import settingsIconSrc from '~/shared/assets/svg/settings.svg';
+import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/Button';
+import { Loader } from '~/shared/ui/Loader';
 
-const description = {
-  Профи:
-    'У вас уверенный уровень подготовки,и вы готовы к интенсивным тренировкам. Наши программы помогут вам развить силу, выносливость и достичь новых спортивных целей!',
-  Новичок:
-    'Вы только начинаете свой путь в фитнесе. Мы подготовили для вас программы с упором на технику, постепенную адаптацию и безопасное повышение нагрузки.',
-};
+import { quizResults } from './quizData';
 
 export function QuizResultPage(): JSX.Element {
   const navigate = useNavigate();
 
-  const { user } = useUser();
-  const level = user?.user_level || 'pro';
+  const { user, isUserPending } = useUser();
+  const level = user?.user_level;
+
+  if (isUserPending) return <Loader />;
 
   return (
-    <div className="resultPage">
-      <div className="resultImgContainer">
-        <img src={result} alt="Результат опроса" />
-      </div>
-      <div className="resultInfo">
-        <div className="resultText">
-          <div className="levelContainer">
-            <h1>Ваш уровень: {level}</h1>
-            <p>{description[level]}</p>
-          </div>
-          <div className="clue">
-            <img src={settings} alt="Настройки" />
-            <p>Вы всегда можете изменить уровень в своем профиле</p>
-          </div>
-        </div>
-        <Button
-          iconSrc={muscles}
+    <StyledQuizResultPage>
+      <StyledCloseButton />
+      <StyledImage src={resultImageSrc} />
+      <StyledResultInfo>
+        <StyledContentWrapper>
+          <StyledTextWrapper>
+            <StyledTitle>Ваш уровень: {level}</StyledTitle>
+            <StyledText>{quizResults[level]}</StyledText>
+          </StyledTextWrapper>
+          <StyledClue>
+            <img src={settingsIconSrc} />
+            <StyledText>
+              Вы всегда можете изменить уровень в своем профиле
+            </StyledText>
+          </StyledClue>
+        </StyledContentWrapper>
+        <StyledButton
+          iconSrc={musclesIconSrc}
           color="secondary"
           onClick={() => navigate('/dashboard')}
         >
           К тренировкам
-        </Button>
-      </div>
-    </div>
+        </StyledButton>
+      </StyledResultInfo>
+    </StyledQuizResultPage>
   );
 }
+
+const StyledQuizResultPage = styled.div`
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  background-color: ${Color.Black_50};
+`;
+
+const StyledImage = styled.img`
+  width: 100%;
+`;
+
+const StyledResultInfo = styled.div`
+  position: relative;
+  top: -20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+  flex-grow: 1;
+
+  height: 100%;
+  padding: 24px 16px 2px 16px;
+  border-radius: 16px 16px 0 0;
+
+  background-color: ${Color.Black_50};
+`;
+
+const StyledContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const StyledTextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const StyledTitle = styled.h1`
+  color: ${Color.Black_950};
+  font-size: 24px;
+`;
+
+const StyledText = styled.p`
+  color: ${Color.Black_800};
+  font-size: 14px;
+`;
+
+const StyledClue = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  p {
+    color: ${Color.Black_800};
+    font-size: 14px;
+  }
+`;
+
+const StyledButton = styled(Button)`
+  margin-top: auto;
+`;
+
+const StyledCloseButton = styled(CloseButton)`
+  position: absolute;
+  top: 16px;
+  right: 16px;
+
+  z-index: 1;
+`;
