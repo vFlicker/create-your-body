@@ -1,53 +1,44 @@
-import './BeginPage.css';
+import styled from '@emotion/styled';
+import { JSX } from 'react';
 
-import { JSX, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-
-import { UserMeta } from '~/entities/user';
 import pdfSrc from '~/shared/assets/pdf/begin.pdf';
-import health from '~/shared/assets/svg/health.svg';
+import healthIconSrc from '~/shared/assets/svg/health.svg';
 import begin from '~/shared/assets/video/begin.mp4';
 import { PdfViewer } from '~/shared/ui/pdfViewer';
 import { Toggler } from '~/shared/ui/Toggler';
+import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
 import VideoPage from '../../Components/VideoPage/VideoPage';
+import { useViewMode, ViewMode } from './beginPageLib';
 
 export function BeginPage(): JSX.Element {
-  const location = useLocation();
-
-  // Парсим query-параметр view
-  const queryParams = new URLSearchParams(location.search);
-  const viewParam = queryParams.get('view');
-
-  // Устанавливаем начальное значение videoView на основе query-параметра
-  const [activeToggler, setActiveToggler] = useState(
-    viewParam === 'video' ? 'Видео' : 'Подготовка',
-  );
-
-  const isVideoView = activeToggler === 'Видео';
+  const { viewMode, setViewMode } = useViewMode();
 
   return (
-    <div className="beginPage">
-      <div className="topBegin">
-        <UserMeta />
-        <div className="beginTitle">
-          <img src={health} alt="Введение" />
-          <h1 style={{ fontSize: '24px' }}>Введение</h1>
-        </div>
-      </div>
-      <div className="botBegin">
+    <CommonPageLayout
+      title="Введение"
+      iconSrc={healthIconSrc}
+      isLoading={false}
+    >
+      <StyledBeginPageWrapper>
         <Toggler
           values={['Подготовка', 'Видео']}
-          activeValue={activeToggler}
-          onClick={setActiveToggler}
+          activeValue={viewMode}
+          onClick={(value) => setViewMode(value as ViewMode)}
         />
 
-        {isVideoView && (
+        {viewMode === 'Видео' && (
           <VideoPage video={begin} page="/begin" instruction={true} />
         )}
 
-        {!isVideoView && <PdfViewer pdfSrc={pdfSrc} />}
-      </div>
-    </div>
+        {viewMode === 'Подготовка' && <PdfViewer pdfSrc={pdfSrc} />}
+      </StyledBeginPageWrapper>
+    </CommonPageLayout>
   );
 }
+
+const StyledBeginPageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
