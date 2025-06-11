@@ -1,5 +1,3 @@
-import './QuizPage.css';
-
 import styled from '@emotion/styled';
 import { JSX, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +6,7 @@ import { useUpdateUser, useUser } from '~/entities/user';
 import { BackButton } from '~/features/BackButton';
 import { AppRoute } from '~/shared/router';
 import { useUserSession } from '~/shared/store';
+import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/Button';
 import { Progress } from '~/shared/ui/Progress';
 
@@ -16,7 +15,6 @@ import { isDateValid, validateName, validatePhone } from './quizValidators';
 
 export function QuizPage(): JSX.Element {
   const navigate = useNavigate();
-
   const formRef = useRef(null);
   const nameRef = useRef(null);
   const telRef = useRef(null);
@@ -37,6 +35,7 @@ export function QuizPage(): JSX.Element {
 
   const { user } = useUser();
   const { query } = useUserSession();
+  const { updateUser, isUpdateUserLoading } = useUpdateUser();
 
   useEffect(() => {
     if (user) {
@@ -75,8 +74,6 @@ export function QuizPage(): JSX.Element {
     nameError,
     birthdayError,
   ]);
-
-  const { updateUser } = useUpdateUser();
 
   const handlePhoneChange = (e) => {
     let value = e.target.value.replace(/[^\d+]/g, '');
@@ -162,7 +159,7 @@ export function QuizPage(): JSX.Element {
     container.style.transition = 'transform 0.3s ease';
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (step < 8) {
       setAnswers([...answers, selectedOption]);
       setSelectedOption(null);
@@ -178,46 +175,37 @@ export function QuizPage(): JSX.Element {
       const [day, month, year] = birthday.split('.');
       const formattedBirthday = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 
-      const sendData = async () => {
-        try {
-          const userData = {
-            name: name || '',
-            born_date: formattedBirthday,
-            sex: gen === 'm' ? 'male' : 'female',
-            user_level: userLevel || '',
-            phone: tel || '',
-          };
-
-          console.log('Отправляемые данные:', userData);
-
-          const requiredFields = [
-            'name',
-            'born_date',
-            'sex',
-            'user_level',
-            'phone',
-          ];
-
-          const invalidFields = requiredFields.filter(
-            (field) => !userData[field] || typeof userData[field] !== 'string',
-          );
-
-          if (invalidFields.length > 0) {
-            throw new Error(`Некорректные поля: ${invalidFields.join(', ')}`);
-          }
-
-          await updateUser({ userQuery: query, userData });
-          navigate(AppRoute.QuizResult);
-          console.log('Данные успешно обновлены');
-        } catch (error) {
-          console.error(
-            'Ошибка при обновлении данных:',
-            JSON.stringify(error.response.data, null, 2),
-          );
-        }
+      const userData = {
+        name: name || '',
+        born_date: formattedBirthday,
+        sex: gen === 'm' ? 'male' : 'female',
+        user_level: userLevel || '',
+        phone: tel || '',
       };
 
-      sendData();
+      const requiredFields = [
+        'name',
+        'born_date',
+        'sex',
+        'user_level',
+        'phone',
+      ];
+
+      const invalidFields = requiredFields.filter(
+        (field) => !userData[field] || typeof userData[field] !== 'string',
+      );
+
+      if (invalidFields.length > 0) {
+        console.error(`Некорректные поля: ${invalidFields.join(', ')}`);
+        return;
+      }
+
+      try {
+        await updateUser({ userQuery: query, userData });
+        navigate(AppRoute.QuizResult);
+      } catch (error) {
+        console.error('Ошибка обновления пользователя:', error);
+      }
     }
   };
 
@@ -232,10 +220,10 @@ export function QuizPage(): JSX.Element {
   };
 
   const renderStep1 = () => (
-    <div className="quizStep1">
-      <div className="name">
-        <p className="titleInput">Имя</p>
-        <input
+    <StyledQuizStep1>
+      <StyledNameInputContainer>
+        <StyledTitleInput>Имя</StyledTitleInput>
+        <StyledInput
           type="text"
           placeholder="Введите ваше имя"
           value={name}
@@ -245,30 +233,30 @@ export function QuizPage(): JSX.Element {
           onBlur={handleBlur}
           autoFocus={!name}
         />
-        <div className="error-message" style={{ opacity: nameError ? 1 : 0 }}>
+        <StyledErrorMessage style={{ opacity: nameError ? 1 : 0 }}>
           {nameError}
-        </div>
-      </div>
-      <div className="name">
-        <p className="titleInput">Пол</p>
-        <div className="selectGender">
-          <button
-            className={`genderBtn ${gen === 'm' ? 'active' : ''}`}
+        </StyledErrorMessage>
+      </StyledNameInputContainer>
+      <StyledNameInputContainer>
+        <StyledTitleInput>Пол</StyledTitleInput>
+        <StyledSelectGender>
+          <StyledGenderButton
+            isActive={gen === 'm'}
             onClick={() => setGen('m')}
           >
             М
-          </button>
-          <button
-            className={`genderBtn ${gen === 'w' ? 'active' : ''}`}
+          </StyledGenderButton>
+          <StyledGenderButton
+            isActive={gen === 'w'}
             onClick={() => setGen('w')}
           >
             Ж
-          </button>
-        </div>
-      </div>
-      <div className="name">
-        <p className="titleInput">Номер телефона</p>
-        <input
+          </StyledGenderButton>
+        </StyledSelectGender>
+      </StyledNameInputContainer>
+      <StyledNameInputContainer>
+        <StyledTitleInput>Номер телефона</StyledTitleInput>
+        <StyledInput
           type="tel"
           placeholder="7 999 999 99 99"
           value={tel}
@@ -278,13 +266,13 @@ export function QuizPage(): JSX.Element {
           onBlur={handleBlur}
           autoFocus={!tel}
         />
-        <div className="error-message" style={{ opacity: telError ? 1 : 0 }}>
+        <StyledErrorMessage style={{ opacity: telError ? 1 : 0 }}>
           {telError}
-        </div>
-      </div>
-      <div className="name">
-        <p className="titleInput">Дата рождения</p>
-        <input
+        </StyledErrorMessage>
+      </StyledNameInputContainer>
+      <StyledNameInputContainer>
+        <StyledTitleInput>Дата рождения</StyledTitleInput>
+        <StyledInput
           type="text"
           placeholder="дд.мм.гггг"
           value={birthday}
@@ -294,67 +282,230 @@ export function QuizPage(): JSX.Element {
           onBlur={handleBlur}
           autoFocus={!birthday}
         />
-        <div
-          className="error-message"
-          style={{ opacity: birthdayError ? 1 : 0 }}
-        >
+        <StyledErrorMessage style={{ opacity: birthdayError ? 1 : 0 }}>
           {birthdayError}
-        </div>
-      </div>
-    </div>
+        </StyledErrorMessage>
+      </StyledNameInputContainer>
+    </StyledQuizStep1>
   );
 
   const renderQuizStep = () => (
-    <div className="quizStep">
-      <div className="quizOptions">
+    <StyledQuizStep>
+      <StyledQuizOptions>
         {quizData[step - 2].options.map((option, index) => (
-          <button
+          <StyledQuizAnswer
             key={index}
-            className={`quizAnswer ${selectedOption === option.level ? 'active' : ''}`}
+            isActive={selectedOption === option.level}
             onClick={() => setSelectedOption(option.level)}
           >
             <p>{option.img}</p>
             <p>{option.text}</p>
-          </button>
+          </StyledQuizAnswer>
         ))}
-      </div>
-    </div>
+      </StyledQuizOptions>
+    </StyledQuizStep>
   );
 
   return (
-    <div className={`quizPage ${isFocused ? 'focused' : ''}`} ref={formRef}>
-      <div className="forBack">
+    <StyledQuizPage isFocused={isFocused} ref={formRef}>
+      <StyledForBack>
         {step !== 1 && <BackButton onClick={handleBack} />}
-      </div>
-      <div className={`topPage ${step > 1 ? 'expanded' : ''}`}>
-        <div className="titleContainer">
-          <h1 className="titleAnimate">
+      </StyledForBack>
+      <StyledTopPage isExpanded={step > 1}>
+        <StyledTitleContainer>
+          <StyledTitleAnimate>
             {step === 1 ? 'Давайте знакомиться!' : quizData[step - 2].question}
-          </h1>
-        </div>
+          </StyledTitleAnimate>
+        </StyledTitleContainer>
         <Progress label="Шаг" steps={8} completedSteps={step} />
-      </div>
-      <div className={`bottomPage ${step > 1 ? 'expanded' : ''}`}>
-        <div
-          className="quizContent"
+      </StyledTopPage>
+      <StyledBottomPage isExpanded={step > 1}>
+        <StyledQuizContent
           style={{
             minHeight: step > 1 ? 'auto' : '',
           }}
         >
           {step === 1 ? renderStep1() : renderQuizStep()}
-          <StyledButton
-            disabled={!isValid}
+          <StyledQuizButton
+            disabled={!isValid || isUpdateUserLoading}
             color="neutral"
             onClick={handleNext}
           >
             {step === 8 ? 'Завершить' : 'Далее'}
-          </StyledButton>
-        </div>
-      </div>
-    </div>
+          </StyledQuizButton>
+        </StyledQuizContent>
+      </StyledBottomPage>
+    </StyledQuizPage>
   );
 }
 
-const StyledButton = styled(Button)`
+const StyledQuizPage = styled.div<{ isFocused?: boolean }>`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  overflow-y: auto;
+  transition: all 0.3s ease-in-out;
+  width: 100%;
+`;
+
+const StyledTopPage = styled.div<{ isExpanded?: boolean }>`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 24px;
+  padding: 0 16px;
+  height: ${({ isExpanded }) => (isExpanded ? '50%' : '30%')};
+  transition: height 0.5s ease;
+
+  h1 {
+    font-size: 24px;
+    color: ${Color.Violet_950};
+  }
+`;
+
+const StyledTitleContainer = styled.div`
+  position: relative;
+  min-height: 50%;
+`;
+
+const StyledTitleAnimate = styled.h1`
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  font-size: 24px;
+  color: ${Color.Violet_950};
+`;
+
+const StyledBottomPage = styled.div<{ isExpanded?: boolean }>`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 16px 16px 0 0;
+  background: ${Color.White};
+  padding-bottom: 32px;
+  height: ${({ isExpanded }) => (isExpanded ? '50%' : '70%')};
+  transition: height 0.5s ease;
+`;
+
+const StyledQuizContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 16px 16px 0 16px;
+  padding-bottom: 16px;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+`;
+
+const StyledNameInputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+`;
+
+const StyledInput = styled.input`
+  background: ${Color.Black_50};
+  border: 1px solid ${Color.Black_100};
+  height: 36px;
+  padding: 0 14px;
+  font-size: 16px;
+  color: ${Color.Black_950};
+  border-radius: 14px;
+
+  &::placeholder {
+    color: ${Color.Black_400};
+  }
+`;
+
+const StyledTitleInput = styled.p`
+  font-size: 12px;
+  color: ${Color.Black_950};
+`;
+
+const StyledSelectGender = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
+
+const StyledGenderButton = styled.button<{ isActive?: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 74px;
+  height: 36px;
+  background: ${({ isActive }) =>
+    isActive ? Color.Violet_200 : Color.Black_50};
+  color: ${({ isActive }) => (isActive ? Color.Black_50 : Color.Black_950)};
+  transition: all 150ms ease-in-out;
+  border-radius: 14px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+`;
+
+const StyledQuizOptions = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 8px;
+`;
+
+const StyledQuizAnswer = styled.button<{ isActive?: boolean }>`
+  border: 1px solid
+    ${({ isActive }) => (isActive ? Color.Violet_200 : Color.Black_100)};
+  background: ${({ isActive }) =>
+    isActive ? Color.Violet_200 : Color.Black_50};
+  border-radius: 14px;
+  height: 54px;
+  transition: all 150ms ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 0 8px;
+  cursor: pointer;
+
+  p {
+    color: ${({ isActive }) => (isActive ? Color.Black_50 : Color.Black_950)};
+    font-size: 14px;
+    transition: all 150ms ease-in-out;
+  }
+`;
+
+const StyledForBack = styled.div`
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+`;
+
+const StyledErrorMessage = styled.div`
+  position: absolute;
+  bottom: -16px;
+  left: 16px;
+  font-size: 12px;
+  color: #ff3b30;
+  transition: all 500ms ease-in-out;
+`;
+
+const StyledQuizStep1 = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const StyledQuizStep = styled.div`
+  position: absolute;
+  width: calc(100% - 32px);
+`;
+
+const StyledQuizButton = styled(Button)`
   margin-top: auto;
 `;

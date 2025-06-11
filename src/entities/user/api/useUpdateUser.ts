@@ -5,12 +5,12 @@ import { userApiService } from './userApiService';
 export const useUpdateUser = () => {
   const queryClient = useQueryClient();
 
-  const { mutateAsync } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationFn: userApiService.updateUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['current-user'] });
     },
   });
 
-  return { updateUser: mutateAsync };
+  return { updateUser: mutateAsync, isUpdateUserLoading: isPending };
 };
