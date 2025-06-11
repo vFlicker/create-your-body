@@ -3,13 +3,12 @@ import { JSX } from 'react';
 
 import pdfSrc from '~/shared/assets/pdf/begin.pdf';
 import healthIconSrc from '~/shared/assets/svg/health.svg';
-import begin from '~/shared/assets/video/begin.mp4';
 import { PdfViewer } from '~/shared/ui/pdfViewer';
 import { Toggler } from '~/shared/ui/Toggler';
 import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
-import VideoPage from '../../Components/VideoPage/VideoPage';
 import { useViewMode, ViewMode } from './beginPageLib';
+import { VideoScreen } from './VideoScreen';
 
 export function BeginPage(): JSX.Element {
   const { viewMode, setViewMode } = useViewMode();
@@ -27,10 +26,7 @@ export function BeginPage(): JSX.Element {
           onClick={(value) => setViewMode(value as ViewMode)}
         />
 
-        {viewMode === 'Видео' && (
-          <VideoPage video={begin} page="/begin" instruction={true} />
-        )}
-
+        {viewMode === 'Видео' && <VideoScreen />}
         {viewMode === 'Подготовка' && <PdfViewer pdfSrc={pdfSrc} />}
       </StyledBeginPageWrapper>
     </CommonPageLayout>

@@ -4,6 +4,15 @@ import { BASE_API_URL, httpClient } from '~/shared/api/httpClient';
 
 import { TransformationPhotosResponse, User } from '../userTypes';
 
+type VideoProgressUpdateData = {
+  userId: string | number;
+  last_video_time: string;
+  last_video_duration: string;
+  videoSrc: string;
+  page?: number | string;
+  lastVideo?: number | string;
+};
+
 const getUserAdapter = (user: User) => ({
   born_date: user.bornDate ? user.bornDate.split('T')[0] : null,
   check: true,
@@ -235,6 +244,45 @@ export const userApiService = {
       );
     } catch (error) {
       console.error('Error adding user avatar:', error);
+      throw error;
+    }
+  },
+
+  updateGreetVideoProgress: async ({
+    tgId,
+    duration,
+  }: {
+    tgId: number;
+    duration: string;
+  }) => {
+    console.info('This method is deprecated');
+
+    try {
+      await axios.patch(`${BASE_API_URL}/api/v1/user/video/greet`, null, {
+        params: {
+          tg_id: tgId,
+          duration_view: duration,
+        },
+      });
+    } catch (error) {
+      console.error('Error updating welcome video progress:', error);
+      throw error;
+    }
+  },
+
+  updateVideoProgress: async (data: VideoProgressUpdateData) => {
+    console.info('This method is deprecated');
+
+    try {
+      await axios.patch(`${BASE_API_URL}/api/v1/user/video`, {
+        user_tg_id: data.userId,
+        last_video: data.lastVideo || data.page,
+        last_video_time: data.last_video_time,
+        last_video_link: data.videoSrc,
+        last_video_duration: data.last_video_duration,
+      });
+    } catch (error) {
+      console.error('Error updating video progress:', error);
       throw error;
     }
   },
