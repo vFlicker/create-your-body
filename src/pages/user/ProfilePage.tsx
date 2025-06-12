@@ -12,7 +12,7 @@ import {
   useUpdateUser,
   useUser,
 } from '~/entities/user';
-import zamer from '~/shared/assets/img/zamer.jpeg';
+import zamer from '~/shared/assets/img/measurements.jpeg';
 import chart from '~/shared/assets/svg/chart.svg';
 import close from '~/shared/assets/svg/close.svg';
 import editIconSrc from '~/shared/assets/svg/editSmall.svg';

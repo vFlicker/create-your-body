@@ -10,7 +10,6 @@ import {
   LectureWeekPage,
   LectureWeeksPage,
 } from '~/pages/lectures';
-import { ParametersPage, ProfilePage, RecordPage } from '~/pages/profile';
 import { QuizPage, QuizResultPage } from '~/pages/quiz';
 import {
   RecipeCategoriesPage,
@@ -19,6 +18,12 @@ import {
 } from '~/pages/recipes';
 import { StartPage } from '~/pages/start';
 import { TrainPage } from '~/pages/train';
+import {
+  ParametersPage,
+  ProfilePage,
+  RecordPage,
+  StartProfilePage,
+} from '~/pages/user';
 import { AppRoute } from '~/shared/router';
 
 import { Layout } from './Layout';
@@ -41,7 +46,8 @@ export function Routing(): JSX.Element {
         {/* Begin */}
         <Route path={AppRoute.Begin} element={<BeginPage />} />
 
-        {/* Profile */}
+        {/* User */}
+        <Route path={AppRoute.StartProfile} element={<StartProfilePage />} />
         <Route path={AppRoute.Profile} element={<ProfilePage />} />
         <Route path={AppRoute.Parameters} element={<ParametersPage />} />
         <Route path={AppRoute.Record} element={<RecordPage />} />
@@ -52,7 +58,7 @@ export function Routing(): JSX.Element {
         {/* Training */}
         <Route path={AppRoute.Training} element={<TrainPage />} />
 
-        {/* Food */}
+        {/* Nutrition */}
         <Route
           path={AppRoute.FoodCategories}
           element={<FoodCategoriesPage />}

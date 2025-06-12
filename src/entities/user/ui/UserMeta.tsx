@@ -8,10 +8,10 @@ import { AppRoute } from '~/shared/router';
 import { useUser } from '../api/useUser';
 
 type UserMetaProps = {
-  view?: 'level' | 'name';
+  view: 'level' | 'name';
 };
 
-export function UserMeta({ view = 'level' }: UserMetaProps): JSX.Element {
+export function UserMeta({ view }: UserMetaProps): JSX.Element {
   const navigate = useNavigate();
 
   const { user } = useUser();
@@ -20,7 +20,7 @@ export function UserMeta({ view = 'level' }: UserMetaProps): JSX.Element {
     <StyledUserMetaWrapper>
       <StyledButton
         level={user.user_level}
-        onClick={() => navigate(AppRoute.Profile)}
+        onClick={() => navigate(AppRoute.StartProfile)}
       >
         <StyledAvatar src={user.image ?? defaultAvatarSrc} alt="Ваш аватар" />
       </StyledButton>
@@ -106,7 +106,7 @@ const StyledLevelWrapper = styled.div`
 const StyledNameWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 
   p {
     font-size: 18px;

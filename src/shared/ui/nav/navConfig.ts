@@ -25,5 +25,5 @@ export const navConfig: NavItem[] = [
     text: 'Питание',
   },
   { to: AppRoute.Communication, iconSrc: chat, text: 'Общение' },
-  { to: AppRoute.Profile, iconSrc: profile, text: 'Профиль' },
+  { to: AppRoute.StartProfile, iconSrc: profile, text: 'Профиль' },
 ];

@@ -1,21 +1,43 @@
 export const enum AppRoute {
+  // Start route
   Start = '/',
-  Profile = '/profile',
+
+  // Dashboard route
   Dashboard = '/dashboard',
-  Training = '/training',
-  FoodCategories = '/food',
-  Food = '/food/:categoryId',
-  Communication = '/communication',
+
+  // Begin route
+  Begin = '/begin',
+
+  // Quiz routes
   Quiz = '/quiz',
   QuizResult = '/quiz-result',
-  Begin = '/begin',
+
+  // User routes
+  Profile = '/profile',
+  StartProfile = '/start-profile',
   Parameters = '/parameters',
   Record = '/record',
+
+  // Communication routes
+  Communication = '/communication',
+
+  // Training routes
+  Training = '/training',
+
+  // Nutrition routes
+  FoodCategories = '/food',
+  Food = '/food/:categoryId',
+
+  // Lectures routes
   LecturesWeeks = '/lectures',
   LectureWeek = '/lectures/:week',
   LectureDetails = '/lectures/:week/:id',
+
+  // Recipes routes
   RecipeCategories = '/recipes',
   RecipeCategory = '/recipes/:category',
   RecipeDetails = '/recipes/:category/:id',
+
+  // Error routes
   NoEntry = '/no-entry',
 }

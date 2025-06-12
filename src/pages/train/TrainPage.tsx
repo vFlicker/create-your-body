@@ -84,7 +84,7 @@ export function TrainPage() {
   return (
     <div className="trainPage">
       <div className="topTrain">
-        <UserMeta />
+        <UserMeta view="level" />
         <div className="trainTitleWrapper">
           <div className="trainTitle">
             <img src={muscules} alt="Тренировка" />

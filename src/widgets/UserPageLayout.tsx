@@ -1,59 +1,37 @@
 import styled from '@emotion/styled';
 import { JSX, PropsWithChildren } from 'react';
-import { useLocation } from 'react-router-dom';
 
-import { StreamsInfo, UserMeta } from '~/entities/user';
+import { UserMeta } from '~/entities/user';
 import { BackButton } from '~/features/BackButton';
+import { ChangeUserLevel } from '~/features/ChangeUserLevel';
 import { CloseButton } from '~/features/CloseButton';
-import { AppRoute } from '~/shared/router';
 import { Color } from '~/shared/theme/colors';
 import { Loader } from '~/shared/ui/Loader';
 import { Nav } from '~/shared/ui/nav';
 
-// TODO: add props hasBackButton
-const HIDE_BACK_BUTTON_PATHS = [AppRoute.Dashboard];
-
-type CommonPageLayoutProps = PropsWithChildren<{
-  title: string;
+type UserPageLayoutProps = PropsWithChildren<{
   isLoading: boolean;
-  hasStreamInfo?: boolean;
-  iconSrc?: string;
-  action?: JSX.Element;
+  hasUserLevel: boolean;
 }>;
 
-export function CommonPageLayout({
-  title,
+export function UserPageLayout({
   isLoading,
-  hasStreamInfo = false,
-  iconSrc,
-  action,
+  hasUserLevel,
   children,
-}: CommonPageLayoutProps): JSX.Element {
-  const location = useLocation();
-
-  const pathname = location.pathname as AppRoute;
-  const isBackButtonVisible = !HIDE_BACK_BUTTON_PATHS.includes(pathname);
-
+}: UserPageLayoutProps): JSX.Element {
   return (
     <StyledPageWrapper>
       <StyledButtonsWrapper>
-        {isBackButtonVisible && <BackButton />}
+        <BackButton />
         <CloseButton />
       </StyledButtonsWrapper>
 
       <StyledMainWrapper>
         <StyledHeader>
           <StyledUserMetaWrapper>
-            <UserMeta view="level" />
-            {hasStreamInfo && <StreamsInfo />}
+            <UserMeta view="name" />
+            {hasUserLevel && <ChangeUserLevel />}
           </StyledUserMetaWrapper>
-          <StyledTitleSectionWrapper>
-            <StyledTitleWrapper>
-              {iconSrc && <StyledIcon src={iconSrc} />}
-              <StyledTitle>{title}</StyledTitle>
-            </StyledTitleWrapper>
-            {action}
-          </StyledTitleSectionWrapper>
         </StyledHeader>
         <StyledContentWrapper>
           {isLoading && <Loader />}
@@ -76,7 +54,7 @@ const StyledPageWrapper = styled.div`
 `;
 
 const StyledButtonsWrapper = styled.div`
-  padding: 16px;
+  padding: 16px 16px 48px;
 
   display: flex;
   justify-content: space-between;
@@ -87,13 +65,17 @@ const StyledMainWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+
+  border-radius: 20px 20px 0 0;
+
+  background-color: ${Color.White};
 `;
 
 const StyledHeader = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 10px 16px 32px 16px;
+  padding: 16px;
 `;
 
 const StyledUserMetaWrapper = styled.div`
@@ -102,31 +84,8 @@ const StyledUserMetaWrapper = styled.div`
   gap: 8px;
 `;
 
-const StyledTitleSectionWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const StyledTitleWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-`;
-
-const StyledIcon = styled.img`
-  width: 24px;
-  height: 24px;
-`;
-
-const StyledTitle = styled.h1`
-  color: ${Color.Black_950};
-  font-size: 24px;
-  font-weight: bold;
-`;
-
 const StyledContentWrapper = styled.div`
   flex-grow: 1;
   padding: 16px 16px 24px;
   border-radius: 16px 16px 0 0;
-  background-color: ${Color.White};
 `;
