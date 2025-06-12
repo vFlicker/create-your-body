@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import defaultAvatarSrc from '~/shared/assets/nav/user.svg';
 import { AppRoute } from '~/shared/router';
@@ -13,15 +13,21 @@ type UserMetaProps = {
 
 export function UserMeta({ view }: UserMetaProps): JSX.Element {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const { user } = useUser();
 
+  const handleClick = () => {
+    if (pathname === AppRoute.StartProfile || pathname === AppRoute.Profile) {
+      return;
+    }
+
+    navigate(AppRoute.StartProfile);
+  };
+
   return (
     <StyledUserMetaWrapper>
-      <StyledButton
-        level={user.user_level}
-        onClick={() => navigate(AppRoute.StartProfile)}
-      >
+      <StyledButton level={user.user_level} view={view} onClick={handleClick}>
         <StyledAvatar src={user.image ?? defaultAvatarSrc} alt="Ваш аватар" />
       </StyledButton>
 
@@ -48,11 +54,19 @@ const StyledUserMetaWrapper = styled.div`
   gap: 8px;
 `;
 
-const StyledButton = styled.button<{ level: string }>`
+const ButtonSize: Record<UserMetaProps['view'], string> = {
+  level: '40px',
+  name: '50px',
+};
+
+const StyledButton = styled.button<{
+  view: UserMetaProps['view'];
+  level: string;
+}>`
   position: relative;
 
-  width: 40px;
-  height: 40px;
+  width: ${({ view }) => ButtonSize[view]};
+  height: ${({ view }) => ButtonSize[view]};
 
   border: 2px solid;
   border-color: ${({ level }) => (level === 'Профи' ? '#A799FF' : '#cbff52')};

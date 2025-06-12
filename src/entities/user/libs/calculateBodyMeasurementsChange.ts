@@ -1,12 +1,15 @@
 import { BodyMeasurements } from '../userTypes';
+import {
+  DeltaDirection,
+  getDeltaDirection,
+  signIndicator,
+} from './getDeltaDirection';
 
-export type DeltaDirection = 'positive' | 'negative' | 'noChange';
-
-type BodyMeasurementChange = {
+type BodyMeasurementRow = {
   title: string;
   unit: string;
   value?: number;
-  delta?: number;
+  delta?: string;
   deltaDirection?: DeltaDirection;
 };
 
@@ -37,16 +40,10 @@ const userBodyMetrics = {
   },
 };
 
-const getDeltaDirection = (delta: number): DeltaDirection => {
-  if (delta < 0) return 'negative';
-  if (delta > 0) return 'positive';
-  return 'noChange';
-};
-
 export const calculateBodyMeasurementsChange = (
   measurements: BodyMeasurements[],
-): BodyMeasurementChange[] => {
-  const bodyMeasurementChanges: BodyMeasurementChange[] = [];
+): BodyMeasurementRow[] => {
+  const bodyMeasurementChanges: BodyMeasurementRow[] = [];
 
   const mostRecentMeasurement = measurements[0];
   const hasTwoMeasurements = measurements.length > 2;
@@ -54,16 +51,18 @@ export const calculateBodyMeasurementsChange = (
   if (hasTwoMeasurements) {
     const secondToLastMeasurements = measurements[1];
 
-    for (const key in userBodyMetrics) {
+    for (const key of Object.keys(userBodyMetrics)) {
       const value = mostRecentMeasurement[key];
       const previousValue = secondToLastMeasurements[key];
       const delta = value - previousValue;
+      const deltaDirection = getDeltaDirection(delta);
+      const sign = signIndicator[deltaDirection] || '';
 
       bodyMeasurementChanges.push({
         ...userBodyMetrics[key],
         value,
-        delta,
-        deltaDirection: getDeltaDirection(delta),
+        delta: `${sign}${Math.abs(delta)}`,
+        deltaDirection,
       });
     }
 

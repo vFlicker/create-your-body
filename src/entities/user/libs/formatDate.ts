@@ -5,13 +5,3 @@ export const formatDate = (rawData: string): string => {
   const year = date.getFullYear();
   return `${day}.${month}.${year}`;
 };
-
-export const calculateDifference = (
-  current: number,
-  previous: number,
-): string => {
-  if (!previous) return null;
-
-  const diff = current - previous;
-  return diff > 0 ? `+${diff}` : diff.toString();
-};

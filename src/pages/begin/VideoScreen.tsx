@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useUpdateGreetVideoProgress } from '~/entities/user';
 import checkIconSrc from '~/shared/assets/svg/check.svg';
 import beginVideoSrc from '~/shared/assets/video/begin.mp4';
-import { debounce } from '~/shared/libs';
+import { debounce } from '~/shared/libs/debounce';
 import { useUserSession } from '~/shared/store';
 import { Button } from '~/shared/ui/Button';
 import { VideoPlayer } from '~/shared/ui/videoPlayer';

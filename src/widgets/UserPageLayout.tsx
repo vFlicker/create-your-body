@@ -12,11 +12,13 @@ import { Nav } from '~/shared/ui/nav';
 type UserPageLayoutProps = PropsWithChildren<{
   isLoading: boolean;
   hasUserLevel: boolean;
+  action?: JSX.Element;
 }>;
 
 export function UserPageLayout({
   isLoading,
   hasUserLevel,
+  action,
   children,
 }: UserPageLayoutProps): JSX.Element {
   return (
@@ -28,10 +30,12 @@ export function UserPageLayout({
 
       <StyledMainWrapper>
         <StyledHeader>
-          <StyledUserMetaWrapper>
+          <StyledTopHeader>
             <UserMeta view="name" />
-            {hasUserLevel && <ChangeUserLevel />}
-          </StyledUserMetaWrapper>
+            {action}
+          </StyledTopHeader>
+
+          {hasUserLevel && <ChangeUserLevel />}
         </StyledHeader>
         <StyledContentWrapper>
           {isLoading && <Loader />}
@@ -78,10 +82,10 @@ const StyledHeader = styled.div`
   padding: 16px;
 `;
 
-const StyledUserMetaWrapper = styled.div`
+const StyledTopHeader = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const StyledContentWrapper = styled.div`

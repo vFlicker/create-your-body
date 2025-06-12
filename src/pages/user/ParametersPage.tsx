@@ -16,7 +16,7 @@ import {
 import example from '~/shared/assets/img/example.jpeg';
 import add from '~/shared/assets/svg/addImg.svg';
 import close from '~/shared/assets/svg/closeWhite.svg';
-import { showTelegramAlert } from '~/shared/libs';
+import { showTelegramAlert } from '~/shared/libs/telegram';
 import { AppRoute } from '~/shared/router';
 import { useUserSession } from '~/shared/store';
 import { Button } from '~/shared/ui/Button';

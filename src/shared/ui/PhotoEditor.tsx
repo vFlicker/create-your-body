@@ -9,9 +9,8 @@ import editIconSrc from '~/shared/assets/svg/editSmall.svg';
 import emptyPhotoIconSrc from '~/shared/assets/svg/photoNone.svg';
 import { IconButton } from '~/shared/ui/IconButton';
 import { Loader } from '~/shared/ui/Loader';
-import { withAttrs } from '~/shared/ui/withAttrs';
 
-import { showTelegramAlert } from '../libs';
+import { showTelegramAlert } from '../libs/telegram';
 import { Color } from '../theme/colors';
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
@@ -75,7 +74,11 @@ export function PhotoEditor({ userQuery, label, stage }: PhotoEditorProps) {
       <StyledImageWrapper>
         {isLoading && <Loader />}
         <StyledImage src={photoUrl} isEmpty={!hasPhoto} alt={label} />
-        <StyledEditButton disabled={isLoading} onClick={handleEditClick} />
+        <StyledEditButton
+          iconSrc={editIconSrc}
+          disabled={isLoading}
+          onClick={handleEditClick}
+        />
       </StyledImageWrapper>
       <StyledInput
         ref={fileInputRef}
@@ -129,24 +132,21 @@ const StyledImage = styled.img<{ isEmpty: boolean }>`
   `}
 `;
 
-const StyledEditButton = withAttrs(
-  { iconSrc: editIconSrc },
-  styled(IconButton)`
-    position: absolute;
-    top: 16px;
-    right: 16px;
+const StyledEditButton = styled(IconButton)`
+  position: absolute;
+  top: 16px;
+  right: 16px;
 
-    button {
-      width: 30px;
-      height: 30px;
-    }
+  button {
+    width: 30px;
+    height: 30px;
+  }
 
-    img {
-      width: 16px;
-      height: 16px;
-    }
-  `,
-);
+  img {
+    width: 16px;
+    height: 16px;
+  }
+`;
 
 const StyledInput = styled.input`
   display: none;

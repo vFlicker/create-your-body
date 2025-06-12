@@ -8,6 +8,10 @@ export { useUpdateUser } from './api/useUpdateUser';
 export { useUpdateUserAvatar } from './api/useUpdateUserAvatar';
 export { useUpdateVideoProgress } from './api/useUpdateVideoProgress';
 export { useUser } from './api/useUser';
+export {
+  ANIMATION_DURATION_IN_MS,
+  HistoryProgress,
+} from './ui/HistoryProgress';
 export { StreamsInfo } from './ui/StreamsInfo';
 export { MeasurementsTable, UserDataTable } from './ui/Tables';
 export { UserMeta } from './ui/UserMeta';

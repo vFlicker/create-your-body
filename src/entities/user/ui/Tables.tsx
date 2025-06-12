@@ -1,26 +1,25 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
+import { Loader } from '~/shared/ui/Loader';
+
 import { useBodyMeasurements } from '../api/useBodyMeasurements';
 import { useUser } from '../api/useUser';
-import {
-  calculateBodyMeasurementsChange,
-  DeltaDirection,
-} from '../libs/calculateBodyMeasurementsChange';
+import { calculateBodyMeasurementsChange } from '../libs/calculateBodyMeasurementsChange';
 import { getAgeFromISOString } from '../libs/getAgeFromISOString';
+import { DeltaDirection } from '../libs/getDeltaDirection';
 
 const genderLabel = {
   male: 'Мужской',
   female: 'Женский',
 };
 
-const signIndicator = {
-  negative: '-',
-  positive: '+',
-};
-
 export function UserDataTable(): JSX.Element {
-  const { user } = useUser();
+  const { user, isUserPending } = useUser();
+
+  if (isUserPending) {
+    return <Loader />;
+  }
 
   return (
     <StyledTableWrapper>
@@ -41,21 +40,24 @@ export function UserDataTable(): JSX.Element {
 }
 
 export function MeasurementsTable(): JSX.Element {
-  const { bodyMeasurements } = useBodyMeasurements();
+  const { bodyMeasurements, isBodyMeasurementsPending } = useBodyMeasurements();
 
-  const data = calculateBodyMeasurementsChange(bodyMeasurements);
+  if (isBodyMeasurementsPending) {
+    return <Loader />;
+  }
+
+  const record = calculateBodyMeasurementsChange(bodyMeasurements);
 
   return (
     <StyledTableWrapper>
       <StyledTitle>Параметры</StyledTitle>
       <StyledTable>
-        {data.map(({ title, unit, delta, deltaDirection, value }) => (
+        {record.map(({ title, unit, delta, deltaDirection, value }) => (
           <StyledRecord key={title}>
             <StyledKey>{title}</StyledKey>
             <StyledValue deltaDirection={deltaDirection}>
               {value}
               <span>
-                {signIndicator[deltaDirection]}
                 {delta} {unit}
               </span>
             </StyledValue>
@@ -106,7 +108,7 @@ const StyledKey = styled.p`
   font-size: 12px;
 `;
 
-const valueColor: Record<DeltaDirection, string> = {
+const ValueColor: Record<DeltaDirection, string> = {
   positive: '#547800',
   negative: '#A799FF',
   noChange: '#999999',
@@ -120,7 +122,7 @@ const StyledValue = styled.p<{ deltaDirection?: DeltaDirection }>`
   span {
     margin-left: 8px;
 
-    color: ${({ deltaDirection = 'noChange' }) => valueColor[deltaDirection]};
+    color: ${({ deltaDirection = 'noChange' }) => ValueColor[deltaDirection]};
     font-size: 12px;
     font-weight: 400;
     line-height: 120%;
