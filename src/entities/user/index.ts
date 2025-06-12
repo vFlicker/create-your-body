@@ -9,4 +9,5 @@ export { useUpdateUserAvatar } from './api/useUpdateUserAvatar';
 export { useUpdateVideoProgress } from './api/useUpdateVideoProgress';
 export { useUser } from './api/useUser';
 export { StreamsInfo } from './ui/StreamsInfo';
+export { MeasurementsTable, UserDataTable } from './ui/Tables';
 export { UserMeta } from './ui/UserMeta';

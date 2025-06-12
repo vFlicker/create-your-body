@@ -4,9 +4,14 @@ import { JSX, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 
-import { useUpdateUser, useUser } from '~/entities/user';
-import { UserMeta } from '~/entities/user';
-import { useBodyMeasurements } from '~/entities/user/api/useBodyMeasurements';
+import {
+  MeasurementsTable,
+  useBodyMeasurements,
+  UserDataTable,
+  UserMeta,
+  useUpdateUser,
+  useUser,
+} from '~/entities/user';
 import zamer from '~/shared/assets/img/zamer.jpeg';
 import chart from '~/shared/assets/svg/chart.svg';
 import close from '~/shared/assets/svg/close.svg';
@@ -23,9 +28,11 @@ import { Loader } from '~/shared/ui/Loader';
 import { PhotoEditor } from '~/shared/ui/PhotoEditor';
 
 import { Toggler } from '../../shared/ui/Toggler';
+import { calculateDifference, formatDate } from './profileLib';
 
 export function ProfilePage(): JSX.Element {
   const navigate = useNavigate();
+
   const [open, setOpen] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
   const [isHistoryPressed, setIsHistoryPressed] = useState(false);
@@ -34,20 +41,6 @@ export function ProfilePage(): JSX.Element {
 
   const { user } = useUser();
   const { query } = useUserSession();
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}.${month}.${year}`;
-  };
-
-  const calculateDifference = (current, previous) => {
-    if (!previous) return null;
-    const diff = current - previous;
-    return diff > 0 ? `+${diff}` : diff;
-  };
 
   const { bodyMeasurements, isBodyMeasurementsPending } = useBodyMeasurements();
 
@@ -73,10 +66,10 @@ export function ProfilePage(): JSX.Element {
   const handleHistoryTouchStart = () => setIsHistoryPressed(true);
   const handleHistoryTouchEnd = () => setIsHistoryPressed(false);
 
-  const { updateUserMutate } = useUpdateUser();
+  const { updateUser } = useUpdateUser();
 
   const handleSelectorClick = async (level) => {
-    updateUserMutate({ userQuery: query, userData: { user_level: level } });
+    updateUser({ userQuery: query, userData: { user_level: level } });
   };
 
   const handleCloseHistory = () => {
@@ -357,134 +350,9 @@ export function ProfilePage(): JSX.Element {
               <p>История прогресса</p>
             </button>
 
-            <div className="parameters">
-              <h3>Параметры</h3>
-              <div className="parametersValues">
-                <div className="param">
-                  <div className="value">
-                    <span>Возраст</span>
-                    <p>
-                      {user?.born_date
-                        ? (() => {
-                            const birthDate = new Date(user.born_date);
-                            const today = new Date();
-                            let age =
-                              today.getFullYear() - birthDate.getFullYear();
-                            const monthDiff =
-                              today.getMonth() - birthDate.getMonth();
-                            if (
-                              monthDiff < 0 ||
-                              (monthDiff === 0 &&
-                                today.getDate() < birthDate.getDate())
-                            ) {
-                              age--;
-                            }
-                            return age;
-                          })()
-                        : '-'}
-                    </p>
-                  </div>
-                  <div className="value">
-                    <span>Пол</span>
-                    <p>
-                      {user?.sex === 'male'
-                        ? 'Мужской'
-                        : user?.sex === 'female'
-                          ? 'Женский'
-                          : '-'}
-                    </p>
-                  </div>
-                </div>
-                <div className="param">
-                  <div className="value">
-                    <span>Обхват груди</span>
-                    <p>
-                      {lastParameters?.chest}
-                      {firstParameters &&
-                        lastParameters &&
-                        lastParameters.chest - firstParameters.chest < 0 && (
-                          <span className="negative">
-                            {lastParameters.chest - firstParameters.chest} см
-                          </span>
-                        )}
-                    </p>
-                  </div>
-                  <div className="value">
-                    <span>Обхват талии</span>
-                    <p>
-                      {lastParameters?.waist}
-                      {firstParameters &&
-                        lastParameters &&
-                        lastParameters.waist - firstParameters.waist < 0 && (
-                          <span className="negative">
-                            {lastParameters.waist - firstParameters.waist} см
-                          </span>
-                        )}
-                    </p>
-                  </div>
-                </div>
-                <div className="param">
-                  <div className="value">
-                    <span>Обхват живота</span>
-                    <p>
-                      {lastParameters?.abdominal_circumference}
-                      {firstParameters &&
-                        lastParameters &&
-                        lastParameters.abdominal_circumference -
-                          firstParameters.abdominal_circumference <
-                          0 && (
-                          <span className="negative">
-                            {lastParameters.abdominal_circumference -
-                              firstParameters.abdominal_circumference}{' '}
-                            см
-                          </span>
-                        )}
-                    </p>
-                  </div>
-                  <div className="value">
-                    <span>Обхват бедер</span>
-                    <p>
-                      {lastParameters?.hips}
-                      {firstParameters &&
-                        lastParameters &&
-                        lastParameters.hips - firstParameters.hips < 0 && (
-                          <span className="negative">
-                            {lastParameters.hips - firstParameters.hips} см
-                          </span>
-                        )}
-                    </p>
-                  </div>
-                </div>
-                <div className="param">
-                  <div className="value">
-                    <span>Обхват ноги</span>
-                    <p>
-                      {lastParameters?.legs}
-                      {firstParameters &&
-                        lastParameters &&
-                        lastParameters.legs - firstParameters.legs < 0 && (
-                          <span className="negative">
-                            {lastParameters.legs - firstParameters.legs} см
-                          </span>
-                        )}
-                    </p>
-                  </div>
-                  <div className="value">
-                    <span>Вес</span>
-                    <p>
-                      {lastParameters?.weight}
-                      {firstParameters &&
-                        lastParameters &&
-                        lastParameters.weight - firstParameters.weight < 0 && (
-                          <span className="negative">
-                            {lastParameters.weight - firstParameters.weight} кг
-                          </span>
-                        )}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <UserDataTable />
+            <MeasurementsTable />
+
             <div className="photosContainerBefore">
               <h3>Фотографии</h3>
               <p>До и после тренировочной недели</p>

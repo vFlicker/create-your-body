@@ -29,6 +29,18 @@ export type User = {
   subscriptions: Subscription[];
 };
 
+export type BodyMeasurements = {
+  id: number;
+  userId: number;
+  chest: number;
+  waist: number;
+  abdominalCircumference: number;
+  legs: number;
+  hips: number;
+  weight: number;
+  createdAt: string;
+};
+
 type TransformationPhoto = {
   id: number;
   userId: number;
@@ -44,5 +56,13 @@ export type TransformationPhotosResponse = {
   data: {
     before: TransformationPhoto | null;
     after: TransformationPhoto | null;
+  };
+};
+
+export type BodyMeasurementsResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    measurements: BodyMeasurements[];
   };
 };

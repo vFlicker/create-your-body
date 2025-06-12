@@ -2,7 +2,11 @@ import axios from 'axios';
 
 import { BASE_API_URL, httpClient } from '~/shared/api/httpClient';
 
-import { TransformationPhotosResponse, User } from '../userTypes';
+import {
+  BodyMeasurementsResponse,
+  TransformationPhotosResponse,
+  User,
+} from '../userTypes';
 
 type VideoProgressUpdateData = {
   userId: string | number;
@@ -57,20 +61,6 @@ const updateUserAdapter = (user) => ({
   level: user?.user_level,
   phone: user?.phone,
 });
-
-export const getParametersAdapter = (parameters) => {
-  return parameters.map((item) => ({
-    abdominal_circumference: item.abdominalCircumference,
-    chest: item.chest,
-    created_at: item.createdAt,
-    hips: item.hips,
-    id: item.id,
-    legs: item.legs,
-    tg_id: item.userId,
-    waist: item.waist,
-    weight: item.weight,
-  }));
-};
 
 export const addParametersAdapter = (parameters) => ({
   waist: parameters.waist,
@@ -191,13 +181,10 @@ export const userApiService = {
 
   getBodyMeasurements: async (userQuery: string) => {
     try {
-      const response = await httpClient.get(
+      const { data } = await httpClient.get<BodyMeasurementsResponse>(
         `/v2/api/client/user/measurements?${userQuery}`,
       );
-      const adaptedUserParameters = getParametersAdapter(
-        response.data.data.measurements,
-      );
-      return adaptedUserParameters;
+      return data.data.measurements;
     } catch (error) {
       console.error('Error fetching user parameters:', error);
       throw error;

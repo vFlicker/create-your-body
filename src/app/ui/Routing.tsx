@@ -28,18 +28,28 @@ export function Routing(): JSX.Element {
     <Routes>
       {/* TODO: remove <Layout />}> */}
       <Route path="/" element={<Layout />}>
+        {/* Start Page */}
         <Route index element={<StartPage />} />
 
         {/* Quiz */}
         <Route path={AppRoute.Quiz} element={<QuizPage />} />
         <Route path={AppRoute.QuizResult} element={<QuizResultPage />} />
 
+        {/* Dashboard */}
         <Route path={AppRoute.Dashboard} element={<DashboardPage />} />
+
+        {/* Begin */}
         <Route path={AppRoute.Begin} element={<BeginPage />} />
+
+        {/* Profile */}
         <Route path={AppRoute.Profile} element={<ProfilePage />} />
         <Route path={AppRoute.Parameters} element={<ParametersPage />} />
         <Route path={AppRoute.Record} element={<RecordPage />} />
+
+        {/* Communication */}
         <Route path={AppRoute.Communication} element={<CommunicationPage />} />
+
+        {/* Training */}
         <Route path={AppRoute.Training} element={<TrainPage />} />
 
         {/* Food */}

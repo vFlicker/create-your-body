@@ -285,7 +285,7 @@ export function ParametersPage() {
 
   const { updateTransformationPhotoMutate } = useUpdateTransformationPhoto();
 
-  const { updateUserMutate } = useUpdateUser();
+  const { updateUser } = useUpdateUser();
 
   const handleBirthdayChange = (e) => {
     const value = e.target.value.replace(/[^0-9.]/g, '');
@@ -398,7 +398,7 @@ export function ParametersPage() {
         born_date: formattedBirthday,
       };
 
-      updateUserMutate({ userQuery: query, userData });
+      updateUser({ userQuery: query, userData });
 
       // Обновление параметров
       const parametersData = {
