@@ -41,7 +41,7 @@ export function PhotoEditor({ userQuery, label, stage }: PhotoEditorProps) {
 
     if (!file) return;
 
-    if (MAX_FILE_SIZE) {
+    if (file.size > MAX_FILE_SIZE) {
       showTelegramAlert('Размер файла не должен превышать 2 МБ');
       return;
     }
@@ -99,8 +99,8 @@ const StyledPhotoEditorWrapper = styled.div`
 `;
 
 const StyledLabel = styled.span`
+  color: #0d0d0d;
   font-size: 12px;
-  color: ${Color.Black_400};
 `;
 
 const StyledImageWrapper = styled.div`

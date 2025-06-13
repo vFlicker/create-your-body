@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
+import { createPortal } from 'react-dom';
 
 import exitIconSrc from '~/shared/assets/svg/exit.svg';
 import { Loader } from '~/shared/ui/Loader';
@@ -28,7 +29,7 @@ export function HistoryProgress({
 
   const history = calculateBodyMeasurementsHistory(bodyMeasurements);
 
-  return (
+  return createPortal(
     <StyledHistoryProgressWrapper isClosing={isClosing}>
       <StyledHeader>
         <StyledTitle>История прогресса</StyledTitle>
@@ -62,7 +63,8 @@ export function HistoryProgress({
           Выйти
         </StyledCloseButton>
       </StyledContent>
-    </StyledHistoryProgressWrapper>
+    </StyledHistoryProgressWrapper>,
+    document.body,
   );
 }
 

@@ -2,7 +2,6 @@ import './profile.css';
 
 import styled from '@emotion/styled';
 import { JSX, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -11,8 +10,8 @@ import {
   MeasurementsTable,
   UserDataTable,
 } from '~/entities/user';
-import chart from '~/shared/assets/svg/chart.svg';
-import history from '~/shared/assets/svg/history.svg';
+import chartIconSrc from '~/shared/assets/svg/chart.svg';
+import historyIconSrc from '~/shared/assets/svg/history.svg';
 import pencilIconSrc from '~/shared/assets/svg/pencil.svg';
 import { wait } from '~/shared/libs/wait';
 import { useUserSession } from '~/shared/store';
@@ -35,9 +34,6 @@ export function ProfilePage(): JSX.Element {
     setIsClosing(false);
   };
 
-  const isPressed = false;
-  const isHistoryPressed = false;
-
   return (
     <UserPageLayout
       hasUserLevel
@@ -49,67 +45,132 @@ export function ProfilePage(): JSX.Element {
         />
       }
     >
-      {historyOpen &&
-        createPortal(
-          <HistoryProgress
-            isClosing={isClosing}
-            onClose={handleCloseHistory}
-          />,
-          document.body,
-        )}
+      {historyOpen && (
+        <HistoryProgress isClosing={isClosing} onClose={handleCloseHistory} />
+      )}
 
-      <div className="profileContainer">
-        <div className="dataHave">
-          <div className="recordText">
+      <StyledContentWrapper>
+        <StyledProgressSectionWrapper>
+          <StyledProgressTextWrapper>
             <h4>Запись прогресса</h4>
             <p>
               Чтобы отслеживать прогресс необходимо в конце каждой недели
               обновлять параметры.
             </p>
-          </div>
-          <button
-            className="recordBtn"
-            onClick={() => navigate('/record')}
-            style={{
-              background: isPressed ? '#C0C0C0' : '',
-              borderColor: isPressed ? '#C0C0C0' : '',
-            }}
-          >
-            <img src={chart} alt="Записать прогресс" />
-            <p>Записать прогресс</p>
-          </button>
-          <button
-            className="recordBtn"
-            onClick={() => setHistoryOpen(!historyOpen)}
-            style={{
-              background: isHistoryPressed ? '#C0C0C0' : '',
-              borderColor: isHistoryPressed ? '#C0C0C0' : '',
-            }}
-          >
-            <img src={history} alt="История прогресса" />
-            <p>История прогресса</p>
-          </button>
+          </StyledProgressTextWrapper>
 
-          <UserDataTable />
-          <MeasurementsTable />
+          <StyledButton onClick={() => navigate('/record')}>
+            <img src={chartIconSrc} />
+            Записать прогресс
+          </StyledButton>
+          <StyledButton onClick={() => setHistoryOpen(!historyOpen)}>
+            <img src={historyIconSrc} />
+            История прогресса
+          </StyledButton>
+        </StyledProgressSectionWrapper>
 
-          <div className="photosContainerBefore">
+        <UserDataTable />
+        <MeasurementsTable />
+
+        <StyledPhotoEditorSection>
+          <StyledPhotoEditorSectionText>
             <h3>Фотографии</h3>
             <p>До и после тренировочной недели</p>
-            <div className="photosBefore">
-              <PhotoEditor label="Фото до" userQuery={query} stage="before" />
-              <PhotoEditor label="Фото после" userQuery={query} stage="after" />
-            </div>
-          </div>
-        </div>
-      </div>
+          </StyledPhotoEditorSectionText>
+          <StyledPhotoEditorWrapper>
+            <PhotoEditor label="Фото до" userQuery={query} stage="before" />
+            <PhotoEditor label="Фото после" userQuery={query} stage="after" />
+          </StyledPhotoEditorWrapper>
+        </StyledPhotoEditorSection>
+      </StyledContentWrapper>
     </UserPageLayout>
   );
 }
+
+const StyledContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+`;
+
+const StyledProgressSectionWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const StyledProgressTextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  h4 {
+    color: #0d0d0d;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  p {
+    font-size: 12px;
+    color: #999999;
+  }
+`;
 
 const StyledEditButton = styled(IconButton)`
   button {
     width: 44px;
     height: 44px;
   }
+`;
+
+const StyledButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+
+  height: 54px;
+  border-radius: 14px;
+  border: 1px solid #e6e6e6;
+  position: relative;
+
+  font-size: 14px;
+  color: #0d0d0d;
+
+  background-color: #f2f2f2;
+
+  &:hover,
+  &:active {
+    background-color: #c0c0c0;
+    border-color: #c0c0c0;
+  }
+`;
+
+const StyledPhotoEditorSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const StyledPhotoEditorSectionText = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  h3 {
+    color: #0d0d0d;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  p {
+    color: #999999;
+    font-size: 12px;
+  }
+`;
+
+const StyledPhotoEditorWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
 `;

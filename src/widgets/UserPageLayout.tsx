@@ -68,8 +68,10 @@ const StyledButtonsWrapper = styled.div`
 const StyledMainWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 24px;
   flex-grow: 1;
 
+  padding: 16px 16px 24px;
   border-radius: 20px 20px 0 0;
 
   background-color: ${Color.White};
@@ -79,7 +81,6 @@ const StyledHeader = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 16px;
 `;
 
 const StyledTopHeader = styled.div`
@@ -90,6 +91,5 @@ const StyledTopHeader = styled.div`
 
 const StyledContentWrapper = styled.div`
   flex-grow: 1;
-  padding: 16px 16px 24px;
   border-radius: 16px 16px 0 0;
 `;
