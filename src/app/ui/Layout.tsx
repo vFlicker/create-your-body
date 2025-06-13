@@ -10,6 +10,7 @@ import { Nav } from '~/shared/ui/nav';
 export function Layout(): JSX.Element {
   const { pathname } = useLocation();
 
+  // TODO: check the routing rules
   const hiddenPathsBack = [
     AppRoute.Start,
     AppRoute.Quiz,
@@ -17,6 +18,7 @@ export function Layout(): JSX.Element {
     AppRoute.Dashboard,
   ];
 
+  // TODO: check the routing rules
   const hiddenPathsNav = [
     AppRoute.Start,
     AppRoute.Quiz,

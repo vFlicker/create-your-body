@@ -4,6 +4,7 @@ import '~/pages/train/TrainPage.css';
 import { useCallback, useEffect, useState } from 'react';
 
 import { trainingApiService } from '~/entities/training';
+import { useStreamStore } from '~/entities/user';
 import pdfSrc from '~/shared/assets/pdf/trane.pdf';
 import checkIconSrc from '~/shared/assets/svg/check.svg';
 import { Button } from '~/shared/ui/Button';
@@ -53,7 +54,7 @@ const warmup = {
   ],
 };
 
-export default function TrainContent({ userQuery, stream, view, level, base }) {
+export default function TrainContent({ userQuery, view, level, base }) {
   const [page, setPage] = useState(0);
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [originalTrainingData, setOriginalTrainingData] = useState(null);
@@ -64,6 +65,8 @@ export default function TrainContent({ userQuery, stream, view, level, base }) {
   const [selectedWeekTrainings, setSelectedWeekTrainings] = useState([]);
   const [isLoadingTrainings, setIsLoadingTrainings] = useState(false);
   const [trainingDetails, setTrainingDetails] = useState({});
+
+  const { stream } = useStreamStore();
 
   useEffect(() => {
     const fetchData = async () => {

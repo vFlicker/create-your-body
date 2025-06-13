@@ -3,7 +3,7 @@ import { ChangeEvent, JSX, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useCreateBodyMeasurements } from '~/entities/user';
-import { CreateBodyMeasurementsSchema } from '~/entities/user/model';
+import { CreateBodyMeasurementsSchema } from '~/entities/user';
 import { AppRoute } from '~/shared/router';
 import { useUserSession } from '~/shared/store';
 import { Button } from '~/shared/ui/Button';

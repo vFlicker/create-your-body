@@ -3,13 +3,13 @@ import './TrainPage.css';
 import { useEffect, useState } from 'react';
 
 import { UserMeta, useUser } from '~/entities/user';
+import { SelectStream } from '~/features/SelectStream';
 import muscules from '~/shared/assets/svg/musclesBlack.svg';
 import back from '~/shared/assets/train/back.svg';
 import dumbbells from '~/shared/assets/train/dumbbells.svg';
 import question from '~/shared/assets/train/question.svg';
 import sport from '~/shared/assets/train/sport.svg';
 import { useUserSession } from '~/shared/store';
-import { Select } from '~/shared/ui/Select';
 import { TitleCard } from '~/shared/ui/TitleCard';
 
 import TrainContent from '../../Components/TrainContent/TrainContent';
@@ -44,19 +44,6 @@ export function TrainPage() {
   const [showContent, setShowContent] = useState(false);
   const [selectedView, setSelectedView] = useState(null);
 
-  const streamOptions = user.subscriptions.map(({ stream }) => ({
-    value: stream,
-    label: `Поток ${stream}`,
-  }));
-
-  const maxStreamSubscription = user.subscriptions.reduce((max, sub) => {
-    return sub.stream > max.stream ? sub : max;
-  });
-
-  const [selectedStream, setSelectedStream] = useState(
-    maxStreamSubscription.stream,
-  );
-
   useEffect(() => {
     // Слушаем изменения window.showContent
     const handleShowContentChange = () => {
@@ -75,10 +62,6 @@ export function TrainPage() {
     window.showContent = true;
   };
 
-  const onStreamChange = (evt) => {
-    setSelectedStream(evt.target.value);
-  };
-
   const base = user.user_tarif.includes('Base');
 
   return (
@@ -90,11 +73,7 @@ export function TrainPage() {
             <img src={muscules} alt="Тренировка" />
             <h1 style={{ fontSize: '24px' }}>Тренировки</h1>
           </div>
-          <Select
-            options={streamOptions}
-            value={selectedStream}
-            onChange={onStreamChange}
-          />
+          <SelectStream />
         </div>
         {/* <Progress /> */}
       </div>
@@ -119,7 +98,6 @@ export function TrainPage() {
             >
               <TrainContent
                 userQuery={query}
-                stream={selectedStream}
                 view={selectedView}
                 level={user.user_level}
                 base={base}
