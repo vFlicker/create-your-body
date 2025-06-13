@@ -14,7 +14,6 @@ import chartIconSrc from '~/shared/assets/svg/chart.svg';
 import historyIconSrc from '~/shared/assets/svg/history.svg';
 import pencilIconSrc from '~/shared/assets/svg/pencil.svg';
 import { wait } from '~/shared/libs/wait';
-import { useUserSession } from '~/shared/store';
 import { IconButton } from '~/shared/ui/IconButton';
 import { PhotoEditor } from '~/shared/ui/PhotoEditor';
 import { UserPageLayout } from '~/widgets/UserPageLayout';
@@ -24,8 +23,6 @@ export function ProfilePage(): JSX.Element {
 
   const [historyOpen, setHistoryOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
-
-  const { query } = useUserSession();
 
   const handleCloseHistory = async () => {
     setIsClosing(true);
@@ -78,8 +75,8 @@ export function ProfilePage(): JSX.Element {
             <p>До и после тренировочной недели</p>
           </StyledPhotoEditorSectionText>
           <StyledPhotoEditorWrapper>
-            <PhotoEditor label="Фото до" userQuery={query} stage="before" />
-            <PhotoEditor label="Фото после" userQuery={query} stage="after" />
+            <PhotoEditor label="Фото до" stage="before" />
+            <PhotoEditor label="Фото после" stage="after" />
           </StyledPhotoEditorWrapper>
         </StyledPhotoEditorSection>
       </StyledContentWrapper>

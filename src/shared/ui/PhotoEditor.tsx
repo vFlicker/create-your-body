@@ -11,18 +11,20 @@ import { IconButton } from '~/shared/ui/IconButton';
 import { Loader } from '~/shared/ui/Loader';
 
 import { showTelegramAlert } from '../libs/telegram';
+import { useUserSession } from '../store';
 import { Color } from '../theme/colors';
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 
 type PhotoEditorProps = {
-  userQuery: string;
   label: string;
   stage: 'before' | 'after';
 };
 
-export function PhotoEditor({ userQuery, label, stage }: PhotoEditorProps) {
+export function PhotoEditor({ label, stage }: PhotoEditorProps) {
   const fileInputRef = useRef(null);
+
+  const { query } = useUserSession();
 
   const { isTransformationPhotoPending, transformationPhoto } =
     useTransformationPhoto();
@@ -55,7 +57,7 @@ export function PhotoEditor({ userQuery, label, stage }: PhotoEditorProps) {
     formData.append('image', file);
 
     try {
-      updateTransformationPhotoMutate({ userQuery, formData, stage });
+      updateTransformationPhotoMutate({ userQuery: query, formData, stage });
     } catch {
       showTelegramAlert('Ошибка при загрузке фотографии');
     }

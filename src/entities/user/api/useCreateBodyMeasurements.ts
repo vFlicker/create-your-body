@@ -5,7 +5,7 @@ import { userApiService } from './userApiService';
 export const useCreateBodyMeasurements = () => {
   const queryClient = useQueryClient();
 
-  const { mutate, isPending } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationFn: userApiService.createBodyMeasurements,
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -15,7 +15,7 @@ export const useCreateBodyMeasurements = () => {
   });
 
   return {
-    createBodyMeasurementsMutate: mutate,
+    createBodyMeasurements: mutateAsync,
     isCreateBodyMeasurementsPending: isPending,
   };
 };

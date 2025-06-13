@@ -50,6 +50,17 @@ const globalResets = css`
   input {
     border: none;
     background: none;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+      display: none;
+    }
+
+    &[type='number'] {
+      -moz-appearance: textfield;
+    }
   }
 
   input:focus {

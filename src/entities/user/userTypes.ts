@@ -50,6 +50,16 @@ type TransformationPhoto = {
   uploadedAt: string;
 };
 
+export type CreateBodyMeasurementsDto = {
+  tg_id: number;
+  waist: number;
+  legs: number;
+  weight: number;
+  chest: number;
+  abdominalCircumference: number;
+  hips: number;
+};
+
 export type TransformationPhotosResponse = {
   success: boolean;
   message: string;

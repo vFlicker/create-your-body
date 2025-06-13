@@ -4,6 +4,7 @@ import { BASE_API_URL, httpClient } from '~/shared/api/httpClient';
 
 import {
   BodyMeasurementsResponse,
+  CreateBodyMeasurementsDto,
   TransformationPhotosResponse,
   User,
 } from '../userTypes';
@@ -62,16 +63,7 @@ const updateUserAdapter = (user) => ({
   phone: user?.phone,
 });
 
-export const addParametersAdapter = (parameters) => ({
-  waist: parameters.waist,
-  legs: parameters.legs,
-  weight: parameters.weight,
-  chest: parameters.chest,
-  abdominalCircumference: parameters.abdominal_circumference,
-  hips: parameters.hips,
-});
-
-export const updateParametersAdapter = (parameters) => ({
+const updateParametersAdapter = (parameters) => ({
   waist: parameters.waist,
   legs: parameters.legs,
   weight: parameters.weight,
@@ -154,23 +146,15 @@ export const userApiService = {
 
   createBodyMeasurements: async ({
     userQuery,
-    parameters,
+    data,
   }: {
     userQuery: string;
-    parameters: {
-      waist: number;
-      legs: number;
-      weight: number;
-      chest: number;
-      abdominal_circumference: number;
-      hips: number;
-    };
+    data: CreateBodyMeasurementsDto;
   }) => {
     try {
-      const adaptedParameters = addParametersAdapter(parameters);
       const response = await httpClient.post(
         `/v2/api/client/user/measurements?${userQuery}`,
-        adaptedParameters,
+        data,
       );
       return response;
     } catch (error) {

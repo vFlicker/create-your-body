@@ -216,7 +216,7 @@ export function ParametersPage() {
   const [formData, setFormData] = useState({
     chest: '',
     waist: '',
-    belly: '',
+    abdominalCircumference: '',
     hips: '',
     leg: '',
     weight: '',
@@ -261,7 +261,8 @@ export function ParametersPage() {
             ...prev,
             chest: latestParameters.chest || '',
             waist: latestParameters.waist || '',
-            belly: latestParameters.abdominal_circumference || '',
+            abdominalCircumference:
+              latestParameters.abdominalCircumference || '',
             hips: latestParameters.hips || '',
             leg: latestParameters.legs || '',
             weight: latestParameters.weight || '',
@@ -281,7 +282,7 @@ export function ParametersPage() {
     useTransformationPhoto();
 
   const { updateBodyMeasurementsMutate } = useUpdateBodyMeasurements();
-  const { createBodyMeasurementsMutate } = useCreateBodyMeasurements();
+  const { createBodyMeasurements } = useCreateBodyMeasurements();
 
   const { updateTransformationPhotoMutate } = useUpdateTransformationPhoto();
 
@@ -369,7 +370,14 @@ export function ParametersPage() {
   };
 
   const handleSubmit = async () => {
-    const requiredFields = ['chest', 'waist', 'belly', 'hips', 'leg', 'weight'];
+    const requiredFields = [
+      'chest',
+      'waist',
+      'abdominalCircumference',
+      'hips',
+      'leg',
+      'weight',
+    ];
     const isAllFilled = requiredFields.every((field) => {
       const value = formData[field];
       return (
@@ -405,7 +413,8 @@ export function ParametersPage() {
         tg_id: String(id),
         chest: parseInt(formData.chest, 10) || 0,
         waist: parseInt(formData.waist, 10) || 0,
-        abdominal_circumference: parseInt(formData.belly, 10) || 0,
+        abdominalCircumference:
+          parseInt(formData.abdominalCircumference, 10) || 0,
         legs: parseInt(formData.leg, 10) || 0,
         hips: parseInt(formData.hips, 10) || 0,
         weight: parseInt(formData.weight, 10) || 0,
@@ -418,7 +427,7 @@ export function ParametersPage() {
           parameters: parametersData,
         });
       } else {
-        createBodyMeasurementsMutate({
+        createBodyMeasurements({
           userQuery: query,
           parameters: parametersData,
         });
@@ -471,8 +480,8 @@ export function ParametersPage() {
     },
     {
       labels: ['Обхват живота', 'Обхват бедер'],
-      values: [formData.belly, formData.hips],
-      onChange: [handleChange('belly'), handleChange('hips')],
+      values: [formData.abdominalCircumference, formData.hips],
+      onChange: [handleChange('abdominalCircumference'), handleChange('hips')],
     },
     {
       labels: ['Обхват ноги', 'Вес'],
@@ -482,7 +491,14 @@ export function ParametersPage() {
   ];
 
   const isFormValid = () => {
-    const requiredFields = ['chest', 'waist', 'belly', 'hips', 'leg', 'weight'];
+    const requiredFields = [
+      'chest',
+      'waist',
+      'abdominalCircumference',
+      'hips',
+      'leg',
+      'weight',
+    ];
     const isAllFilled = requiredFields.every((field) => {
       const value = formData[field];
       return (
