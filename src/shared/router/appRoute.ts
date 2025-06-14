@@ -22,7 +22,9 @@ export const enum AppRoute {
   Communication = '/communication',
 
   // Training routes
-  Training = '/training',
+  TrainingCategories = '/training',
+  TrainingAbout = '/training/about',
+  TrainingWarmup = '/training/warmup',
 
   // Nutrition routes
   FoodCategories = '/food',

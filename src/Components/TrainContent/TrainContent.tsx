@@ -5,60 +5,15 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { trainingApiService } from '~/entities/training';
 import { useStreamStore } from '~/entities/user';
-import pdfSrc from '~/shared/assets/pdf/trane.pdf';
-import checkIconSrc from '~/shared/assets/svg/check.svg';
-import { Button } from '~/shared/ui/Button';
 import { Loader } from '~/shared/ui/Loader.js';
-import { PdfViewer } from '~/shared/ui/pdfViewer';
 
-import { Toggler } from '../../shared/ui/Toggler.js';
 import TrainBox from '../TrainBox/TrainBox';
 import TrainingPage from '../TrainingPage/TrainingPage';
 
-const warmup = {
-  Z: [
-    {
-      text: 'Разминка, каждое движение выполняем 8-10 раз',
-      videoUrl: 'https://kinescope.io/embed/6cKBXwLLUnSZXiRag2cogC',
-    },
-    {
-      text: 'Стретчинг подвздошо-поясничной мышцы+Активация мышц кора, широчайшей мышцы спины, расслабление поясничного отдела (можно выполнять в качестве разминки и заминки)',
-      videoUrl: 'https://kinescope.io/embed/oof2RHaiEoUi9NMReHQrs9',
-    },
-    {
-      text: 'Растяжение передней и внутренней поверхности бедра  (можно выполнять в качестве разминки и заминки)',
-      videoUrl: 'https://kinescope.io/embed/0fd8bvbN3gQzWgXArYfBw6',
-    },
-    {
-      text: 'Растяжение спины, дельт, груди, позвоночника',
-      videoUrl: 'https://kinescope.io/embed/raUw9dcguP4M1oqR3wj4S8',
-    },
-  ],
-  M: [
-    {
-      videoUrl: 'https://kinescope.io/embed/g8ANFRNYb6ar4zzb75Acqh',
-      text: 'МФР на стопы, голени, икроножные, заднюю, переднюю и внутреннюю часть бедра, ягодицы',
-    },
-    {
-      videoUrl: 'https://kinescope.io/embed/4RuH1N9gG5rWnyfus2RHP6',
-      text: 'МФР на грудной отдел, ромбовидную мышцу, спину, грудные мышцы',
-    },
-    {
-      videoUrl: 'https://kinescope.io/embed/8VHkvdyHUYHy9WiRQtRKHg',
-      text: 'Мобильность ТБС (можно выполнять в качестве разминки и заминки)',
-    },
-    {
-      videoUrl: 'https://kinescope.io/embed/8n7SSgFFTmRQ8T9Vo5rEFQ',
-      text: 'Подвижность позвоночника  (можно выполнять в качестве разминки и заминки)',
-    },
-  ],
-};
-
-export default function TrainContent({ userQuery, view, level, base }) {
+export default function TrainContent({ userQuery, view, level }) {
   const [page, setPage] = useState(0);
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [originalTrainingData, setOriginalTrainingData] = useState(null);
-  const [activeValue, setActiveValue] = useState('Разминка');
   const [weeksData, setWeeksData] = useState([]);
   const [weekDetails, setWeekDetails] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -247,98 +202,6 @@ export default function TrainContent({ userQuery, view, level, base }) {
       document.body.removeAttribute('data-handle-back');
     };
   }, [page]); // Убираем handleBack из зависимостей
-
-  // Если view === warmup, показываем разминку
-  if (view === 'warmup') {
-    const handleComplete = () => {
-      window.handleBack = null;
-      window.showContent = false;
-      window.dispatchEvent(new Event('showContentChange'));
-    };
-
-    return (
-      <div className="warmupContent">
-        {!base && (
-          <Toggler
-            values={['Разминка', 'МФР']}
-            activeValue={activeValue}
-            onClick={setActiveValue}
-          />
-        )}
-
-        <div className="warmup-screen">
-          {activeValue === 'Разминка' ? (
-            <div className="warmup-content">
-              <div className="warmup-videos">
-                {warmup.Z.map((item, index) => (
-                  <div key={index} className="videoContent">
-                    <div className="video-section">
-                      <div className="videoContainer">
-                        <iframe
-                          src={item.videoUrl}
-                          allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
-                          frameBorder="0"
-                          allowFullScreen
-                          title={`Разминка ${index + 1}`}
-                        />
-                      </div>
-                    </div>
-                    <p style={{ color: '#0D0D0D', fontSize: '16px' }}>
-                      {item.text}
-                    </p>
-                  </div>
-                ))}
-              </div>
-              <div className="warmup-navigation">
-                <Button
-                  color="secondary"
-                  iconSrc={checkIconSrc}
-                  onClick={handleComplete}
-                >
-                  Завершить разминку
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="warmup-content">
-              {warmup.M.map((item, index) => (
-                <div key={index} className="video-section">
-                  <div className="videoContainer">
-                    <iframe
-                      src={item.videoUrl}
-                      allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
-                      frameBorder="0"
-                      allowFullScreen
-                      title={`МФР ${index + 1}`}
-                    />
-                  </div>
-                  <p>{item.text}</p>
-                </div>
-              ))}
-              <div className="warmup-navigation">
-                <Button
-                  color="secondary"
-                  iconSrc={checkIconSrc}
-                  onClick={handleComplete}
-                >
-                  Завершить МФР
-                </Button>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  // Если view === train, показываем PdfViewer
-  if (view === 'train') {
-    return (
-      <div className="trainContent">
-        <PdfViewer pdfSrc={pdfSrc} />
-      </div>
-    );
-  }
 
   return (
     <div className="trainContent">

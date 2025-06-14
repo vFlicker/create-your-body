@@ -17,7 +17,11 @@ import {
   RecipesDetailsPage,
 } from '~/pages/recipes';
 import { StartPage } from '~/pages/start';
-import { TrainPage } from '~/pages/train';
+import {
+  TrainingAboutPage,
+  TrainingCategoriesPage,
+  TrainingWarmupPage,
+} from '~/pages/training';
 import {
   ParametersPage,
   ProfilePage,
@@ -26,13 +30,11 @@ import {
 } from '~/pages/user';
 import { AppRoute } from '~/shared/router';
 
-import { Layout } from './Layout';
-
 export function Routing(): JSX.Element {
   return (
     <Routes>
       {/* TODO: remove <Layout />}> */}
-      <Route path="/" element={<Layout />}>
+      <Route path="/">
         {/* Start Page */}
         <Route index element={<StartPage />} />
 
@@ -56,7 +58,15 @@ export function Routing(): JSX.Element {
         <Route path={AppRoute.Communication} element={<CommunicationPage />} />
 
         {/* Training */}
-        <Route path={AppRoute.Training} element={<TrainPage />} />
+        <Route
+          path={AppRoute.TrainingCategories}
+          element={<TrainingCategoriesPage />}
+        />
+        <Route path={AppRoute.TrainingAbout} element={<TrainingAboutPage />} />
+        <Route
+          path={AppRoute.TrainingWarmup}
+          element={<TrainingWarmupPage />}
+        />
 
         {/* Nutrition */}
         <Route
