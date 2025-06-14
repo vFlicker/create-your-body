@@ -10,11 +10,16 @@ export function SelectStream(): JSX.Element {
   const { subscriptions } = user;
 
   useEffect(() => {
-    if (subscriptions?.length) {
-      const maxStream = getMaxStream(subscriptions);
-      setStream(maxStream);
+    if (!subscriptions?.length) return;
+
+    if (stream) {
+      setStream(stream);
+      return;
     }
-  }, [subscriptions, setStream]);
+
+    const maxStream = getMaxStream(subscriptions);
+    setStream(maxStream);
+  }, [subscriptions, stream, setStream]);
 
   const streamOptions = subscriptions.map(({ stream }) => ({
     value: stream.toString(),
