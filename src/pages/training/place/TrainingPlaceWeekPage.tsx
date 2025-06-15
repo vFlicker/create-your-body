@@ -39,7 +39,7 @@ export function TrainingPlaceWeekPage(): JSX.Element {
       isLoading={isTrainingsByWeekPending}
     >
       <StyledWeeksList>
-        {trainingsByWeek?.map(({ _id, week, title, coverImage }) => (
+        {trainingsByWeek?.map(({ _id, title, coverImage }) => (
           <TitleCard
             key={_id}
             title={title}

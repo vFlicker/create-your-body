@@ -146,15 +146,15 @@ export const userApiService = {
 
   createBodyMeasurements: async ({
     userQuery,
-    data,
+    bodyMeasurements,
   }: {
     userQuery: string;
-    data: CreateBodyMeasurementsDto;
+    bodyMeasurements: CreateBodyMeasurementsDto;
   }) => {
     try {
       const response = await httpClient.post(
         `/v2/api/client/user/measurements?${userQuery}`,
-        data,
+        bodyMeasurements,
       );
       return response;
     } catch (error) {
@@ -178,11 +178,11 @@ export const userApiService = {
   updateBodyMeasurements: async ({
     userQuery,
     id,
-    parameters,
+    bodyMeasurements,
   }: {
     userQuery: string;
     id: number;
-    parameters: {
+    bodyMeasurements: {
       waist: number;
       legs: number;
       weight: number;
@@ -192,7 +192,7 @@ export const userApiService = {
     };
   }) => {
     try {
-      const adaptedParameters = updateParametersAdapter(parameters);
+      const adaptedParameters = updateParametersAdapter(bodyMeasurements);
       const response = await httpClient.put(
         `/v2/api/client/user/measurements/${id}?${userQuery}`,
         adaptedParameters,

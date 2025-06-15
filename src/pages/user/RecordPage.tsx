@@ -10,7 +10,7 @@ import { Button } from '~/shared/ui/Button';
 import { Input } from '~/shared/ui/Input';
 import { UserPageLayout } from '~/widgets/UserPageLayout';
 
-import { bodyMeasurementsInputs } from './recordPageConfig';
+import { bodyMeasurementsInputs } from './userPageConfig';
 
 export function RecordPage(): JSX.Element {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ export function RecordPage(): JSX.Element {
 
   const handleChange = (name: string) => {
     return (evt: ChangeEvent<HTMLInputElement>) => {
-      setBodyMeasurements({ ...bodyMeasurements, [name]: evt.target.value });
+      setBodyMeasurements((prev) => ({ ...prev, [name]: evt.target.value }));
     };
   };
 

@@ -1,583 +1,252 @@
 import './profile.css';
 
-import { useEffect, useRef, useState } from 'react';
+import styled from '@emotion/styled';
+import { ChangeEvent, JSX, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
+  CreateBodyMeasurementsSchema,
   useBodyMeasurements,
   useCreateBodyMeasurements,
-  UserMeta,
-  useTransformationPhoto,
   useUpdateBodyMeasurements,
-  useUpdateTransformationPhoto,
   useUpdateUser,
   useUser,
 } from '~/entities/user';
-import example from '~/shared/assets/img/example.jpeg';
-import add from '~/shared/assets/svg/addImg.svg';
-import close from '~/shared/assets/svg/closeWhite.svg';
+import exampleImageSrc from '~/shared/assets/img/example.jpeg';
 import { showTelegramAlert } from '~/shared/libs/telegram';
 import { AppRoute } from '~/shared/router';
 import { useUserSession } from '~/shared/store';
 import { Button } from '~/shared/ui/Button';
-import { Loader } from '~/shared/ui/Loader';
+import { Input } from '~/shared/ui/Input';
+import { RadioButton } from '~/shared/ui/RadioButton';
+import { UserPageLayout } from '~/widgets/UserPageLayout';
 
-import { isDateValid } from './profileValidators';
+import { bodyMeasurementsInputs } from './userPageConfig';
+import {
+  formatBornDateForBackend,
+  formatBornDateForFrontend,
+} from './userPageLib';
 
-const InputPair = ({
-  labels,
-  values,
-  onChange,
-  handleBlur,
-  handleFocus,
-  type = 'text',
-}: InputPairProps) => {
-  if (Array.isArray(type)) {
-    return (
-      <div className="inputPair">
-        {labels.map((label, index) => (
-          <div key={label} className="inputGroup">
-            <label>{label}</label>
-            {type[index] === 'gender' ? (
-              <div className="selectGender">
-                <button
-                  className={`genderBtn ${values[index] === 'm' ? 'active' : ''}`}
-                  onClick={() => onChange[index]('m')}
-                  style={{ height: '46px', borderRadius: '50px' }}
-                >
-                  М
-                </button>
-                <button
-                  className={`genderBtn ${values[index] === 'w' ? 'active' : ''}`}
-                  onClick={() => onChange[index]('w')}
-                  style={{ height: '46px', borderRadius: '50px' }}
-                >
-                  Ж
-                </button>
-              </div>
-            ) : type[index] === 'birthday' ? (
-              <input
-                type="text"
-                value={values[index] || ''}
-                onChange={(e) => onChange[index](e)}
-                placeholder="дд.мм.гггг"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-                defaultValue={values[index] || ''}
-              />
-            ) : (
-              <input
-                type="text"
-                value={values[index] || ''}
-                onChange={(e) => onChange[index](e)}
-                placeholder="0"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-              />
-            )}
-          </div>
-        ))}
-      </div>
-    );
-  }
+const DIMENSION_LIST = ['Груди', 'Талии', 'Живота', 'Бедер', 'Ноги'];
 
-  if (type === 'gender') {
-    return (
-      <div className="inputPair">
-        <div className="inputGroup">
-          <label>{labels[0]}</label>
-          <div className="selectGender">
-            <button
-              className={`genderBtn ${values[0] === 'm' ? 'active' : ''}`}
-              onClick={() => onChange('m')}
-              style={{ height: '46px', borderRadius: '50px' }}
-            >
-              М
-            </button>
-            <button
-              className={`genderBtn ${values[0] === 'w' ? 'active' : ''}`}
-              onClick={() => onChange('w')}
-              style={{ height: '46px', borderRadius: '50px' }}
-            >
-              Ж
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (type === 'birthday') {
-    return (
-      <div className="inputPair">
-        <div className="inputGroup">
-          <label>{labels[0]}</label>
-          <input
-            type="text"
-            value={values[0] || ''}
-            onChange={onChange}
-            placeholder="дд.мм.гггг"
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            defaultValue={values[0] || ''}
-          />
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="inputPair">
-      {labels.map(
-        (label, i) =>
-          label && (
-            <div key={label} className="inputGroup">
-              <label>{label}</label>
-              <input
-                type="text"
-                value={values[i] || ''}
-                onChange={(e) => onChange[i](e)}
-                placeholder="0"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-              />
-            </div>
-          ),
-      )}
-    </div>
-  );
-};
-
-const PhotoUploader = ({ label, src, onChange, onRemove, isLoading }) => {
-  const fileInputRef = useRef(null);
-
-  const handleClick = () => {
-    fileInputRef.current?.click();
-  };
-
-  return (
-    <div className="photoUploader" onClick={handleClick}>
-      <label>{label}</label>
-      <input
-        type="file"
-        accept="image/*"
-        onChange={onChange}
-        ref={fileInputRef}
-        style={{ display: 'none' }}
-      />
-      {isLoading ? (
-        <div
-          className="uploadContainer"
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Loader />
-        </div>
-      ) : src ? (
-        <div className="uploadContainer">
-          <img
-            src={src}
-            alt={label}
-            className="previewImage"
-            onClick={(e) => e.stopPropagation()}
-          />
-          <img
-            className="closePhoto"
-            src={close}
-            alt="Закрыть"
-            onClick={(e) => {
-              e.stopPropagation();
-              onRemove();
-            }}
-          />
-        </div>
-      ) : (
-        <div className="uploadPlaceholderContainer">
-          <img src={add} className="uploadPlaceholder" alt="Добавить" />
-        </div>
-      )}
-    </div>
-  );
-};
-
-export function ParametersPage() {
-  const formRef = useRef(null);
-
+export function ParametersPage(): JSX.Element {
   const navigate = useNavigate();
 
   const { user } = useUser();
-  const { id, query } = useUserSession();
 
-  const [isMobile, setIsMobile] = useState(false);
-
-  const [formData, setFormData] = useState({
-    chest: '',
-    waist: '',
-    abdominalCircumference: '',
-    hips: '',
-    leg: '',
-    weight: '',
-    photoBefore: null,
-    photoAfter: null,
-  });
-  const [latestParameters, setLatestParameters] = useState(null);
-  const [gen, setGen] = useState(user?.sex === 'male' ? 'm' : 'w');
-  const [birthday, setBirthday] = useState(
-    user?.born_date
-      ? new Date(user.born_date)
-          .toLocaleDateString('ru-RU', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-          })
-          .replace(/\//g, '.')
-      : '',
+  const [bornDate, setBornDate] = useState(
+    formatBornDateForFrontend(user?.born_date) || '',
   );
-  const [birthdayError, setBirthdayError] = useState('');
-  const [hasParameters, setHasParameters] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
+  const [sex, setSex] = useState(user?.sex || '');
 
-  useEffect(() => {
-    const tg = window.Telegram?.WebApp;
-    if (tg) {
-      const platform = tg.platform.toLowerCase();
-      setIsMobile(!['tdesktop', 'macos', 'linux', 'web'].includes(platform));
-    }
-  }, []);
+  const { bodyMeasurements, isBodyMeasurementsPending } = useBodyMeasurements();
 
-  const { bodyMeasurements } = useBodyMeasurements();
+  const hasBodyMeasurementsRecord = bodyMeasurements?.length > 0;
+  const mostRecentBodyMeasurement =
+    hasBodyMeasurementsRecord && bodyMeasurements[0];
 
-  useEffect(() => {
-    const loadUserMeasurements = async () => {
-      try {
-        const latestParameters = bodyMeasurements[0];
+  const [bodyMeasurementsForm, setBodyMeasurementsForm] = useState({
+    chest: mostRecentBodyMeasurement?.chest || '',
+    waist: mostRecentBodyMeasurement?.waist || '',
+    abdominalCircumference:
+      mostRecentBodyMeasurement?.abdominalCircumference || '',
+    hips: mostRecentBodyMeasurement?.hips || '',
+    legs: mostRecentBodyMeasurement?.legs || '',
+    weight: mostRecentBodyMeasurement?.weight || '',
+  });
 
-        if (latestParameters) {
-          setHasParameters(true);
-          setFormData((prev) => ({
-            ...prev,
-            chest: latestParameters.chest || '',
-            waist: latestParameters.waist || '',
-            abdominalCircumference:
-              latestParameters.abdominalCircumference || '',
-            hips: latestParameters.hips || '',
-            leg: latestParameters.legs || '',
-            weight: latestParameters.weight || '',
-          }));
-          setLatestParameters(latestParameters);
-        }
-      } catch (error) {
-        console.error('Ошибка при получении параметров:', error);
-        setHasParameters(false);
-      }
-    };
-
-    loadUserMeasurements();
-  }, [bodyMeasurements]);
-
-  const { transformationPhoto, isTransformationPhotoPending } =
-    useTransformationPhoto();
-
-  const { updateBodyMeasurementsMutate } = useUpdateBodyMeasurements();
-  const { createBodyMeasurements } = useCreateBodyMeasurements();
-
-  const { updateTransformationPhotoMutate } = useUpdateTransformationPhoto();
-
+  const { query: userQuery } = useUserSession();
   const { updateUser } = useUpdateUser();
+  const { updateBodyMeasurementsMutate, isUpdateBodyMeasurementsPending } =
+    useUpdateBodyMeasurements();
+  const { createBodyMeasurements, isCreateBodyMeasurementsPending } =
+    useCreateBodyMeasurements();
 
-  const handleBirthdayChange = (e) => {
-    const value = e.target.value.replace(/[^0-9.]/g, '');
-    const parts = value.split('.');
-    if (parts.length > 3) return;
-    let newValue = '';
-    for (let i = 0; i < value.length; i++) {
-      if (i === 2 || i === 5) newValue += '.';
-      newValue += value[i];
-    }
-    newValue = newValue.replace(/\.+/g, '.');
-    if (newValue.length > 10) return;
-
-    setBirthday(newValue);
-    setBirthdayError(
-      isDateValid(newValue) ? '' : 'Введите корректную дату рождения',
-    );
-  };
-
-  const handleFocus = (e) => {
-    if (!isMobile || !formRef.current) return;
-    const input = e.target;
-    const container = formRef.current;
-    const containerRect = container.getBoundingClientRect();
-    const inputRect = input.getBoundingClientRect();
-    const relativeLeft = inputRect.left - containerRect.left;
-    const relativeTop = inputRect.top - containerRect.top;
-    const originX = (relativeLeft / containerRect.width) * 130;
-    const originY = (relativeTop / containerRect.height) * 130;
-    container.style.transformOrigin = `${originX}% ${originY}%`;
-    container.style.transform = `scale(1.5)`;
-    container.style.transition = 'transform 150ms ease-in-out';
-    const scrollOffset =
-      inputRect.top - containerRect.top - containerRect.height * 0.3;
-    container.scrollTo({
-      top: container.scrollTop + scrollOffset,
-      behavior: 'smooth',
-    });
-  };
-
-  const handleBlur = () => {
-    if (!isMobile || !formRef.current) return;
-    const container = formRef.current;
-    container.style.transform = 'none';
-    container.style.transition = 'transform 150ms ease-in-out';
-  };
-
-  const handleChange = (field) => (e) => {
-    if (!e || !e.target) return;
-    const value = e.target.value;
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
-  const handleGenderChange = (value) => {
-    setGen(value);
-  };
-
-  const handleFileChange = (field) => (e) => {
-    const file = e.target.files[0];
-
-    if (!file) return;
-
-    if (file.size > 2 * 1024 * 1024) {
-      showTelegramAlert('Максимальный размер фотографии 2 МБ');
-      return;
-    }
-
-    if (!file.type.startsWith('image/')) {
-      showTelegramAlert('Пожалуйста, загрузите изображение');
-      return;
-    }
-
-    setFormData((prev) => ({ ...prev, [field]: file }));
-  };
-
-  const handleRemovePhoto = (field) => () => {
-    setFormData((prev) => ({ ...prev, [field]: null }));
+  const handleBodyMeasurementsChange = (name: string) => {
+    return (evt: ChangeEvent<HTMLInputElement>) => {
+      setBodyMeasurementsForm((prev) => ({
+        ...prev,
+        [name]: evt.target.value,
+      }));
+    };
   };
 
   const handleSubmit = async () => {
-    const requiredFields = [
-      'chest',
-      'waist',
-      'abdominalCircumference',
-      'hips',
-      'leg',
-      'weight',
-    ];
-    const isAllFilled = requiredFields.every((field) => {
-      const value = formData[field];
-      return (
-        value !== undefined && value !== null && String(value).trim() !== ''
-      );
-    });
-
-    if (!isAllFilled) {
-      showTelegramAlert('Добавьте все параметры');
-      return;
-    }
-
-    if (!isDateValid(birthday)) {
-      showTelegramAlert('Введите корректную дату рождения');
-      return;
-    }
-
-    setIsSaving(true);
     try {
-      // Обновление информации о пользователе
-      const [day, month, year] = birthday.split('.');
-      const formattedBirthday = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+      const parsedBodyMeasurements =
+        CreateBodyMeasurementsSchema.parse(bodyMeasurementsForm);
 
-      const userData = {
-        sex: gen === 'm' ? 'male' : 'female',
-        born_date: formattedBirthday,
-      };
-
-      updateUser({ userQuery: query, userData });
-
-      // Обновление параметров
-      const parametersData = {
-        tg_id: String(id),
-        chest: parseInt(formData.chest, 10) || 0,
-        waist: parseInt(formData.waist, 10) || 0,
-        abdominalCircumference:
-          parseInt(formData.abdominalCircumference, 10) || 0,
-        legs: parseInt(formData.leg, 10) || 0,
-        hips: parseInt(formData.hips, 10) || 0,
-        weight: parseInt(formData.weight, 10) || 0,
-      };
-
-      if (hasParameters) {
-        updateBodyMeasurementsMutate({
-          userQuery: query,
-          id: latestParameters.id,
-          parameters: parametersData,
+      if (hasBodyMeasurementsRecord) {
+        const { id } = mostRecentBodyMeasurement;
+        await updateBodyMeasurementsMutate({
+          id,
+          userQuery,
+          bodyMeasurements: parsedBodyMeasurements,
         });
       } else {
-        createBodyMeasurements({
-          userQuery: query,
-          parameters: parametersData,
+        await createBodyMeasurements({
+          userQuery,
+          bodyMeasurements: parsedBodyMeasurements,
         });
       }
 
-      // Загрузка фотографий
-      if (formData.photoBefore instanceof File) {
-        const formDataPost = new FormData();
-        formDataPost.append('image', formData.photoBefore);
-        updateTransformationPhotoMutate({
-          userQuery: query,
-          formData: formDataPost,
-          stage: 'before',
-        });
-      }
-
-      if (formData.photoAfter instanceof File) {
-        const formDataPost = new FormData();
-        formDataPost.append('image', formData.photoAfter);
-        updateTransformationPhotoMutate({
-          userQuery: query,
-          formData: formDataPost,
-          stage: 'after',
-        });
-      }
+      const formattedBornDate = formatBornDateForBackend(bornDate);
+      const userData = { sex, born_date: formattedBornDate };
+      await updateUser({ userQuery, userData });
 
       navigate(AppRoute.Profile);
     } catch (error) {
-      console.error(
-        'Ошибка при сохранении:',
-        error.response?.data || error.message,
-      );
+      console.error('Error saving data:', error);
       showTelegramAlert('Ошибка при сохранении данных');
-    } finally {
-      setIsSaving(false);
     }
   };
 
-  const inputPairs = [
-    {
-      labels: ['Дата рождения', 'Пол'],
-      values: [birthday, gen],
-      onChange: [handleBirthdayChange, handleGenderChange],
-      type: ['birthday', 'gender'],
-    },
-    {
-      labels: ['Обхват груди', 'Обхват талии'],
-      values: [formData.chest, formData.waist],
-      onChange: [handleChange('chest'), handleChange('waist')],
-    },
-    {
-      labels: ['Обхват живота', 'Обхват бедер'],
-      values: [formData.abdominalCircumference, formData.hips],
-      onChange: [handleChange('abdominalCircumference'), handleChange('hips')],
-    },
-    {
-      labels: ['Обхват ноги', 'Вес'],
-      values: [formData.leg, formData.weight],
-      onChange: [handleChange('leg'), handleChange('weight')],
-    },
-  ];
-
-  const isFormValid = () => {
-    const requiredFields = [
-      'chest',
-      'waist',
-      'abdominalCircumference',
-      'hips',
-      'leg',
-      'weight',
-    ];
-    const isAllFilled = requiredFields.every((field) => {
-      const value = formData[field];
-      return (
-        value !== undefined && value !== null && String(value).trim() !== ''
-      );
-    });
-
-    const isDateValidValue = isDateValid(birthday);
-
-    return isAllFilled && isDateValidValue;
-  };
+  const isSaving =
+    isUpdateBodyMeasurementsPending ||
+    isCreateBodyMeasurementsPending ||
+    isBodyMeasurementsPending;
 
   return (
-    <div className="profilePage" ref={formRef}>
-      <div className="profileContainer">
-        <UserMeta view="name" />
+    <UserPageLayout hasUserLevel={false} isLoading={false}>
+      <StyledParametersPageWrapper>
+        <StyledHeader>
+          <StyledTitle>Как измерить параметры?</StyledTitle>
+          <StyledHeaderContent>
+            <StyledPhoto src={exampleImageSrc} />
+            <StyledHeaderTextWrapper>
+              <div>Измеряем по самым выпирающим точкам обхват:</div>
+              <StyledDimensionList>
+                {DIMENSION_LIST.map((dimensionItem) => (
+                  <StyledDimensionItem key={dimensionItem}>
+                    {dimensionItem}
+                  </StyledDimensionItem>
+                ))}
+              </StyledDimensionList>
+            </StyledHeaderTextWrapper>
+          </StyledHeaderContent>
+        </StyledHeader>
 
-        <div className="howSize">
-          <h3>Как измерить параметры?</h3>
-          <div className="example">
-            <div className="examplePhoto">
-              <img src={example} alt="Пример измерения" />
-            </div>
-            <div className="solution">
-              <p>Измеряем по самым выпирающим точкам обхват:</p>
-              {['Груди', 'Талии', 'Живота', 'Бедер', 'Ноги'].map((item) => (
-                <div key={item} className="sol">
-                  <div className="dot" />
-                  <p>{item}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-        <div className="inputsSection">
-          {inputPairs.map((pair, index) => (
-            <InputPair
-              key={index}
-              labels={pair.labels}
-              values={pair.values}
-              onChange={pair.onChange}
-              handleFocus={handleFocus}
-              handleBlur={handleBlur}
-              type={pair.type}
+        <StyledFieldset>
+          <StyledTitle>Общие параметры</StyledTitle>
+          <StyledInputsWrapper>
+            <Input
+              type="text"
+              placeholder="Возраст"
+              value={bornDate}
+              onChange={(e) => setBornDate(e.target.value)}
+              label="Дата рождения"
             />
-          ))}
-          <div className="loadPhotos">
-            <PhotoUploader
-              label="Фото до"
-              src={transformationPhoto?.before?.url}
-              onChange={handleFileChange('photoBefore')}
-              onRemove={handleRemovePhoto('photoBefore')}
-              isLoading={isTransformationPhotoPending}
+            <RadioButton
+              label="Пол"
+              names={['М', 'Ж']}
+              options={['male', 'female']}
+              activeOption={sex}
+              onClick={(sex) => setSex(sex)}
             />
-            <PhotoUploader
-              label="Фото после"
-              src={transformationPhoto?.after?.url}
-              onChange={handleFileChange('photoAfter')}
-              onRemove={handleRemovePhoto('photoAfter')}
-              isLoading={isTransformationPhotoPending}
-            />
-          </div>
-          <div style={{ position: 'relative', width: '100%' }}>
-            <Button
-              color="secondary"
-              disabled={!isFormValid() || isSaving}
-              onClick={handleSubmit}
-            >
-              Сохранить
-            </Button>
-          </div>
-          <div
-            className="error-message-parameters"
-            style={{ opacity: birthdayError ? 1 : 0 }}
-          >
-            {birthdayError}
-          </div>
-        </div>
-      </div>
-    </div>
+          </StyledInputsWrapper>
+        </StyledFieldset>
+
+        <StyledFieldset>
+          <StyledTitle>Параметры тела</StyledTitle>
+          <StyledInputsWrapper>
+            {bodyMeasurementsInputs.map((props) => (
+              <Input
+                key={props.name}
+                type="number"
+                placeholder="0"
+                value={bodyMeasurementsForm[props.name]}
+                onChange={handleBodyMeasurementsChange(props.name)}
+                {...props}
+              />
+            ))}
+          </StyledInputsWrapper>
+        </StyledFieldset>
+        <Button color="secondary" disabled={isSaving} onClick={handleSubmit}>
+          Сохранить
+        </Button>
+      </StyledParametersPageWrapper>
+    </UserPageLayout>
   );
 }
+
+const StyledParametersPageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+`;
+
+const StyledHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const StyledFieldset = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const StyledTitle = styled.h3`
+  color: #0d0d0d;
+  font-size: 18px;
+  font-weight: 700;
+`;
+
+const StyledInputsWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(150px, 1fr));
+  gap: 16px;
+`;
+
+const StyledHeaderContent = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 160px;
+  gap: 16px;
+
+  align-items: center;
+`;
+
+const StyledPhoto = styled.img`
+  width: 100%;
+  border-radius: 14px;
+`;
+
+const StyledHeaderTextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  font-size: 14px;
+  color: #0d0d0d;
+`;
+
+const StyledDimensionList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const StyledDimensionItem = styled.li`
+  position: relative;
+  padding-left: 16px;
+
+  &::before {
+    content: '';
+
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+
+    background-color: #a799ff;
+  }
+`;
