@@ -1,5 +1,3 @@
-import './profile.css';
-
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
@@ -47,7 +45,10 @@ export function StartProfilePage(): JSX.Element {
             вчера!
           </StyledHighlightedText>
         </StyledInfoWrapper>
-        <Button color="accent" onClick={() => navigate('/parameters')}>
+        <Button
+          color="accent"
+          onClick={() => navigate(AppRoute.BodyMeasurements)}
+        >
           Добавить параметры
         </Button>
       </StyledStartProfilePageWrapper>

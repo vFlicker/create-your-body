@@ -1,5 +1,3 @@
-import './profile.css';
-
 import styled from '@emotion/styled';
 import { ChangeEvent, JSX, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -29,7 +27,7 @@ import {
 
 const DIMENSION_LIST = ['Груди', 'Талии', 'Живота', 'Бедер', 'Ноги'];
 
-export function ParametersPage(): JSX.Element {
+export function BodyMeasurementsPage(): JSX.Element {
   const navigate = useNavigate();
 
   const { user } = useUser();
@@ -108,7 +106,7 @@ export function ParametersPage(): JSX.Element {
 
   return (
     <UserPageLayout hasUserLevel={false} isLoading={false}>
-      <StyledParametersPageWrapper>
+      <StyledBodyMeasurementsPageWrapper>
         <StyledHeader>
           <StyledTitle>Как измерить параметры?</StyledTitle>
           <StyledHeaderContent>
@@ -164,12 +162,12 @@ export function ParametersPage(): JSX.Element {
         <Button color="secondary" disabled={isSaving} onClick={handleSubmit}>
           Сохранить
         </Button>
-      </StyledParametersPageWrapper>
+      </StyledBodyMeasurementsPageWrapper>
     </UserPageLayout>
   );
 }
 
-const StyledParametersPageWrapper = styled.div`
+const StyledBodyMeasurementsPageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
