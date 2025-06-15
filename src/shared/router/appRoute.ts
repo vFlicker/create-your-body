@@ -25,13 +25,17 @@ export const enum AppRoute {
   TrainingCategories = '/training',
   TrainingAbout = '/training/about',
   TrainingWarmup = '/training/warmup',
+  TrainingPlace = '/training/place',
+  TrainingPlaceWeeks = '/training/place/:type',
+  TrainingPlaceWeek = '/training/place/:type/:week',
+  TrainingPlaceDetails = '/training/place/:type/:week/:id',
 
   // Nutrition routes
   FoodCategories = '/food',
   Food = '/food/:categoryId',
 
   // Lectures routes
-  LecturesWeeks = '/lectures',
+  LectureWeeks = '/lectures',
   LectureWeek = '/lectures/:week',
   LectureDetails = '/lectures/:week/:id',
 

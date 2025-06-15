@@ -1,20 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { trainingApiService } from '../trainingApiService';
+import { useUserSession } from '~/shared/store';
 
-export const useTrainingsByWeek = (
-  userQuery: string,
-  meta: {
-    level: string;
-    type: string;
-    stream: number;
-  },
-  week?: number,
-) => {
+import { trainingApiService, TrainingWeekPayload } from '../trainingApiService';
+
+export const useTrainingsByWeek = (payload: TrainingWeekPayload) => {
+  const { query } = useUserSession();
+
   const { data, isPending } = useQuery({
-    queryKey: ['trainings-by-week', week],
-    queryFn: () => trainingApiService.getTrainingsByWeek(userQuery, week, meta),
-    enabled: !!week,
+    queryKey: [
+      'trainings-by-week',
+      payload.week,
+      payload.type,
+      payload.stream,
+      payload.level,
+    ],
+    queryFn: () => trainingApiService.getTrainingsByWeek(query, payload),
   });
 
   return { trainingsByWeek: data, isTrainingsByWeekPending: isPending };

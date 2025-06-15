@@ -1,3 +1,4 @@
+import { JSX } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useNutritionPlan } from '~/entities/nutrition';
@@ -5,7 +6,7 @@ import foodIconSrc from '~/shared/assets/nav/food.svg';
 import { PdfViewer } from '~/shared/ui/pdfViewer';
 import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
-export function FoodPage() {
+export function FoodPage(): JSX.Element {
   const { categoryId } = useParams<{ categoryId: string }>();
 
   const { isNutritionPlanLoading, nutritionPlan } =

@@ -59,7 +59,7 @@ export const getTitleCards = (subscriptions) => {
         icon: book,
         closed: null,
         buy: false,
-        to: AppRoute.LecturesWeeks,
+        to: AppRoute.LectureWeeks,
         isHighlight: false,
       },
       {
@@ -95,7 +95,7 @@ export const getTitleCards = (subscriptions) => {
         icon: book,
         closed: null,
         buy: false,
-        to: AppRoute.LecturesWeeks,
+        to: AppRoute.LectureWeeks,
         isHighlight: false,
       },
       {
@@ -131,7 +131,7 @@ export const getTitleCards = (subscriptions) => {
         icon: book,
         closed: '',
         buy: true,
-        to: AppRoute.LecturesWeeks,
+        to: AppRoute.LectureWeeks,
         isHighlight: false,
       },
       {
@@ -167,7 +167,7 @@ export const getTitleCards = (subscriptions) => {
         icon: book,
         closed: '',
         buy: true,
-        to: AppRoute.LecturesWeeks,
+        to: AppRoute.LectureWeeks,
         isHighlight: false,
       },
       {

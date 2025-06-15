@@ -1,7 +1,7 @@
 type Week = {
   week: number;
   stream: number;
-  type: string;
+  type: 'home' | 'gym';
   cover: {
     fileId: string;
     fileName: string;

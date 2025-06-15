@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { JSX, useEffect } from 'react';
 
 import { useUpdateUserAvatar, useUser } from '~/entities/user';
 import { NoEntryPage } from '~/pages/noEntry';
@@ -9,7 +9,7 @@ import { useInitTgApp } from '../hooks/useInitTgApp';
 import { withProviders } from '../providers';
 import { Routing } from './Routing';
 
-function App() {
+function App(): JSX.Element {
   useInitTgApp();
 
   const { id, image, query } = useUserSession();

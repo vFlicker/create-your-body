@@ -6,6 +6,13 @@ import {
   WeeksResponse,
 } from './trainingTypes';
 
+export type TrainingWeekPayload = {
+  week: number;
+  level: 'noob' | 'pro';
+  type: 'home' | 'gym';
+  stream: number;
+};
+
 export const trainingApiService = {
   getTrainingWeeks: async (userQuery: string, stream: number) => {
     try {
@@ -23,16 +30,7 @@ export const trainingApiService = {
 
   getTrainingsByWeek: async (
     userQuery: string,
-    week: number,
-    {
-      level,
-      type,
-      stream,
-    }: {
-      level: string;
-      type: string;
-      stream: number;
-    },
+    { level, stream, type, week }: TrainingWeekPayload,
   ) => {
     try {
       const { data } = await httpClient.get<TrainingsResponse>(

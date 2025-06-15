@@ -26,19 +26,19 @@ const trainingCategories = [
   {
     title: 'Тренировка для дома',
     iconSrc: sportIconSrc,
-    to: 'home',
+    to: `${AppRoute.TrainingPlace}/home`,
   },
   {
     title: 'Тренировка для зала',
     iconSrc: dumbbellsIconSrc,
-    to: 'gym',
+    to: `${AppRoute.TrainingPlace}/gym`,
   },
 ];
 
 export function TrainingCategoriesPage(): JSX.Element {
   const navigate = useNavigate();
 
-  const handleCategoryClick = (route: AppRoute) => {
+  const handleCategoryClick = (route: string) => {
     navigate(route);
   };
 

@@ -15,7 +15,7 @@ export function LectureWeeksPage(): JSX.Element {
   const { weeks, isWeeksPending } = useLectureWeeks();
 
   const handleWeekSelect = (week: number) => {
-    navigate(`${AppRoute.LecturesWeeks}/${week}`);
+    navigate(`${AppRoute.LectureWeeks}/${week}`);
   };
 
   return (

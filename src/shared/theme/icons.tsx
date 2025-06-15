@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { JSX } from 'react';
 
 const enum IconName {
   ICON_MUSCLES = 'icon-muscles',
@@ -9,7 +10,7 @@ const StyledSpriteWithIcons = styled.svg`
   display: none;
 `;
 
-function SpriteWithIcons() {
+function SpriteWithIcons(): JSX.Element {
   return (
     <StyledSpriteWithIcons xmlns="http://www.w3.org/2000/svg">
       <symbol id="icon-muscles" viewBox="0 0 24 24">

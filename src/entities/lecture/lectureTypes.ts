@@ -46,7 +46,7 @@ type LectureDetail = {
   __v: number;
   blocks: {
     _id: string;
-    type: string;
+    type: 'text' | 'video';
     order: number;
     lecture: string;
     video?: {

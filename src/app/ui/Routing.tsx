@@ -20,6 +20,9 @@ import { StartPage } from '~/pages/start';
 import {
   TrainingAboutPage,
   TrainingCategoriesPage,
+  TrainingPlaceDetailsPage,
+  TrainingPlaceWeekPage,
+  TrainingPlaceWeeksPage,
   TrainingWarmupPage,
 } from '~/pages/training';
 import {
@@ -33,7 +36,6 @@ import { AppRoute } from '~/shared/router';
 export function Routing(): JSX.Element {
   return (
     <Routes>
-      {/* TODO: remove <Layout />}> */}
       <Route path="/">
         {/* Start Page */}
         <Route index element={<StartPage />} />
@@ -67,6 +69,18 @@ export function Routing(): JSX.Element {
           path={AppRoute.TrainingWarmup}
           element={<TrainingWarmupPage />}
         />
+        <Route
+          path={AppRoute.TrainingPlaceWeeks}
+          element={<TrainingPlaceWeeksPage />}
+        />
+        <Route
+          path={AppRoute.TrainingPlaceWeek}
+          element={<TrainingPlaceWeekPage />}
+        />
+        <Route
+          path={AppRoute.TrainingPlaceDetails}
+          element={<TrainingPlaceDetailsPage />}
+        />
 
         {/* Nutrition */}
         <Route
@@ -76,7 +90,7 @@ export function Routing(): JSX.Element {
         <Route path={AppRoute.Food} element={<FoodPage />} />
 
         {/* Lectures */}
-        <Route path={AppRoute.LecturesWeeks} element={<LectureWeeksPage />} />
+        <Route path={AppRoute.LectureWeeks} element={<LectureWeeksPage />} />
         <Route path={AppRoute.LectureWeek} element={<LectureWeekPage />} />
         <Route
           path={AppRoute.LectureDetails}

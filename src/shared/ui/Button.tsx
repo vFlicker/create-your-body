@@ -9,6 +9,7 @@ import { TypographyVariantToCss } from './Typography';
 type ButtonBaseProps = {
   color: `${ButtonColor}`;
   iconSrc?: string;
+  iconPosition?: 'left' | 'right';
 };
 
 type ButtonProps = ComponentProps<typeof StyledButton>;
@@ -19,11 +20,19 @@ const enum ButtonColor {
   Neutral = 'neutral',
 }
 
-function Button({ iconSrc, children, ...props }: ButtonProps): JSX.Element {
+function Button({
+  iconSrc,
+  iconPosition = 'left',
+  children,
+  ...props
+}: ButtonProps): JSX.Element {
+  const isLeftIcon = iconPosition === 'left';
+
   return (
     <StyledButton {...props}>
-      {iconSrc && <img src={iconSrc} />}
+      {isLeftIcon && iconSrc && <img src={iconSrc} />}
       {children}
+      {!isLeftIcon && iconSrc && <img src={iconSrc} />}
     </StyledButton>
   );
 }

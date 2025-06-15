@@ -16,7 +16,7 @@ export function LectureWeekPage(): JSX.Element {
   const { lecturesByWeek, isLecturesByWeekPending } = useLecturesByWeek(week);
 
   const handleLectureSelect = (lectureId: string) => {
-    navigate(`${AppRoute.LecturesWeeks}/${week}/${lectureId}`);
+    navigate(`${AppRoute.LectureWeeks}/${week}/${lectureId}`);
   };
 
   return (
@@ -28,9 +28,9 @@ export function LectureWeekPage(): JSX.Element {
       <StyledLectureWeekWrapper>
         <StyledTitle>Неделя {week}</StyledTitle>
         <StyledLecturesList>
-          {lecturesByWeek?.map(({ _id, week, title, duration, coverImage }) => (
+          {lecturesByWeek?.map(({ _id, title, duration, coverImage }) => (
             <TitleCard
-              key={week}
+              key={_id}
               title={title}
               subTitle={`${duration} мин`}
               iconSrc={coverImage.url || mockupImageSrc}
