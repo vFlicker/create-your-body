@@ -27,7 +27,7 @@ export function UserDataTable(): JSX.Element {
       <StyledTable>
         <StyledRecord>
           <StyledKey>Возраст</StyledKey>
-          <StyledValue>{getAgeFromISOString(user.born_date)}</StyledValue>
+          <StyledValue>{getAgeFromISOString(user.bornDate)}</StyledValue>
         </StyledRecord>
 
         <StyledRecord>

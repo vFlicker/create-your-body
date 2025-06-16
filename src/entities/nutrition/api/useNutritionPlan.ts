@@ -5,7 +5,7 @@ import { useUserSession } from '~/shared/store';
 import { nutritionApiService } from './nutritionApi';
 
 export const useNutritionPlan = (pdfId: string) => {
-  const { query, id } = useUserSession();
+  const { userQuery: query, tgId: id } = useUserSession();
 
   const { data, isLoading } = useQuery({
     queryKey: ['nutrition-plan', pdfId],

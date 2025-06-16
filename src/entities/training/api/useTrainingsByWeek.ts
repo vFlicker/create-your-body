@@ -5,7 +5,7 @@ import { useUserSession } from '~/shared/store';
 import { trainingApiService, TrainingWeekPayload } from '../trainingApiService';
 
 export const useTrainingsByWeek = (payload: TrainingWeekPayload) => {
-  const { query } = useUserSession();
+  const { userQuery } = useUserSession();
 
   const { data, isPending } = useQuery({
     queryKey: [
@@ -15,7 +15,7 @@ export const useTrainingsByWeek = (payload: TrainingWeekPayload) => {
       payload.stream,
       payload.level,
     ],
-    queryFn: () => trainingApiService.getTrainingsByWeek(query, payload),
+    queryFn: () => trainingApiService.getTrainingsByWeek(userQuery, payload),
   });
 
   return { trainingsByWeek: data, isTrainingsByWeekPending: isPending };

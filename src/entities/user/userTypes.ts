@@ -1,3 +1,21 @@
+type User = {
+  bornDate: string;
+  createdAt: string;
+  debugMode: boolean;
+  email: string;
+  getcourseId: string | null;
+  id: number;
+  level: string;
+  name: string;
+  paymentBotId: string | null;
+  phone: string;
+  role: string;
+  sex: string;
+  subscriptions: Subscription[];
+  tgId: number | null;
+  userpic: string | null;
+};
+
 export type Subscription = {
   id: number;
   userId: number;
@@ -9,24 +27,6 @@ export type Subscription = {
   status: string;
   stream: number;
   createdAt: string;
-};
-
-export type User = {
-  id: number;
-  email: string;
-  name: string;
-  phone: string;
-  bornDate: string;
-  sex: string;
-  createdAt: string;
-  level: string;
-  tgId: number | null;
-  getcourseId: string | null;
-  paymentBotId: string | null;
-  userpic: string | null;
-  debugMode: boolean;
-  role: string;
-  subscriptions: Subscription[];
 };
 
 export type BodyMeasurements = {
@@ -50,6 +50,20 @@ type TransformationPhoto = {
   uploadedAt: string;
 };
 
+export type GetUserResponse = {
+  success: boolean;
+  message: string;
+  data: User;
+};
+
+export type UpdateUserDto = {
+  name?: string;
+  bornDate?: string;
+  sex?: string;
+  level?: string;
+  phone?: string;
+};
+
 export type CreateBodyMeasurementsDto = {
   tg_id: number;
   waist: number;
@@ -60,7 +74,16 @@ export type CreateBodyMeasurementsDto = {
   hips: number;
 };
 
-export type TransformationPhotosResponse = {
+export type UpdateBodyMeasurementsDto = {
+  waist: number;
+  legs: number;
+  weight: number;
+  chest: number;
+  abdominalCircumference: number;
+  hips: number;
+};
+
+export type GetTransformationPhotoResponse = {
   success: boolean;
   message: string;
   data: {
@@ -69,10 +92,19 @@ export type TransformationPhotosResponse = {
   };
 };
 
-export type BodyMeasurementsResponse = {
+export type GetBodyMeasurementsResponse = {
   success: boolean;
   message: string;
   data: {
     measurements: BodyMeasurements[];
   };
+};
+
+export type UpdateVideoProgressDto = {
+  userId: string | number;
+  last_video_time: string;
+  last_video_duration: string;
+  videoSrc: string;
+  page?: number | string;
+  lastVideo?: number | string;
 };

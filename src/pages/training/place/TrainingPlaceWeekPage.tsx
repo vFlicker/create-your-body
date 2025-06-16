@@ -22,7 +22,7 @@ export function TrainingPlaceWeekPage(): JSX.Element {
 
   const { trainingsByWeek, isTrainingsByWeekPending } = useTrainingsByWeek({
     // TODO: fix the payload
-    level: user.user_level === 'Новичок' ? 'noob' : 'pro',
+    level: user.level === 'Новичок' ? 'noob' : 'pro',
     stream,
     type,
     week: +week,

@@ -12,19 +12,19 @@ import { Routing } from './Routing';
 function App(): JSX.Element {
   useInitTgApp();
 
-  const { id, image, query } = useUserSession();
+  const { tgId: id, userImage: image, userQuery } = useUserSession();
   const { user, isUserPending } = useUser();
   const { updateUserAvatar, isUpdateUserAvatarPending } = useUpdateUserAvatar();
 
   useEffect(() => {
-    if (query && id && image) {
+    if (userQuery && id && image) {
       updateUserAvatar({ id, image });
     }
-  }, [updateUserAvatar, id, image, query]);
+  }, [updateUserAvatar, id, image, userQuery]);
 
   if (isUpdateUserAvatarPending || isUserPending) return <Loader />;
 
-  const hasAccess = !!user.user_tarif;
+  const hasAccess = user.subscriptions?.length > 0;
   if (!hasAccess) return <NoEntryPage />;
 
   return <Routing />;

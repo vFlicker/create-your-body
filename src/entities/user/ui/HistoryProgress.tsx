@@ -7,7 +7,7 @@ import { Loader } from '~/shared/ui/Loader';
 
 import { useBodyMeasurements } from '../api/useBodyMeasurements';
 import { calculateBodyMeasurementsHistory } from '../libs/calculateBodyMeasurementsHistory';
-import { formatDate } from '../libs/formatDate';
+import { formatDateForDisplay } from '../libs/formatDateForDisplay';
 import { DeltaDirection } from '../libs/getDeltaDirection';
 
 type HistoryProgressProps = {
@@ -42,7 +42,7 @@ export function HistoryProgress({
         <StyledHistoryList>
           {history.map(({ createdAt, bodyMeasurementsRows }) => (
             <StyledHistoryItem key={createdAt}>
-              <StyledDate>{formatDate(createdAt)}</StyledDate>
+              <StyledDate>{formatDateForDisplay(createdAt)}</StyledDate>
               <StyledMeasurementList>
                 {bodyMeasurementsRows.map((row) => (
                   <StyledStyledMeasurementItem key={row.id}>

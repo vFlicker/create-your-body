@@ -5,14 +5,14 @@ import { useUserSession } from '~/shared/store';
 import { recipeApiService } from './recipeApiService';
 
 export const useRecipesByCategory = (category: string) => {
-  const { query } = useUserSession();
+  const { userQuery } = useUserSession();
 
   const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ['recipes-by-category', category],
       initialPageParam: 1,
       queryFn: ({ pageParam }) =>
-        recipeApiService.getRecipesByCategory(query, category, pageParam),
+        recipeApiService.getRecipesByCategory(userQuery, category, pageParam),
       getNextPageParam: ({ meta }) => {
         return meta.page < meta.totalPages ? meta.page + 1 : undefined;
       },

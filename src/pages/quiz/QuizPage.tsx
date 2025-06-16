@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { JSX, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useUpdateUser, useUser } from '~/entities/user';
+import { formatDateForDisplay, useUpdateUser, useUser } from '~/entities/user';
 import { BackButton } from '~/features/BackButton';
 import { AppRoute } from '~/shared/router';
 import { useUserSession } from '~/shared/store';
@@ -34,24 +34,14 @@ export function QuizPage(): JSX.Element {
   const [isFocused, setIsFocused] = useState(false);
 
   const { user } = useUser();
-  const { query } = useUserSession();
+  const { userQuery } = useUserSession();
   const { updateUser, isUpdateUserLoading } = useUpdateUser();
 
   useEffect(() => {
     if (user) {
       setName(user.name || '');
       setTel(user.phone ? user.phone.replace(/\s/g, '') : '');
-      setBirthday(
-        user.born_date
-          ? new Date(user.born_date)
-              .toLocaleDateString('ru-RU', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-              })
-              .replace(/\//g, '.')
-          : '',
-      );
+      setBirthday(user.bornDate ? formatDateForDisplay(user.bornDate) : '');
     }
   }, [user]);
 
@@ -201,7 +191,7 @@ export function QuizPage(): JSX.Element {
       }
 
       try {
-        await updateUser({ userQuery: query, userData });
+        await updateUser({ userQuery, dto: userData });
         navigate(AppRoute.QuizResult);
       } catch (error) {
         console.error('Ошибка обновления пользователя:', error);

@@ -24,7 +24,7 @@ export function RecordPage(): JSX.Element {
     weight: '',
   });
 
-  const { id, query } = useUserSession();
+  const { tgId, userQuery } = useUserSession();
   const { createBodyMeasurements } = useCreateBodyMeasurements();
 
   const handleChange = (name: string) => {
@@ -38,8 +38,8 @@ export function RecordPage(): JSX.Element {
       const parsed = CreateBodyMeasurementsSchema.parse(bodyMeasurements);
 
       await createBodyMeasurements({
-        userQuery: query,
-        data: { tg_id: id, ...parsed },
+        userQuery,
+        dto: { tg_id: tgId, ...parsed },
       });
 
       navigate(AppRoute.Profile);

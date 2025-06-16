@@ -24,9 +24,9 @@ export const useInitTgApp = () => {
       const { id, photo_url } = initDataUnsafe.user || {};
 
       setUserSession({
-        id: id || MOCK_USER_ID,
-        query: initData || MOCK_USER_QUERY,
-        image: photo_url,
+        tgId: id || MOCK_USER_ID,
+        userQuery: initData || MOCK_USER_QUERY,
+        userImage: photo_url,
       });
     }
   }, [setUserSession]);

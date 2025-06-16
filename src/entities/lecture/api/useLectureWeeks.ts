@@ -5,11 +5,11 @@ import { useUserSession } from '~/shared/store';
 import { lectureApiService } from './lectureApiService';
 
 export const useLectureWeeks = () => {
-  const { query } = useUserSession();
+  const { userQuery } = useUserSession();
 
   const { data, isPending } = useQuery({
     queryKey: ['lecture-weeks'],
-    queryFn: () => lectureApiService.getLectureWeeks(query),
+    queryFn: () => lectureApiService.getLectureWeeks(userQuery),
   });
 
   return { weeks: data, isWeeksPending: isPending };

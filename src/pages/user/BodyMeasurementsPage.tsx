@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import {
   CreateBodyMeasurementsSchema,
+  formatDateForDisplay,
   useBodyMeasurements,
   useCreateBodyMeasurements,
   useUpdateBodyMeasurements,
@@ -20,20 +21,18 @@ import { RadioButton } from '~/shared/ui/RadioButton';
 import { UserPageLayout } from '~/widgets/UserPageLayout';
 
 import { bodyMeasurementsInputs } from './userPageConfig';
-import {
-  formatBornDateForBackend,
-  formatBornDateForFrontend,
-} from './userPageLib';
+import { convertDateToBackendFormat } from './userPageLib';
 
 const DIMENSION_LIST = ['Груди', 'Талии', 'Живота', 'Бедер', 'Ноги'];
 
 export function BodyMeasurementsPage(): JSX.Element {
   const navigate = useNavigate();
 
+  const { tgId: tg_id } = useUserSession();
   const { user } = useUser();
 
   const [bornDate, setBornDate] = useState(
-    formatBornDateForFrontend(user?.born_date) || '',
+    formatDateForDisplay(user?.bornDate) || '',
   );
   const [sex, setSex] = useState(user?.sex || '');
 
@@ -53,7 +52,7 @@ export function BodyMeasurementsPage(): JSX.Element {
     weight: mostRecentBodyMeasurement?.weight || '',
   });
 
-  const { query: userQuery } = useUserSession();
+  const { userQuery: userQuery } = useUserSession();
   const { updateUser } = useUpdateUser();
   const { updateBodyMeasurementsMutate, isUpdateBodyMeasurementsPending } =
     useUpdateBodyMeasurements();
@@ -79,18 +78,18 @@ export function BodyMeasurementsPage(): JSX.Element {
         await updateBodyMeasurementsMutate({
           id,
           userQuery,
-          bodyMeasurements: parsedBodyMeasurements,
+          dto: parsedBodyMeasurements,
         });
       } else {
         await createBodyMeasurements({
           userQuery,
-          bodyMeasurements: parsedBodyMeasurements,
+          dto: { tg_id, ...parsedBodyMeasurements },
         });
       }
 
-      const formattedBornDate = formatBornDateForBackend(bornDate);
+      const formattedBornDate = convertDateToBackendFormat(bornDate);
       const userData = { sex, born_date: formattedBornDate };
-      await updateUser({ userQuery, userData });
+      await updateUser({ userQuery, dto: userData });
 
       navigate(AppRoute.Profile);
     } catch (error) {

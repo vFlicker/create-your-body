@@ -5,11 +5,11 @@ import { useUserSession } from '~/shared/store';
 import { trainingApiService } from '../trainingApiService';
 
 export const useTrainingDetailsById = (id: string) => {
-  const { query } = useUserSession();
+  const { userQuery } = useUserSession();
 
   const { data, isPending } = useQuery({
     queryKey: ['training-details-by-id', id],
-    queryFn: () => trainingApiService.getTrainingDetailsById(query, id),
+    queryFn: () => trainingApiService.getTrainingDetailsById(userQuery, id),
   });
 
   return { trainingDetails: data, isTrainingDetailsPending: isPending };

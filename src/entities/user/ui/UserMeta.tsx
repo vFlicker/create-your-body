@@ -27,20 +27,20 @@ export function UserMeta({ view }: UserMetaProps): JSX.Element {
 
   return (
     <StyledUserMetaWrapper>
-      <StyledButton level={user.user_level} view={view} onClick={handleClick}>
-        <StyledAvatar src={user.image ?? defaultAvatarSrc} alt="Ваш аватар" />
+      <StyledButton level={user.level} view={view} onClick={handleClick}>
+        <StyledAvatar src={user.userpic ?? defaultAvatarSrc} alt="Ваш аватар" />
       </StyledButton>
 
       {view === 'level' && (
         <StyledLevelWrapper>
-          Уровень: <span>{user.user_level}</span>
+          Уровень: <span>{user.level}</span>
         </StyledLevelWrapper>
       )}
 
       {view === 'name' && (
         <StyledNameWrapper>
           <p>{user?.name || 'Имя'}</p>
-          <span>{user?.user_level || 'Уровень'}</span>
+          <span>{user?.level || 'Уровень'}</span>
         </StyledNameWrapper>
       )}
     </StyledUserMetaWrapper>

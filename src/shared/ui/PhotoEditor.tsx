@@ -24,7 +24,7 @@ type PhotoEditorProps = {
 export function PhotoEditor({ label, stage }: PhotoEditorProps) {
   const fileInputRef = useRef(null);
 
-  const { query } = useUserSession();
+  const { userQuery } = useUserSession();
 
   const { isTransformationPhotoPending, transformationPhoto } =
     useTransformationPhoto();
@@ -57,7 +57,7 @@ export function PhotoEditor({ label, stage }: PhotoEditorProps) {
     formData.append('image', file);
 
     try {
-      updateTransformationPhotoMutate({ userQuery: query, formData, stage });
+      updateTransformationPhotoMutate({ userQuery, formData, stage });
     } catch {
       showTelegramAlert('Ошибка при загрузке фотографии');
     }

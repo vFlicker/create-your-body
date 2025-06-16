@@ -17,7 +17,7 @@ export function QuizResultPage(): JSX.Element {
   const navigate = useNavigate();
 
   const { user, isUserPending } = useUser();
-  const level = user?.user_level;
+  const level = user?.level;
 
   if (isUserPending) return <Loader />;
 

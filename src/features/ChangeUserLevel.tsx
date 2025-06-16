@@ -13,12 +13,12 @@ export function ChangeUserLevel(): JSX.Element {
   const [open, setOpen] = useState(false);
 
   const { user } = useUser();
-  const { query } = useUserSession();
+  const { userQuery } = useUserSession();
 
   const { updateUser } = useUpdateUser();
 
   const handleSelectorClick = async (level) => {
-    updateUser({ userQuery: query, userData: { user_level: level } });
+    updateUser({ userQuery, dto: { level } });
   };
 
   return (
@@ -32,7 +32,7 @@ export function ChangeUserLevel(): JSX.Element {
         <Toggler
           backgroundColor={Color.White}
           values={['Новичок', 'Профи']}
-          activeValue={user.user_level}
+          activeValue={user.level}
           onClick={handleSelectorClick}
         />
       )}

@@ -13,7 +13,7 @@ export function StartPage(): JSX.Element {
   const navigate = useNavigate();
   const { user } = useUser();
 
-  const type = user.born_date ? 'training' : 'start';
+  const type = user.bornDate ? 'training' : 'start';
   const { buttonText, buttonIconSrc, onButtonClick } = buttonConfig[type];
 
   return (

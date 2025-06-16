@@ -5,11 +5,11 @@ import { useUserSession } from '~/shared/store';
 import { userApiService } from './userApiService';
 
 export const useBodyMeasurements = () => {
-  const { query } = useUserSession();
+  const { userQuery } = useUserSession();
 
   const { data, isPending } = useQuery({
     queryKey: ['user-body-measurements'],
-    queryFn: () => userApiService.getBodyMeasurements(query),
+    queryFn: () => userApiService.getBodyMeasurements(userQuery),
   });
 
   return { bodyMeasurements: data, isBodyMeasurementsPending: isPending };

@@ -16,7 +16,7 @@ export function VideoScreen(): JSX.Element {
   const navigate = useNavigate();
   const [isVideoEnded, setIsVideoEnded] = useState(false);
 
-  const { id } = useUserSession();
+  const { tgId: id } = useUserSession();
   const { updateGreetVideoProgress } = useUpdateGreetVideoProgress();
 
   const handleButtonClick = () => {

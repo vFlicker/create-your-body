@@ -21,7 +21,7 @@ export function TrainingWarmupPage(): JSX.Element {
 
   const { user } = useUser();
 
-  const hasProPlan = user.user_tarif.includes('Pro');
+  const hasProPlan = user?.subscriptions?.some(({ plan }) => plan === 'pro');
 
   return (
     <CommonPageLayout

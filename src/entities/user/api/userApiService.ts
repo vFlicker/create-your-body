@@ -3,83 +3,22 @@ import axios from 'axios';
 import { BASE_API_URL, httpClient } from '~/shared/api/httpClient';
 
 import {
-  BodyMeasurementsResponse,
   CreateBodyMeasurementsDto,
-  TransformationPhotosResponse,
-  User,
+  GetBodyMeasurementsResponse,
+  GetTransformationPhotoResponse,
+  GetUserResponse,
+  UpdateBodyMeasurementsDto,
+  UpdateUserDto,
+  UpdateVideoProgressDto,
 } from '../userTypes';
-
-type VideoProgressUpdateData = {
-  userId: string | number;
-  last_video_time: string;
-  last_video_duration: string;
-  videoSrc: string;
-  page?: number | string;
-  lastVideo?: number | string;
-};
-
-const getUserAdapter = (user: User) => ({
-  born_date: user.bornDate ? user.bornDate.split('T')[0] : null,
-  check: true,
-  email: user.email || null,
-  greet_video_time_view: null,
-  id: user.id,
-  image: user.userpic || null,
-  image_after: null,
-  image_before: null,
-  last_video: null,
-  last_video_duration: null,
-  last_video_link: null,
-  last_video_time: null,
-  name: user.name,
-  order_created_at:
-    user.subscriptions && user.subscriptions[0]
-      ? user.subscriptions[0].startedAt
-      : null,
-  order_ended_at:
-    user.subscriptions && user.subscriptions[0]
-      ? user.subscriptions[0].expiresAt
-      : null,
-  order_id:
-    user.subscriptions && user.subscriptions[0]
-      ? user.subscriptions[0].orderId
-      : null,
-  phone: user.phone,
-  sex: user.sex,
-  tg_id: user.tgId ? String(user.tgId) : null,
-  user_level: user.level as 'Профи' | 'Новичок',
-  user_tarif:
-    user.subscriptions && user.subscriptions[0]
-      ? `Тариф ${user.subscriptions[0].plan}`
-      : null,
-  subscriptions: user.subscriptions,
-});
-
-const updateUserAdapter = (user) => ({
-  name: user?.name,
-  bornDate: user.born_date ? new Date(user.born_date).toISOString() : undefined,
-  sex: user?.sex,
-  level: user?.user_level,
-  phone: user?.phone,
-});
-
-const updateParametersAdapter = (parameters) => ({
-  waist: parameters.waist,
-  legs: parameters.legs,
-  weight: parameters.weight,
-  chest: parameters.chest,
-  abdominalCircumference: parameters.abdominal_circumference,
-  hips: parameters.hips,
-});
 
 export const userApiService = {
   getUser: async (userQuery: string) => {
     try {
-      const { data } = await httpClient.get(
+      const { data } = await httpClient.get<GetUserResponse>(
         `/v2/api/client/user/me?${userQuery}`,
       );
-      const adaptedUser = getUserAdapter(data.data);
-      return adaptedUser;
+      return data.data;
     } catch (error) {
       console.error('Error fetching user:', error);
       throw error;
@@ -88,16 +27,15 @@ export const userApiService = {
 
   updateUser: async ({
     userQuery,
-    userData,
+    dto,
   }: {
     userQuery: string;
-    userData: any;
+    dto: UpdateUserDto;
   }) => {
     try {
-      const adaptedUserData = updateUserAdapter(userData);
       const response = await httpClient.patch(
         `/v2/api/client/user/me?${userQuery}`,
-        adaptedUserData,
+        dto,
       );
       return response;
     } catch (error) {
@@ -108,7 +46,7 @@ export const userApiService = {
 
   getTransformationPhotos: async (userQuery: string) => {
     try {
-      const response = await httpClient.get<TransformationPhotosResponse>(
+      const response = await httpClient.get<GetTransformationPhotoResponse>(
         `/v2/api/client/user/photos?${userQuery}`,
       );
       return response.data.data;
@@ -146,15 +84,15 @@ export const userApiService = {
 
   createBodyMeasurements: async ({
     userQuery,
-    bodyMeasurements,
+    dto,
   }: {
     userQuery: string;
-    bodyMeasurements: CreateBodyMeasurementsDto;
+    dto: CreateBodyMeasurementsDto;
   }) => {
     try {
       const response = await httpClient.post(
         `/v2/api/client/user/measurements?${userQuery}`,
-        bodyMeasurements,
+        dto,
       );
       return response;
     } catch (error) {
@@ -165,7 +103,7 @@ export const userApiService = {
 
   getBodyMeasurements: async (userQuery: string) => {
     try {
-      const { data } = await httpClient.get<BodyMeasurementsResponse>(
+      const { data } = await httpClient.get<GetBodyMeasurementsResponse>(
         `/v2/api/client/user/measurements?${userQuery}`,
       );
       return data.data.measurements;
@@ -178,24 +116,16 @@ export const userApiService = {
   updateBodyMeasurements: async ({
     userQuery,
     id,
-    bodyMeasurements,
+    dto,
   }: {
     userQuery: string;
     id: number;
-    bodyMeasurements: {
-      waist: number;
-      legs: number;
-      weight: number;
-      chest: number;
-      abdominal_circumference: number;
-      hips: number;
-    };
+    dto: UpdateBodyMeasurementsDto;
   }) => {
     try {
-      const adaptedParameters = updateParametersAdapter(bodyMeasurements);
       const response = await httpClient.put(
         `/v2/api/client/user/measurements/${id}?${userQuery}`,
-        adaptedParameters,
+        dto,
       );
       return response;
     } catch (error) {
@@ -241,16 +171,16 @@ export const userApiService = {
     }
   },
 
-  updateVideoProgress: async (data: VideoProgressUpdateData) => {
+  updateVideoProgress: async ({ dto }: { dto: UpdateVideoProgressDto }) => {
     console.info('This method is deprecated');
 
     try {
       await axios.patch(`${BASE_API_URL}/api/v1/user/video`, {
-        user_tg_id: data.userId,
-        last_video: data.lastVideo || data.page,
-        last_video_time: data.last_video_time,
-        last_video_link: data.videoSrc,
-        last_video_duration: data.last_video_duration,
+        user_tg_id: dto.userId,
+        last_video: dto.lastVideo || dto.page,
+        last_video_time: dto.last_video_time,
+        last_video_link: dto.videoSrc,
+        last_video_duration: dto.last_video_duration,
       });
     } catch (error) {
       console.error('Error updating video progress:', error);
