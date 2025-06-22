@@ -30,7 +30,7 @@ export function TrainingPlaceWeeksPage(): JSX.Element {
 
   return (
     <CommonPageLayout
-      title={pageTitle[type]}
+      title={pageTitle[type!]}
       iconSrc={musclesIconSrc}
       isLoading={isTrainingWeeksPending}
     >

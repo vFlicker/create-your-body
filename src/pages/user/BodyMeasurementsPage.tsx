@@ -3,6 +3,7 @@ import { ChangeEvent, JSX, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
+  convertDateToBackendFormat,
   CreateBodyMeasurementsSchema,
   formatDateForDisplay,
   useBodyMeasurements,
@@ -21,7 +22,6 @@ import { RadioButton } from '~/shared/ui/RadioButton';
 import { UserPageLayout } from '~/widgets/UserPageLayout';
 
 import { bodyMeasurementsInputs } from './userPageConfig';
-import { convertDateToBackendFormat } from './userPageLib';
 
 const DIMENSION_LIST = ['Груди', 'Талии', 'Живота', 'Бедер', 'Ноги'];
 
@@ -88,7 +88,7 @@ export function BodyMeasurementsPage(): JSX.Element {
       }
 
       const formattedBornDate = convertDateToBackendFormat(bornDate);
-      const userData = { sex, born_date: formattedBornDate };
+      const userData = { sex, bornDate: formattedBornDate };
       await updateUser({ dto: userData });
 
       navigate(AppRoute.Profile);

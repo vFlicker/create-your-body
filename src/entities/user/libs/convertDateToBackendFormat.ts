@@ -1,4 +1,4 @@
 export const convertDateToBackendFormat = (date: string): string => {
   const [day, month, year] = date.split('.');
-  return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+  return `${year}-${month}-${day}T00:00:00.000Z`;
 };

@@ -2,7 +2,12 @@ import styled from '@emotion/styled';
 import { ChangeEvent, JSX, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { formatDateForDisplay, useUpdateUser, useUser } from '~/entities/user';
+import {
+  convertDateToBackendFormat,
+  formatDateForDisplay,
+  useUpdateUser,
+  useUser,
+} from '~/entities/user';
 import { BackButton } from '~/features/BackButton';
 import { AppRoute } from '~/shared/router';
 import { Color } from '~/shared/theme/colors';
@@ -126,12 +131,9 @@ export function QuizPage(): JSX.Element {
       const countTwos = finalAnswers.filter((answer) => answer === 2).length;
       const userLevel = countOnes > countTwos ? 'Профи' : 'Новичок';
 
-      const [day, month, year] = birthday.split('.');
-      const formattedBirthday = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-
       const userData = {
         name: name || '',
-        bornDate: formattedBirthday,
+        bornDate: convertDateToBackendFormat(birthday),
         sex: gen === 'm' ? 'male' : 'female',
         level: userLevel || '',
         phone: tel || '',
