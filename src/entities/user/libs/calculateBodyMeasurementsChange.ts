@@ -13,7 +13,9 @@ type BodyMeasurementRow = {
   deltaDirection?: DeltaDirection;
 };
 
-const userBodyMetrics = {
+type BodyMeasurementKey = keyof typeof userBodyMeasurement;
+
+const userBodyMeasurement = {
   chest: {
     title: 'Обхват груди',
     unit: 'см',
@@ -51,15 +53,17 @@ export const calculateBodyMeasurementsChange = (
   if (hasTwoMeasurements) {
     const secondToLastMeasurements = measurements[1];
 
-    for (const key of Object.keys(userBodyMetrics)) {
+    for (const key of Object.keys(
+      userBodyMeasurement,
+    ) as BodyMeasurementKey[]) {
       const value = mostRecentMeasurement[key];
       const previousValue = secondToLastMeasurements[key];
       const delta = value - previousValue;
       const deltaDirection = getDeltaDirection(delta);
-      const sign = signIndicator[deltaDirection] || '';
+      const sign = signIndicator[deltaDirection];
 
       bodyMeasurementChanges.push({
-        ...userBodyMetrics[key],
+        ...userBodyMeasurement[key],
         value,
         delta: `${sign}${Math.abs(delta)}`,
         deltaDirection,
@@ -69,13 +73,13 @@ export const calculateBodyMeasurementsChange = (
     return bodyMeasurementChanges;
   }
 
-  for (const key in userBodyMetrics) {
+  for (const key of Object.keys(userBodyMeasurement) as BodyMeasurementKey[]) {
     const value = mostRecentMeasurement[key];
     bodyMeasurementChanges.push({
-      ...userBodyMetrics[key],
+      ...userBodyMeasurement[key],
       value,
-      delta: 0,
-      deltaDirection: 'no change',
+      delta: '0',
+      deltaDirection: 'noChange',
     });
   }
 

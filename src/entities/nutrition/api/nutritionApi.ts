@@ -6,11 +6,10 @@ import {
 } from '../nutritionTypes';
 
 export const nutritionApiService = {
-  getNutritionCategories: async (userQuery: string) => {
+  getNutritionCategories: async () => {
     try {
       const { data } = await httpClient.get<NutritionCategoriesResponse>(
         `/cms/api/nutrition/client/category/nutrition`,
-        { headers: { 'x-telegram-init': userQuery } },
       );
       return data.data;
     } catch (error) {
@@ -19,20 +18,15 @@ export const nutritionApiService = {
     }
   },
 
-  getNutritionPlanByPdfId: async (
-    userQuery: string,
-    userId: number,
-    pdfId: string,
-  ) => {
+  getNutritionPlan: async (userId: number, categoryId: string) => {
     try {
       const { data } = await httpClient.get<NutritionPlanResponse>(
-        `/cms/api/nutrition/client/${pdfId}?tg_id=${userId}`,
-        { headers: { 'x-telegram-init': userQuery } },
+        `/cms/api/nutrition/client/${categoryId}?tg_id=${userId}`,
       );
 
       return data;
     } catch (error) {
-      console.error('Error fetching nutrition plan by ID with PDF:', error);
+      console.error('Error fetching nutrition plan by ID:', error);
       throw error;
     }
   },

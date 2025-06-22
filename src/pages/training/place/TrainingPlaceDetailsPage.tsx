@@ -21,14 +21,24 @@ export function TrainingPlaceDetailsPage(): JSX.Element {
 
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
-  const { trainingDetails, isTrainingDetailsPending } =
-    useTrainingDetailsById(id);
-
-  const { type, week, steps } = trainingDetails || {};
+  const { trainingDetails, isTrainingDetailsPending } = useTrainingDetailsById(
+    id!,
+  );
 
   const showPreviousPage = (): void => {
     navigate(`${AppRoute.TrainingPlace}/${type}/${week}`);
   };
+
+  if (!trainingDetails)
+    return (
+      <CommonPageLayout
+        title={'Тренировки'}
+        iconSrc={musclesIconSrc}
+        isLoading={isTrainingDetailsPending}
+      />
+    );
+
+  const { type, week, steps } = trainingDetails;
 
   const handleNextClick = () => {
     const isLastStep = currentStepIndex === steps.length - 1;
@@ -47,7 +57,7 @@ export function TrainingPlaceDetailsPage(): JSX.Element {
 
   return (
     <CommonPageLayout
-      title={pageTitle[trainingDetails?.type]}
+      title={pageTitle[trainingDetails?.type as keyof typeof pageTitle]}
       iconSrc={musclesIconSrc}
       isLoading={isTrainingDetailsPending}
     >
@@ -60,11 +70,12 @@ export function TrainingPlaceDetailsPage(): JSX.Element {
 
         {currentStep?.blocks?.map(({ _id, type, video, content }) => {
           const BlockComponent = blockComponents[type];
+          const htmlContent = content?.text || video?.embedCode;
           return (
             <BlockComponent
               key={_id}
-              text={content?.text}
-              embedCode={video?.embedCode}
+              // TODO: use common name on backend for video, text and other blocks
+              htmlContent={htmlContent as string}
             />
           );
         })}

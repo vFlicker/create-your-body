@@ -4,21 +4,20 @@ import {
   TrainingDetailResponse,
   TrainingsResponse,
   WeeksResponse,
-} from './trainingTypes';
+} from '../trainingTypes';
 
 export type TrainingWeekPayload = {
   week: number;
-  level: 'noob' | 'pro';
   type: 'home' | 'gym';
   stream: number;
+  level?: 'noob' | 'pro';
 };
 
 export const trainingApiService = {
-  getTrainingWeeks: async (userQuery: string, stream: number) => {
+  getTrainingWeeks: async (stream: number) => {
     try {
       const { data } = await httpClient.get<WeeksResponse>(
         `cms/api/workouts/client-weeks?stream=${stream}`,
-        { headers: { 'x-telegram-init': userQuery } },
       );
 
       return data.data;
@@ -28,14 +27,15 @@ export const trainingApiService = {
     }
   },
 
-  getTrainingsByWeek: async (
-    userQuery: string,
-    { level, stream, type, week }: TrainingWeekPayload,
-  ) => {
+  getTrainingsByWeek: async ({
+    level,
+    stream,
+    type,
+    week,
+  }: TrainingWeekPayload) => {
     try {
       const { data } = await httpClient.get<TrainingsResponse>(
         `/cms/api/workouts/client-week/${week}?level=${level}&type=${type}&stream=${stream}`,
-        { headers: { 'x-telegram-init': userQuery } },
       );
 
       return data.data;
@@ -45,11 +45,10 @@ export const trainingApiService = {
     }
   },
 
-  getTrainingDetailsById: async (userQuery: string, trainingId: string) => {
+  getTrainingDetailsById: async (trainingId: string) => {
     try {
       const { data } = await httpClient.get<TrainingDetailResponse>(
         `/cms/api/workouts/client/${trainingId}`,
-        { headers: { 'x-telegram-init': userQuery } },
       );
 
       return data.data;

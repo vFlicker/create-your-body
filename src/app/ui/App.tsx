@@ -2,7 +2,7 @@ import { JSX, useEffect } from 'react';
 
 import { useUpdateUserAvatar, useUser } from '~/entities/user';
 import { NoEntryPage } from '~/pages/noEntry';
-import { useUserSession } from '~/shared/store';
+import { userSession } from '~/shared/libs/userSession';
 import { Loader } from '~/shared/ui/Loader';
 
 import { useInitTgApp } from '../hooks/useInitTgApp';
@@ -12,17 +12,27 @@ import { Routing } from './Routing';
 function App(): JSX.Element {
   useInitTgApp();
 
-  const { tgId: id, userImage: image, userQuery } = useUserSession();
-  const { user, isUserPending } = useUser();
+  const currentUserSession = userSession.getCurrentUser();
   const { updateUserAvatar, isUpdateUserAvatarPending } = useUpdateUserAvatar();
 
   useEffect(() => {
-    if (userQuery && id && image) {
-      updateUserAvatar({ id, image });
+    if (currentUserSession) {
+      const { userImage, tgId } = currentUserSession;
+      if (!userImage) return;
+      updateUserAvatar({ userId: tgId, userImage: userImage });
     }
-  }, [updateUserAvatar, id, image, userQuery]);
+  }, [currentUserSession, updateUserAvatar]);
 
-  if (isUpdateUserAvatarPending || isUserPending) return <Loader />;
+  const { user, isUserPending } = useUser();
+
+  if (
+    !user ||
+    isUpdateUserAvatarPending ||
+    isUserPending ||
+    !currentUserSession
+  ) {
+    return <Loader />;
+  }
 
   const hasAccess = user.subscriptions?.length > 0;
   if (!hasAccess) return <NoEntryPage />;

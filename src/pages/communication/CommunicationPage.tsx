@@ -12,6 +12,15 @@ import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 export function CommunicationPage(): JSX.Element {
   const { user, isUserPending } = useUser();
 
+  if (!user || isUserPending)
+    return (
+      <CommonPageLayout
+        title="Общение и поддержка"
+        iconSrc={chatIconSrc}
+        isLoading={isUserPending}
+      />
+    );
+
   const firstSteam = user.subscriptions.find((sub) => sub.stream === 1);
   const secondSteam = user.subscriptions.find((sub) => sub.stream === 2);
 
@@ -20,11 +29,7 @@ export function CommunicationPage(): JSX.Element {
   const isPro = firstSteamIsPro || secondSteamIsPro;
 
   return (
-    <CommonPageLayout
-      title="Общение и поддержка"
-      iconSrc={chatIconSrc}
-      isLoading={isUserPending}
-    >
+    <CommonPageLayout title="Общение и поддержка" iconSrc={chatIconSrc}>
       <StyledCommunicationPageWrapper>
         <StyledText>
           Присоединяйся к нашему сообществу и задавай вопросы. Мы здесь, чтобы

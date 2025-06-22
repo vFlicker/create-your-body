@@ -13,8 +13,8 @@ import {
 } from '~/entities/user';
 import exampleImageSrc from '~/shared/assets/img/example.jpeg';
 import { showTelegramAlert } from '~/shared/libs/telegram';
+import { userSession } from '~/shared/libs/userSession';
 import { AppRoute } from '~/shared/router';
-import { useUserSession } from '~/shared/store';
 import { Button } from '~/shared/ui/Button';
 import { Input } from '~/shared/ui/Input';
 import { RadioButton } from '~/shared/ui/RadioButton';
@@ -28,19 +28,17 @@ const DIMENSION_LIST = ['Груди', 'Талии', 'Живота', 'Бедер'
 export function BodyMeasurementsPage(): JSX.Element {
   const navigate = useNavigate();
 
-  const { tgId: tg_id } = useUserSession();
-  const { user } = useUser();
+  const currentUserSession = userSession.getCurrentUser();
+  const { user, isUserPending } = useUser();
 
   const [bornDate, setBornDate] = useState(
-    formatDateForDisplay(user?.bornDate) || '',
+    formatDateForDisplay(user?.bornDate || ''),
   );
   const [sex, setSex] = useState(user?.sex || '');
 
   const { bodyMeasurements, isBodyMeasurementsPending } = useBodyMeasurements();
 
-  const hasBodyMeasurementsRecord = bodyMeasurements?.length > 0;
-  const mostRecentBodyMeasurement =
-    hasBodyMeasurementsRecord && bodyMeasurements[0];
+  const mostRecentBodyMeasurement = bodyMeasurements?.[0];
 
   const [bodyMeasurementsForm, setBodyMeasurementsForm] = useState({
     chest: mostRecentBodyMeasurement?.chest || '',
@@ -52,12 +50,15 @@ export function BodyMeasurementsPage(): JSX.Element {
     weight: mostRecentBodyMeasurement?.weight || '',
   });
 
-  const { userQuery: userQuery } = useUserSession();
   const { updateUser } = useUpdateUser();
   const { updateBodyMeasurementsMutate, isUpdateBodyMeasurementsPending } =
     useUpdateBodyMeasurements();
   const { createBodyMeasurements, isCreateBodyMeasurementsPending } =
     useCreateBodyMeasurements();
+
+  if (!currentUserSession || isUserPending || !bodyMeasurements || !user) {
+    return <UserPageLayout hasUserLevel={false} isLoading={true} />;
+  }
 
   const handleBodyMeasurementsChange = (name: string) => {
     return (evt: ChangeEvent<HTMLInputElement>) => {
@@ -73,23 +74,22 @@ export function BodyMeasurementsPage(): JSX.Element {
       const parsedBodyMeasurements =
         CreateBodyMeasurementsSchema.parse(bodyMeasurementsForm);
 
-      if (hasBodyMeasurementsRecord) {
+      if (mostRecentBodyMeasurement) {
         const { id } = mostRecentBodyMeasurement;
         await updateBodyMeasurementsMutate({
           id,
-          userQuery,
           dto: parsedBodyMeasurements,
         });
       } else {
+        const { tgId } = currentUserSession;
         await createBodyMeasurements({
-          userQuery,
-          dto: { tg_id, ...parsedBodyMeasurements },
+          dto: { tg_id: tgId, ...parsedBodyMeasurements },
         });
       }
 
       const formattedBornDate = convertDateToBackendFormat(bornDate);
       const userData = { sex, born_date: formattedBornDate };
-      await updateUser({ userQuery, dto: userData });
+      await updateUser({ dto: userData });
 
       navigate(AppRoute.Profile);
     } catch (error) {

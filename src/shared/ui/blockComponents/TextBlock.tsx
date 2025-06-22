@@ -2,11 +2,13 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 
 type TextBlockProps = {
-  text: string;
+  htmlContent: string;
 };
 
-export function TextBlock({ text }: TextBlockProps): JSX.Element {
-  return <StyledTextBlockWrapper dangerouslySetInnerHTML={{ __html: text }} />;
+export function TextBlock({ htmlContent }: TextBlockProps): JSX.Element {
+  return (
+    <StyledTextBlockWrapper dangerouslySetInnerHTML={{ __html: htmlContent }} />
+  );
 }
 
 const StyledTextBlockWrapper = styled.div`

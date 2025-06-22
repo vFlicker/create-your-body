@@ -6,17 +6,17 @@ import { useUpdateGreetVideoProgress } from '~/entities/user';
 import checkIconSrc from '~/shared/assets/svg/check.svg';
 import beginVideoSrc from '~/shared/assets/video/begin.mp4';
 import { debounce } from '~/shared/libs/debounce';
-import { useUserSession } from '~/shared/store';
+import { userSession } from '~/shared/libs/userSession';
 import { Button } from '~/shared/ui/Button';
 import { VideoPlayer } from '~/shared/ui/videoPlayer';
 
 export function VideoScreen(): JSX.Element {
-  const togglePlayRef = useRef(null);
+  const togglePlayRef = useRef<() => void>(() => {});
 
   const navigate = useNavigate();
   const [isVideoEnded, setIsVideoEnded] = useState(false);
 
-  const { tgId: id } = useUserSession();
+  const currentUserSession = userSession.getCurrentUser();
   const { updateGreetVideoProgress } = useUpdateGreetVideoProgress();
 
   const handleButtonClick = () => {
@@ -28,13 +28,15 @@ export function VideoScreen(): JSX.Element {
     ({ duration }: { currentTime: string; duration: string }) => {
       return debounce(async () => {
         try {
-          await updateGreetVideoProgress({ tgId: id, duration: duration });
+          if (!currentUserSession) return;
+          const { tgId } = currentUserSession;
+          await updateGreetVideoProgress({ tgId, duration: duration });
         } catch (err) {
           console.error('Failed to send video update:', err);
         }
       }, 5000)();
     },
-    [id, updateGreetVideoProgress],
+    [currentUserSession, updateGreetVideoProgress],
   );
 
   return (

@@ -17,9 +17,8 @@ export function QuizResultPage(): JSX.Element {
   const navigate = useNavigate();
 
   const { user, isUserPending } = useUser();
-  const level = user?.level;
 
-  if (isUserPending) return <Loader />;
+  if (!user || isUserPending) return <Loader />;
 
   return (
     <StyledQuizResultPage>
@@ -28,8 +27,8 @@ export function QuizResultPage(): JSX.Element {
       <StyledResultInfo>
         <StyledContentWrapper>
           <StyledTextWrapper>
-            <StyledTitle>Ваш уровень: {level}</StyledTitle>
-            <StyledText>{quizResults[level]}</StyledText>
+            <StyledTitle>Ваш уровень: {user.level}</StyledTitle>
+            <StyledText>{quizResults[user.level]}</StyledText>
           </StyledTextWrapper>
           <StyledClue>
             <img src={settingsIconSrc} />

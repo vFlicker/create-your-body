@@ -13,15 +13,22 @@ import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 export function RecipesDetailsPage(): JSX.Element {
   const { id } = useParams<{ id: string }>();
 
-  const { recipeDetails, isRecipeDetailsPending } = useRecipeDetailsById(id);
-  const { title, image, nutrition, ingredients, steps } = recipeDetails || {};
+  const { recipeDetails, isRecipeDetailsPending } = useRecipeDetailsById(id!);
+
+  if (!recipeDetails || isRecipeDetailsPending) {
+    return (
+      <CommonPageLayout
+        title="Рецепты"
+        iconSrc={recipesIconSrc}
+        isLoading={isRecipeDetailsPending}
+      />
+    );
+  }
+
+  const { title, image, nutrition, ingredients, steps } = recipeDetails;
 
   return (
-    <CommonPageLayout
-      title="Рецепты"
-      iconSrc={recipesIconSrc}
-      isLoading={isRecipeDetailsPending}
-    >
+    <CommonPageLayout title="Рецепты" iconSrc={recipesIconSrc}>
       {recipeDetails && (
         <StyledRecipePageWrapper>
           <StyledTitle>{title}</StyledTitle>

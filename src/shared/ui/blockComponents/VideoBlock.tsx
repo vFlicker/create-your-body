@@ -2,14 +2,14 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 
 type VideoBlockProps = {
-  embedCode: string;
+  htmlContent: string;
 };
 
-export function VideoBlock({ embedCode }: VideoBlockProps): JSX.Element {
+export function VideoBlock({ htmlContent }: VideoBlockProps): JSX.Element {
   return (
     <StyledVideoBlockWrapper>
       <StyledVideoContent>
-        <div dangerouslySetInnerHTML={{ __html: embedCode }} />
+        <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
       </StyledVideoContent>
     </StyledVideoBlockWrapper>
   );

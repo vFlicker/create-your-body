@@ -49,7 +49,7 @@ export function RecipeCategoriesPage(): JSX.Element {
           <TitleCard
             key={name}
             title={name}
-            iconSrc={categoryIcon[name]}
+            iconSrc={categoryIcon[name as keyof typeof categoryIcon]}
             onClick={() => handleCategoryClick(name)}
           />
         ))}

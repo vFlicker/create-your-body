@@ -6,12 +6,17 @@ import { useUser } from '~/entities/user';
 import backgroundImageSrc from '~/shared/assets/img/background-image.webp';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/Button';
+import { Loader } from '~/shared/ui/Loader';
 
 import { buttonConfig } from './startPageConfig';
 
 export function StartPage(): JSX.Element {
   const navigate = useNavigate();
-  const { user } = useUser();
+  const { user, isUserPending } = useUser();
+
+  if (!user || isUserPending) {
+    return <Loader />;
+  }
 
   const type = user.bornDate ? 'training' : 'start';
   const { buttonText, buttonIconSrc, onButtonClick } = buttonConfig[type];

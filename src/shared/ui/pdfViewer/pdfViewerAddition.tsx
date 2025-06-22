@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { JSX } from 'react';
 
 import { Color } from '~/shared/theme/colors';
 
@@ -15,7 +16,7 @@ const StyledPdfViewerLink = styled.a`
   text-decoration: underline;
 `;
 
-export const pdfViewerAddition = {
+export const pdfViewerAddition: Record<string, JSX.Element> = {
   '67e68b630e3f348f8806f42f': (
     <StyledPdfViewerText>
       Рассчитать свою дневную калорийность можно на этих сайтах

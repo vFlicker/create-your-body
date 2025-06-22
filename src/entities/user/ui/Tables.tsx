@@ -17,7 +17,7 @@ const genderLabel = {
 export function UserDataTable(): JSX.Element {
   const { user, isUserPending } = useUser();
 
-  if (isUserPending) {
+  if (!user || isUserPending) {
     return <Loader />;
   }
 
@@ -42,7 +42,7 @@ export function UserDataTable(): JSX.Element {
 export function MeasurementsTable(): JSX.Element {
   const { bodyMeasurements, isBodyMeasurementsPending } = useBodyMeasurements();
 
-  if (isBodyMeasurementsPending) {
+  if (!bodyMeasurements || isBodyMeasurementsPending) {
     return <Loader />;
   }
 

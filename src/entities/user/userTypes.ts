@@ -5,12 +5,12 @@ type User = {
   email: string;
   getcourseId: string | null;
   id: number;
-  level: string;
+  level: 'Профи' | 'Новичок';
   name: string;
   paymentBotId: string | null;
   phone: string;
   role: string;
-  sex: string;
+  sex: 'male' | 'female';
   subscriptions: Subscription[];
   tgId: number | null;
   userpic: string | null;

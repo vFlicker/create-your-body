@@ -3,15 +3,13 @@ import { JSX } from 'react';
 
 type NutritionItemProps = {
   label: string;
-  value?: string | number;
+  value: string | number;
 };
 
 export function NutritionItem({
   label,
   value,
 }: NutritionItemProps): JSX.Element {
-  if (!value) return null;
-
   return (
     <StyledNutritionItem>
       <div>{label}</div>

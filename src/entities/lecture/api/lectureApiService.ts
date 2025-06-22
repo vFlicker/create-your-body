@@ -7,13 +7,10 @@ import {
 } from '../lectureTypes';
 
 export const lectureApiService = {
-  getLectureWeeks: async (userQuery: string) => {
+  getLectureWeeks: async () => {
     try {
       const { data } = await httpClient.get<WeeksResponse>(
         `/cms/api/lectures/client-weeks`,
-        {
-          headers: { 'x-telegram-init': userQuery },
-        },
       );
 
       return data.data;
@@ -23,11 +20,10 @@ export const lectureApiService = {
     }
   },
 
-  getLecturesByWeek: async (userQuery: string, week: string) => {
+  getLecturesByWeek: async (week: string) => {
     try {
       const { data } = await httpClient.get<LecturesResponse>(
         `/cms/api/lectures/client-week/${week}`,
-        { headers: { 'x-telegram-init': userQuery } },
       );
 
       return data.data;
@@ -37,13 +33,10 @@ export const lectureApiService = {
     }
   },
 
-  getLectureDetailsById: async (userQuery: string, id: string) => {
+  getLectureDetailsById: async (id: string) => {
     try {
       const { data } = await httpClient.get<LectureDetailResponse>(
         `/cms/api/lectures/client/${id}`,
-        {
-          headers: { 'x-telegram-init': userQuery },
-        },
       );
 
       return data.data;

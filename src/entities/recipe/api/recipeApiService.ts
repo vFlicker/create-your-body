@@ -7,13 +7,10 @@ import {
 } from '../recipeTypes';
 
 export const recipeApiService = {
-  getRecipeCategories: async (userQuery: string) => {
+  getRecipeCategories: async () => {
     try {
       const { data } = await httpClient.get<RecipeCategoriesResponse>(
         `/cms/api/recipes/client/categories`,
-        {
-          headers: { 'x-telegram-init': userQuery },
-        },
       );
 
       return data.data;
@@ -23,17 +20,10 @@ export const recipeApiService = {
     }
   },
 
-  getRecipesByCategory: async (
-    userQuery: string,
-    category: string,
-    page: number,
-  ) => {
+  getRecipesByCategory: async (category: string, page: number) => {
     try {
       const { data } = await httpClient.get<RecipesResponse>(
         `/cms/api/recipes/client/category/${category}?page=${page}`,
-        {
-          headers: { 'x-telegram-init': userQuery },
-        },
       );
 
       return data;
@@ -43,13 +33,10 @@ export const recipeApiService = {
     }
   },
 
-  getRecipeDetailsById: async (userQuery: string, id: string) => {
+  getRecipeDetailsById: async (id: string) => {
     try {
       const { data } = await httpClient.get<RecipeDetailsResponse>(
         `/cms/api/recipes/client/${id}`,
-        {
-          headers: { 'x-telegram-init': userQuery },
-        },
       );
 
       return data.data;

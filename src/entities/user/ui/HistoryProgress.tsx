@@ -23,7 +23,7 @@ export function HistoryProgress({
 }: HistoryProgressProps): JSX.Element {
   const { bodyMeasurements, isBodyMeasurementsPending } = useBodyMeasurements();
 
-  if (isBodyMeasurementsPending) {
+  if (!bodyMeasurements || isBodyMeasurementsPending) {
     return <Loader />;
   }
 

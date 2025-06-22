@@ -12,14 +12,19 @@ export function DashboardPage(): JSX.Element {
   const navigate = useNavigate();
   const { user, isUserPending } = useUser();
 
+  if (!user || isUserPending)
+    return (
+      <CommonPageLayout
+        title="Добро пожаловать!"
+        hasStreamInfo={true}
+        isLoading={isUserPending}
+      />
+    );
+
   const pageContainersData = getTitleCards(user.subscriptions);
 
   return (
-    <CommonPageLayout
-      title={`Привет, ${user?.name || 'Неизвестный'}!`}
-      hasStreamInfo={true}
-      isLoading={isUserPending}
-    >
+    <CommonPageLayout title={`Привет, ${user.name}!`} hasStreamInfo={true}>
       <StyledContentWrapper>
         {/* TODO: we can show History component here */}
 
@@ -29,8 +34,8 @@ export function DashboardPage(): JSX.Element {
               <TitleCard
                 key={name}
                 title={name}
-                labelText={buy && 'Доступно в PRO'}
-                labelIconSrc={buy && icon}
+                labelText={buy ? 'Доступно в PRO' : undefined}
+                labelIconSrc={buy ? icon : undefined}
                 iconSrc={icon}
                 disabled={closed !== null || buy}
                 isHighlight={isHighlight}

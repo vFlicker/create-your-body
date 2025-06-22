@@ -52,7 +52,7 @@ type TrainingDetail = {
   createdAt: string;
   updatedAt: string;
   __v: number;
-  steps?: {
+  steps: {
     _id: string;
     title: string;
     order: number;
@@ -62,7 +62,7 @@ type TrainingDetail = {
     __v: number;
     blocks?: {
       _id: string;
-      type: string;
+      type: 'video' | 'text' | 'divider';
       order: number;
       step?: string;
       lecture?: string;

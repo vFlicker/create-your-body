@@ -19,9 +19,8 @@ const StyledLoaderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-grow: 1;
   width: 100%;
-  height: 100%;
+  flex-grow: 1;
 `;
 
 const StyledSpinner = styled.div`

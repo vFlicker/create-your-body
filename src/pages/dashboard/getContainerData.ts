@@ -1,3 +1,4 @@
+import { Subscription } from '~/entities/user/userTypes';
 import food from '~/shared/assets/nav/food.svg';
 import book from '~/shared/assets/svg/book.svg';
 import health from '~/shared/assets/svg/health.svg';
@@ -14,7 +15,7 @@ type CardData = {
   isHighlight: boolean;
 };
 
-export const getTitleCards = (subscriptions) => {
+export const getTitleCards = (subscriptions: Subscription[]) => {
   const pageContainersData: CardData[] = [];
 
   const firstSteam = subscriptions.find((sub) => sub.stream === 1);

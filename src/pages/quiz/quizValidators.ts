@@ -1,4 +1,4 @@
-export const isDateValid = (date) => {
+export const isDateValid = (date: string): boolean => {
   if (!/^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[012])\.(19|20)\d\d$/.test(date)) {
     return false;
   }
@@ -24,7 +24,7 @@ export const isDateValid = (date) => {
   return birthDate < minDate;
 };
 
-export const validatePhone = (phone) => {
+export const validatePhone = (phone: string): string => {
   const cleanedPhone = phone.replace(/[^\d+]/g, '');
 
   if (cleanedPhone.startsWith('7') || cleanedPhone.startsWith('8')) {
@@ -54,7 +54,7 @@ export const validatePhone = (phone) => {
   return 'Введите корректный номер телефона';
 };
 
-export const validateName = (name) => {
+export const validateName = (name: string): string => {
   if (!name.trim()) {
     return 'Введите ваше имя';
   }

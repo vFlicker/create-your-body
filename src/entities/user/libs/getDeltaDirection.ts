@@ -3,6 +3,7 @@ export type DeltaDirection = 'positive' | 'negative' | 'noChange';
 export const signIndicator = {
   negative: '-',
   positive: '+',
+  noChange: '',
 };
 
 export const getDeltaDirection = (delta: number): DeltaDirection => {

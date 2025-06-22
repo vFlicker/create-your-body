@@ -12,14 +12,18 @@ export function StartProfilePage(): JSX.Element {
   const navigate = useNavigate();
 
   const { bodyMeasurements, isBodyMeasurementsPending } = useBodyMeasurements();
-  const hasBodyMeasurements = bodyMeasurements?.length > 0;
 
-  if (hasBodyMeasurements) {
-    return <Navigate to={AppRoute.Profile} replace />;
+  if (!bodyMeasurements || isBodyMeasurementsPending) {
+    return (
+      <UserPageLayout isLoading={isBodyMeasurementsPending} hasUserLevel />
+    );
   }
 
+  const hasBodyMeasurements = bodyMeasurements.length > 0;
+  if (hasBodyMeasurements) return <Navigate to={AppRoute.Profile} replace />;
+
   return (
-    <UserPageLayout isLoading={isBodyMeasurementsPending} hasUserLevel>
+    <UserPageLayout hasUserLevel>
       <StyledStartProfilePageWrapper>
         <StyledImage src={measurementsImageSrc} />
         <StyledInfoWrapper>

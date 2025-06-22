@@ -1,11 +1,10 @@
 import styled from '@emotion/styled';
-import { JSX, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, JSX, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { formatDateForDisplay, useUpdateUser, useUser } from '~/entities/user';
 import { BackButton } from '~/features/BackButton';
 import { AppRoute } from '~/shared/router';
-import { useUserSession } from '~/shared/store';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/Button';
 import { Progress } from '~/shared/ui/Progress';
@@ -15,9 +14,9 @@ import { isDateValid, validateName, validatePhone } from './quizValidators';
 
 export function QuizPage(): JSX.Element {
   const navigate = useNavigate();
-  const formRef = useRef(null);
-  const nameRef = useRef(null);
-  const telRef = useRef(null);
+  const formRef = useRef<HTMLDivElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const telRef = useRef<HTMLInputElement>(null);
   const birthdayRef = useRef(null);
 
   const [step, setStep] = useState(1);
@@ -28,13 +27,11 @@ export function QuizPage(): JSX.Element {
   const [telError, setTelError] = useState('');
   const [nameError, setNameError] = useState('');
   const [birthdayError, setBirthdayError] = useState('');
-  const [answers, setAnswers] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [answers, setAnswers] = useState<number[]>([]);
+  const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [isValid, setIsValid] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
 
   const { user } = useUser();
-  const { userQuery } = useUserSession();
   const { updateUser, isUpdateUserLoading } = useUpdateUser();
 
   useEffect(() => {
@@ -65,8 +62,8 @@ export function QuizPage(): JSX.Element {
     birthdayError,
   ]);
 
-  const handlePhoneChange = (e) => {
-    let value = e.target.value.replace(/[^\d+]/g, '');
+  const handlePhoneChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    let value = evt.target.value.replace(/[^\d+]/g, '');
 
     if (value.startsWith('+')) {
       if (value.length > 15) return;
@@ -92,15 +89,15 @@ export function QuizPage(): JSX.Element {
     }
   };
 
-  const handleNameChange = (e) => {
-    const value = e.target.value;
+  const handleNameChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    const value = evt.target.value;
     const sanitizedValue = value.replace(/[^а-яА-Яa-zA-Z\s]/g, '');
     setName(sanitizedValue);
     setNameError(validateName(sanitizedValue));
   };
 
-  const handleBirthdayChange = (e) => {
-    const value = e.target.value.replace(/[^0-9.]/g, '');
+  const handleBirthdayChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    const value = evt.target.value.replace(/[^0-9.]/g, '');
     const parts = value.split('.');
     if (parts.length > 3) return;
     let newValue = '';
@@ -115,43 +112,10 @@ export function QuizPage(): JSX.Element {
     setBirthdayError(
       isDateValid(newValue) ? '' : 'Введите корректную дату рождения',
     );
-
-    if (newValue.length === 10 && birthdayRef.current) {
-      birthdayRef.current.blur();
-    }
   };
-
-  const handleFocus = (e) => {
-    setIsFocused(true);
-    const input = e.target;
-    const container = formRef.current;
-    const containerRect = container.getBoundingClientRect();
-    const inputRect = input.getBoundingClientRect();
-    const relativeLeft = inputRect.left - containerRect.left;
-    const relativeTop = inputRect.top - containerRect.top;
-    const originX = (relativeLeft / containerRect.width) * 130;
-    const originY = (relativeTop / containerRect.height) * 130;
-    container.style.transformOrigin = `${originX}% ${originY}%`;
-    container.style.transform = `scale(1.3)`;
-    container.style.transition = 'transform 0.3s ease';
-    const scrollOffset =
-      inputRect.top - containerRect.top - containerRect.height * 0.3;
-    container.scrollTo({
-      top: container.scrollTop + scrollOffset,
-      behavior: 'smooth',
-    });
-  };
-
-  const handleBlur = () => {
-    setIsFocused(false);
-    const container = formRef.current;
-    container.style.transform = 'none';
-    container.style.transition = 'transform 0.3s ease';
-  };
-
   const handleNext = async () => {
     if (step < 8) {
-      setAnswers([...answers, selectedOption]);
+      setAnswers([...answers, selectedOption!]);
       setSelectedOption(null);
       setTimeout(() => {
         setStep(step + 1);
@@ -167,19 +131,19 @@ export function QuizPage(): JSX.Element {
 
       const userData = {
         name: name || '',
-        born_date: formattedBirthday,
+        bornDate: formattedBirthday,
         sex: gen === 'm' ? 'male' : 'female',
-        user_level: userLevel || '',
+        level: userLevel || '',
         phone: tel || '',
       };
 
       const requiredFields = [
         'name',
-        'born_date',
+        'bornDate',
         'sex',
-        'user_level',
+        'level',
         'phone',
-      ];
+      ] as const;
 
       const invalidFields = requiredFields.filter(
         (field) => !userData[field] || typeof userData[field] !== 'string',
@@ -191,7 +155,7 @@ export function QuizPage(): JSX.Element {
       }
 
       try {
-        await updateUser({ userQuery, dto: userData });
+        await updateUser({ dto: userData });
         navigate(AppRoute.QuizResult);
       } catch (error) {
         console.error('Ошибка обновления пользователя:', error);
@@ -219,8 +183,6 @@ export function QuizPage(): JSX.Element {
           value={name}
           onChange={handleNameChange}
           ref={nameRef}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
           autoFocus={!name}
         />
         <StyledErrorMessage style={{ opacity: nameError ? 1 : 0 }}>
@@ -252,8 +214,6 @@ export function QuizPage(): JSX.Element {
           value={tel}
           onChange={handlePhoneChange}
           ref={telRef}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
           autoFocus={!tel}
         />
         <StyledErrorMessage style={{ opacity: telError ? 1 : 0 }}>
@@ -268,8 +228,6 @@ export function QuizPage(): JSX.Element {
           value={birthday}
           onChange={handleBirthdayChange}
           ref={birthdayRef}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
           autoFocus={!birthday}
         />
         <StyledErrorMessage style={{ opacity: birthdayError ? 1 : 0 }}>
@@ -297,7 +255,7 @@ export function QuizPage(): JSX.Element {
   );
 
   return (
-    <StyledQuizPage isFocused={isFocused} ref={formRef}>
+    <StyledQuizPage ref={formRef}>
       <StyledForBack>
         {step !== 1 && <BackButton onClick={handleBack} />}
       </StyledForBack>
@@ -329,7 +287,7 @@ export function QuizPage(): JSX.Element {
   );
 }
 
-const StyledQuizPage = styled.div<{ isFocused?: boolean }>`
+const StyledQuizPage = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;

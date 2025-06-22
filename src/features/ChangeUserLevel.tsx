@@ -5,21 +5,23 @@ import { useUpdateUser, useUser } from '~/entities/user';
 import closeIconSrc from '~/shared/assets/svg/close.svg';
 import rightIconSrc from '~/shared/assets/svg/right.svg';
 import settingsIconSrc from '~/shared/assets/svg/settings.svg';
-import { useUserSession } from '~/shared/store';
 import { Color } from '~/shared/theme/colors';
 import { Toggler } from '~/shared/ui/Toggler';
 
-export function ChangeUserLevel(): JSX.Element {
+export function ChangeUserLevel(): JSX.Element | null {
   const [open, setOpen] = useState(false);
 
   const { user } = useUser();
-  const { userQuery } = useUserSession();
 
   const { updateUser } = useUpdateUser();
 
-  const handleSelectorClick = async (level) => {
-    updateUser({ userQuery, dto: { level } });
+  const handleSelectorClick = async (level: string) => {
+    updateUser({ dto: { level } });
   };
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <ChangeUserLevelWrapper>

@@ -19,7 +19,17 @@ export function RecipeCategoryPage(): JSX.Element {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useRecipesByCategory(category);
+  } = useRecipesByCategory(category!);
+
+  if (!recipes || isRecipesPending) {
+    return (
+      <CommonPageLayout
+        title="Рецепты"
+        iconSrc={recipesIconSrc}
+        isLoading={isRecipesPending}
+      />
+    );
+  }
 
   const handleRecipeSelect = (id: string) => {
     navigate(`${AppRoute.RecipeCategories}/${category}/${id}`);
@@ -32,11 +42,7 @@ export function RecipeCategoryPage(): JSX.Element {
   };
 
   return (
-    <CommonPageLayout
-      title="Рецепты"
-      iconSrc={recipesIconSrc}
-      isLoading={isRecipesPending}
-    >
+    <CommonPageLayout title="Рецепты" iconSrc={recipesIconSrc}>
       <StyledRecipeCategoryWrapper>
         <StyledTitle>{category}</StyledTitle>
         <StyledCategoriesList>

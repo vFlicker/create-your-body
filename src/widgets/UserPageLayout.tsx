@@ -10,8 +10,8 @@ import { Loader } from '~/shared/ui/Loader';
 import { Nav } from '~/shared/ui/nav';
 
 type UserPageLayoutProps = PropsWithChildren<{
-  isLoading: boolean;
   hasUserLevel: boolean;
+  isLoading?: boolean;
   action?: JSX.Element;
 }>;
 
@@ -90,6 +90,8 @@ const StyledTopHeader = styled.div`
 `;
 
 const StyledContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
   border-radius: 16px 16px 0 0;
 `;

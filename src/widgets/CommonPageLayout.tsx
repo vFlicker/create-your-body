@@ -15,7 +15,7 @@ const HIDE_BACK_BUTTON_PATHS = [AppRoute.Dashboard];
 
 type CommonPageLayoutProps = PropsWithChildren<{
   title: string;
-  isLoading: boolean;
+  isLoading?: boolean;
   hasStreamInfo?: boolean;
   iconSrc?: string;
   action?: JSX.Element;
@@ -125,6 +125,8 @@ const StyledTitle = styled.h1`
 `;
 
 const StyledContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
   padding: 16px 16px 24px;
   border-radius: 16px 16px 0 0;

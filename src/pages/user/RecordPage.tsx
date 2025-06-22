@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { useCreateBodyMeasurements } from '~/entities/user';
 import { CreateBodyMeasurementsSchema } from '~/entities/user';
+import { userSession } from '~/shared/libs/userSession';
 import { AppRoute } from '~/shared/router';
-import { useUserSession } from '~/shared/store';
 import { Button } from '~/shared/ui/Button';
 import { Input } from '~/shared/ui/Input';
 import { UserPageLayout } from '~/widgets/UserPageLayout';
@@ -24,7 +24,7 @@ export function RecordPage(): JSX.Element {
     weight: '',
   });
 
-  const { tgId, userQuery } = useUserSession();
+  const currentUserSession = userSession.getCurrentUser();
   const { createBodyMeasurements } = useCreateBodyMeasurements();
 
   const handleChange = (name: string) => {
@@ -35,11 +35,13 @@ export function RecordPage(): JSX.Element {
 
   const handleSubmit = async () => {
     try {
+      if (!currentUserSession) return;
+
+      const { tgId } = currentUserSession;
       const parsed = CreateBodyMeasurementsSchema.parse(bodyMeasurements);
 
       await createBodyMeasurements({
-        userQuery,
-        dto: { tg_id: tgId, ...parsed },
+        dto: { tg_id: tgId!, ...parsed },
       });
 
       navigate(AppRoute.Profile);

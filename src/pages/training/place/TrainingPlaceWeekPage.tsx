@@ -22,10 +22,10 @@ export function TrainingPlaceWeekPage(): JSX.Element {
 
   const { trainingsByWeek, isTrainingsByWeekPending } = useTrainingsByWeek({
     // TODO: fix the payload
-    level: user.level === 'Новичок' ? 'noob' : 'pro',
-    stream,
-    type,
-    week: +week,
+    level: user?.level === 'Новичок' ? 'noob' : 'pro',
+    stream: stream!,
+    type: type!,
+    week: +week!,
   });
 
   const handleLessonSelect = (id: string) => {
@@ -34,7 +34,7 @@ export function TrainingPlaceWeekPage(): JSX.Element {
 
   return (
     <CommonPageLayout
-      title={pageTitle[type]}
+      title={pageTitle[type!]}
       iconSrc={musclesIconSrc}
       isLoading={isTrainingsByWeekPending}
     >

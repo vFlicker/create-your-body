@@ -11,7 +11,7 @@ type UserMetaProps = {
   view: 'level' | 'name';
 };
 
-export function UserMeta({ view }: UserMetaProps): JSX.Element {
+export function UserMeta({ view }: UserMetaProps): JSX.Element | null {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -24,6 +24,10 @@ export function UserMeta({ view }: UserMetaProps): JSX.Element {
 
     navigate(AppRoute.StartProfile);
   };
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <StyledUserMetaWrapper>

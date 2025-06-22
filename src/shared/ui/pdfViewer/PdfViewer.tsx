@@ -24,8 +24,8 @@ import { pdfViewerAddition } from './pdfViewerAddition';
 const WORKER_URL = `https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`;
 
 type PdfViewerProps = {
+  pdfSrc: string;
   pdfId?: string;
-  pdfSrc?: string;
   isLoading?: boolean;
 };
 
@@ -89,7 +89,7 @@ export function PdfViewer({
         </StyledPdfViewerFooter>
       </StyledPdfViewerContainer>
 
-      {pdfViewerAddition[pdfId]}
+      {pdfId && pdfViewerAddition[pdfId]}
     </>
   );
 

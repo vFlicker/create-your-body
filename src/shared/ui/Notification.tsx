@@ -17,7 +17,7 @@ export function Notification({
   className,
   children,
   duration = DEFAULT_DURATION,
-}: NotificationProps): JSX.Element {
+}: NotificationProps): JSX.Element | null {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {

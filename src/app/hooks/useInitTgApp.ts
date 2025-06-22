@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useUserSession } from '~/shared/store';
+import { userSession } from '~/shared/libs/userSession';
 import { Color } from '~/shared/theme/colors';
 
 const MOCK_USER_QUERY =
@@ -9,8 +9,6 @@ const MOCK_USER_QUERY =
 const MOCK_USER_ID = 5003100894;
 
 export const useInitTgApp = () => {
-  const { setUserSession } = useUserSession();
-
   useEffect(() => {
     if (Telegram && Telegram.WebApp) {
       const { WebApp } = Telegram;
@@ -23,11 +21,11 @@ export const useInitTgApp = () => {
       const { initDataUnsafe, initData } = WebApp;
       const { id, photo_url } = initDataUnsafe.user || {};
 
-      setUserSession({
+      userSession.setCurrentUser({
         tgId: id || MOCK_USER_ID,
         userQuery: initData || MOCK_USER_QUERY,
         userImage: photo_url,
       });
     }
-  }, [setUserSession]);
+  }, []);
 };

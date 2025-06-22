@@ -3,25 +3,25 @@ import { JSX, useEffect } from 'react';
 import { getMaxStream, useStreamStore, useUser } from '~/entities/user';
 import { Select } from '~/shared/ui/Select';
 
-export function SelectStream(): JSX.Element {
-  const { user } = useUser();
+export function SelectStream(): JSX.Element | null {
+  const { user, isUserPending } = useUser();
   const { stream, setStream } = useStreamStore();
 
-  const { subscriptions } = user;
-
   useEffect(() => {
-    if (!subscriptions?.length) return;
+    const subscriptions = user?.subscriptions;
 
-    if (stream) {
-      setStream(stream);
-      return;
+    if (!stream && subscriptions && subscriptions.length > 0) {
+      const streams = subscriptions.map(({ stream }) => stream);
+      const maxStream = getMaxStream(streams);
+      setStream(maxStream);
     }
+  }, [user, stream, setStream]);
 
-    const maxStream = getMaxStream(subscriptions);
-    setStream(maxStream);
-  }, [subscriptions, stream, setStream]);
+  if (isUserPending || !user?.subscriptions) {
+    return null;
+  }
 
-  const streamOptions = subscriptions.map(({ stream }) => ({
+  const streamOptions = user.subscriptions.map(({ stream }) => ({
     value: stream.toString(),
     label: `Поток ${stream}`,
   }));
@@ -29,7 +29,7 @@ export function SelectStream(): JSX.Element {
   return (
     <Select
       options={streamOptions}
-      value={stream?.toString()}
+      value={stream?.toString() || ''}
       onChange={(evt) => setStream(+evt.target.value)}
     />
   );

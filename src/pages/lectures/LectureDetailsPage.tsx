@@ -13,11 +13,22 @@ export function LectureDetailsPage(): JSX.Element {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
-  const { lectureDetails, isLectureDetailsPending } = useLectureDetailsById(id);
+  const { lectureDetails, isLectureDetailsPending } = useLectureDetailsById(
+    id!,
+  );
 
   const handleButtonClick = () => {
     navigate(-1);
   };
+
+  if (!lectureDetails || isLectureDetailsPending)
+    return (
+      <CommonPageLayout
+        title="Лекции"
+        iconSrc={lecturesIconSrc}
+        isLoading={isLectureDetailsPending}
+      />
+    );
 
   return (
     <CommonPageLayout
@@ -26,13 +37,14 @@ export function LectureDetailsPage(): JSX.Element {
       isLoading={isLectureDetailsPending}
     >
       <StyledLectureDetailsPageWrapper>
-        {lectureDetails?.blocks?.map(({ _id, type, video, content }) => {
+        {lectureDetails.blocks.map(({ _id, type, video, content }) => {
           const BlockComponent = blockComponents[type];
+          const htmlContent = content?.text || video?.embedCode;
           return (
             <BlockComponent
               key={_id}
-              text={content?.text}
-              embedCode={video?.embedCode}
+              // TODO: use common name on backend for video, text and other blocks
+              htmlContent={htmlContent as string}
             />
           );
         })}

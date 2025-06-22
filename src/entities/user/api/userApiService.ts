@@ -13,10 +13,10 @@ import {
 } from '../userTypes';
 
 export const userApiService = {
-  getUser: async (userQuery: string) => {
+  getUser: async () => {
     try {
       const { data } = await httpClient.get<GetUserResponse>(
-        `/v2/api/client/user/me?${userQuery}`,
+        `/v2/api/client/user/me`,
       );
       return data.data;
     } catch (error) {
@@ -25,18 +25,9 @@ export const userApiService = {
     }
   },
 
-  updateUser: async ({
-    userQuery,
-    dto,
-  }: {
-    userQuery: string;
-    dto: UpdateUserDto;
-  }) => {
+  updateUser: async ({ dto }: { dto: UpdateUserDto }) => {
     try {
-      const response = await httpClient.patch(
-        `/v2/api/client/user/me?${userQuery}`,
-        dto,
-      );
+      const response = await httpClient.patch(`/v2/api/client/user/me`, dto);
       return response;
     } catch (error) {
       console.error('Error updating user:', error);
@@ -44,10 +35,10 @@ export const userApiService = {
     }
   },
 
-  getTransformationPhotos: async (userQuery: string) => {
+  getTransformationPhotos: async () => {
     try {
       const response = await httpClient.get<GetTransformationPhotoResponse>(
-        `/v2/api/client/user/photos?${userQuery}`,
+        `/v2/api/client/user/photos`,
       );
       return response.data.data;
     } catch (error) {
@@ -57,22 +48,18 @@ export const userApiService = {
   },
 
   updateTransformationPhotos: async ({
-    userQuery,
-    formData,
     stage,
+    formData,
   }: {
-    userQuery: string;
-    formData: FormData;
     stage: string;
+    formData: FormData;
   }) => {
     try {
       const response = await httpClient.post(
-        `/v2/api/client/user/photos/${stage}?${userQuery}`,
+        `/v2/api/client/user/photos/${stage}`,
         formData,
         {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+          headers: { 'Content-Type': 'multipart/form-data' },
         },
       );
       return response;
@@ -83,15 +70,13 @@ export const userApiService = {
   },
 
   createBodyMeasurements: async ({
-    userQuery,
     dto,
   }: {
-    userQuery: string;
     dto: CreateBodyMeasurementsDto;
   }) => {
     try {
       const response = await httpClient.post(
-        `/v2/api/client/user/measurements?${userQuery}`,
+        `/v2/api/client/user/measurements`,
         dto,
       );
       return response;
@@ -101,10 +86,10 @@ export const userApiService = {
     }
   },
 
-  getBodyMeasurements: async (userQuery: string) => {
+  getBodyMeasurements: async () => {
     try {
       const { data } = await httpClient.get<GetBodyMeasurementsResponse>(
-        `/v2/api/client/user/measurements?${userQuery}`,
+        `/v2/api/client/user/measurements`,
       );
       return data.data.measurements;
     } catch (error) {
@@ -114,17 +99,15 @@ export const userApiService = {
   },
 
   updateBodyMeasurements: async ({
-    userQuery,
     id,
     dto,
   }: {
-    userQuery: string;
     id: number;
     dto: UpdateBodyMeasurementsDto;
   }) => {
     try {
       const response = await httpClient.put(
-        `/v2/api/client/user/measurements/${id}?${userQuery}`,
+        `/v2/api/client/user/measurements/${id}`,
         dto,
       );
       return response;
@@ -134,7 +117,13 @@ export const userApiService = {
     }
   },
 
-  addUserAvatarById: async ({ id, image }: { id: number; image: string }) => {
+  addUserAvatarById: async ({
+    userId: id,
+    userImage: image,
+  }: {
+    userId: number;
+    userImage: string;
+  }) => {
     console.info('This method is deprecated');
 
     try {

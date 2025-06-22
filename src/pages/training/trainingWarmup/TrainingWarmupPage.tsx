@@ -38,7 +38,7 @@ export function TrainingWarmupPage(): JSX.Element {
           />
         )}
 
-        {section[activeValue]}
+        {section[activeValue as keyof typeof section]}
       </StyledTrainingWarmupPageWrapper>
     </CommonPageLayout>
   );

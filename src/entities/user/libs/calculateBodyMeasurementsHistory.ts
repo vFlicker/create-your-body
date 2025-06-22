@@ -18,7 +18,9 @@ type BodyHistoryRecord = {
   bodyMeasurementsRows: BodyMeasurementRow[];
 };
 
-const userBodyMetrics = {
+type BodyMeasurementKey = keyof typeof userBodyMeasurement;
+
+const userBodyMeasurement = {
   chest: 'Обхват груди:',
   waist: 'Обхват талии:',
   abdominalCircumference: 'Обхват живота:',
@@ -38,7 +40,9 @@ export const calculateBodyMeasurementsHistory = (
 
     const bodyMeasurementChanges: BodyMeasurementRow[] = [];
 
-    for (const key in userBodyMetrics) {
+    for (const key of Object.keys(
+      userBodyMeasurement,
+    ) as BodyMeasurementKey[]) {
       const value = currentMeasurement[key];
       let previousValue;
       if (index > 0) previousValue = reversedMeasurements[index - 1][key];
@@ -48,7 +52,7 @@ export const calculateBodyMeasurementsHistory = (
 
       bodyMeasurementChanges.push({
         id: currentMeasurement.id,
-        title: userBodyMetrics[key],
+        title: userBodyMeasurement[key],
         value,
         delta: `${sign}${Math.abs(delta)}`,
         deltaDirection,

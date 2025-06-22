@@ -5,8 +5,10 @@ import { Chip, ChipLink } from '~/shared/ui/Chip';
 
 import { useUser } from '../api/useUser';
 
-export function StreamsInfo(): JSX.Element {
+export function StreamsInfo(): JSX.Element | null {
   const { user } = useUser();
+  if (!user) return null;
+
   const { subscriptions } = user;
 
   if (subscriptions.length === 1 && subscriptions[0].stream === 1) {

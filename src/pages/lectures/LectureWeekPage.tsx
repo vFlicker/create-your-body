@@ -13,11 +13,20 @@ export function LectureWeekPage(): JSX.Element {
   const navigate = useNavigate();
   const { week } = useParams<{ week: string }>();
 
-  const { lecturesByWeek, isLecturesByWeekPending } = useLecturesByWeek(week);
+  const { lecturesByWeek, isLecturesByWeekPending } = useLecturesByWeek(week!);
 
   const handleLectureSelect = (lectureId: string) => {
     navigate(`${AppRoute.LectureWeeks}/${week}/${lectureId}`);
   };
+
+  if (!lecturesByWeek || isLecturesByWeekPending)
+    return (
+      <CommonPageLayout
+        title="Лекции"
+        iconSrc={lecturesIconSrc}
+        isLoading={isLecturesByWeekPending}
+      />
+    );
 
   return (
     <CommonPageLayout
@@ -28,7 +37,7 @@ export function LectureWeekPage(): JSX.Element {
       <StyledLectureWeekWrapper>
         <StyledTitle>Неделя {week}</StyledTitle>
         <StyledLecturesList>
-          {lecturesByWeek?.map(({ _id, title, duration, coverImage }) => (
+          {lecturesByWeek.map(({ _id, title, duration, coverImage }) => (
             <TitleCard
               key={_id}
               title={title}
