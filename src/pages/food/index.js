@@ -1,1 +1,0 @@
-export { FoodPage } from './FoodPage';

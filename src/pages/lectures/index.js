@@ -1,1 +1,0 @@
-export { LecturesPage } from './LecturesPage';
