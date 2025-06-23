@@ -59,6 +59,7 @@ export function PdfViewer({
             fileUrl={pdfSrcBlob || pdfSrc}
             enableSmoothScroll={false}
             plugins={[pageNavigationPluginInstance]}
+            renderLoader={() => <Loader />}
           />
         </Worker>
 

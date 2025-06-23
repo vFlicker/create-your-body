@@ -8,6 +8,7 @@ import {
   useRecipeDetailsById,
 } from '~/entities/recipe';
 import recipesIconSrc from '~/shared/assets/svg/recipes.svg';
+import { Color } from '~/shared/theme/colors';
 import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
 export function RecipesDetailsPage(): JSX.Element {
@@ -85,9 +86,10 @@ const StyledTitle = styled.h2`
 
 const StyledRecipeImage = styled.img`
   width: 100%;
-  height: 100%;
   border-radius: 14px;
+  aspect-ratio: 6 / 3;
   object-fit: cover;
+  background-color: ${Color.Black_50};
 `;
 
 const StyledRecipeDetailsWrapper = styled.div`
