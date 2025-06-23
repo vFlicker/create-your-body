@@ -61,7 +61,7 @@ const StyledTitleCardWrapper = styled.div<StyledTitleCardWrapperProps>`
   flex-direction: column;
   justify-content: space-between;
 
-  min-height: 82px;
+  min-height: 110px;
   padding: 16px;
   border: 1px solid;
   border-radius: 14px;

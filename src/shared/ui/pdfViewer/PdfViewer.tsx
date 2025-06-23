@@ -59,33 +59,27 @@ export function PdfViewer({
           />
         </Worker>
 
-        <StyledPdfViewerButton
-          $fullscreen={isFullscreen}
-          $close={isFullscreen}
-          onClick={toggleFullscreen}
-        >
+        <StyledCloseButton onClick={toggleFullscreen}>
           <img
             src={isFullscreen ? close : fullscreen}
             alt={isFullscreen ? 'close' : 'fullscreen'}
           />
-        </StyledPdfViewerButton>
+        </StyledCloseButton>
 
         <StyledPdfViewerFooter>
-          <StyledPdfViewerFooterInner>
-            <StyledPdfViewerButton onClick={jumpToPreviousPage}>
-              <img src={left} alt="previous" />
-            </StyledPdfViewerButton>
-            <CurrentPageLabel>
-              {({ currentPage, numberOfPages }) => (
-                <StyledPdfViewerPages>
-                  {currentPage + 1} / {numberOfPages}
-                </StyledPdfViewerPages>
-              )}
-            </CurrentPageLabel>
-            <StyledPdfViewerButton onClick={jumpToNextPage}>
-              <img src={right} alt="next" />
-            </StyledPdfViewerButton>
-          </StyledPdfViewerFooterInner>
+          <StyledNavigationButton onClick={jumpToPreviousPage}>
+            <img src={left} alt="previous" />
+          </StyledNavigationButton>
+          <CurrentPageLabel>
+            {({ currentPage, numberOfPages }) => (
+              <StyledPdfViewerPages>
+                {currentPage + 1} / {numberOfPages}
+              </StyledPdfViewerPages>
+            )}
+          </CurrentPageLabel>
+          <StyledNavigationButton onClick={jumpToNextPage}>
+            <img src={right} alt="next" />
+          </StyledNavigationButton>
         </StyledPdfViewerFooter>
       </StyledPdfViewerContainer>
 
@@ -143,51 +137,44 @@ const StyledFullscreenOverlay = styled.div<{ isActive: boolean }>`
 const StyledPdfViewerFooter = styled.div`
   position: absolute;
   bottom: 16px;
-  width: 100%;
-`;
 
-const StyledPdfViewerFooterInner = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
   padding: 0 16px;
   opacity: 0.7;
 `;
 
-const StyledPdfViewerButton = styled.button<{
-  $fullscreen?: boolean;
-  $close?: boolean;
-}>`
-  width: 40px;
-  height: 40px;
-  border: 1px solid #e6e6e6;
-  background: #f2f2f2;
-  border-radius: 50%;
+const StyledButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: ${({ $fullscreen, $close }) =>
-    $fullscreen || $close ? 'absolute' : 'static'};
-  top: ${({ $fullscreen, $close }) =>
-    $fullscreen || $close ? '16px' : 'auto'};
-  right: ${({ $fullscreen, $close }) =>
-    $fullscreen || $close ? '16px' : 'auto'};
-  background: ${({ $fullscreen, $close }) =>
-    $fullscreen || $close ? '#cbff52' : '#f2f2f2'};
-  border: ${({ $fullscreen, $close }) =>
-    $fullscreen || $close ? 'none' : '1px solid #e6e6e6'};
-  z-index: ${({ $close }) => ($close ? 1001 : 1)};
 
-  &:hover {
-    transform: scale(1.05);
-  }
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+
+  z-index: 9999;
 
   img {
     width: 20px;
     height: 20px;
   }
+`;
+
+const StyledNavigationButton = styled(StyledButton)`
+  border: 1px solid #e6e6e6;
+  background-color: #f2f2f2;
+`;
+
+const StyledCloseButton = styled(StyledButton)`
+  position: absolute;
+  top: 16px;
+  right: 16px;
+
+  background-color: #cbff52;
 `;
 
 const StyledPdfViewerPages = styled.div`
