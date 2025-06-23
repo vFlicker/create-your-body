@@ -8,10 +8,14 @@ import { Color } from '~/shared/theme/colors';
 const PREVIOUS_PAGE = -1;
 
 type BackButtonProps = {
+  className?: string;
   onClick?: () => void;
 };
 
-export function BackButton({ onClick }: BackButtonProps): JSX.Element {
+export function BackButton({
+  className,
+  onClick,
+}: BackButtonProps): JSX.Element {
   const navigate = useNavigate();
 
   const defaultOnClick = () => navigate(PREVIOUS_PAGE);
@@ -29,7 +33,7 @@ export function BackButton({ onClick }: BackButtonProps): JSX.Element {
   }, [handleClick]);
 
   return (
-    <StyledBackButton onClick={handleClick}>
+    <StyledBackButton className={className} onClick={handleClick}>
       <img src={backIconSrc} />
       Назад
     </StyledBackButton>

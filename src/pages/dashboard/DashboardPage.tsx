@@ -24,7 +24,11 @@ export function DashboardPage(): JSX.Element {
   const pageContainersData = getTitleCards(user.subscriptions);
 
   return (
-    <CommonPageLayout title={`Привет, ${user.name}!`} hasStreamInfo={true}>
+    <CommonPageLayout
+      title={`Привет, ${user.name}!`}
+      hasStreamInfo={true}
+      hasBackButton={false}
+    >
       <StyledContentWrapper>
         {/* TODO: we can show History component here */}
 

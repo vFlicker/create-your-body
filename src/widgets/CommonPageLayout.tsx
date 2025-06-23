@@ -1,20 +1,16 @@
 import styled from '@emotion/styled';
 import { JSX, PropsWithChildren } from 'react';
-import { useLocation } from 'react-router-dom';
 
 import { StreamsInfo, UserMeta } from '~/entities/user';
 import { BackButton } from '~/features/BackButton';
 import { CloseButton } from '~/features/CloseButton';
-import { AppRoute } from '~/shared/router';
 import { Color } from '~/shared/theme/colors';
 import { Loader } from '~/shared/ui/Loader';
 import { Nav } from '~/shared/ui/nav';
 
-// TODO: add props hasBackButton
-const HIDE_BACK_BUTTON_PATHS = [AppRoute.Dashboard];
-
 type CommonPageLayoutProps = PropsWithChildren<{
   title: string;
+  hasBackButton?: boolean;
   isLoading?: boolean;
   hasStreamInfo?: boolean;
   iconSrc?: string;
@@ -24,21 +20,17 @@ type CommonPageLayoutProps = PropsWithChildren<{
 export function CommonPageLayout({
   title,
   isLoading,
+  hasBackButton = true,
   hasStreamInfo = false,
   iconSrc,
   action,
   children,
 }: CommonPageLayoutProps): JSX.Element {
-  const location = useLocation();
-
-  const pathname = location.pathname as AppRoute;
-  const isBackButtonVisible = !HIDE_BACK_BUTTON_PATHS.includes(pathname);
-
   return (
     <StyledPageWrapper>
       <StyledButtonsWrapper>
-        {isBackButtonVisible && <BackButton />}
-        <CloseButton />
+        {hasBackButton && <BackButton />}
+        <StyledCloseButton />
       </StyledButtonsWrapper>
 
       <StyledMainWrapper>
@@ -81,6 +73,10 @@ const StyledButtonsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+`;
+
+const StyledCloseButton = styled(CloseButton)`
+  margin-left: auto;
 `;
 
 const StyledMainWrapper = styled.div`
