@@ -72,7 +72,9 @@ export function PhotoEditor({ label, stage }: PhotoEditorProps) {
       <StyledLabel>{label}</StyledLabel>
       <StyledImageWrapper>
         {isLoading && <Loader />}
-        <StyledImage src={photoUrl} isEmpty={!hasPhoto} alt={label} />
+        {!isLoading && (
+          <StyledImage src={photoUrl} isEmpty={!hasPhoto} alt={label} />
+        )}
         <StyledEditButton
           iconSrc={editIconSrc}
           disabled={isLoading}
@@ -105,11 +107,15 @@ const StyledLabel = styled.span`
 const StyledImageWrapper = styled.div`
   position: relative;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   width: 100%;
   height: 210px;
   border-radius: 6px;
 
-  background-color: ${Color.Black_600};
+  background-color: ${Color.Black_50};
 `;
 
 const StyledImage = styled.img<{ isEmpty: boolean }>`
