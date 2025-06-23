@@ -20,6 +20,7 @@ import { Loader } from '~/shared/ui/Loader';
 
 import { Color } from '../../theme/colors';
 import { pdfViewerAddition } from './pdfViewerAddition';
+import { usePdfBlob } from './usePdfBlob';
 
 const WORKER_URL = `https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`;
 
@@ -35,6 +36,8 @@ export function PdfViewer({
   isLoading,
 }: PdfViewerProps): JSX.Element {
   const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const pdfSrcBlob = usePdfBlob(pdfSrc);
 
   const pageNavigationPluginInstance = pageNavigationPlugin();
   const { jumpToNextPage, jumpToPreviousPage, CurrentPageLabel } =
@@ -53,7 +56,7 @@ export function PdfViewer({
           <Viewer
             defaultScale={SpecialZoomLevel.PageFit}
             scrollMode={ScrollMode.Page}
-            fileUrl={pdfSrc}
+            fileUrl={pdfSrcBlob || pdfSrc}
             enableSmoothScroll={false}
             plugins={[pageNavigationPluginInstance]}
           />
