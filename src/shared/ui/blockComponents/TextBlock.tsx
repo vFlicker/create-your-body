@@ -26,9 +26,6 @@ const StyledTextBlockWrapper = styled.div`
 
     li {
       position: relative;
-
-      display: flex;
-      gap: 8px;
       padding-left: 16px;
 
       &::before {
@@ -46,6 +43,7 @@ const StyledTextBlockWrapper = styled.div`
       }
 
       &::marker {
+        content: '';
         display: none;
       }
     }
