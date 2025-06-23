@@ -19,16 +19,24 @@ const section = {
 export function TrainingWarmupPage(): JSX.Element {
   const [activeValue, setActiveValue] = useState('Разминка');
 
-  const { user } = useUser();
+  const { user, isUserPending } = useUser();
 
-  const hasProPlan = user?.subscriptions?.some(({ plan }) => plan === 'pro');
+  if (!user || isUserPending) {
+    return (
+      <CommonPageLayout
+        title="Разминка / МФР"
+        iconSrc={musclesIconSrc}
+        isLoading
+      />
+    );
+  }
+
+  const hasProPlan = user.subscriptions.some(
+    ({ plan }) => plan.toLowerCase() === 'pro',
+  );
 
   return (
-    <CommonPageLayout
-      title="Разминка / МФР"
-      iconSrc={musclesIconSrc}
-      isLoading={false}
-    >
+    <CommonPageLayout title="Разминка / МФР" iconSrc={musclesIconSrc}>
       <StyledTrainingWarmupPageWrapper>
         {hasProPlan && (
           <Toggler
