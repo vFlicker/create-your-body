@@ -15,13 +15,13 @@ function App(): JSX.Element {
   const currentUserSession = userSession.getCurrentUser();
   const { updateUserAvatar, isUpdateUserAvatarPending } = useUpdateUserAvatar();
 
+  const { tgId, userImage } = currentUserSession || {};
+
   useEffect(() => {
-    if (currentUserSession) {
-      const { userImage, tgId } = currentUserSession;
-      if (!userImage) return;
+    if (tgId && userImage) {
       updateUserAvatar({ userId: tgId, userImage: userImage });
     }
-  }, [currentUserSession, updateUserAvatar]);
+  }, [tgId, userImage, updateUserAvatar]);
 
   const { user, isUserPending } = useUser();
 
