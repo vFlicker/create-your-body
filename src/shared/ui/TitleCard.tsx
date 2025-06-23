@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
@@ -76,9 +77,23 @@ const StyledTitleCardWrapper = styled.div<StyledTitleCardWrapperProps>`
   cursor: pointer;
 `;
 
+const ImageCss = {
+  'full-width': css`
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: 'contain';
+    background-color: ${Color.Black_50};
+  `,
+  default: css`
+    width: 24px;
+    height: 24px;
+  `,
+};
+
 const StyledImage = styled.img<{ isFullWith: boolean }>`
-  width: ${({ isFullWith }) => (isFullWith ? '100%;' : '24px;')};
-  height: ${({ isFullWith }) => (isFullWith ? '100%;' : '24px;')};
+  ${({ isFullWith }) =>
+    isFullWith ? ImageCss['full-width'] : ImageCss.default};
 `;
 
 const StyledHeader = styled.div`
