@@ -18,15 +18,18 @@ import History from '../../Components/History/History';
 import ProfileBtn from '../../Components/ProfileBtn/ProfileBtn';
 
 function SubscriptionStatus({ subscriptions }) {
-  if (subscriptions.length === 1 && subscriptions[0].stream === 1) {
+  const secondSteam = subscriptions.find((sub) => sub.stream === 2);
+  const thirdSteam = subscriptions.find((sub) => sub.stream === 3);
+
+  if (secondSteam && !thirdSteam) {
     return (
       <div className="dashLabels">
-        <Label color="green">Поток 1</Label>
+        <Label color="green">Поток 2</Label>
         <LabelLink
           color="violet"
           to="https://t.me/cybpayments_bot?start=startnewstream"
         >
-          Перейти на 2 поток
+          Перейти на 3 поток
           <svg
             width="12"
             height="12"
@@ -46,7 +49,7 @@ function SubscriptionStatus({ subscriptions }) {
     );
   }
 
-  if (subscriptions.length === 1 && subscriptions[0].stream === 2) {
+  if (!secondSteam && thirdSteam) {
     return (
       <div className="dashLabels">
         <Label color="violet">
@@ -80,9 +83,9 @@ function SubscriptionStatus({ subscriptions }) {
 
   return (
     <div className="dashLabels">
-      <Label color="green">Поток 1</Label>
+      <Label color="green">Поток 2</Label>
       <Label color="violet">
-        Вы перешли на 2 поток{' '}
+        Вы перешли на 3 поток{' '}
         <svg
           width="12"
           height="12"
@@ -105,13 +108,13 @@ function SubscriptionStatus({ subscriptions }) {
 const getContainerData = (subscriptions) => {
   const pageContainersData = [];
 
-  const firstSteam = subscriptions.find((sub) => sub.stream === 1);
   const secondSteam = subscriptions.find((sub) => sub.stream === 2);
+  const thirdSteam = subscriptions.find((sub) => sub.stream === 3);
 
-  const firstSteamIsPro = firstSteam && firstSteam.plan === 'Pro';
   const secondSteamIsPro = secondSteam && secondSteam.plan === 'Pro';
-  const firstSteamBase = firstSteam && firstSteam.plan === 'Base';
+  const thirdSteamIsPro = thirdSteam && thirdSteam.plan === 'Pro';
   const secondSteamBase = secondSteam && secondSteam.plan === 'Base';
+  const thirdSteamBase = thirdSteam && thirdSteam.plan === 'Base';
 
   // Введение всегда открыто
   pageContainersData.push({
@@ -123,8 +126,8 @@ const getContainerData = (subscriptions) => {
     to: AppRoute.BEGIN,
   });
 
-  if (firstSteamIsPro) {
-    // all open
+  if (secondSteamIsPro) {
+    // Всё открыто
     pageContainersData.push(
       {
         name: 'Тренировки',
@@ -159,8 +162,7 @@ const getContainerData = (subscriptions) => {
         to: AppRoute.RECIPES,
       },
     );
-  } else if (secondSteamIsPro) {
-    // all open
+  } else if (secondSteamBase && thirdSteamIsPro) {
     pageContainersData.push(
       {
         name: 'Тренировки',
@@ -181,7 +183,7 @@ const getContainerData = (subscriptions) => {
       {
         name: 'Лекции',
         icon: book,
-        closed: null,
+        closed: '12 июля',
         buy: false,
         instruction: false,
         to: AppRoute.LECTURES,
@@ -189,19 +191,19 @@ const getContainerData = (subscriptions) => {
       {
         name: 'Рецепты',
         icon: recipes,
-        closed: null,
+        closed: '12 июля',
         buy: false,
         instruction: false,
         to: AppRoute.RECIPES,
       },
     );
-  } else if (firstSteamBase) {
-    // lectures and recipes -- buy, else open
+  } else if (thirdSteamIsPro) {
+    // all open 10 may
     pageContainersData.push(
       {
         name: 'Тренировки',
         icon: muscules,
-        closed: null,
+        closed: '12 июля',
         buy: false,
         instruction: false,
         to: AppRoute.TRAINING,
@@ -209,7 +211,7 @@ const getContainerData = (subscriptions) => {
       {
         name: 'Питание',
         icon: food,
-        closed: null,
+        closed: '12 июля',
         buy: false,
         instruction: false,
         to: AppRoute.FOOD,
@@ -217,22 +219,22 @@ const getContainerData = (subscriptions) => {
       {
         name: 'Лекции',
         icon: book,
-        closed: '',
-        buy: true,
+        closed: '12 июля',
+        buy: false,
         instruction: false,
         to: AppRoute.LECTURES,
       },
       {
         name: 'Рецепты',
         icon: recipes,
-        closed: '',
-        buy: true,
+        closed: '12 июля',
+        buy: false,
         instruction: false,
         to: AppRoute.RECIPES,
       },
     );
   } else if (secondSteamBase) {
-    // lectures and recipes -- buy, else open
+    // lectures and recipes -- buy, else access
     pageContainersData.push(
       {
         name: 'Тренировки',
@@ -246,6 +248,42 @@ const getContainerData = (subscriptions) => {
         name: 'Питание',
         icon: food,
         closed: null,
+        buy: false,
+        instruction: false,
+        to: AppRoute.FOOD,
+      },
+      {
+        name: 'Лекции',
+        icon: book,
+        closed: '',
+        buy: true,
+        instruction: false,
+        to: AppRoute.LECTURES,
+      },
+      {
+        name: 'Рецепты',
+        icon: recipes,
+        closed: '',
+        buy: true,
+        instruction: false,
+        to: AppRoute.RECIPES,
+      },
+    );
+  } else if (thirdSteamBase) {
+    // lectures and recipes -- buy, else 'open 10 may'
+    pageContainersData.push(
+      {
+        name: 'Тренировки',
+        icon: muscules,
+        closed: '12 июля',
+        buy: false,
+        instruction: false,
+        to: AppRoute.TRAINING,
+      },
+      {
+        name: 'Питание',
+        icon: food,
+        closed: '12 июля',
         buy: false,
         instruction: false,
         to: AppRoute.FOOD,
