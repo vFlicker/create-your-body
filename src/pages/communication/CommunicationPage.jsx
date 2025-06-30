@@ -49,8 +49,8 @@ export function CommunicationPage({ data }) {
     }
   }, []);
 
-  const firstSteam = data.subscriptions.find((sub) => sub.stream === 1);
-  const secondSteam = data.subscriptions.find((sub) => sub.stream === 2);
+  const firstSteam = data.subscriptions.find((sub) => sub.stream === 2);
+  const secondSteam = data.subscriptions.find((sub) => sub.stream === 3);
 
   const firstSteamIsPro = firstSteam && firstSteam.plan === 'Pro';
   const secondSteamIsPro = secondSteam && secondSteam.plan === 'Pro';
@@ -73,12 +73,12 @@ export function CommunicationPage({ data }) {
         {isPro && (
           <div className="hiteTgBtn">
             <TelegramLinkButton
-              username="+4IrED7hVDX9jMTAy"
+              username="+dSvGTqfGPBo4MWY6"
               buttonText="Чат в Telegram"
               icon={chat}
             />
             <TelegramLinkButton
-              username="+g6mGqc6fOUNjNDdi"
+              username="+TEHjfwqW4GFiM2M6"
               buttonText="Инфо канал"
               icon={channel}
             />
