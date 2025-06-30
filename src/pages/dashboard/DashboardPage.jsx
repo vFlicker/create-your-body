@@ -27,7 +27,7 @@ function SubscriptionStatus({ subscriptions }) {
         <Label color="green">Поток 2</Label>
         <LabelLink
           color="violet"
-          to="https://t.me/cybpayments_bot?start=startnewstream"
+          to="https://t.me/cybpayments_bot?start=rejune-pro2025"
         >
           Перейти на 3 поток
           <svg
