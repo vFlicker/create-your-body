@@ -53,7 +53,7 @@ function SubscriptionStatus({ subscriptions }) {
     return (
       <div className="dashLabels">
         <Label color="violet">
-          Поток 2{' '}
+          Поток 3{' '}
           <svg
             className="spinnerSvg"
             width="12"
