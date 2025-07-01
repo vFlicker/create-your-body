@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { JSX, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import {
   ANIMATION_DURATION_IN_MS,
@@ -13,6 +13,7 @@ import chartIconSrc from '~/shared/assets/svg/chart.svg';
 import historyIconSrc from '~/shared/assets/svg/history.svg';
 import notificationIconSrc from '~/shared/assets/svg/notification.svg';
 import { wait } from '~/shared/libs/wait';
+import { AppRoute } from '~/shared/router';
 import { IconButton } from '~/shared/ui/IconButton';
 import { PhotoEditor } from '~/shared/ui/PhotoEditor';
 import { UserPageLayout } from '~/widgets/UserPageLayout';
@@ -47,6 +48,8 @@ export function ProfilePage(): JSX.Element {
 
       <StyledContentWrapper>
         <ChangeUserLevel />
+
+        <Link to={AppRoute.ProfileEdit}>Личные данные</Link>
 
         <StyledProgressSectionWrapper>
           <StyledProgressTextWrapper>

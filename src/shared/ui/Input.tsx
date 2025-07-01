@@ -17,7 +17,7 @@ export function Input({ className, label, ...props }: InputProps): JSX.Element {
 const StyledLabel = styled.label`
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 10px;
   width: 100%;
 
   color: #0d0d0d;
