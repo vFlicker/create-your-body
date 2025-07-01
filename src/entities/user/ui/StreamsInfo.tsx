@@ -11,15 +11,18 @@ export function StreamsInfo(): JSX.Element | null {
 
   const { subscriptions } = user;
 
-  if (subscriptions.length === 1 && subscriptions[0].stream === 1) {
+  const secondSteam = subscriptions.find((sub) => sub.stream === 2);
+  const thirdSteam = subscriptions.find((sub) => sub.stream === 3);
+
+  if (secondSteam && !thirdSteam) {
     return (
       <StyledDashLabelsWrapper>
-        <Chip color="secondary">Поток 1</Chip>
+        <Chip color="secondary">Поток 2</Chip>
         <ChipLink
           color="accent"
-          to="https://t.me/cybpayments_bot?start=startnewstream"
+          to="https://t.me/cybpayments_bot?start=rejune-pro2025"
         >
-          Перейти на 2 поток
+          Перейти на 3 поток
           <svg
             width="12"
             height="12"
@@ -39,11 +42,11 @@ export function StreamsInfo(): JSX.Element | null {
     );
   }
 
-  if (subscriptions.length === 1 && subscriptions[0].stream === 2) {
+  if (!secondSteam && thirdSteam) {
     return (
       <StyledDashLabelsWrapper>
         <Chip color="accent">
-          Поток 2{' '}
+          Поток 3{' '}
           <StyledSpinnerSvg
             width="12"
             height="12"
@@ -72,9 +75,9 @@ export function StreamsInfo(): JSX.Element | null {
 
   return (
     <StyledDashLabelsWrapper>
-      <Chip color="secondary">Поток 1</Chip>
+      <Chip color="secondary">Поток 2</Chip>
       <Chip color="accent">
-        Вы перешли на 2 поток{' '}
+        Вы перешли на 3 поток{' '}
         <svg
           width="12"
           height="12"

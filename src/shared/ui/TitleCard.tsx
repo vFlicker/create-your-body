@@ -7,8 +7,8 @@ import { Color } from '../theme/colors';
 type TitleCardProps = {
   className?: string;
   title: string;
-  subTitle?: string;
   iconSrc: string;
+  subTitle?: string;
   isHighlight?: boolean;
   isFullWidthImage?: boolean;
   disabled?: boolean;
@@ -25,21 +25,25 @@ type StyledTitleCardWrapperProps = Pick<
 export function TitleCard({
   className,
   title,
-  subTitle,
   iconSrc,
+  subTitle,
   labelText,
   labelIconSrc,
-  isHighlight,
+  isHighlight = false,
   isFullWidthImage = false,
-  disabled,
+  disabled = false,
   onClick,
 }: TitleCardProps): JSX.Element {
+  const handleClick = () => {
+    if (!disabled) onClick();
+  };
+
   return (
     <StyledTitleCardWrapper
       className={className}
       disabled={disabled}
       isHighlight={isHighlight}
-      onClick={onClick}
+      onClick={handleClick}
     >
       <StyledHeader>
         <StyledImage src={iconSrc} alt={title} isFullWith={isFullWidthImage} />
@@ -49,7 +53,7 @@ export function TitleCard({
 
       {labelText && (
         <StyledLabel>
-          <StyledLabelIcon src={labelIconSrc} />
+          {labelIconSrc && <StyledLabelIcon src={labelIconSrc} />}
           {labelText}
         </StyledLabel>
       )}

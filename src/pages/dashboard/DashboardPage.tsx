@@ -33,20 +33,14 @@ export function DashboardPage(): JSX.Element {
         {/* TODO: we can show History component here */}
 
         <StyledDashboardList>
-          {pageContainersData.map(
-            ({ name, icon, closed, buy, to, isHighlight }) => (
-              <TitleCard
-                key={name}
-                title={name}
-                labelText={buy ? 'Доступно в PRO' : undefined}
-                labelIconSrc={buy ? icon : undefined}
-                iconSrc={icon}
-                disabled={closed !== null || buy}
-                isHighlight={isHighlight}
-                onClick={() => navigate(to)}
-              />
-            ),
-          )}
+          {pageContainersData.map(({ title, to, ...props }) => (
+            <TitleCard
+              key={title}
+              title={title}
+              onClick={() => navigate(to)}
+              {...props}
+            />
+          ))}
         </StyledDashboardList>
       </StyledContentWrapper>
     </CommonPageLayout>

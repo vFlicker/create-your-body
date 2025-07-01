@@ -1,182 +1,209 @@
 import { Subscription } from '~/entities/user/userTypes';
-import food from '~/shared/assets/nav/food.svg';
-import book from '~/shared/assets/svg/book.svg';
-import health from '~/shared/assets/svg/health.svg';
-import muscules from '~/shared/assets/svg/musclesBlack.svg';
-import recipes from '~/shared/assets/svg/recipes.svg';
+import foodIconSrc from '~/shared/assets/nav/food.svg';
+import bookIconSrc from '~/shared/assets/svg/book.svg';
+import healthIconSrc from '~/shared/assets/svg/health.svg';
+import musculesIconSrc from '~/shared/assets/svg/musclesBlack.svg';
+import recipesIconSrc from '~/shared/assets/svg/recipes.svg';
 import { AppRoute } from '~/shared/router';
 
 type CardData = {
-  name: string;
-  icon: string;
-  closed: string | null;
-  buy: boolean;
   to: AppRoute;
+  title: string;
+  iconSrc: string;
+  disabled: boolean;
   isHighlight: boolean;
+  labelText?: string;
+  labelIconSrc?: string;
 };
 
 export const getTitleCards = (subscriptions: Subscription[]) => {
   const pageContainersData: CardData[] = [];
 
-  const firstSteam = subscriptions.find((sub) => sub.stream === 1);
   const secondSteam = subscriptions.find((sub) => sub.stream === 2);
+  const thirdSteam = subscriptions.find((sub) => sub.stream === 3);
 
-  const firstSteamIsPro = firstSteam && firstSteam.plan === 'Pro';
   const secondSteamIsPro = secondSteam && secondSteam.plan === 'Pro';
-  const firstSteamBase = firstSteam && firstSteam.plan === 'Base';
+  const thirdSteamIsPro = thirdSteam && thirdSteam.plan === 'Pro';
   const secondSteamBase = secondSteam && secondSteam.plan === 'Base';
+  const thirdSteamBase = thirdSteam && thirdSteam.plan === 'Base';
 
-  // Введение всегда открыто
+  // Always open
   pageContainersData.push({
-    name: 'Введение',
-    icon: health,
-    closed: null,
-    buy: false,
     to: AppRoute.Begin,
+    title: 'Введение',
+    iconSrc: healthIconSrc,
+    disabled: false,
     isHighlight: true,
   });
 
-  if (firstSteamIsPro) {
-    // all open
+  if (secondSteamIsPro) {
+    // All open
     pageContainersData.push(
       {
-        name: 'Тренировки',
-        icon: muscules,
-        closed: null,
-        buy: false,
         to: AppRoute.TrainingCategories,
+        title: 'Тренировки',
+        iconSrc: musculesIconSrc,
+        disabled: false,
         isHighlight: false,
       },
       {
-        name: 'Питание',
-        icon: food,
-        closed: null,
-        buy: false,
         to: AppRoute.FoodCategories,
+        title: 'Питание',
+        iconSrc: foodIconSrc,
+        disabled: false,
         isHighlight: false,
       },
       {
-        name: 'Лекции',
-        icon: book,
-        closed: null,
-        buy: false,
         to: AppRoute.LectureWeeks,
+        title: 'Лекции',
+        iconSrc: bookIconSrc,
+        disabled: false,
         isHighlight: false,
       },
       {
-        name: 'Рецепты',
-        icon: recipes,
-        closed: null,
-        buy: false,
         to: AppRoute.RecipeCategories,
+        title: 'Рецепты',
+        iconSrc: recipesIconSrc,
+        disabled: false,
         isHighlight: false,
       },
     );
-  } else if (secondSteamIsPro) {
-    // all open
+  } else if (secondSteamBase && thirdSteamIsPro) {
     pageContainersData.push(
       {
-        name: 'Тренировки',
-        icon: muscules,
-        closed: null,
-        buy: false,
+        title: 'Тренировки',
+        iconSrc: musculesIconSrc,
+        disabled: false,
         to: AppRoute.TrainingCategories,
         isHighlight: false,
       },
       {
-        name: 'Питание',
-        icon: food,
-        closed: null,
-        buy: false,
+        title: 'Питание',
+        iconSrc: foodIconSrc,
+        disabled: false,
         to: AppRoute.FoodCategories,
         isHighlight: false,
       },
       {
-        name: 'Лекции',
-        icon: book,
-        closed: null,
-        buy: false,
         to: AppRoute.LectureWeeks,
+        title: 'Лекции',
+        iconSrc: bookIconSrc,
+        labelText: 'Доступно с 12 июля',
+        disabled: true,
         isHighlight: false,
       },
       {
-        name: 'Рецепты',
-        icon: recipes,
-        closed: null,
-        buy: false,
         to: AppRoute.RecipeCategories,
+        title: 'Рецепты',
+        iconSrc: recipesIconSrc,
+        labelText: 'Доступно с 12 июля',
+        disabled: true,
         isHighlight: false,
       },
     );
-  } else if (firstSteamBase) {
-    // lectures and recipes -- buy, else open
+  } else if (thirdSteamIsPro) {
+    // all open 12 июля
     pageContainersData.push(
       {
-        name: 'Тренировки',
-        icon: muscules,
-        closed: null,
-        buy: false,
         to: AppRoute.TrainingCategories,
+        title: 'Тренировки',
+        iconSrc: musculesIconSrc,
+        labelText: 'Доступно с 12 июля',
+        disabled: true,
         isHighlight: false,
       },
       {
-        name: 'Питание',
-        icon: food,
-        closed: null,
-        buy: false,
         to: AppRoute.FoodCategories,
+        title: 'Питание',
+        iconSrc: foodIconSrc,
+        labelText: 'Доступно с 12 июля',
+        disabled: true,
         isHighlight: false,
       },
       {
-        name: 'Лекции',
-        icon: book,
-        closed: '',
-        buy: true,
         to: AppRoute.LectureWeeks,
+        title: 'Лекции',
+        iconSrc: bookIconSrc,
+        labelText: 'Доступно с 12 июля',
+        disabled: true,
         isHighlight: false,
       },
       {
-        name: 'Рецепты',
-        icon: recipes,
-        closed: '',
-        buy: true,
         to: AppRoute.RecipeCategories,
+        title: 'Рецепты',
+        iconSrc: recipesIconSrc,
+        labelText: 'Доступно с 12 июля',
+        disabled: true,
         isHighlight: false,
       },
     );
   } else if (secondSteamBase) {
-    // lectures and recipes -- buy, else open
+    // lectures and recipes -- buy, else access
     pageContainersData.push(
       {
-        name: 'Тренировки',
-        icon: muscules,
-        closed: null,
-        buy: false,
         to: AppRoute.TrainingCategories,
+        title: 'Тренировки',
+        iconSrc: musculesIconSrc,
+        disabled: false,
         isHighlight: false,
       },
       {
-        name: 'Питание',
-        icon: food,
-        closed: null,
-        buy: false,
         to: AppRoute.FoodCategories,
+        title: 'Питание',
+        iconSrc: foodIconSrc,
+        disabled: false,
         isHighlight: false,
       },
       {
-        name: 'Лекции',
-        icon: book,
-        closed: '',
-        buy: true,
         to: AppRoute.LectureWeeks,
+        title: 'Лекции',
+        iconSrc: bookIconSrc,
+        disabled: true,
+        labelText: 'Доступно в PRO',
         isHighlight: false,
       },
       {
-        name: 'Рецепты',
-        icon: recipes,
-        closed: '',
-        buy: true,
         to: AppRoute.RecipeCategories,
+        title: 'Рецепты',
+        iconSrc: recipesIconSrc,
+        disabled: true,
+        labelText: 'Доступно в PRO',
+        isHighlight: false,
+      },
+    );
+  } else if (thirdSteamBase) {
+    // lectures and recipes -- buy, else '12 июля'
+    pageContainersData.push(
+      {
+        to: AppRoute.TrainingCategories,
+        title: 'Тренировки',
+        iconSrc: musculesIconSrc,
+        labelText: 'Доступно с 12 июля',
+        disabled: true,
+        isHighlight: false,
+      },
+      {
+        to: AppRoute.FoodCategories,
+        title: 'Питание',
+        iconSrc: foodIconSrc,
+        labelText: 'Доступно с 12 июля',
+        disabled: true,
+        isHighlight: false,
+      },
+      {
+        to: AppRoute.LectureWeeks,
+        title: 'Лекции',
+        iconSrc: bookIconSrc,
+        disabled: true,
+        labelText: 'Доступно в PRO',
+        isHighlight: false,
+      },
+      {
+        to: AppRoute.RecipeCategories,
+        title: 'Рецепты',
+        iconSrc: recipesIconSrc,
+        disabled: true,
+        labelText: 'Доступно в PRO',
         isHighlight: false,
       },
     );

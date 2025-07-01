@@ -1,29 +1,46 @@
-import chat from '~/shared/assets/nav/chat.svg';
-import dashboard from '~/shared/assets/nav/dashboard.svg';
-import food from '~/shared/assets/nav/food.svg';
-import muscles from '~/shared/assets/nav/musclesBlack.svg';
-import profile from '~/shared/assets/nav/user.svg';
+import chatIconSrc from '~/shared/assets/nav/chat.svg';
+import dashboardIconSrc from '~/shared/assets/nav/dashboard.svg';
+import foodIconSrc from '~/shared/assets/nav/food.svg';
+import musclesIconSrc from '~/shared/assets/nav/musclesBlack.svg';
+import profileIconSrc from '~/shared/assets/nav/user.svg';
 import { AppRoute } from '~/shared/router';
 
 type NavItem = {
-  to: AppRoute;
+  to: AppRoute | null;
   iconSrc: string;
   text: string;
-  disabled?: boolean;
+  disabled: boolean;
 };
 
-export const navConfig: NavItem[] = [
-  { to: AppRoute.Dashboard, iconSrc: dashboard, text: 'Меню' },
+export const getNavConfig = (isBlockFoodAndTrain: boolean): NavItem[] => [
   {
-    to: AppRoute.TrainingCategories,
-    iconSrc: muscles,
+    to: AppRoute.Dashboard,
+    iconSrc: dashboardIconSrc,
+    text: 'Меню',
+    disabled: false,
+  },
+  {
+    to: !isBlockFoodAndTrain ? AppRoute.TrainingCategories : null,
+    iconSrc: musclesIconSrc,
     text: 'Тренировки',
+    disabled: !isBlockFoodAndTrain,
   },
   {
-    to: AppRoute.FoodCategories,
-    iconSrc: food,
+    to: !isBlockFoodAndTrain ? AppRoute.FoodCategories : null,
+    iconSrc: foodIconSrc,
     text: 'Питание',
+    disabled: !isBlockFoodAndTrain,
   },
-  { to: AppRoute.Communication, iconSrc: chat, text: 'Общение' },
-  { to: AppRoute.StartProfile, iconSrc: profile, text: 'Профиль' },
+  {
+    to: AppRoute.Communication,
+    iconSrc: chatIconSrc,
+    text: 'Общение',
+    disabled: false,
+  },
+  {
+    to: AppRoute.StartProfile,
+    iconSrc: profileIconSrc,
+    text: 'Профиль',
+    disabled: false,
+  },
 ];

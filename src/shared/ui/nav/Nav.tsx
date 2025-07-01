@@ -2,18 +2,28 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { useUser } from '~/entities/user';
 import { Color } from '~/shared/theme/colors';
 import { IconButton } from '~/shared/ui/IconButton';
 
-import { navConfig } from './navConfig';
+import { getNavConfig } from './navConfig';
 
 type NavProps = {
   className?: string;
 };
 
-export function Nav({ className }: NavProps): JSX.Element {
+export function Nav({ className }: NavProps): JSX.Element | null {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
+  const { user, isUserPending } = useUser();
+
+  if (!user || isUserPending) {
+    return null;
+  }
+
+  const secondSteam = user.subscriptions.find((sub) => sub.stream === 2);
+  const navConfig = getNavConfig(!!secondSteam);
 
   return (
     <StyledNavWrapper className={className}>
@@ -23,7 +33,7 @@ export function Nav({ className }: NavProps): JSX.Element {
 
           const handleNavItemClick = () => {
             if (disabled || isActive) return;
-            navigate(to);
+            if (to) navigate(to);
           };
 
           return (
