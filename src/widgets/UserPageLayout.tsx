@@ -3,21 +3,18 @@ import { JSX, PropsWithChildren } from 'react';
 
 import { UserMeta } from '~/entities/user';
 import { BackButton } from '~/features/BackButton';
-import { ChangeUserLevel } from '~/features/ChangeUserLevel';
 import { CloseButton } from '~/features/CloseButton';
 import { Color } from '~/shared/theme/colors';
 import { Loader } from '~/shared/ui/Loader';
 import { Nav } from '~/shared/ui/nav';
 
 type UserPageLayoutProps = PropsWithChildren<{
-  hasUserLevel: boolean;
   isLoading?: boolean;
   action?: JSX.Element;
 }>;
 
 export function UserPageLayout({
   isLoading,
-  hasUserLevel,
   action,
   children,
 }: UserPageLayoutProps): JSX.Element {
@@ -34,8 +31,6 @@ export function UserPageLayout({
             <UserMeta view="name" />
             {action}
           </StyledTopHeader>
-
-          {hasUserLevel && <ChangeUserLevel />}
         </StyledHeader>
         <StyledContentWrapper>
           {isLoading && <Loader />}

@@ -1,16 +1,12 @@
 import styled from '@emotion/styled';
-import { JSX, useState } from 'react';
+import { JSX } from 'react';
 
 import { useUpdateUser, useUser } from '~/entities/user';
-import closeIconSrc from '~/shared/assets/svg/close.svg';
-import rightIconSrc from '~/shared/assets/svg/right.svg';
-import settingsIconSrc from '~/shared/assets/svg/settings.svg';
 import { Color } from '~/shared/theme/colors';
-import { Toggler } from '~/shared/ui/Toggler';
+
+const VALUES = ['Новичок', 'Профи'];
 
 export function ChangeUserLevel(): JSX.Element | null {
-  const [open, setOpen] = useState(false);
-
   const { user } = useUser();
 
   const { updateUser } = useUpdateUser();
@@ -19,25 +15,20 @@ export function ChangeUserLevel(): JSX.Element | null {
     updateUser({ dto: { level } });
   };
 
-  if (!user) {
-    return null;
-  }
-
   return (
     <ChangeUserLevelWrapper>
-      <StyledOpenMenuButton onClick={() => setOpen((prevOpen) => !prevOpen)}>
-        <img src={settingsIconSrc} />
-        Настроить уровень сложности
-        <StyledCloseIcon src={open ? closeIconSrc : rightIconSrc} />
-      </StyledOpenMenuButton>
-      {open && (
-        <Toggler
-          backgroundColor={Color.White}
-          values={['Новичок', 'Профи']}
-          activeValue={user.level}
-          onClick={handleSelectorClick}
-        />
-      )}
+      <StyledTitle>Уровень сложности</StyledTitle>
+      <StyledButtonsWrapper>
+        {VALUES.map((value, index) => (
+          <StyledButton
+            key={index}
+            isActive={user?.level === value}
+            onClick={() => handleSelectorClick(value)}
+          >
+            {value}
+          </StyledButton>
+        ))}
+      </StyledButtonsWrapper>
     </ChangeUserLevelWrapper>
   );
 }
@@ -45,26 +36,32 @@ export function ChangeUserLevel(): JSX.Element | null {
 const ChangeUserLevelWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px;
-
-  padding: 10px 16px;
-  border-radius: 16px;
-
-  background-color: #f2f2f2;
+  gap: 14px;
 `;
 
-const StyledOpenMenuButton = styled.button`
-  position: relative;
-
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  width: 100%;
-
-  color: #0d0d0d;
+const StyledTitle = styled.div`
   font-size: 14px;
+  font-weight: 600;
 `;
 
-const StyledCloseIcon = styled.img`
-  margin-left: auto;
+const StyledButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+`;
+
+const StyledButton = styled.button<{ isActive: boolean }>`
+  width: 100%;
+  padding: 17px 30px;
+  border-radius: 8px;
+
+  color: ${({ isActive }) => (isActive ? Color.Black : Color.Black_300)};
+  font-size: 16px;
+  font-weight: 700;
+
+  background-color: ${({ isActive }) =>
+    isActive ? Color.Green_500 : Color.Black_50};
+
+  cursor: pointer;
 `;

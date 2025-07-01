@@ -7,16 +7,28 @@ import { Color } from '~/shared/theme/colors';
 type IconButtonProps = {
   className?: string;
   iconSrc: string;
+  color: `${IconButtonColor}`;
   text?: string;
   isActive?: boolean;
   disabled?: boolean;
   onClick?: () => void;
 };
 
+type StyledIconButtonProps = Pick<
+  IconButtonProps,
+  'isActive' | 'disabled' | 'color'
+>;
+
+const enum IconButtonColor {
+  Accent = 'accent',
+  Secondary = 'secondary',
+}
+
 export function IconButton({
   className,
   iconSrc,
   text,
+  color,
   isActive = false,
   disabled = false,
   onClick,
@@ -26,6 +38,7 @@ export function IconButton({
       <StyledIconButton
         isActive={isActive}
         disabled={disabled}
+        color={color}
         onClick={onClick}
       >
         <StyledIcon src={disabled ? lockIconSrc : iconSrc} />
@@ -43,10 +56,16 @@ const StyledIconButtonWrapper = styled.div`
   gap: 4px;
 `;
 
-const StyledIconButton = styled.button<{
-  isActive: boolean;
-  disabled: boolean;
-}>`
+const IconButtonColorToCss = {
+  [IconButtonColor.Accent]: `
+    --color-icon-button: ${Color.Violet_200};
+  `,
+  [IconButtonColor.Secondary]: `
+    --color-icon-button: ${Color.Green_500};
+  `,
+};
+
+const StyledIconButton = styled.button<StyledIconButtonProps>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -57,14 +76,16 @@ const StyledIconButton = styled.button<{
   border: 1px solid;
   border-radius: 50%;
 
+  ${({ color }) => IconButtonColorToCss[color]}
+
   border-color: ${({ isActive, disabled }) => {
     if (disabled) return Color.Black_900;
-    return isActive ? Color.Green_500 : Color.Black_100;
+    return isActive ? 'var(--color-icon-button)' : Color.Black_100;
   }};
 
   background-color: ${({ isActive, disabled }) => {
     if (disabled) return Color.Black_900;
-    return isActive ? Color.Green_500 : Color.Black_50;
+    return isActive ? 'var(--color-icon-button)' : Color.Black_50;
   }};
 `;
 

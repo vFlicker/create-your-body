@@ -57,7 +57,7 @@ export function BodyMeasurementsPage(): JSX.Element {
     useCreateBodyMeasurements();
 
   if (!currentUserSession || isUserPending || !bodyMeasurements || !user) {
-    return <UserPageLayout hasUserLevel={false} isLoading={true} />;
+    return <UserPageLayout isLoading={true} />;
   }
 
   const handleBodyMeasurementsChange = (name: string) => {
@@ -104,7 +104,7 @@ export function BodyMeasurementsPage(): JSX.Element {
     isBodyMeasurementsPending;
 
   return (
-    <UserPageLayout hasUserLevel={false} isLoading={false}>
+    <UserPageLayout isLoading={false}>
       <StyledBodyMeasurementsPageWrapper>
         <StyledHeader>
           <StyledTitle>Как измерить параметры?</StyledTitle>

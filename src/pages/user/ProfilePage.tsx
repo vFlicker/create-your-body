@@ -8,11 +8,11 @@ import {
   MeasurementsTable,
   UserDataTable,
 } from '~/entities/user';
+import { ChangeUserLevel } from '~/features/ChangeUserLevel';
 import chartIconSrc from '~/shared/assets/svg/chart.svg';
 import historyIconSrc from '~/shared/assets/svg/history.svg';
-import pencilIconSrc from '~/shared/assets/svg/pencil.svg';
+import notificationIconSrc from '~/shared/assets/svg/notification.svg';
 import { wait } from '~/shared/libs/wait';
-import { AppRoute } from '~/shared/router';
 import { IconButton } from '~/shared/ui/IconButton';
 import { PhotoEditor } from '~/shared/ui/PhotoEditor';
 import { UserPageLayout } from '~/widgets/UserPageLayout';
@@ -32,12 +32,12 @@ export function ProfilePage(): JSX.Element {
 
   return (
     <UserPageLayout
-      hasUserLevel
       isLoading={false}
       action={
-        <StyledEditButton
-          iconSrc={pencilIconSrc}
-          onClick={() => navigate(AppRoute.BodyMeasurements)}
+        <StyledNotificationButton
+          color="accent"
+          iconSrc={notificationIconSrc}
+          isActive
         />
       }
     >
@@ -46,6 +46,8 @@ export function ProfilePage(): JSX.Element {
       )}
 
       <StyledContentWrapper>
+        <ChangeUserLevel />
+
         <StyledProgressSectionWrapper>
           <StyledProgressTextWrapper>
             <h4>Запись прогресса</h4>
@@ -112,10 +114,15 @@ const StyledProgressTextWrapper = styled.div`
   }
 `;
 
-const StyledEditButton = styled(IconButton)`
+const StyledNotificationButton = styled(IconButton)`
   button {
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
+  }
+
+  img {
+    width: 18px;
+    height: 18px;
   }
 `;
 

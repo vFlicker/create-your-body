@@ -39,6 +39,7 @@ export function Nav({ className }: NavProps): JSX.Element | null {
           return (
             <IconButton
               key={text}
+              color="secondary"
               iconSrc={iconSrc}
               text={text}
               disabled={disabled}

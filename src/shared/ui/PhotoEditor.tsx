@@ -76,6 +76,7 @@ export function PhotoEditor({ label, stage }: PhotoEditorProps) {
           <StyledImage src={photoUrl} isEmpty={!hasPhoto} alt={label} />
         )}
         <StyledEditButton
+          color="secondary"
           iconSrc={editIconSrc}
           disabled={isLoading}
           onClick={handleEditClick}

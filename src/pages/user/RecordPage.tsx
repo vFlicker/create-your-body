@@ -51,7 +51,7 @@ export function RecordPage(): JSX.Element {
   };
 
   return (
-    <UserPageLayout hasUserLevel={false} isLoading={false}>
+    <UserPageLayout isLoading={false}>
       <StyledRecordPageWrapper>
         <StyledTitle>Запишите свой прогресс</StyledTitle>
         <StyledInputsWrapper>
