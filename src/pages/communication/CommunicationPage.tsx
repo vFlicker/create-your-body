@@ -3,9 +3,9 @@ import { JSX } from 'react';
 
 import { useUser } from '~/entities/user';
 import { OpenTgLinkButton } from '~/features/OpenTgLinkButton';
-import chatIconSrc from '~/shared/assets/nav/chat.svg';
 import botIconSrc from '~/shared/assets/svg/bot.svg';
 import channelIconSrc from '~/shared/assets/svg/channel.svg';
+import chatIconSrc from '~/shared/assets/svg/chat.svg';
 import helpIconSrc from '~/shared/assets/svg/help.svg';
 import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 

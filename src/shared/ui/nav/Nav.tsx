@@ -2,11 +2,10 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { useUser } from '~/entities/user';
 import { Color } from '~/shared/theme/colors';
 import { IconButton } from '~/shared/ui/IconButton';
 
-import { getNavConfig } from './navConfig';
+import { navConfig } from './navConfig';
 
 type NavProps = {
   className?: string;
@@ -15,15 +14,6 @@ type NavProps = {
 export function Nav({ className }: NavProps): JSX.Element | null {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-
-  const { user, isUserPending } = useUser();
-
-  if (!user || isUserPending) {
-    return null;
-  }
-
-  const secondSteam = user.subscriptions.find((sub) => sub.stream === 2);
-  const navConfig = getNavConfig(!!secondSteam);
 
   return (
     <StyledNavWrapper className={className}>
@@ -60,15 +50,15 @@ const StyledNavWrapper = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 90px;
 
-  background-color: ${Color.Black_50};
+  background-color: ${Color.White};
+  border: 1px solid ${Color.Black_100};
   z-index: 2;
 `;
 
 const StyledNavMenu = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 8px 16px;
+  padding: 14px 20px 22px;
   width: 100%;
 `;

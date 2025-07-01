@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 
 const enum Color {
+  Violet_10 = 'var(--violet-10)',
   Violet_50 = 'var(--violet-50)',
   Violet_100 = 'var(--violet-100)',
   Violet_200 = 'var(--violet-200)',
@@ -30,6 +31,7 @@ const enum Color {
 
 const globalColors = css`
   :root {
+    --violet-10: #f0f0f6;
     --violet-50: #e9e5ff;
     --violet-100: #d3ccff;
     --violet-200: #a799ff;
@@ -44,7 +46,7 @@ const globalColors = css`
 
     --black: #000000;
     --black-50: #f2f2f2;
-    --black-100: #e6e6e6;
+    --black-100: #eaeaef;
     --black-200: #cccccc;
     --black-300: #b3b3b3;
     --black-400: #999999;

@@ -71,31 +71,26 @@ const StyledIconButton = styled.button<StyledIconButtonProps>`
   align-items: center;
   flex-shrink: 0;
 
-  width: 50px;
-  height: 50px;
-  border: 1px solid;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
 
   ${({ color }) => IconButtonColorToCss[color]}
 
-  border-color: ${({ isActive, disabled }) => {
-    if (disabled) return Color.Black_900;
-    return isActive ? 'var(--color-icon-button)' : Color.Black_100;
-  }};
-
   background-color: ${({ isActive, disabled }) => {
     if (disabled) return Color.Black_900;
-    return isActive ? 'var(--color-icon-button)' : Color.Black_50;
+    return isActive ? 'var(--color-icon-button)' : Color.Violet_10;
   }};
 `;
 
 const StyledIcon = styled.img`
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
 `;
 
 const StyledText = styled.div`
   color: ${Color.Black_950};
   font-size: 10px;
+  font-weight: 500;
   text-align: center;
 `;
