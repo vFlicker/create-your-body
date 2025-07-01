@@ -18,16 +18,11 @@ export function UserMeta({ view }: UserMetaProps): JSX.Element | null {
   const { user } = useUser();
 
   const handleClick = () => {
-    if (pathname === AppRoute.StartProfile || pathname === AppRoute.Profile) {
-      return;
-    }
-
-    navigate(AppRoute.StartProfile);
+    if (pathname === AppRoute.Profile) return;
+    navigate(AppRoute.Profile);
   };
 
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
 
   return (
     <StyledUserMetaWrapper>

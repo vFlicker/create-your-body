@@ -38,7 +38,7 @@ export const getNavConfig = (isBlockFoodAndTrain: boolean): NavItem[] => [
     disabled: false,
   },
   {
-    to: AppRoute.StartProfile,
+    to: AppRoute.Profile,
     iconSrc: profileIconSrc,
     text: 'Профиль',
     disabled: false,
