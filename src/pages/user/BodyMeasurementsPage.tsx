@@ -18,7 +18,6 @@ import { userSession } from '~/shared/libs/userSession';
 import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/Button';
 import { Input } from '~/shared/ui/Input';
-import { RadioButton } from '~/shared/ui/RadioButton';
 import { UserPageLayout } from '~/widgets/UserPageLayout';
 
 import { bodyMeasurementsInputs } from './userPageConfig';
@@ -34,7 +33,6 @@ export function BodyMeasurementsPage(): JSX.Element {
   const [bornDate, setBornDate] = useState(
     formatDateForDisplay(user?.bornDate || ''),
   );
-  const [sex, setSex] = useState(user?.sex || '');
 
   const { bodyMeasurements, isBodyMeasurementsPending } = useBodyMeasurements();
 
@@ -88,7 +86,7 @@ export function BodyMeasurementsPage(): JSX.Element {
       }
 
       const formattedBornDate = convertDateToBackendFormat(bornDate);
-      const userData = { sex, bornDate: formattedBornDate };
+      const userData = { bornDate: formattedBornDate };
       await updateUser({ dto: userData });
 
       navigate(AppRoute.Profile);
@@ -132,13 +130,6 @@ export function BodyMeasurementsPage(): JSX.Element {
               value={bornDate}
               onChange={(e) => setBornDate(e.target.value)}
               label="Дата рождения"
-            />
-            <RadioButton
-              label="Пол"
-              names={['М', 'Ж']}
-              options={['male', 'female']}
-              activeOption={sex}
-              onClick={(sex) => setSex(sex)}
             />
           </StyledInputsWrapper>
         </StyledFieldset>

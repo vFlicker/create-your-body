@@ -1,18 +1,35 @@
 import styled from '@emotion/styled';
 import { ComponentProps, JSX } from 'react';
 
+import { ErrorText } from './ErrorText';
+
 type InputProps = ComponentProps<typeof StyledInput> & {
   label: string;
+  error?: string;
 };
 
-export function Input({ className, label, ...props }: InputProps): JSX.Element {
+export function Input({
+  className,
+  label,
+  error,
+  ...props
+}: InputProps): JSX.Element {
   return (
-    <StyledLabel className={className}>
-      {label}
-      <StyledInput {...props} />
-    </StyledLabel>
+    <StyledInputWrapper className={className}>
+      <StyledLabel>
+        {label}
+        <StyledInput {...props} />
+      </StyledLabel>
+      {error && <ErrorText>{error}</ErrorText>}
+    </StyledInputWrapper>
   );
 }
+
+const StyledInputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+`;
 
 const StyledLabel = styled.label`
   display: flex;
@@ -38,5 +55,10 @@ const StyledInput = styled.input`
 
   &::placeholder {
     color: #999999;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 `;
