@@ -4,40 +4,8 @@ import { JSX } from 'react';
 import { Loader } from '~/shared/ui/Loader';
 
 import { useBodyMeasurements } from '../api/useBodyMeasurements';
-import { useUser } from '../api/useUser';
 import { calculateBodyMeasurementsChange } from '../libs/calculateBodyMeasurementsChange';
-import { getAgeFromISOString } from '../libs/getAgeFromISOString';
 import { DeltaDirection } from '../libs/getDeltaDirection';
-
-const genderLabel = {
-  male: 'Мужской',
-  female: 'Женский',
-};
-
-export function UserDataTable(): JSX.Element {
-  const { user, isUserPending } = useUser();
-
-  if (!user || isUserPending) {
-    return <Loader />;
-  }
-
-  return (
-    <StyledTableWrapper>
-      <StyledTitle>Общее</StyledTitle>
-      <StyledTable>
-        <StyledRecord>
-          <StyledKey>Возраст</StyledKey>
-          <StyledValue>{getAgeFromISOString(user.bornDate)}</StyledValue>
-        </StyledRecord>
-
-        <StyledRecord>
-          <StyledKey>Пол</StyledKey>
-          <StyledValue>{genderLabel[user.sex]}</StyledValue>
-        </StyledRecord>
-      </StyledTable>
-    </StyledTableWrapper>
-  );
-}
 
 export function MeasurementsTable(): JSX.Element {
   const { bodyMeasurements, isBodyMeasurementsPending } = useBodyMeasurements();

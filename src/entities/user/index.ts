@@ -13,10 +13,6 @@ export { formatDateForDisplay } from './libs/formatDateForDisplay';
 export { CreateBodyMeasurementsSchema } from './model/createBodyMeasurementsSchema';
 export { getMaxStream } from './model/getMaxStream';
 export { useStreamStore } from './model/streamStore';
-export {
-  ANIMATION_DURATION_IN_MS,
-  HistoryProgress,
-} from './ui/HistoryProgress';
+export { MeasurementsTable } from './ui/MeasurementsTable';
 export { StreamsInfo } from './ui/StreamsInfo';
-export { MeasurementsTable, UserDataTable } from './ui/Tables';
 export { UserMeta } from './ui/UserMeta';
