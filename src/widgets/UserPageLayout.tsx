@@ -4,6 +4,7 @@ import { JSX, PropsWithChildren } from 'react';
 import { UserMeta } from '~/entities/user';
 import { BackButton } from '~/features/BackButton';
 import { CloseAppButton } from '~/features/CloseAppButton';
+import { ShowNotificationsButton } from '~/features/ShowNotifications';
 import { Color } from '~/shared/theme/colors';
 import { Loader } from '~/shared/ui/Loader';
 import { Nav } from '~/shared/ui/nav';
@@ -15,7 +16,6 @@ type UserPageLayoutProps = PropsWithChildren<{
 
 export function UserPageLayout({
   isLoading,
-  action,
   children,
 }: UserPageLayoutProps): JSX.Element {
   return (
@@ -29,7 +29,7 @@ export function UserPageLayout({
         <StyledHeader>
           <StyledTopHeader>
             <UserMeta view="name" />
-            {action}
+            <ShowNotificationsButton />
           </StyledTopHeader>
         </StyledHeader>
         <StyledContentWrapper>
