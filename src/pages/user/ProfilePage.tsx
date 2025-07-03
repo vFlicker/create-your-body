@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { JSX, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { Notification } from '~/entities/notification';
 import { ChangeUserLevel } from '~/features/ChangeUserLevel';
 import notificationIconSrc from '~/shared/assets/svg/notification.svg';
 import { AppRoute } from '~/shared/router';
@@ -31,12 +32,7 @@ export function ProfilePage(): JSX.Element {
           isOpen={showDialogModal}
           onClose={() => setShowDialogModal(false)}
         >
-          <div>Уведомления</div>
-          <div>Сегодня</div>
-          <div>
-            Текст уведомления чтобы отслеживать прогресс необходимо в конце
-            каждой недели обновлять параметры.
-          </div>
+          <Notification />
         </Modal>
 
         <Link to={AppRoute.ProfileEdit}>Личные данные</Link>
