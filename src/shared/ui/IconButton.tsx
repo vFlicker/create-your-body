@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
@@ -57,10 +58,10 @@ const StyledIconButtonWrapper = styled.div`
 `;
 
 const IconButtonColorToCss = {
-  [IconButtonColor.Accent]: `
+  [IconButtonColor.Accent]: css`
     --color-icon-button: ${Color.Violet_200};
   `,
-  [IconButtonColor.Secondary]: `
+  [IconButtonColor.Secondary]: css`
     --color-icon-button: ${Color.Green_500};
   `,
 };

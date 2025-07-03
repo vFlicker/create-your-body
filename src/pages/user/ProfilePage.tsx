@@ -54,7 +54,7 @@ const StyledLinkList = styled.div`
   gap: 20px;
 
   padding: 12px 18px;
-  border-radius: 12px;
+  border-radius: 10px;
 
   background-color: #f7f6fb;
 `;

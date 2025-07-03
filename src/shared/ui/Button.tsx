@@ -60,7 +60,7 @@ const StyledButton = styled.button<ButtonBaseProps>`
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
 
   width: 100%;
   min-height: 54px;
