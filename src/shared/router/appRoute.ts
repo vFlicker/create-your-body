@@ -18,6 +18,7 @@ export const enum AppRoute {
   ProfileEdit = '/profile/edit',
   BodyMeasurements = '/body-measurements',
   Record = '/record',
+  Subscriptions = '/subscriptions',
 
   // Communication routes
   Communication = '/communication',

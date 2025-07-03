@@ -24,7 +24,9 @@ export function Modal({ children, isOpen, onClose }: ModalProps): JSX.Element {
   return (
     <ReactPortal wrapperId="dialog-modal-container">
       <StyledDialog ref={modalRef} onClose={onClose}>
-        <StyledCloseButton onClick={onClose} />
+        <StyledHeader>
+          <StyledCloseButton onClick={onClose} />
+        </StyledHeader>
         <StyledModalContent>{children}</StyledModalContent>
       </StyledDialog>
     </ReactPortal>
@@ -32,6 +34,8 @@ export function Modal({ children, isOpen, onClose }: ModalProps): JSX.Element {
 }
 
 const StyledDialog = styled.dialog`
+  position: relative;
+
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -40,7 +44,6 @@ const StyledDialog = styled.dialog`
   max-width: 100%;
   height: 80%;
   margin-top: auto;
-  padding: 16px;
   border: none;
   border-radius: 20px 20px 0 0;
 
@@ -63,8 +66,23 @@ const StyledDialog = styled.dialog`
   }
 `;
 
+const StyledHeader = styled.div`
+  position: fixed;
+
+  display: flex;
+  width: 100%;
+  padding: 23px 16px 16px 16px;
+  border-radius: 20px 20px 0 0;
+
+  background-color: ${Color.White};
+  z-index: 2;
+`;
+
 const StyledCloseButton = styled(CloseButton)`
   margin-left: auto;
 `;
 
-const StyledModalContent = styled.div``;
+const StyledModalContent = styled.div`
+  padding: 16px;
+  margin-top: 61px;
+`;

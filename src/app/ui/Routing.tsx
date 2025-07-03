@@ -30,6 +30,7 @@ import {
   ProfileEditPage,
   ProfilePage,
   RecordPage,
+  SubscriptionsPage,
 } from '~/pages/user';
 import { AppRoute } from '~/shared/router';
 
@@ -54,6 +55,7 @@ export function Routing(): JSX.Element {
         {/* User */}
         <Route path={AppRoute.Profile} element={<ProfilePage />} />
         <Route path={AppRoute.ProfileEdit} element={<ProfileEditPage />} />
+        <Route path={AppRoute.Subscriptions} element={<SubscriptionsPage />} />
 
         <Route
           path={AppRoute.BodyMeasurements}
