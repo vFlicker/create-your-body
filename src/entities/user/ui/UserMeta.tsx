@@ -38,8 +38,8 @@ export function UserMeta({ view }: UserMetaProps): JSX.Element | null {
 
       {view === 'name' && (
         <StyledNameWrapper>
-          <p>{user?.name || 'Имя'}</p>
-          <span>{user?.level || 'Уровень'}</span>
+          <p>{user?.name}</p>
+          <span>{user?.email}</span>
         </StyledNameWrapper>
       )}
     </StyledUserMetaWrapper>
