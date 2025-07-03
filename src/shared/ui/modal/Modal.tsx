@@ -36,7 +36,7 @@ export function Modal({ children, isOpen, onClose }: ModalProps): JSX.Element {
 const StyledDialog = styled.dialog`
   position: relative;
 
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 24px;
 
@@ -49,12 +49,8 @@ const StyledDialog = styled.dialog`
 
   background-color: ${Color.White};
 
-  opacity: 0;
-  pointer-events: none;
-
   &[open] {
-    opacity: 1;
-    pointer-events: auto;
+    display: flex;
   }
 
   &::backdrop {
