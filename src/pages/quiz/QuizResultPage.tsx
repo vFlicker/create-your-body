@@ -3,7 +3,7 @@ import { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useUser } from '~/entities/user';
-import { CloseButton } from '~/features/CloseButton';
+import { CloseAppButton } from '~/features/CloseAppButton';
 import resultImageSrc from '~/shared/assets/img/result.jpg';
 import musclesIconSrc from '~/shared/assets/svg/musclesBlack.svg';
 import settingsIconSrc from '~/shared/assets/svg/settings.svg';
@@ -22,7 +22,7 @@ export function QuizResultPage(): JSX.Element {
 
   return (
     <StyledQuizResultPage>
-      <StyledCloseButton />
+      <StyledCloseAppButton />
       <StyledImage src={resultImageSrc} />
       <StyledResultInfo>
         <StyledContentWrapper>
@@ -117,7 +117,7 @@ const StyledButton = styled(Button)`
   margin-top: auto;
 `;
 
-const StyledCloseButton = styled(CloseButton)`
+const StyledCloseAppButton = styled(CloseAppButton)`
   position: absolute;
   top: 16px;
   right: 16px;

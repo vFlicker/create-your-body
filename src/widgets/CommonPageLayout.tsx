@@ -3,7 +3,7 @@ import { JSX, PropsWithChildren } from 'react';
 
 import { StreamsInfo, UserMeta } from '~/entities/user';
 import { BackButton } from '~/features/BackButton';
-import { CloseButton } from '~/features/CloseButton';
+import { CloseAppButton } from '~/features/CloseAppButton';
 import { Color } from '~/shared/theme/colors';
 import { Loader } from '~/shared/ui/Loader';
 import { Nav } from '~/shared/ui/nav';
@@ -30,7 +30,7 @@ export function CommonPageLayout({
     <StyledPageWrapper>
       <StyledButtonsWrapper>
         {hasBackButton && <BackButton />}
-        <StyledCloseButton />
+        <StyledCloseAppButton />
       </StyledButtonsWrapper>
 
       <StyledMainWrapper>
@@ -75,7 +75,7 @@ const StyledButtonsWrapper = styled.div`
   width: 100%;
 `;
 
-const StyledCloseButton = styled(CloseButton)`
+const StyledCloseAppButton = styled(CloseAppButton)`
   margin-left: auto;
 `;
 

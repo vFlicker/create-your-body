@@ -3,7 +3,7 @@ import { JSX, PropsWithChildren } from 'react';
 
 import { UserMeta } from '~/entities/user';
 import { BackButton } from '~/features/BackButton';
-import { CloseButton } from '~/features/CloseButton';
+import { CloseAppButton } from '~/features/CloseAppButton';
 import { Color } from '~/shared/theme/colors';
 import { Loader } from '~/shared/ui/Loader';
 import { Nav } from '~/shared/ui/nav';
@@ -22,7 +22,7 @@ export function UserPageLayout({
     <StyledPageWrapper>
       <StyledButtonsWrapper>
         <BackButton />
-        <CloseButton />
+        <CloseAppButton />
       </StyledButtonsWrapper>
 
       <StyledMainWrapper>

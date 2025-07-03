@@ -1,24 +1,21 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
-import { useLocation } from 'react-router-dom';
 
 import closeIconSrc from '~/shared/assets/svg/close.svg';
-import closeStartIconSrc from '~/shared/assets/svg/closeWhite.svg';
 import { Color } from '~/shared/theme/colors';
 
 type CloseButtonProps = {
   className?: string;
+  onClick?: () => void;
 };
 
-export function CloseButton({ className }: CloseButtonProps): JSX.Element {
-  const location = useLocation();
-
+export function CloseButton({
+  className,
+  onClick,
+}: CloseButtonProps): JSX.Element {
   return (
-    <StyledCloseButton
-      className={className}
-      onClick={() => Telegram.WebApp.close()}
-    >
-      <img src={location.pathname === '/' ? closeStartIconSrc : closeIconSrc} />
+    <StyledCloseButton className={className} onClick={onClick}>
+      <img src={closeIconSrc} />
     </StyledCloseButton>
   );
 }
