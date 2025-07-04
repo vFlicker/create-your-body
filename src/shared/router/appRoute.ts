@@ -6,6 +6,8 @@ export const enum AppRoute {
   Dashboard = '/dashboard',
   Learning = '/learning',
   History = '/history',
+  BodyMeasurements = '/body-measurements',
+  Record = '/record',
 
   // Begin route
   Begin = '/begin',
@@ -17,9 +19,7 @@ export const enum AppRoute {
   // User routes
   Profile = '/profile',
   ProfileEdit = '/profile/edit',
-  BodyMeasurements = '/body-measurements',
-  Record = '/record',
-  Subscriptions = '/subscriptions',
+  Subscriptions = '/profile/subscriptions',
 
   // Communication routes
   Communication = '/communication',
