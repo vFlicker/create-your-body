@@ -2,8 +2,8 @@ import styled from '@emotion/styled';
 import { ChangeEvent, JSX, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useCreateBodyMeasurements } from '~/entities/user';
-import { CreateBodyMeasurementsSchema } from '~/entities/user';
+import { useCreateBodyMeasurements } from '~/entities/measurement';
+import { CreateBodyMeasurementsSchema } from '~/entities/measurement/model/createBodyMeasurementsSchema';
 import { userSession } from '~/shared/libs/userSession';
 import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/atoms/Button';

@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { userApiService } from './userApiService';
+import { measurementApiService } from './measurementApiService';
 
 export const useBodyMeasurements = () => {
   const { data, isPending } = useQuery({
     queryKey: ['user-body-measurements'],
-    queryFn: userApiService.getBodyMeasurements,
+    queryFn: measurementApiService.getBodyMeasurements,
   });
 
   return { bodyMeasurements: data, isBodyMeasurementsPending: isPending };

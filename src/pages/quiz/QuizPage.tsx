@@ -2,13 +2,12 @@ import styled from '@emotion/styled';
 import { ChangeEvent, JSX, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useUpdateUser, useUser } from '~/entities/user';
+import { BackButton } from '~/features/BackButton';
 import {
   convertDateToBackendFormat,
   formatDateForDisplay,
-  useUpdateUser,
-  useUser,
-} from '~/entities/user';
-import { BackButton } from '~/features/BackButton';
+} from '~/shared/libs/date';
 import { AppRoute } from '~/shared/router';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';

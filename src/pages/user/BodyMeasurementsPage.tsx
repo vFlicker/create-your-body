@@ -3,16 +3,14 @@ import { ChangeEvent, JSX, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
-  convertDateToBackendFormat,
-  CreateBodyMeasurementsSchema,
-  formatDateForDisplay,
   useBodyMeasurements,
   useCreateBodyMeasurements,
   useUpdateBodyMeasurements,
-  useUpdateUser,
-  useUser,
-} from '~/entities/user';
+} from '~/entities/measurement';
+import { CreateBodyMeasurementsSchema } from '~/entities/measurement/model/createBodyMeasurementsSchema';
+import { useUpdateUser, useUser } from '~/entities/user';
 import exampleImageSrc from '~/shared/assets/img/example.jpeg';
+import { convertDateToBackendFormat, formatDateForDisplay } from '~/shared/libs/date';
 import { showTelegramAlert } from '~/shared/libs/telegram';
 import { userSession } from '~/shared/libs/userSession';
 import { AppRoute } from '~/shared/router';

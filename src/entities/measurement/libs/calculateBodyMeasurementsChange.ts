@@ -1,4 +1,4 @@
-import { BodyMeasurements } from '../userTypes';
+import { BodyMeasurements } from '../measurementTypes';
 import {
   DeltaDirection,
   getDeltaDirection,

@@ -4,12 +4,11 @@ import { JSX } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
+import { useUpdateUser, useUser } from '~/entities/user';
 import {
   convertDateToBackendFormat,
   formatDateForDisplay,
-  useUpdateUser,
-  useUser,
-} from '~/entities/user';
+} from '~/shared/libs/date';
 import { showTelegramAlert } from '~/shared/libs/telegram';
 import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/atoms/Button';

@@ -1,15 +1,13 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import {
-  formatDateForDisplay,
-  MeasurementsTable,
-  useBodyMeasurements,
-} from '~/entities/user';
-import { calculateBodyMeasurementsHistory } from '~/entities/user/libs/calculateBodyMeasurementsHistory';
-import { DeltaDirection } from '~/entities/user/libs/getDeltaDirection';
+import { MeasurementsTable, useBodyMeasurements } from '~/entities/measurement';
+import { calculateBodyMeasurementsHistory } from '~/entities/measurement/libs/calculateBodyMeasurementsHistory';
+import { DeltaDirection } from '~/entities/measurement/libs/getDeltaDirection';
+import { PhotoEditor } from '~/entities/measurement/ui/PhotoEditor';
+import {} from '~/entities/user';
+import { formatDateForDisplay } from '~/shared/libs/date';
 import { Loader } from '~/shared/ui/atoms/Loader';
-import { PhotoEditor } from '~/shared/ui/molecules/PhotoEditor';
 import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
 export function HistoryProgressPage(): JSX.Element {

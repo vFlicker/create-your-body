@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { userApiService } from './userApiService';
+import { measurementApiService } from './measurementApiService';
 
 export const useCreateBodyMeasurements = () => {
   const queryClient = useQueryClient();
 
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: userApiService.createBodyMeasurements,
+    mutationFn: measurementApiService.createBodyMeasurements,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['user-body-measurements'],
