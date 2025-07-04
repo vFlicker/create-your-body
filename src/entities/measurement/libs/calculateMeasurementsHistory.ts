@@ -5,9 +5,10 @@ import {
   signIndicator,
 } from './getDeltaDirection';
 
-type MeasurementRow = {
+export type MeasurementRow = {
   id: number;
   title: string;
+  unit: string;
   value?: number;
   delta?: string;
   deltaDirection?: DeltaDirection;
@@ -21,12 +22,30 @@ type MeasurementHistoryRecord = {
 type MeasurementKey = keyof typeof measurement;
 
 const measurement = {
-  chest: 'Обхват груди:',
-  waist: 'Обхват талии:',
-  abdominalCircumference: 'Обхват живота:',
-  legs: 'Обхват ноги:',
-  hips: 'Обхват бедер:',
-  weight: 'Вес:',
+  weight: {
+    title: 'Вес',
+    unit: 'кг',
+  },
+  chest: {
+    title: 'Грудь',
+    unit: 'см',
+  },
+  waist: {
+    title: 'Талия',
+    unit: 'см',
+  },
+  abdominalCircumference: {
+    title: 'Живот',
+    unit: 'см',
+  },
+  hips: {
+    title: 'Бёдра',
+    unit: 'см',
+  },
+  legs: {
+    title: 'Обхват ноги',
+    unit: 'см',
+  },
 };
 
 export const calculateMeasurementsHistory = (
@@ -44,13 +63,13 @@ export const calculateMeasurementsHistory = (
       const value = currentMeasurement[key];
       let previousValue;
       if (index > 0) previousValue = reversedMeasurements[index - 1][key];
-      const delta = previousValue ? value - previousValue : 0;
+      const delta = previousValue !== undefined ? value - previousValue : 0;
       const deltaDirection = getDeltaDirection(delta);
       const sign = signIndicator[deltaDirection] || '';
 
       measurementChanges.push({
+        ...measurement[key],
         id: currentMeasurement.id,
-        title: measurement[key],
         value,
         delta: `${sign}${Math.abs(delta)}`,
         deltaDirection,
