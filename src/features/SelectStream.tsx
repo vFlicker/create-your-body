@@ -1,7 +1,7 @@
 import { JSX, useEffect } from 'react';
 
 import { getMaxStream, useStreamStore, useUser } from '~/entities/user';
-import { Select } from '~/shared/ui/Select';
+import { Select } from '~/shared/ui/atoms/Select';
 
 export function SelectStream(): JSX.Element | null {
   const { user, isUserPending } = useUser();

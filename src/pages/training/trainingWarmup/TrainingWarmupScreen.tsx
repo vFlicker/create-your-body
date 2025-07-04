@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import checkIconSrc from '~/shared/assets/svg/check.svg';
 import { AppRoute } from '~/shared/router';
-import { Button } from '~/shared/ui/Button';
+import { Button } from '~/shared/ui/atoms/Button';
 
 import { VideoData } from './trainingWarmupTypes';
 

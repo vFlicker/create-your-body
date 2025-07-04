@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { ComponentProps, JSX } from 'react';
 
-import { ErrorText } from './ErrorText';
+import { ErrorText } from '../atoms/ErrorText';
 
 type InputProps = ComponentProps<typeof StyledInput> & {
   label: string;

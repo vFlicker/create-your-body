@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '~/entities/user';
 import backgroundImageSrc from '~/shared/assets/img/background-image.webp';
 import { Color } from '~/shared/theme/colors';
-import { Button } from '~/shared/ui/Button';
-import { Loader } from '~/shared/ui/Loader';
+import { Button } from '~/shared/ui/atoms/Button';
+import { Loader } from '~/shared/ui/atoms/Loader';
 
 import { buttonConfig } from './startPageConfig';
 

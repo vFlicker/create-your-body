@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Children, cloneElement, JSX } from 'react';
 
-import { ErrorText } from '../ErrorText';
+import { ErrorText } from '../../atoms/ErrorText';
 
 type RadioGroupProps = {
   className?: string;

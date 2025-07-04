@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useNutritionCategories } from '~/entities/nutrition';
 import foodIconSrc from '~/shared/assets/svg/food.svg';
 import { AppRoute } from '~/shared/router';
-import { TitleCard } from '~/shared/ui/TitleCard';
+import { TitleCard } from '~/shared/ui/molecules/TitleCard';
 import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
 export function FoodCategoriesPage(): JSX.Element {

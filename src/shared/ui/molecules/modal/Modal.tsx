@@ -3,7 +3,7 @@ import { JSX, PropsWithChildren, useEffect, useRef } from 'react';
 
 import { Color } from '~/shared/theme/colors';
 
-import { CloseButton } from '../CloseButton';
+import { CloseButton } from '../../atoms/CloseButton';
 import { ReactPortal } from './ReactPortal';
 
 type ModalProps = PropsWithChildren<{

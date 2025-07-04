@@ -3,8 +3,8 @@ import { JSX, useState } from 'react';
 
 import { Notification } from '~/entities/notification';
 import notificationIconSrc from '~/shared/assets/svg/notification.svg';
-import { IconButton } from '~/shared/ui/IconButton';
-import { Modal } from '~/shared/ui/modal';
+import { IconButton } from '~/shared/ui/atoms/IconButton';
+import { Modal } from '~/shared/ui/molecules/modal';
 
 export function ShowNotificationsButton(): JSX.Element {
   const [showDialogModal, setShowDialogModal] = useState(false);

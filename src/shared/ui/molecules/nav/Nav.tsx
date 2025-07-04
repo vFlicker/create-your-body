@@ -3,7 +3,7 @@ import { JSX } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { Color } from '~/shared/theme/colors';
-import { IconButton } from '~/shared/ui/IconButton';
+import { IconButton } from '~/shared/ui/atoms/IconButton';
 
 import { navConfig } from './navConfig';
 

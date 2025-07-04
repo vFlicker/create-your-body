@@ -8,8 +8,8 @@ import {
 } from '~/entities/user';
 import { calculateBodyMeasurementsHistory } from '~/entities/user/libs/calculateBodyMeasurementsHistory';
 import { DeltaDirection } from '~/entities/user/libs/getDeltaDirection';
-import { Loader } from '~/shared/ui/Loader';
-import { PhotoEditor } from '~/shared/ui/PhotoEditor';
+import { Loader } from '~/shared/ui/atoms/Loader';
+import { PhotoEditor } from '~/shared/ui/molecules/PhotoEditor';
 import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
 export function HistoryProgressPage(): JSX.Element {

@@ -7,7 +7,7 @@ import { useStreamStore, useUser } from '~/entities/user';
 import mockupImageSrc from '~/shared/assets/img/mockup.jpeg';
 import musclesIconSrc from '~/shared/assets/svg/musclesBlack.svg';
 import { AppRoute } from '~/shared/router';
-import { TitleCard } from '~/shared/ui/TitleCard';
+import { TitleCard } from '~/shared/ui/molecules/TitleCard';
 import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
 import { pageTitle } from './trainingPlaceConfig';

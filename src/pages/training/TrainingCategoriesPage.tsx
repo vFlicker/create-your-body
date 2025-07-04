@@ -9,7 +9,7 @@ import dumbbellsIconSrc from '~/shared/assets/train/dumbbells.svg';
 import questionIconSrc from '~/shared/assets/train/question.svg';
 import sportIconSrc from '~/shared/assets/train/sport.svg';
 import { AppRoute } from '~/shared/router';
-import { TitleCard } from '~/shared/ui/TitleCard';
+import { TitleCard } from '~/shared/ui/molecules/TitleCard';
 import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
 const trainingCategories = [

@@ -11,8 +11,8 @@ import {
 import { BackButton } from '~/features/BackButton';
 import { AppRoute } from '~/shared/router';
 import { Color } from '~/shared/theme/colors';
-import { Button } from '~/shared/ui/Button';
-import { Progress } from '~/shared/ui/Progress';
+import { Button } from '~/shared/ui/atoms/Button';
+import { Progress } from '~/shared/ui/atoms/Progress';
 
 import { quizData } from './quizData';
 import { isDateValid, validateName, validatePhone } from './quizValidators';

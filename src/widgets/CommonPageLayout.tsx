@@ -5,8 +5,8 @@ import { StreamsInfo, UserMeta } from '~/entities/user';
 import { BackButton } from '~/features/BackButton';
 import { CloseAppButton } from '~/features/CloseAppButton';
 import { Color } from '~/shared/theme/colors';
-import { Loader } from '~/shared/ui/Loader';
-import { Nav } from '~/shared/ui/nav';
+import { Loader } from '~/shared/ui/atoms/Loader';
+import { Nav } from '~/shared/ui/molecules/nav';
 
 type CommonPageLayoutProps = PropsWithChildren<{
   title: string;

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import { Color } from '../theme/colors';
+import { Color } from '../../theme/colors';
 
 type ProgressProps = {
   label: string;

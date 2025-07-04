@@ -7,8 +7,8 @@ import checkIconSrc from '~/shared/assets/svg/check.svg';
 import beginVideoSrc from '~/shared/assets/video/begin.mp4';
 import { debounce } from '~/shared/libs/debounce';
 import { userSession } from '~/shared/libs/userSession';
-import { Button } from '~/shared/ui/Button';
-import { VideoPlayer } from '~/shared/ui/videoPlayer';
+import { Button } from '~/shared/ui/atoms/Button';
+import { VideoPlayer } from '~/shared/ui/molecules/videoPlayer';
 
 export function VideoScreen(): JSX.Element {
   const togglePlayRef = useRef<() => void>(() => {});

@@ -4,8 +4,6 @@ import { ComponentProps, JSX } from 'react';
 
 import { Color } from '~/shared/theme/colors';
 
-import { TypographyVariantToCss } from './Typography';
-
 type ButtonBaseProps = {
   color: `${ButtonColor}`;
   iconSrc?: string;
@@ -67,7 +65,8 @@ const StyledButton = styled.button<ButtonBaseProps>`
   border-radius: 50px;
 
   color: var(--color-text);
-  ${TypographyVariantToCss['body-1.2']}
+  font-size: 16px;
+  font-weight: 600;
 
   background-color: var(--color-button);
 

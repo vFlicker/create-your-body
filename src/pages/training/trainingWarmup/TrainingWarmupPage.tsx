@@ -3,7 +3,7 @@ import { JSX, useState } from 'react';
 
 import { useUser } from '~/entities/user';
 import musclesIconSrc from '~/shared/assets/svg/musclesBlack.svg';
-import { Toggler } from '~/shared/ui/Toggler';
+import { Toggler } from '~/shared/ui/atoms/Toggler.js';
 import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
 import { mft, warmup } from './trainingWarmupConfig';

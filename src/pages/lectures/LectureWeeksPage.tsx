@@ -6,7 +6,7 @@ import { useLectureWeeks } from '~/entities/lecture';
 import mockupImageSrc from '~/shared/assets/img/mockup.jpeg';
 import lecturesIconSrc from '~/shared/assets/svg/book.svg';
 import { AppRoute } from '~/shared/router';
-import { TitleCard } from '~/shared/ui/TitleCard';
+import { TitleCard } from '~/shared/ui/molecules/TitleCard';
 import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
 export function LectureWeeksPage(): JSX.Element {

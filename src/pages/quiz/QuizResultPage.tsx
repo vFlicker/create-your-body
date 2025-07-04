@@ -8,8 +8,8 @@ import resultImageSrc from '~/shared/assets/img/result.jpg';
 import musclesIconSrc from '~/shared/assets/svg/musclesBlack.svg';
 import settingsIconSrc from '~/shared/assets/svg/settings.svg';
 import { Color } from '~/shared/theme/colors';
-import { Button } from '~/shared/ui/Button';
-import { Loader } from '~/shared/ui/Loader';
+import { Button } from '~/shared/ui/atoms/Button';
+import { Loader } from '~/shared/ui/atoms/Loader';
 
 import { quizResults } from './quizData';
 

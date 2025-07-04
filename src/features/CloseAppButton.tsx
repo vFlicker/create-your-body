@@ -1,6 +1,6 @@
 import { JSX } from 'react';
 
-import { CloseButton } from '~/shared/ui/CloseButton';
+import { CloseButton } from '~/shared/ui/atoms/CloseButton';
 
 type CloseAppButtonProps = {
   className?: string;

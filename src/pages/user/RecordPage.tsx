@@ -6,8 +6,8 @@ import { useCreateBodyMeasurements } from '~/entities/user';
 import { CreateBodyMeasurementsSchema } from '~/entities/user';
 import { userSession } from '~/shared/libs/userSession';
 import { AppRoute } from '~/shared/router';
-import { Button } from '~/shared/ui/Button';
-import { Input } from '~/shared/ui/Input';
+import { Button } from '~/shared/ui/atoms/Button';
+import { Input } from '~/shared/ui/molecules/Input';
 import { UserPageLayout } from '~/widgets/UserPageLayout';
 
 import { bodyMeasurementsInputs } from './userPageConfig';

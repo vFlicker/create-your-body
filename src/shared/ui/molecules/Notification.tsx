@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 
 import exit from '~/shared/assets/svg/exit.svg';
 
-import { Color } from '../theme/colors';
+import { Color } from '../../theme/colors';
 
 const DEFAULT_DURATION = 5000;
 

@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { Chip, ChipLink } from '~/shared/ui/Chip';
+import { Chip, ChipLink } from '~/shared/ui/atoms/Chip';
 
 import { useUser } from '../api/useUser';
 

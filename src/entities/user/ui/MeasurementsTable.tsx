@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { Loader } from '~/shared/ui/Loader';
+import { Loader } from '~/shared/ui/atoms/Loader';
 
 import { useBodyMeasurements } from '../api/useBodyMeasurements';
 import { calculateBodyMeasurementsChange } from '../libs/calculateBodyMeasurementsChange';

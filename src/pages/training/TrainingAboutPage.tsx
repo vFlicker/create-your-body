@@ -2,7 +2,7 @@ import { JSX } from 'react';
 
 import pdfSrc from '~/shared/assets/pdf/trane.pdf';
 import musclesIconSrc from '~/shared/assets/svg/musclesBlack.svg';
-import { PdfViewer } from '~/shared/ui/pdfViewer';
+import { PdfViewer } from '~/shared/ui/molecules/pdfViewer';
 import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
 export function TrainingAboutPage(): JSX.Element {

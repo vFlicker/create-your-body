@@ -3,7 +3,7 @@ import { JSX } from 'react';
 
 import calendarIconSrc from '~/shared/assets/svg/calendar.svg';
 import lightningIconSrc from '~/shared/assets/svg/lightning.svg';
-import { Button } from '~/shared/ui/Button';
+import { Button } from '~/shared/ui/atoms/Button';
 
 import { BaseSubscriptionCard } from './BaseSubscriptionCard';
 

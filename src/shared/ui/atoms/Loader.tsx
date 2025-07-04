@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { Color } from '../theme/colors';
+import { Color } from '../../theme/colors';
 
 type LoaderProps = {
   className?: string;

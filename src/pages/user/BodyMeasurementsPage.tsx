@@ -16,8 +16,8 @@ import exampleImageSrc from '~/shared/assets/img/example.jpeg';
 import { showTelegramAlert } from '~/shared/libs/telegram';
 import { userSession } from '~/shared/libs/userSession';
 import { AppRoute } from '~/shared/router';
-import { Button } from '~/shared/ui/Button';
-import { Input } from '~/shared/ui/Input';
+import { Button } from '~/shared/ui/atoms/Button';
+import { Input } from '~/shared/ui/molecules/Input';
 import { UserPageLayout } from '~/widgets/UserPageLayout';
 
 import { bodyMeasurementsInputs } from './userPageConfig';

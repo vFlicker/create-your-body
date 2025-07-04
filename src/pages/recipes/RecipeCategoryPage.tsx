@@ -5,8 +5,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useRecipesByCategory } from '~/entities/recipe';
 import recipesIconSrc from '~/shared/assets/svg/recipes.svg';
 import { AppRoute } from '~/shared/router';
-import { Button } from '~/shared/ui/Button';
-import { Loader } from '~/shared/ui/Loader';
+import { Button } from '~/shared/ui/atoms/Button';
+import { Loader } from '~/shared/ui/atoms/Loader';
 import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
 export function RecipeCategoryPage(): JSX.Element {

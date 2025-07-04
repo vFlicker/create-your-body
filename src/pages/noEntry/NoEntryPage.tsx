@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 
 import musculesIconSrc from '~/shared/assets/svg/muscles.svg';
-import { Button } from '~/shared/ui/Button';
+import { Button } from '~/shared/ui/atoms/Button';
 
 export function NoEntryPage(): JSX.Element {
   const handleOpenSite = () => {

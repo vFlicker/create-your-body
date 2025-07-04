@@ -6,8 +6,8 @@ import { BackButton } from '~/features/BackButton';
 import { CloseAppButton } from '~/features/CloseAppButton';
 import { ShowNotificationsButton } from '~/features/ShowNotifications';
 import { Color } from '~/shared/theme/colors';
-import { Loader } from '~/shared/ui/Loader';
-import { Nav } from '~/shared/ui/nav';
+import { Loader } from '~/shared/ui/atoms/Loader';
+import { Nav } from '~/shared/ui/molecules/nav';
 
 type UserPageLayoutProps = PropsWithChildren<{
   isLoading?: boolean;

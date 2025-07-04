@@ -12,10 +12,9 @@ import {
 } from '~/entities/user';
 import { showTelegramAlert } from '~/shared/libs/telegram';
 import { AppRoute } from '~/shared/router';
-import { Button } from '~/shared/ui/Button';
-import { Input } from '~/shared/ui/Input';
-import { RadioGroup } from '~/shared/ui/radio';
-import { Radio } from '~/shared/ui/radio/Radio';
+import { Button } from '~/shared/ui/atoms/Button';
+import { Input } from '~/shared/ui/molecules/Input';
+import { Radio, RadioGroup } from '~/shared/ui/molecules/radio';
 
 import { EditProfile, editProfileSchema } from '../models/editProfileSchema';
 

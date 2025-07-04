@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useNutritionPlan } from '~/entities/nutrition';
 import foodIconSrc from '~/shared/assets/svg/food.svg';
 import { userSession } from '~/shared/libs/userSession';
-import { PdfViewer } from '~/shared/ui/pdfViewer';
+import { PdfViewer } from '~/shared/ui/molecules/pdfViewer';
 import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
 export function FoodPage(): JSX.Element {

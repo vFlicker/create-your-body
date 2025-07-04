@@ -8,9 +8,9 @@ import backIconSrc from '~/shared/assets/svg/arrowBack.svg';
 import checkIconSrc from '~/shared/assets/svg/check.svg';
 import musclesIconSrc from '~/shared/assets/svg/musclesBlack.svg';
 import { AppRoute } from '~/shared/router';
-import { blockComponents } from '~/shared/ui/blockComponents';
-import { Button } from '~/shared/ui/Button';
-import { Notification } from '~/shared/ui/Notification';
+import { blockComponents } from '~/shared/ui/molecules/blockComponents';
+import { Button } from '~/shared/ui/atoms/Button';
+import { Notification } from '~/shared/ui/molecules/Notification';
 import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
 import { pageTitle } from './trainingPlaceConfig';

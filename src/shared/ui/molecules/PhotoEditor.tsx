@@ -7,11 +7,11 @@ import {
 } from '~/entities/user';
 import editIconSrc from '~/shared/assets/svg/editSmall.svg';
 import emptyPhotoIconSrc from '~/shared/assets/svg/photoNone.svg';
-import { IconButton } from '~/shared/ui/IconButton';
-import { Loader } from '~/shared/ui/Loader';
+import { IconButton } from '~/shared/ui/atoms/IconButton';
+import { Loader } from '~/shared/ui/atoms/Loader';
 
-import { showTelegramAlert } from '../libs/telegram';
-import { Color } from '../theme/colors';
+import { showTelegramAlert } from '../../libs/telegram';
+import { Color } from '../../theme/colors';
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 

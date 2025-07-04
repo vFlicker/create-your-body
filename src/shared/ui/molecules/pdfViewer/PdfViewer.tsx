@@ -16,9 +16,9 @@ import close from '~/shared/assets/svg/close.svg';
 import fullscreen from '~/shared/assets/svg/fullscreen.svg';
 import left from '~/shared/assets/svg/left.svg';
 import right from '~/shared/assets/svg/right.svg';
-import { Loader } from '~/shared/ui/Loader';
+import { Loader } from '~/shared/ui/atoms/Loader';
 
-import { Color } from '../../theme/colors';
+import { Color } from '../../../theme/colors';
 import { pdfViewerAddition } from './pdfViewerAddition';
 import { usePdfBlob } from './usePdfBlob';
 

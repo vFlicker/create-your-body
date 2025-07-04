@@ -3,8 +3,8 @@ import { JSX } from 'react';
 
 import pdfSrc from '~/shared/assets/pdf/begin.pdf';
 import healthIconSrc from '~/shared/assets/svg/health.svg';
-import { PdfViewer } from '~/shared/ui/pdfViewer';
-import { Toggler } from '~/shared/ui/Toggler';
+import { Toggler } from '~/shared/ui/atoms/Toggler';
+import { PdfViewer } from '~/shared/ui/molecules/pdfViewer';
 import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
 import { useViewMode, ViewMode } from './beginPageLib';
