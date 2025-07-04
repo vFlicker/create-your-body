@@ -185,9 +185,9 @@ export default function PdfViewer({
           <br />
           <a
             className="pdfViewerLink"
-            href="https://cloud.mail.ru/public/xghf/QTxissgf7"
+            href="https://disk.yandex.ru/i/dfpjB5Lx--YSgg"
           >
-            https://cloud.mail.ru/public/xghf/QTxissgf7
+            https://disk.yandex.ru/i/dfpjB5Lx--YSgg
           </a>
         </p>
       )}
