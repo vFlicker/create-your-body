@@ -1,4 +1,4 @@
-export type BodyMeasurements = {
+export type Measurements = {
   id: number;
   userId: number;
   chest: number;
@@ -19,7 +19,7 @@ type TransformationPhoto = {
   uploadedAt: string;
 };
 
-export type CreateBodyMeasurementsDto = {
+export type CreateMeasurementsDto = {
   tg_id: number;
   waist: number;
   legs: number;
@@ -29,7 +29,7 @@ export type CreateBodyMeasurementsDto = {
   hips: number;
 };
 
-export type UpdateBodyMeasurementsDto = {
+export type UpdateMeasurementsDto = {
   waist: number;
   legs: number;
   weight: number;
@@ -47,10 +47,10 @@ export type GetTransformationPhotoResponse = {
   };
 };
 
-export type GetBodyMeasurementsResponse = {
+export type GetMeasurementsResponse = {
   success: boolean;
   message: string;
   data: {
-    measurements: BodyMeasurements[];
+    measurements: Measurements[];
   };
 };

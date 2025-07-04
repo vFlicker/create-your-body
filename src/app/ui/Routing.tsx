@@ -14,6 +14,7 @@ import {
   LectureWeekPage,
   LectureWeeksPage,
 } from '~/pages/lectures';
+import { MeasurementsPage } from '~/pages/measurement';
 import { QuizPage, QuizResultPage } from '~/pages/quiz';
 import {
   RecipeCategoriesPage,
@@ -30,7 +31,6 @@ import {
   TrainingWarmupPage,
 } from '~/pages/training';
 import {
-  BodyMeasurementsPage,
   ProfileEditPage,
   ProfilePage,
   RecordPage,
@@ -62,10 +62,7 @@ export function Routing(): JSX.Element {
         <Route path={AppRoute.ProfileEdit} element={<ProfileEditPage />} />
         <Route path={AppRoute.Subscriptions} element={<SubscriptionsPage />} />
 
-        <Route
-          path={AppRoute.BodyMeasurements}
-          element={<BodyMeasurementsPage />}
-        />
+        <Route path={AppRoute.Measurements} element={<MeasurementsPage />} />
         <Route path={AppRoute.Record} element={<RecordPage />} />
 
         {/* Communication */}

@@ -1,11 +1,11 @@
-import { BodyMeasurements } from '../measurementTypes';
+import { Measurements } from '../measurementTypes';
 import {
   DeltaDirection,
   getDeltaDirection,
   signIndicator,
 } from './getDeltaDirection';
 
-type BodyMeasurementRow = {
+type MeasurementRow = {
   title: string;
   unit: string;
   value?: number;
@@ -13,9 +13,9 @@ type BodyMeasurementRow = {
   deltaDirection?: DeltaDirection;
 };
 
-type BodyMeasurementKey = keyof typeof userBodyMeasurement;
+type MeasurementKey = keyof typeof measurement;
 
-const userBodyMeasurement = {
+const measurement = {
   chest: {
     title: 'Обхват груди',
     unit: 'см',
@@ -42,10 +42,10 @@ const userBodyMeasurement = {
   },
 };
 
-export const calculateBodyMeasurementsChange = (
-  measurements: BodyMeasurements[],
-): BodyMeasurementRow[] => {
-  const bodyMeasurementChanges: BodyMeasurementRow[] = [];
+export const calculateMeasurementsChange = (
+  measurements: Measurements[],
+): MeasurementRow[] => {
+  const measurementChanges: MeasurementRow[] = [];
 
   const mostRecentMeasurement = measurements[0];
   const hasTwoMeasurements = measurements.length > 2;
@@ -53,35 +53,33 @@ export const calculateBodyMeasurementsChange = (
   if (hasTwoMeasurements) {
     const secondToLastMeasurements = measurements[1];
 
-    for (const key of Object.keys(
-      userBodyMeasurement,
-    ) as BodyMeasurementKey[]) {
+    for (const key of Object.keys(measurement) as MeasurementKey[]) {
       const value = mostRecentMeasurement[key];
       const previousValue = secondToLastMeasurements[key];
       const delta = value - previousValue;
       const deltaDirection = getDeltaDirection(delta);
       const sign = signIndicator[deltaDirection];
 
-      bodyMeasurementChanges.push({
-        ...userBodyMeasurement[key],
+      measurementChanges.push({
+        ...measurement[key],
         value,
         delta: `${sign}${Math.abs(delta)}`,
         deltaDirection,
       });
     }
 
-    return bodyMeasurementChanges;
+    return measurementChanges;
   }
 
-  for (const key of Object.keys(userBodyMeasurement) as BodyMeasurementKey[]) {
+  for (const key of Object.keys(measurement) as MeasurementKey[]) {
     const value = mostRecentMeasurement[key];
-    bodyMeasurementChanges.push({
-      ...userBodyMeasurement[key],
+    measurementChanges.push({
+      ...measurement[key],
       value,
       delta: '0',
       deltaDirection: 'noChange',
     });
   }
 
-  return bodyMeasurementChanges;
+  return measurementChanges;
 };

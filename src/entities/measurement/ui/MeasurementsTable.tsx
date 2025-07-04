@@ -3,18 +3,18 @@ import { JSX } from 'react';
 
 import { Loader } from '~/shared/ui/atoms/Loader';
 
-import { useBodyMeasurements } from '../api/useBodyMeasurements';
-import { calculateBodyMeasurementsChange } from '../libs/calculateBodyMeasurementsChange';
+import { useMeasurements } from '../api/useMeasurements';
+import { calculateMeasurementsChange } from '../libs/calculateMeasurementsChange';
 import { DeltaDirection } from '../libs/getDeltaDirection';
 
 export function MeasurementsTable(): JSX.Element {
-  const { bodyMeasurements, isBodyMeasurementsPending } = useBodyMeasurements();
+  const { measurements, isMeasurementsPending } = useMeasurements();
 
-  if (!bodyMeasurements || isBodyMeasurementsPending) {
+  if (!measurements || isMeasurementsPending) {
     return <Loader />;
   }
 
-  const record = calculateBodyMeasurementsChange(bodyMeasurements);
+  const record = calculateMeasurementsChange(measurements);
 
   return (
     <StyledTableWrapper>

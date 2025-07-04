@@ -1,11 +1,11 @@
-import { BodyMeasurements } from '../measurementTypes';
+import { Measurements } from '../measurementTypes';
 import {
   DeltaDirection,
   getDeltaDirection,
   signIndicator,
 } from './getDeltaDirection';
 
-type BodyMeasurementRow = {
+type MeasurementRow = {
   id: number;
   title: string;
   value?: number;
@@ -13,14 +13,14 @@ type BodyMeasurementRow = {
   deltaDirection?: DeltaDirection;
 };
 
-type BodyHistoryRecord = {
+type MeasurementHistoryRecord = {
   createdAt: string;
-  bodyMeasurementsRows: BodyMeasurementRow[];
+  measurementsRows: MeasurementRow[];
 };
 
-type BodyMeasurementKey = keyof typeof userBodyMeasurement;
+type MeasurementKey = keyof typeof measurement;
 
-const userBodyMeasurement = {
+const measurement = {
   chest: 'Обхват груди:',
   waist: 'Обхват талии:',
   abdominalCircumference: 'Обхват живота:',
@@ -29,20 +29,18 @@ const userBodyMeasurement = {
   weight: 'Вес:',
 };
 
-export const calculateBodyMeasurementsHistory = (
-  measurements: BodyMeasurements[],
-): BodyHistoryRecord[] => {
-  const bodyMeasurementHistory: BodyHistoryRecord[] = [];
+export const calculateMeasurementsHistory = (
+  measurements: Measurements[],
+): MeasurementHistoryRecord[] => {
+  const measurementHistory: MeasurementHistoryRecord[] = [];
   const reversedMeasurements = measurements.toReversed();
 
   for (let index = 0; index < reversedMeasurements.length; index++) {
     const currentMeasurement = reversedMeasurements[index];
 
-    const bodyMeasurementChanges: BodyMeasurementRow[] = [];
+    const measurementChanges: MeasurementRow[] = [];
 
-    for (const key of Object.keys(
-      userBodyMeasurement,
-    ) as BodyMeasurementKey[]) {
+    for (const key of Object.keys(measurement) as MeasurementKey[]) {
       const value = currentMeasurement[key];
       let previousValue;
       if (index > 0) previousValue = reversedMeasurements[index - 1][key];
@@ -50,20 +48,20 @@ export const calculateBodyMeasurementsHistory = (
       const deltaDirection = getDeltaDirection(delta);
       const sign = signIndicator[deltaDirection] || '';
 
-      bodyMeasurementChanges.push({
+      measurementChanges.push({
         id: currentMeasurement.id,
-        title: userBodyMeasurement[key],
+        title: measurement[key],
         value,
         delta: `${sign}${Math.abs(delta)}`,
         deltaDirection,
       });
     }
 
-    bodyMeasurementHistory.push({
+    measurementHistory.push({
       createdAt: currentMeasurement.createdAt,
-      bodyMeasurementsRows: bodyMeasurementChanges,
+      measurementsRows: measurementChanges,
     });
   }
 
-  return bodyMeasurementHistory.toReversed();
+  return measurementHistory.toReversed();
 };

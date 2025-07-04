@@ -3,14 +3,17 @@ import { ChangeEvent, JSX, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
-  useBodyMeasurements,
-  useCreateBodyMeasurements,
-  useUpdateBodyMeasurements,
+  useCreateMeasurements,
+  useMeasurements,
+  useUpdateMeasurements,
 } from '~/entities/measurement';
-import { CreateBodyMeasurementsSchema } from '~/entities/measurement/model/createBodyMeasurementsSchema';
+import { CreateMeasurementsSchema } from '~/entities/measurement/model/createMeasurementsSchema';
 import { useUpdateUser, useUser } from '~/entities/user';
 import exampleImageSrc from '~/shared/assets/img/example.jpeg';
-import { convertDateToBackendFormat, formatDateForDisplay } from '~/shared/libs/date';
+import {
+  convertDateToBackendFormat,
+  formatDateForDisplay,
+} from '~/shared/libs/date';
 import { showTelegramAlert } from '~/shared/libs/telegram';
 import { userSession } from '~/shared/libs/userSession';
 import { AppRoute } from '~/shared/router';
@@ -18,11 +21,18 @@ import { Button } from '~/shared/ui/atoms/Button';
 import { Input } from '~/shared/ui/molecules/Input';
 import { UserPageLayout } from '~/widgets/UserPageLayout';
 
-import { bodyMeasurementsInputs } from './userPageConfig';
-
 const DIMENSION_LIST = ['Груди', 'Талии', 'Живота', 'Бедер', 'Ноги'];
 
-export function BodyMeasurementsPage(): JSX.Element {
+export const measurementsInputs = [
+  { name: 'chest', label: 'Обхват груди' },
+  { name: 'waist', label: 'Обхват талии' },
+  { name: 'abdominalCircumference', label: 'Обхват живота' },
+  { name: 'hips', label: 'Обхват бедер' },
+  { name: 'legs', label: 'Обхват ноги' },
+  { name: 'weight', label: 'Вес' },
+] as const;
+
+export function MeasurementsPage(): JSX.Element {
   const navigate = useNavigate();
 
   const currentUserSession = userSession.getCurrentUser();
@@ -32,33 +42,32 @@ export function BodyMeasurementsPage(): JSX.Element {
     formatDateForDisplay(user?.bornDate || ''),
   );
 
-  const { bodyMeasurements, isBodyMeasurementsPending } = useBodyMeasurements();
+  const { measurements, isMeasurementsPending } = useMeasurements();
 
-  const mostRecentBodyMeasurement = bodyMeasurements?.[0];
+  const mostRecentMeasurement = measurements?.[0];
 
-  const [bodyMeasurementsForm, setBodyMeasurementsForm] = useState({
-    chest: mostRecentBodyMeasurement?.chest || '',
-    waist: mostRecentBodyMeasurement?.waist || '',
-    abdominalCircumference:
-      mostRecentBodyMeasurement?.abdominalCircumference || '',
-    hips: mostRecentBodyMeasurement?.hips || '',
-    legs: mostRecentBodyMeasurement?.legs || '',
-    weight: mostRecentBodyMeasurement?.weight || '',
+  const [measurementsForm, setMeasurementsForm] = useState({
+    chest: mostRecentMeasurement?.chest || '',
+    waist: mostRecentMeasurement?.waist || '',
+    abdominalCircumference: mostRecentMeasurement?.abdominalCircumference || '',
+    hips: mostRecentMeasurement?.hips || '',
+    legs: mostRecentMeasurement?.legs || '',
+    weight: mostRecentMeasurement?.weight || '',
   });
 
   const { updateUser } = useUpdateUser();
-  const { updateBodyMeasurementsMutate, isUpdateBodyMeasurementsPending } =
-    useUpdateBodyMeasurements();
-  const { createBodyMeasurements, isCreateBodyMeasurementsPending } =
-    useCreateBodyMeasurements();
+  const { updateMeasurementsMutate, isUpdateMeasurementsPending } =
+    useUpdateMeasurements();
+  const { createMeasurements, isCreateMeasurementsPending } =
+    useCreateMeasurements();
 
-  if (!currentUserSession || isUserPending || !bodyMeasurements || !user) {
+  if (!currentUserSession || isUserPending || !measurements || !user) {
     return <UserPageLayout isLoading={true} />;
   }
 
-  const handleBodyMeasurementsChange = (name: string) => {
+  const handleMeasurementsChange = (name: string) => {
     return (evt: ChangeEvent<HTMLInputElement>) => {
-      setBodyMeasurementsForm((prev) => ({
+      setMeasurementsForm((prev) => ({
         ...prev,
         [name]: evt.target.value,
       }));
@@ -67,19 +76,19 @@ export function BodyMeasurementsPage(): JSX.Element {
 
   const handleSubmit = async () => {
     try {
-      const parsedBodyMeasurements =
-        CreateBodyMeasurementsSchema.parse(bodyMeasurementsForm);
+      const parsedMeasurements =
+        CreateMeasurementsSchema.parse(measurementsForm);
 
-      if (mostRecentBodyMeasurement) {
-        const { id } = mostRecentBodyMeasurement;
-        await updateBodyMeasurementsMutate({
+      if (mostRecentMeasurement) {
+        const { id } = mostRecentMeasurement;
+        await updateMeasurementsMutate({
           id,
-          dto: parsedBodyMeasurements,
+          dto: parsedMeasurements,
         });
       } else {
         const { tgId } = currentUserSession;
-        await createBodyMeasurements({
-          dto: { tg_id: tgId, ...parsedBodyMeasurements },
+        await createMeasurements({
+          dto: { tg_id: tgId, ...parsedMeasurements },
         });
       }
 
@@ -95,13 +104,13 @@ export function BodyMeasurementsPage(): JSX.Element {
   };
 
   const isSaving =
-    isUpdateBodyMeasurementsPending ||
-    isCreateBodyMeasurementsPending ||
-    isBodyMeasurementsPending;
+    isUpdateMeasurementsPending ||
+    isCreateMeasurementsPending ||
+    isMeasurementsPending;
 
   return (
     <UserPageLayout isLoading={false}>
-      <StyledBodyMeasurementsPageWrapper>
+      <StyledMeasurementsPageWrapper>
         <StyledHeader>
           <StyledTitle>Как измерить параметры?</StyledTitle>
           <StyledHeaderContent>
@@ -135,13 +144,13 @@ export function BodyMeasurementsPage(): JSX.Element {
         <StyledFieldset>
           <StyledTitle>Параметры тела</StyledTitle>
           <StyledInputsWrapper>
-            {bodyMeasurementsInputs.map((props) => (
+            {measurementsInputs.map((props) => (
               <Input
                 key={props.name}
                 type="number"
                 placeholder="0"
-                value={bodyMeasurementsForm[props.name]}
-                onChange={handleBodyMeasurementsChange(props.name)}
+                value={measurementsForm[props.name]}
+                onChange={handleMeasurementsChange(props.name)}
                 {...props}
               />
             ))}
@@ -150,12 +159,12 @@ export function BodyMeasurementsPage(): JSX.Element {
         <Button color="secondary" disabled={isSaving} onClick={handleSubmit}>
           Сохранить
         </Button>
-      </StyledBodyMeasurementsPageWrapper>
+      </StyledMeasurementsPageWrapper>
     </UserPageLayout>
   );
 }
 
-const StyledBodyMeasurementsPageWrapper = styled.div`
+const StyledMeasurementsPageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;

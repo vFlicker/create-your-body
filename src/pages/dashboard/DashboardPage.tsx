@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
+import { Link } from 'react-router-dom';
 
 import { hasActiveSubscription } from '~/entities/subscription';
 import { useUser } from '~/entities/user';
+import { AppRoute } from '~/shared/router';
 import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
 import { NoAccessMessage } from './ui/NoAccessMessage';
@@ -34,7 +36,9 @@ export function DashboardPage(): JSX.Element {
           <div>
             {/* TODO: we can show History component here */}
 
-            <p>Тут будут виджеты с информацией о тренировках, питании и т.д.</p>
+            <div>
+              <Link to={AppRoute.Measurements}>Перейти к замерам</Link>
+            </div>
           </div>
         )}
       </StyledContentWrapper>

@@ -2,20 +2,27 @@ import styled from '@emotion/styled';
 import { ChangeEvent, JSX, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useCreateBodyMeasurements } from '~/entities/measurement';
-import { CreateBodyMeasurementsSchema } from '~/entities/measurement/model/createBodyMeasurementsSchema';
+import { useCreateMeasurements } from '~/entities/measurement';
+import { CreateMeasurementsSchema } from '~/entities/measurement/model/createMeasurementsSchema';
 import { userSession } from '~/shared/libs/userSession';
 import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/atoms/Button';
 import { Input } from '~/shared/ui/molecules/Input';
 import { UserPageLayout } from '~/widgets/UserPageLayout';
 
-import { bodyMeasurementsInputs } from './userPageConfig';
+const measurementsInputs = [
+  { name: 'chest', label: 'Обхват груди' },
+  { name: 'waist', label: 'Обхват талии' },
+  { name: 'abdominalCircumference', label: 'Обхват живота' },
+  { name: 'hips', label: 'Обхват бедер' },
+  { name: 'legs', label: 'Обхват ноги' },
+  { name: 'weight', label: 'Вес' },
+] as const;
 
 export function RecordPage(): JSX.Element {
   const navigate = useNavigate();
 
-  const [bodyMeasurements, setBodyMeasurements] = useState({
+  const [measurements, setMeasurements] = useState({
     chest: '',
     waist: '',
     abdominalCircumference: '',
@@ -25,11 +32,11 @@ export function RecordPage(): JSX.Element {
   });
 
   const currentUserSession = userSession.getCurrentUser();
-  const { createBodyMeasurements } = useCreateBodyMeasurements();
+  const { createMeasurements } = useCreateMeasurements();
 
   const handleChange = (name: string) => {
     return (evt: ChangeEvent<HTMLInputElement>) => {
-      setBodyMeasurements((prev) => ({ ...prev, [name]: evt.target.value }));
+      setMeasurements((prev) => ({ ...prev, [name]: evt.target.value }));
     };
   };
 
@@ -38,9 +45,9 @@ export function RecordPage(): JSX.Element {
       if (!currentUserSession) return;
 
       const { tgId } = currentUserSession;
-      const parsed = CreateBodyMeasurementsSchema.parse(bodyMeasurements);
+      const parsed = CreateMeasurementsSchema.parse(measurements);
 
-      await createBodyMeasurements({
+      await createMeasurements({
         dto: { tg_id: tgId!, ...parsed },
       });
 
@@ -55,12 +62,12 @@ export function RecordPage(): JSX.Element {
       <StyledRecordPageWrapper>
         <StyledTitle>Запишите свой прогресс</StyledTitle>
         <StyledInputsWrapper>
-          {bodyMeasurementsInputs.map((props) => (
+          {measurementsInputs.map((props) => (
             <Input
               key={props.name}
               type="number"
               placeholder="0"
-              value={bodyMeasurements[props.name]}
+              value={measurements[props.name]}
               onChange={handleChange(props.name)}
               {...props}
             />

@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { MeasurementsTable, useBodyMeasurements } from '~/entities/measurement';
-import { calculateBodyMeasurementsHistory } from '~/entities/measurement/libs/calculateBodyMeasurementsHistory';
+import { MeasurementsTable, useMeasurements } from '~/entities/measurement';
+import { calculateMeasurementsHistory } from '~/entities/measurement/libs/calculateMeasurementsHistory';
 import { DeltaDirection } from '~/entities/measurement/libs/getDeltaDirection';
 import { PhotoEditor } from '~/entities/measurement/ui/PhotoEditor';
 import {} from '~/entities/user';
@@ -11,13 +11,13 @@ import { Loader } from '~/shared/ui/atoms/Loader';
 import { CommonPageLayout } from '~/widgets/CommonPageLayout';
 
 export function HistoryProgressPage(): JSX.Element {
-  const { bodyMeasurements, isBodyMeasurementsPending } = useBodyMeasurements();
+  const { measurements, isMeasurementsPending } = useMeasurements();
 
-  if (!bodyMeasurements || isBodyMeasurementsPending) {
+  if (!measurements || isMeasurementsPending) {
     return <Loader />;
   }
 
-  const history = calculateBodyMeasurementsHistory(bodyMeasurements);
+  const history = calculateMeasurementsHistory(measurements);
 
   return (
     <CommonPageLayout title="История прогресса">
@@ -41,11 +41,11 @@ export function HistoryProgressPage(): JSX.Element {
 
         <StyledContent>
           <StyledHistoryList>
-            {history.map(({ createdAt, bodyMeasurementsRows }) => (
+            {history.map(({ createdAt, measurementsRows }) => (
               <StyledHistoryItem key={createdAt}>
                 <StyledDate>{formatDateForDisplay(createdAt)}</StyledDate>
                 <StyledMeasurementList>
-                  {bodyMeasurementsRows.map((row) => (
+                  {measurementsRows.map((row) => (
                     <StyledStyledMeasurementItem key={row.id}>
                       <StyledText>{row.title}</StyledText>
                       <StyledText deltaDirection={row.deltaDirection}>

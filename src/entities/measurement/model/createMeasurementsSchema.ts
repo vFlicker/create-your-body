@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const CreateBodyMeasurementsSchema = z.object({
+export const CreateMeasurementsSchema = z.object({
   chest: z.coerce.number(),
   waist: z.coerce.number(),
   abdominalCircumference: z.coerce.number(),

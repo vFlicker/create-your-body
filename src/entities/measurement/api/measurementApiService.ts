@@ -1,10 +1,10 @@
 import { httpClient } from '~/shared/api/httpClient';
 
 import {
-  CreateBodyMeasurementsDto,
-  GetBodyMeasurementsResponse,
+  CreateMeasurementsDto,
+  GetMeasurementsResponse,
   GetTransformationPhotoResponse,
-  UpdateBodyMeasurementsDto,
+  UpdateMeasurementsDto,
 } from '../measurementTypes';
 
 export const measurementApiService = {
@@ -15,7 +15,7 @@ export const measurementApiService = {
       );
       return response.data.data;
     } catch (error) {
-      console.error('Error fetching user photo transformation:', error);
+      console.error('Error fetching transformation photos:', error);
       throw error;
     }
   },
@@ -37,16 +37,12 @@ export const measurementApiService = {
       );
       return response;
     } catch (error) {
-      console.error('Error updating user photo transformation:', error);
+      console.error('Error updating transformation photos:', error);
       throw error;
     }
   },
 
-  createBodyMeasurements: async ({
-    dto,
-  }: {
-    dto: CreateBodyMeasurementsDto;
-  }) => {
+  createMeasurements: async ({ dto }: { dto: CreateMeasurementsDto }) => {
     try {
       const response = await httpClient.post(
         `/v2/api/client/user/measurements`,
@@ -54,29 +50,29 @@ export const measurementApiService = {
       );
       return response;
     } catch (error) {
-      console.error('Error adding user parameters:', error);
+      console.error('Error adding measurements:', error);
       throw error;
     }
   },
 
-  getBodyMeasurements: async () => {
+  getMeasurements: async () => {
     try {
-      const { data } = await httpClient.get<GetBodyMeasurementsResponse>(
+      const { data } = await httpClient.get<GetMeasurementsResponse>(
         `/v2/api/client/user/measurements`,
       );
       return data.data.measurements;
     } catch (error) {
-      console.error('Error fetching user parameters:', error);
+      console.error('Error fetching measurements:', error);
       throw error;
     }
   },
 
-  updateBodyMeasurements: async ({
+  updateMeasurements: async ({
     id,
     dto,
   }: {
     id: number;
-    dto: UpdateBodyMeasurementsDto;
+    dto: UpdateMeasurementsDto;
   }) => {
     try {
       const response = await httpClient.put(
@@ -85,7 +81,7 @@ export const measurementApiService = {
       );
       return response;
     } catch (error) {
-      console.error('Error updating user parameters:', error);
+      console.error('Error updating measurements:', error);
       throw error;
     }
   },
