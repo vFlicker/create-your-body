@@ -5,7 +5,7 @@ import { measurementApiService } from './measurementApiService';
 export const useUpdateTransformationPhoto = () => {
   const queryClient = useQueryClient();
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, variables } = useMutation({
     mutationFn: measurementApiService.updateTransformationPhotos,
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -15,7 +15,8 @@ export const useUpdateTransformationPhoto = () => {
   });
 
   return {
-    updateTransformationPhotoMutate: mutate,
+    updateTransformationPhoto: mutate,
     isUpdateTransformationPhotoPending: isPending,
+    uploadingStage: variables?.stage,
   };
 };

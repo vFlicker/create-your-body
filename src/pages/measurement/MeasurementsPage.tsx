@@ -5,7 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import {
   useCreateMeasurements,
   useMeasurements,
+  useTransformationPhoto,
   useUpdateMeasurements,
+  useUpdateTransformationPhoto,
 } from '~/entities/measurement';
 import { CreateMeasurementsSchema } from '~/entities/measurement/model/createMeasurementsSchema';
 import { useUpdateUser, useUser } from '~/entities/user';
@@ -18,12 +20,13 @@ import { showTelegramAlert } from '~/shared/libs/telegram';
 import { userSession } from '~/shared/libs/userSession';
 import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/atoms/Button';
+import { ImageUploader } from '~/shared/ui/molecules/ImageUploader';
 import { Input } from '~/shared/ui/molecules/Input';
-import { UserPageLayout } from '~/widgets/UserPageLayout';
+import { EmptyPageLayout } from '~/widgets/EmptyPageLayout';
 
 const DIMENSION_LIST = ['Груди', 'Талии', 'Живота', 'Бедер', 'Ноги'];
 
-export const measurementsInputs = [
+const measurementsInputs = [
   { name: 'chest', label: 'Обхват груди' },
   { name: 'waist', label: 'Обхват талии' },
   { name: 'abdominalCircumference', label: 'Обхват живота' },
@@ -43,6 +46,8 @@ export function MeasurementsPage(): JSX.Element {
   );
 
   const { measurements, isMeasurementsPending } = useMeasurements();
+  const { transformationPhoto, isTransformationPhotoPending } =
+    useTransformationPhoto();
 
   const mostRecentMeasurement = measurements?.[0];
 
@@ -56,14 +61,27 @@ export function MeasurementsPage(): JSX.Element {
   });
 
   const { updateUser } = useUpdateUser();
+  const {
+    updateTransformationPhoto,
+    isUpdateTransformationPhotoPending,
+    uploadingStage,
+  } = useUpdateTransformationPhoto();
   const { updateMeasurementsMutate, isUpdateMeasurementsPending } =
     useUpdateMeasurements();
   const { createMeasurements, isCreateMeasurementsPending } =
     useCreateMeasurements();
 
   if (!currentUserSession || isUserPending || !measurements || !user) {
-    return <UserPageLayout isLoading={true} />;
+    return <EmptyPageLayout isLoading={true} />;
   }
+
+  const handleTransformationPhotoChange = (stage: 'before' | 'after') => {
+    return (file: File) => {
+      const formData = new FormData();
+      formData.append('image', file);
+      updateTransformationPhoto({ stage, formData });
+    };
+  };
 
   const handleMeasurementsChange = (name: string) => {
     return (evt: ChangeEvent<HTMLInputElement>) => {
@@ -109,10 +127,34 @@ export function MeasurementsPage(): JSX.Element {
     isMeasurementsPending;
 
   return (
-    <UserPageLayout isLoading={false}>
+    <EmptyPageLayout isLoading={false}>
       <StyledMeasurementsPageWrapper>
         <StyledHeader>
-          <StyledTitle>Как измерить параметры?</StyledTitle>
+          <StyledTitle>Мои замеры</StyledTitle>
+
+          <ImageUploaderWrapper>
+            <ImageUploader
+              label="Фото «До»"
+              imageSrc={transformationPhoto?.before?.url}
+              isLoading={
+                isTransformationPhotoPending ||
+                (isUpdateTransformationPhotoPending &&
+                  uploadingStage === 'before')
+              }
+              onFileSelect={handleTransformationPhotoChange('before')}
+            />
+            <ImageUploader
+              label="Фото «После»"
+              imageSrc={transformationPhoto?.after?.url}
+              isLoading={
+                isTransformationPhotoPending ||
+                (isUpdateTransformationPhotoPending &&
+                  uploadingStage === 'after')
+              }
+              onFileSelect={handleTransformationPhotoChange('after')}
+            />
+          </ImageUploaderWrapper>
+
           <StyledHeaderContent>
             <StyledPhoto src={exampleImageSrc} />
             <StyledHeaderTextWrapper>
@@ -160,7 +202,7 @@ export function MeasurementsPage(): JSX.Element {
           Сохранить
         </Button>
       </StyledMeasurementsPageWrapper>
-    </UserPageLayout>
+    </EmptyPageLayout>
   );
 }
 
@@ -186,6 +228,12 @@ const StyledTitle = styled.h3`
   color: #0d0d0d;
   font-size: 18px;
   font-weight: 700;
+`;
+
+const ImageUploaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
 `;
 
 const StyledInputsWrapper = styled.div`

@@ -4,8 +4,6 @@ import { JSX } from 'react';
 import { MeasurementsTable, useMeasurements } from '~/entities/measurement';
 import { calculateMeasurementsHistory } from '~/entities/measurement/libs/calculateMeasurementsHistory';
 import { DeltaDirection } from '~/entities/measurement/libs/getDeltaDirection';
-import { PhotoEditor } from '~/entities/measurement/ui/PhotoEditor';
-import {} from '~/entities/user';
 import { formatDateForDisplay } from '~/shared/libs/date';
 import { Loader } from '~/shared/ui/atoms/Loader';
 import { CommonPageLayout } from '~/widgets/CommonPageLayout';
@@ -28,10 +26,6 @@ export function HistoryProgressPage(): JSX.Element {
           <h3>Фотографии</h3>
           <p>До и после тренировочной недели</p>
         </StyledPhotoEditorSectionText>
-        <StyledPhotoEditorWrapper>
-          <PhotoEditor label="Фото до" stage="before" />
-          <PhotoEditor label="Фото после" stage="after" />
-        </StyledPhotoEditorWrapper>
       </StyledPhotoEditorSection>
 
       <StyledHistoryProgressWrapper>
@@ -189,10 +183,4 @@ const StyledPhotoEditorSectionText = styled.div`
     color: #999999;
     font-size: 12px;
   }
-`;
-
-const StyledPhotoEditorWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
 `;
