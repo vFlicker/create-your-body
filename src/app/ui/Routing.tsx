@@ -3,7 +3,11 @@ import { Route, Routes } from 'react-router-dom';
 
 import { BeginPage } from '~/pages/begin';
 import { CommunicationPage } from '~/pages/communication';
-import { DashboardPage, HistoryProgressPage } from '~/pages/dashboard';
+import {
+  DashboardPage,
+  HistoryProgressPage,
+  LearningPage,
+} from '~/pages/dashboard';
 import { FoodCategoriesPage, FoodPage } from '~/pages/food';
 import {
   LectureDetailsPage,
@@ -47,6 +51,7 @@ export function Routing(): JSX.Element {
 
         {/* Dashboard */}
         <Route path={AppRoute.Dashboard} element={<DashboardPage />} />
+        <Route path={AppRoute.Learning} element={<LearningPage />} />
         <Route path={AppRoute.History} element={<HistoryProgressPage />} />
 
         {/* Begin */}

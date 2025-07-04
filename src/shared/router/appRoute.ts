@@ -4,6 +4,7 @@ export const enum AppRoute {
 
   // Dashboard route
   Dashboard = '/dashboard',
+  Learning = '/learning',
   History = '/history',
 
   // Begin route

@@ -1,6 +1,7 @@
 import bookOpenIconSrc from '~/shared/assets/nav/book-open.svg';
 import homeOpenIconSrc from '~/shared/assets/nav/home.svg';
 import messageChatOpenIconSrc from '~/shared/assets/nav/message-chat.svg';
+import musclesIconSrc from '~/shared/assets/nav/muscles.svg';
 import userOpenIconSrc from '~/shared/assets/nav/user.svg';
 import { AppRoute } from '~/shared/router';
 
@@ -20,8 +21,14 @@ export const navConfig: NavItem[] = [
   },
   {
     to: AppRoute.TrainingCategories,
+    iconSrc: musclesIconSrc,
+    text: 'Тренировки',
+    disabled: false,
+  },
+  {
+    to: AppRoute.Learning,
     iconSrc: bookOpenIconSrc,
-    text: 'Программа',
+    text: 'Обучение',
     disabled: false,
   },
   {
@@ -30,6 +37,7 @@ export const navConfig: NavItem[] = [
     text: 'Общение',
     disabled: false,
   },
+
   {
     to: AppRoute.Profile,
     iconSrc: userOpenIconSrc,
