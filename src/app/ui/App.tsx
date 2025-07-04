@@ -34,9 +34,6 @@ function App(): JSX.Element {
     return <Loader />;
   }
 
-  const hasAccess = user.subscriptions?.length > 0;
-  if (!hasAccess) return <NoEntryPage />;
-
   return <Routing />;
 }
 
