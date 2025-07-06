@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ComponentProps, JSX } from 'react';
+import { Link } from 'react-router-dom';
 
 import { Color } from '~/shared/theme/colors';
 
@@ -10,7 +11,9 @@ type ButtonBaseProps = {
   iconPosition?: 'left' | 'right';
 };
 
-type ButtonProps = ComponentProps<typeof StyledButton>;
+type ButtonProps = ComponentProps<typeof StyledButton> & ButtonBaseProps;
+type ButtonLinkProps = ComponentProps<typeof StyledButtonLink> &
+  ButtonBaseProps;
 
 const enum ButtonColor {
   Accent = 'accent',
@@ -35,7 +38,24 @@ function Button({
   );
 }
 
-export { Button, ButtonColor };
+function ButtonLink({
+  iconSrc,
+  iconPosition = 'left',
+  children,
+  ...props
+}: ButtonLinkProps): JSX.Element {
+  const isLeftIcon = iconPosition === 'left';
+
+  return (
+    <StyledButtonLink {...props}>
+      {isLeftIcon && iconSrc && <img src={iconSrc} />}
+      {children}
+      {!isLeftIcon && iconSrc && <img src={iconSrc} />}
+    </StyledButtonLink>
+  );
+}
+
+export { Button, ButtonColor, ButtonLink };
 
 const ButtonColorToCss = {
   [ButtonColor.Accent]: css`
@@ -52,9 +72,7 @@ const ButtonColorToCss = {
   `,
 };
 
-const StyledButton = styled.button<ButtonBaseProps>`
-  ${({ color }) => ButtonColorToCss[color]}
-
+const CSS = css`
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -83,4 +101,14 @@ const StyledButton = styled.button<ButtonBaseProps>`
     width: 24px;
     height: 24px;
   }
+`;
+
+const StyledButton = styled.button<Pick<ButtonBaseProps, 'color'>>`
+  ${({ color }) => ButtonColorToCss[color]}
+  ${CSS}
+`;
+
+const StyledButtonLink = styled(Link)<Pick<ButtonBaseProps, 'color'>>`
+  ${({ color }) => ButtonColorToCss[color]}
+  ${CSS}
 `;

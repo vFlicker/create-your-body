@@ -10,6 +10,9 @@ import {
   calculateMeasurementsHistory,
   MeasurementsRecord,
 } from '~/entities/measurement';
+import plusIconSrc from '~/shared/assets/svg/plus.svg';
+import { AppRoute } from '~/shared/router';
+import { ButtonLink } from '~/shared/ui/atoms/Button';
 import { ImageUploader } from '~/shared/ui/molecules/ImageUploader';
 import { EmptyPageLayout } from '~/widgets/EmptyPageLayout';
 
@@ -80,6 +83,16 @@ export function MeasurementsPage(): JSX.Element {
             )}
           </StyledMeasurementsHistory>
         </StyledSection>
+
+        <StyledButtonWrapper>
+          <ButtonLink
+            to={AppRoute.AddMeasurements}
+            color="accent"
+            iconSrc={plusIconSrc}
+          >
+            Записать замеры
+          </ButtonLink>
+        </StyledButtonWrapper>
       </StyledMeasurementsPageWrapper>
     </EmptyPageLayout>
   );
@@ -119,4 +132,11 @@ const StyledMeasurementsHistory = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+`;
+
+const StyledButtonWrapper = styled.div`
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 120px;
 `;
