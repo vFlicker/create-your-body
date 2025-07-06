@@ -4,10 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useUpdateUser, useUser } from '~/entities/user';
 import { BackButton } from '~/features/BackButton';
-import {
-  convertDateToBackendFormat,
-  formatDateForDisplay,
-} from '~/shared/libs/date';
+import { formatDateForApi, formatDateForView } from '~/shared/libs/date';
 import { AppRoute } from '~/shared/router';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
@@ -42,7 +39,7 @@ export function QuizPage(): JSX.Element {
     if (user) {
       setName(user.name || '');
       setTel(user.phone ? user.phone.replace(/\s/g, '') : '');
-      setBirthday(user.bornDate ? formatDateForDisplay(user.bornDate) : '');
+      setBirthday(user.bornDate ? formatDateForView(user.bornDate) : '');
     }
   }, [user]);
 
@@ -132,7 +129,7 @@ export function QuizPage(): JSX.Element {
 
       const userData = {
         name: name || '',
-        bornDate: convertDateToBackendFormat(birthday),
+        bornDate: formatDateForApi(birthday),
         sex: gen === 'm' ? 'male' : 'female',
         level: userLevel || '',
         phone: tel || '',

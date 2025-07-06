@@ -1,17 +1,12 @@
 import { Measurements } from '../measurementTypes';
-import {
-  DeltaDirection,
-  getDeltaDirection,
-  signIndicator,
-} from './getDeltaDirection';
+import { DeltaDirection, getDeltaDirection } from './getDeltaDirection';
 
 export type MeasurementRow = {
   id: number;
   title: string;
   unit: string;
-  value?: number;
-  delta?: string;
-  deltaDirection?: DeltaDirection;
+  value: number;
+  deltaDirection: DeltaDirection;
 };
 
 type MeasurementHistoryRecord = {
@@ -65,13 +60,11 @@ export const calculateMeasurementsHistory = (
       if (index > 0) previousValue = reversedMeasurements[index - 1][key];
       const delta = previousValue !== undefined ? value - previousValue : 0;
       const deltaDirection = getDeltaDirection(delta);
-      const sign = signIndicator[deltaDirection] || '';
 
       measurementChanges.push({
         ...measurement[key],
         id: currentMeasurement.id,
         value,
-        delta: `${sign}${Math.abs(delta)}`,
         deltaDirection,
       });
     }

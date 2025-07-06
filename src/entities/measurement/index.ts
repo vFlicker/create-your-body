@@ -3,6 +3,7 @@ export { useMeasurements } from './api/useMeasurements';
 export { useTransformationPhoto } from './api/useTransformationPhoto';
 export { useUpdateMeasurements } from './api/useUpdateMeasurements';
 export { useUpdateTransformationPhoto } from './api/useUpdateTransformationPhoto';
+export { calculateMeasurementsHistory } from './libs/calculateMeasurementsHistory';
 export { getMaxStream } from './model/getMaxStream';
 export { useStreamStore } from './model/streamStore';
-export { MeasurementsTable } from './ui/MeasurementsTable';
+export { MeasurementsRecord } from './ui/MeasurementsRecord';

@@ -5,10 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { useUpdateUser, useUser } from '~/entities/user';
-import {
-  convertDateToBackendFormat,
-  formatDateForDisplay,
-} from '~/shared/libs/date';
+import { formatDateForApi, formatDateForView } from '~/shared/libs/date';
 import { showTelegramAlert } from '~/shared/libs/telegram';
 import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/atoms/Button';
@@ -44,7 +41,7 @@ export function EditProfileForm({
     resolver: zodResolver(editProfileSchema),
     defaultValues: {
       name: user?.name || '',
-      bornDate: formatDateForDisplay(user?.bornDate || ''),
+      bornDate: formatDateForView(user?.bornDate || ''),
       sex: user?.sex,
       phone: user?.phone || '+7',
     },
@@ -54,7 +51,7 @@ export function EditProfileForm({
     try {
       await updateUser({
         dto: {
-          bornDate: convertDateToBackendFormat(bornDate),
+          bornDate: formatDateForApi(bornDate),
           ...rest,
         },
       });

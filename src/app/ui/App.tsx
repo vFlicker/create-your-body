@@ -1,7 +1,6 @@
 import { JSX, useEffect } from 'react';
 
 import { useUpdateUserAvatar, useUser } from '~/entities/user';
-import { NoEntryPage } from '~/pages/noEntry';
 import { userSession } from '~/shared/libs/userSession';
 import { Loader } from '~/shared/ui/atoms/Loader';
 

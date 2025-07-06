@@ -1,12 +1,11 @@
 import styled from '@emotion/styled';
 import { ChangeEvent, JSX, useRef } from 'react';
 
-import pencilIconSrc from '../../assets/svg/pencil.svg';
 import addIconSrc from '../../assets/svg/photo-none.svg';
 import { showTelegramAlert } from '../../libs/telegram';
 import { Color } from '../../theme/colors';
-import { IconButton } from '../atoms/IconButton';
 import { Loader } from '../atoms/Loader';
+import { EditButton } from './EditButton';
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 
@@ -58,11 +57,7 @@ export function ImageUploader({
           (hasPhoto ? (
             <>
               <StyledImage src={imageSrc} alt={label} />
-              <StyledEditButton
-                color="secondary"
-                iconSrc={pencilIconSrc}
-                onClick={handleClick}
-              />
+              <StyledEditButton onClick={handleClick} />
             </>
           ) : (
             <StyledPlaceholder onClick={handleClick}>
@@ -114,27 +109,10 @@ const StyledImage = styled.img`
   object-fit: cover;
 `;
 
-const StyledEditButton = styled(IconButton)`
+const StyledEditButton = styled(EditButton)`
   position: absolute;
   top: 8px;
   right: 8px;
-
-  button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    width: 26px;
-    height: 26px;
-    border-radius: 6px;
-
-    background-color: #f0f0f6;
-  }
-
-  img {
-    width: 12px;
-    height: 12px;
-  }
 `;
 
 const StyledPlaceholder = styled.div`
