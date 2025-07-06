@@ -1,5 +1,6 @@
 export type Measurements = {
   id: number;
+  reportNumber: number;
   userId: number;
   chest: number;
   waist: number;
@@ -20,22 +21,21 @@ type TransformationPhoto = {
 };
 
 export type CreateMeasurementsDto = {
-  tg_id: number;
-  waist: number;
-  legs: number;
-  weight: number;
-  chest: number;
-  abdominalCircumference: number;
-  hips: number;
+  waist?: number;
+  legs?: number;
+  weight?: number;
+  chest?: number;
+  abdominalCircumference?: number;
+  hips?: number;
 };
 
 export type UpdateMeasurementsDto = {
-  waist: number;
-  legs: number;
-  weight: number;
-  chest: number;
-  abdominalCircumference: number;
-  hips: number;
+  waist?: number;
+  legs?: number;
+  weight?: number;
+  chest?: number;
+  abdominalCircumference?: number;
+  hips?: number;
 };
 
 export type GetTransformationPhotoResponse = {

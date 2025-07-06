@@ -10,7 +10,11 @@ import {
   LectureWeekPage,
   LectureWeeksPage,
 } from '~/pages/lectures';
-import { MeasurementsPage } from '~/pages/measurement';
+import {
+  CreateMeasurementsPage,
+  EditMeasurementsPage,
+  MeasurementsPage,
+} from '~/pages/measurement';
 import { QuizPage, QuizResultPage } from '~/pages/quiz';
 import {
   RecipeCategoriesPage,
@@ -26,12 +30,7 @@ import {
   TrainingPlaceWeeksPage,
   TrainingWarmupPage,
 } from '~/pages/training';
-import {
-  ProfileEditPage,
-  ProfilePage,
-  RecordPage,
-  SubscriptionsPage,
-} from '~/pages/user';
+import { ProfileEditPage, ProfilePage, SubscriptionsPage } from '~/pages/user';
 import { AppRoute } from '~/shared/router';
 
 export function Routing(): JSX.Element {
@@ -57,8 +56,16 @@ export function Routing(): JSX.Element {
         <Route path={AppRoute.ProfileEdit} element={<ProfileEditPage />} />
         <Route path={AppRoute.Subscriptions} element={<SubscriptionsPage />} />
 
+        {/* Measurements */}
         <Route path={AppRoute.Measurements} element={<MeasurementsPage />} />
-        <Route path={AppRoute.Record} element={<RecordPage />} />
+        <Route
+          path={AppRoute.CreateMeasurements}
+          element={<CreateMeasurementsPage />}
+        />
+        <Route
+          path={AppRoute.EditMeasurements}
+          element={<EditMeasurementsPage />}
+        />
 
         {/* Communication */}
         <Route path={AppRoute.Communication} element={<CommunicationPage />} />

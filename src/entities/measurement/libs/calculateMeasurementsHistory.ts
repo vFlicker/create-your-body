@@ -11,6 +11,7 @@ export type MeasurementRow = {
 
 type MeasurementHistoryRecord = {
   createdAt: string;
+  reportNumber: number;
   measurementsRows: MeasurementRow[];
 };
 
@@ -70,6 +71,7 @@ export const calculateMeasurementsHistory = (
     }
 
     measurementHistory.push({
+      reportNumber: currentMeasurement.reportNumber,
       createdAt: currentMeasurement.createdAt,
       measurementsRows: measurementChanges,
     });

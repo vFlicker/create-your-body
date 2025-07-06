@@ -72,10 +72,10 @@ export function MeasurementsPage(): JSX.Element {
           <StyledSubTitle>Мои отчёты</StyledSubTitle>
           <StyledMeasurementsHistory>
             {measurementsHistory.map(
-              ({ createdAt, measurementsRows }, index) => (
+              ({ createdAt, reportNumber, measurementsRows }, index) => (
                 <MeasurementsRecord
                   key={createdAt + index}
-                  reportNumber={measurementsHistory.length - index}
+                  reportNumber={reportNumber}
                   date={createdAt}
                   measurements={measurementsRows}
                 />
@@ -86,7 +86,7 @@ export function MeasurementsPage(): JSX.Element {
 
         <StyledButtonWrapper>
           <ButtonLink
-            to={AppRoute.AddMeasurements}
+            to={AppRoute.CreateMeasurements}
             color="accent"
             iconSrc={plusIconSrc}
           >

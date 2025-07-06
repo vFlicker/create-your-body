@@ -109,7 +109,7 @@ export function EditProfileForm({
 
       <Input label="Электронная почта" value={user?.email || ''} disabled />
 
-      <StyledButton color="accent" type="submit" disabled={isUpdateUserLoading}>
+      <StyledButton type="submit" color="accent" disabled={isUpdateUserLoading}>
         Отправить
       </StyledButton>
     </StyledForm>

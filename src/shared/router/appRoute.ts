@@ -5,8 +5,11 @@ export const enum AppRoute {
   // Dashboard route
   Dashboard = '/dashboard',
   Learning = '/learning',
+
+  // Measurement routes
   Measurements = '/measurements',
-  Record = '/record',
+  CreateMeasurements = '/measurements/create',
+  EditMeasurements = '/measurements/edit/:reportId',
 
   // Begin route
   Begin = '/begin',

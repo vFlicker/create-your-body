@@ -38,7 +38,7 @@ export function Notification({
     <StyledNotificationWrapper className={className}>
       {children}
       <StyledCloseButton onClick={handleCloseClick}>
-        <img src={exit} alt="Убрать сообщение" />
+        <img src={exit} />
       </StyledCloseButton>
     </StyledNotificationWrapper>,
     document.body,

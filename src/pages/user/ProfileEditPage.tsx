@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { EditProfileForm } from '~/features/user';
+import { EditProfileForm } from '~/features/user/editProfile';
 import { UserPageLayout } from '~/widgets/UserPageLayout';
 
 export function ProfileEditPage(): JSX.Element {

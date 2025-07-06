@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import negativeDirectionIconSrc from '~/shared/assets/svg/arrow-narrow-down.svg';
 import positiveDirectionIconSrc from '~/shared/assets/svg/arrow-narrow-up.svg';
 import neutralDirectionIconSrc from '~/shared/assets/svg/minus.svg';
 import { formatDateForView } from '~/shared/libs/date';
+import { AppRoute } from '~/shared/router';
 import { EditButton } from '~/shared/ui/molecules/EditButton';
 
 import { MeasurementRow } from '../libs/calculateMeasurementsHistory';
@@ -27,8 +29,10 @@ export function MeasurementsRecord({
   measurements,
   reportNumber,
 }: MeasurementsRecordProps): JSX.Element {
+  const navigate = useNavigate();
+
   const handleClick = () => {
-    console.log('Edit button clicked');
+    navigate(`${AppRoute.Measurements}/edit/${reportNumber}`);
   };
 
   return (
