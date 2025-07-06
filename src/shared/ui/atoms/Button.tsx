@@ -7,6 +7,7 @@ import { Color } from '~/shared/theme/colors';
 
 type ButtonBaseProps = {
   color: `${ButtonColor}`;
+  variant?: `${ButtonVariant}`;
   iconSrc?: string;
   iconPosition?: 'left' | 'right';
 };
@@ -19,6 +20,11 @@ const enum ButtonColor {
   Accent = 'accent',
   Secondary = 'secondary',
   Neutral = 'neutral',
+}
+
+const enum ButtonVariant {
+  FILLED = 'filled',
+  OUTLINED = 'outlined',
 }
 
 function Button({
@@ -59,16 +65,32 @@ export { Button, ButtonColor, ButtonLink };
 
 const ButtonColorToCss = {
   [ButtonColor.Accent]: css`
-    --color-button: ${Color.Violet_200};
+    --color-background-button: ${Color.Violet_200};
+    --color-border-button: ${Color.Violet_300};
     --color-text: ${Color.Black_50};
   `,
   [ButtonColor.Secondary]: css`
-    --color-button: ${Color.Green_500};
+    --color-background-button: ${Color.Green_500};
+    --color-border-button: ${Color.Green_500};
     --color-text: ${Color.Black_950};
   `,
   [ButtonColor.Neutral]: css`
-    --color-button: ${Color.Black_950};
+    --color-background-button: ${Color.Black_950};
+    --color-border-button: ${Color.Black_950};
     --color-text: ${Color.Black_50};
+  `,
+};
+
+const ButtonVariantToCss = {
+  [ButtonVariant.FILLED]: css`
+    border-color: transparent;
+    color: var(--color-text);
+    background-color: var(--color-background-button);
+  `,
+  [ButtonVariant.OUTLINED]: css`
+    border-color: var(--color-background-button);
+    color: var(--color-border-button);
+    background-color: transparent;
   `,
 };
 
@@ -80,13 +102,12 @@ const CSS = css`
 
   width: 100%;
   min-height: 54px;
+  border-style: solid;
+  border-width: 2px;
   border-radius: 50px;
 
-  color: var(--color-text);
   font-size: 16px;
   font-weight: 600;
-
-  background-color: var(--color-button);
 
   cursor: pointer;
 
@@ -103,12 +124,18 @@ const CSS = css`
   }
 `;
 
-const StyledButton = styled.button<Pick<ButtonBaseProps, 'color'>>`
+const StyledButton = styled.button<Pick<ButtonBaseProps, 'color' | 'variant'>>`
+  ${({ variant = ButtonVariant.FILLED }) => ButtonVariantToCss[variant]}
   ${({ color }) => ButtonColorToCss[color]}
+
   ${CSS}
 `;
 
-const StyledButtonLink = styled(Link)<Pick<ButtonBaseProps, 'color'>>`
+const StyledButtonLink = styled(Link)<
+  Pick<ButtonBaseProps, 'color' | 'variant'>
+>`
+  ${({ variant = ButtonVariant.FILLED }) => ButtonVariantToCss[variant]}
   ${({ color }) => ButtonColorToCss[color]}
+
   ${CSS}
 `;

@@ -6,4 +6,5 @@ export { useUpdateTransformationPhoto } from './api/useUpdateTransformationPhoto
 export { calculateMeasurementsHistory } from './libs/calculateMeasurementsHistory';
 export { getMaxStream } from './model/getMaxStream';
 export { useStreamStore } from './model/streamStore';
+export { MeasurementsChart } from './ui/MeasurementsChart';
 export { MeasurementsRecord } from './ui/MeasurementsRecord';
