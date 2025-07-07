@@ -34,17 +34,7 @@ export function DashboardPage(): JSX.Element {
 
         {hasAccess && (
           <StyledWidgetListWrapper>
-            <HealthTrackerWidget
-              onButtonClick={() => {}}
-              data={{
-                weight: 55.4,
-                steps: 12000,
-                calories: 2500,
-                proteins: 150,
-                fats: 70,
-                carbohydrates: 300,
-              }}
-            />
+            <HealthTrackerWidget />
             <MeasurementsWidget />
           </StyledWidgetListWrapper>
         )}
