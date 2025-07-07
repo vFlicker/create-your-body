@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { EditMeasurementsForm } from '~/features/measurement/editMeasurements/';
 import { formatDateForView } from '~/shared/libs/date';
-import { UserPageLayout } from '~/widgets/UserPageLayout';
+import { UserPageLayout } from '~/widgets/layouts/UserPageLayout';
 
 const mockMeasurements = {
   id: 759,

@@ -7,7 +7,7 @@ import chevronRightIconSrc from '~/shared/assets/profile/chevron-right.svg';
 import userIconSrc from '~/shared/assets/profile/user.svg';
 import walletIconSrc from '~/shared/assets/profile/wallet.svg';
 import { AppRoute } from '~/shared/router';
-import { UserPageLayout } from '~/widgets/UserPageLayout';
+import { UserPageLayout } from '~/widgets/layouts/UserPageLayout';
 
 const links = [
   {

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useUser } from '~/entities/user';
 import { TitleCard } from '~/shared/ui/molecules/TitleCard';
-import { CommonPageLayout } from '~/widgets/CommonPageLayout';
+import { CommonPageLayout } from '~/widgets/layouts/CommonPageLayout';
 
 import { getTitleCards } from './getContainerData';
 

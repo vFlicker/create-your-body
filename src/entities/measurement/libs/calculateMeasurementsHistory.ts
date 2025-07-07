@@ -1,4 +1,4 @@
-import { Measurements } from '../measurementTypes';
+import { Measurements, MeasurementType } from '../measurementTypes';
 import { DeltaDirection, getDeltaDirection } from './getDeltaDirection';
 
 export type MeasurementRow = {
@@ -14,8 +14,6 @@ type MeasurementHistoryRecord = {
   reportNumber: number;
   measurementsRows: MeasurementRow[];
 };
-
-type MeasurementKey = keyof typeof measurement;
 
 const measurement = {
   weight: {
@@ -55,7 +53,7 @@ export const calculateMeasurementsHistory = (
 
     const measurementChanges: MeasurementRow[] = [];
 
-    for (const key of Object.keys(measurement) as MeasurementKey[]) {
+    for (const key of Object.keys(measurement) as MeasurementType[]) {
       const value = currentMeasurement[key];
       let previousValue;
       if (index > 0) previousValue = reversedMeasurements[index - 1][key];

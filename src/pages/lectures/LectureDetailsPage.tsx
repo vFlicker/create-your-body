@@ -5,9 +5,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useLectureDetailsById } from '~/entities/lecture';
 import lecturesIconSrc from '~/shared/assets/svg/book.svg';
 import brainIconSrc from '~/shared/assets/svg/brain.svg';
-import { blockComponents } from '~/shared/ui/molecules/blockComponents';
 import { Button } from '~/shared/ui/atoms/Button';
-import { CommonPageLayout } from '~/widgets/CommonPageLayout';
+import { blockComponents } from '~/shared/ui/molecules/blockComponents';
+import { CommonPageLayout } from '~/widgets/layouts/CommonPageLayout';
 
 export function LectureDetailsPage(): JSX.Element {
   const navigate = useNavigate();

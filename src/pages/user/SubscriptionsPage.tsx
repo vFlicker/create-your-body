@@ -9,7 +9,7 @@ import {
 import diamondIconSrc from '~/shared/assets/svg/diamond.svg';
 import lightningIconSrc from '~/shared/assets/svg/lightning.svg';
 import { Button } from '~/shared/ui/atoms/Button';
-import { UserPageLayout } from '~/widgets/UserPageLayout';
+import { UserPageLayout } from '~/widgets/layouts/UserPageLayout';
 
 export function SubscriptionsPage(): JSX.Element {
   return (

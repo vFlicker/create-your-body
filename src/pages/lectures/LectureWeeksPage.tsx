@@ -7,7 +7,7 @@ import mockupImageSrc from '~/shared/assets/img/mockup.jpeg';
 import lecturesIconSrc from '~/shared/assets/svg/book.svg';
 import { AppRoute } from '~/shared/router';
 import { TitleCard } from '~/shared/ui/molecules/TitleCard';
-import { CommonPageLayout } from '~/widgets/CommonPageLayout';
+import { CommonPageLayout } from '~/widgets/layouts/CommonPageLayout';
 
 export function LectureWeeksPage(): JSX.Element {
   const navigate = useNavigate();

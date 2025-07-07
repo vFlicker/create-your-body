@@ -23,6 +23,10 @@ const globalResets = css`
     background-color: #f2f2f2;
   }
 
+  body.locked {
+    overflow: hidden;
+  }
+
   #root {
     min-height: 100vh;
     display: flex;

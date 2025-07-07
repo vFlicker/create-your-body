@@ -17,8 +17,18 @@ export function Modal({ children, isOpen, onClose }: ModalProps): JSX.Element {
   useEffect(() => {
     const modal = modalRef.current;
     if (!modal) return;
-    if (isOpen) modal.showModal();
-    else modal.close();
+
+    if (isOpen) {
+      modal.showModal();
+      document.body.classList.add('locked');
+    } else {
+      modal.close();
+      document.body.classList.remove('locked');
+    }
+
+    return () => {
+      document.body.classList.remove('locked');
+    };
   }, [isOpen]);
 
   return (

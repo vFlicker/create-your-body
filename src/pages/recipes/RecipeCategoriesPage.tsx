@@ -9,7 +9,7 @@ import dinnerIconSrc from '~/shared/assets/svg/meat.svg';
 import recipesIconSrc from '~/shared/assets/svg/recipes.svg';
 import { AppRoute } from '~/shared/router';
 import { TitleCard } from '~/shared/ui/molecules/TitleCard';
-import { CommonPageLayout } from '~/widgets/CommonPageLayout';
+import { CommonPageLayout } from '~/widgets/layouts/CommonPageLayout';
 
 const CATEGORY_ORDER = ['Завтраки', 'Обеды и ужины', 'Десерты'];
 

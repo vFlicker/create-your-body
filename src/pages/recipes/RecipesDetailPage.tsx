@@ -9,7 +9,7 @@ import {
 } from '~/entities/recipe';
 import recipesIconSrc from '~/shared/assets/svg/recipes.svg';
 import { Color } from '~/shared/theme/colors';
-import { CommonPageLayout } from '~/widgets/CommonPageLayout';
+import { CommonPageLayout } from '~/widgets/layouts/CommonPageLayout';
 
 export function RecipesDetailsPage(): JSX.Element {
   const { id } = useParams<{ id: string }>();

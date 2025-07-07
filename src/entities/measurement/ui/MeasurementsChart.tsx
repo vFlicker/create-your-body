@@ -11,31 +11,17 @@ import {
 
 import chevronLeftIconSrc from '~/shared/assets/svg/chevron-left.svg';
 import chevronRightIconSrc from '~/shared/assets/svg/chevron-right.svg';
+import { Loader } from '~/shared/ui/atoms/Loader';
 
 import { useMeasurements } from '../api/useMeasurements';
+import {
+  getAdjacentMeasurement,
+  getAdjacentMeasurementKey,
+  getCurrentMeasurement,
+} from '../libs/getAdjacentMeasurement';
+import { MeasurementType } from '../measurementTypes';
 
-const measurementTranslations = {
-  weight: 'Вес',
-  chest: 'Обхват груди',
-  waist: 'Обхват талии',
-  abdominalCircumference: 'Обхват живота',
-  hips: 'Обхват бёдер',
-  legs: 'Обхват ноги',
-} as const;
-
-type MeasurementType = keyof typeof measurementTranslations;
-
-const getAdjacentMeasurement = (
-  type: MeasurementType,
-  direction: 'prev' | 'next',
-): string => {
-  const keys = Object.keys(measurementTranslations) as MeasurementType[];
-  const currentIndex = keys.indexOf(type);
-  let adjacentIndex;
-  if (direction === 'next') adjacentIndex = (currentIndex + 1) % keys.length;
-  else adjacentIndex = (currentIndex - 1 + keys.length) % keys.length;
-  return measurementTranslations[keys[adjacentIndex]];
-};
+const MAX_MEASUREMENT_LIMIT = 6;
 
 export function MeasurementsChart(): JSX.Element {
   const [activeMeasurement, setActiveMeasurement] =
@@ -43,12 +29,19 @@ export function MeasurementsChart(): JSX.Element {
 
   const { measurements, isMeasurementsPending } = useMeasurements();
 
-  if (isMeasurementsPending) {
-    return <div>Загрузка...</div>;
-  }
+  if (isMeasurementsPending) return <Loader />;
+
+  const handleMeasurementChange = (direction: 'prev' | 'next') => {
+    const adjacentMeasurementKey = getAdjacentMeasurementKey(
+      activeMeasurement,
+      direction,
+    );
+
+    setActiveMeasurement(adjacentMeasurementKey);
+  };
 
   const measurementData = measurements
-    ?.slice(0, 7)
+    ?.slice(0, MAX_MEASUREMENT_LIMIT)
     .toReversed()
     .map((measurement) => ({
       date: new Date(measurement.createdAt).toLocaleDateString('ru-RU', {
@@ -64,15 +57,6 @@ export function MeasurementsChart(): JSX.Element {
     }));
 
   const hasNoMeasurements = !measurementData || measurementData.length === 0;
-
-  const handleMeasurementChange = (direction: 'prev' | 'next') => {
-    const keys = Object.keys(measurementTranslations) as MeasurementType[];
-    const currentIndex = keys.indexOf(activeMeasurement);
-    let nextIndex;
-    if (direction === 'next') nextIndex = (currentIndex + 1) % keys.length;
-    else nextIndex = (currentIndex - 1 + keys.length) % keys.length;
-    setActiveMeasurement(keys[nextIndex]);
-  };
 
   return (
     <StyledChartContainer>
@@ -128,7 +112,9 @@ export function MeasurementsChart(): JSX.Element {
         </StyledChart>
       )}
       <StyledControls>
-        <StyledAdjacentMeasurementLeft>
+        <StyledAdjacentMeasurementLeft
+          onClick={() => handleMeasurementChange('prev')}
+        >
           {getAdjacentMeasurement(activeMeasurement, 'prev')}
         </StyledAdjacentMeasurementLeft>
         <StyledMainControl>
@@ -136,13 +122,15 @@ export function MeasurementsChart(): JSX.Element {
             <img src={chevronLeftIconSrc} />
           </StyledArrowButton>
           <StyledCurrentMeasurement>
-            {measurementTranslations[activeMeasurement]}
+            {getCurrentMeasurement(activeMeasurement)}
           </StyledCurrentMeasurement>
           <StyledArrowButton onClick={() => handleMeasurementChange('next')}>
             <img src={chevronRightIconSrc} />
           </StyledArrowButton>
         </StyledMainControl>
-        <StyledAdjacentMeasurementRight>
+        <StyledAdjacentMeasurementRight
+          onClick={() => handleMeasurementChange('prev')}
+        >
           {getAdjacentMeasurement(activeMeasurement, 'next')}
         </StyledAdjacentMeasurementRight>
       </StyledControls>

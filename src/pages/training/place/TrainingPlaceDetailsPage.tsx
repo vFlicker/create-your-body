@@ -8,10 +8,10 @@ import backIconSrc from '~/shared/assets/svg/arrowBack.svg';
 import checkIconSrc from '~/shared/assets/svg/check.svg';
 import musclesIconSrc from '~/shared/assets/svg/musclesBlack.svg';
 import { AppRoute } from '~/shared/router';
-import { blockComponents } from '~/shared/ui/molecules/blockComponents';
 import { Button } from '~/shared/ui/atoms/Button';
+import { blockComponents } from '~/shared/ui/molecules/blockComponents';
 import { Notification } from '~/shared/ui/molecules/Notification';
-import { CommonPageLayout } from '~/widgets/CommonPageLayout';
+import { CommonPageLayout } from '~/widgets/layouts/CommonPageLayout';
 
 import { pageTitle } from './trainingPlaceConfig';
 

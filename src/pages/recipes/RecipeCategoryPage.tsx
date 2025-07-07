@@ -7,7 +7,7 @@ import recipesIconSrc from '~/shared/assets/svg/recipes.svg';
 import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/atoms/Button';
 import { Loader } from '~/shared/ui/atoms/Loader';
-import { CommonPageLayout } from '~/widgets/CommonPageLayout';
+import { CommonPageLayout } from '~/widgets/layouts/CommonPageLayout';
 
 export function RecipeCategoryPage(): JSX.Element {
   const navigate = useNavigate();

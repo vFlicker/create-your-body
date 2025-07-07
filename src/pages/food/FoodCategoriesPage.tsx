@@ -6,7 +6,7 @@ import { useNutritionCategories } from '~/entities/nutrition';
 import foodIconSrc from '~/shared/assets/svg/food.svg';
 import { AppRoute } from '~/shared/router';
 import { TitleCard } from '~/shared/ui/molecules/TitleCard';
-import { CommonPageLayout } from '~/widgets/CommonPageLayout';
+import { CommonPageLayout } from '~/widgets/layouts/CommonPageLayout';
 
 export function FoodCategoriesPage(): JSX.Element {
   const navigate = useNavigate();

@@ -5,7 +5,7 @@ import { MeasurementOverview } from '~/entities/measurement/ui/MeasurementOvervi
 import { CreateMeasurementsForm } from '~/features/measurement/createMeasurements';
 import alertIconSrc from '~/shared/assets/svg/alert-circle.svg';
 import { Modal } from '~/shared/ui/molecules/modal';
-import { UserPageLayout } from '~/widgets/UserPageLayout';
+import { UserPageLayout } from '~/widgets/layouts/UserPageLayout';
 
 export function CreateMeasurementsPage(): JSX.Element {
   const [showDialogModal, setShowDialogModal] = useState(false);

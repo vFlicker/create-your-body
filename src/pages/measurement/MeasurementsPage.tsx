@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import {
   useMeasurements,
@@ -12,11 +13,13 @@ import {
 } from '~/entities/measurement';
 import plusIconSrc from '~/shared/assets/svg/plus.svg';
 import { AppRoute } from '~/shared/router';
-import { ButtonLink } from '~/shared/ui/atoms/Button';
+import { Button } from '~/shared/ui/atoms/Button';
 import { ImageUploader } from '~/shared/ui/molecules/ImageUploader';
-import { EmptyPageLayout } from '~/widgets/EmptyPageLayout';
+import { EmptyPageLayout } from '~/widgets/layouts/EmptyPageLayout';
 
 export function MeasurementsPage(): JSX.Element {
+  const navigate = useNavigate();
+
   const { transformationPhoto, isTransformationPhotoPending } =
     useTransformationPhoto();
   const { measurements, isMeasurementsPending } = useMeasurements();
@@ -85,13 +88,13 @@ export function MeasurementsPage(): JSX.Element {
         </StyledSection>
 
         <StyledButtonWrapper>
-          <ButtonLink
-            to={AppRoute.CreateMeasurements}
+          <Button
             color="accent"
             iconSrc={plusIconSrc}
+            onClick={() => navigate(AppRoute.CreateMeasurements)}
           >
             Записать замеры
-          </ButtonLink>
+          </Button>
         </StyledButtonWrapper>
       </StyledMeasurementsPageWrapper>
     </EmptyPageLayout>

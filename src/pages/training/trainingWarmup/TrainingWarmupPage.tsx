@@ -4,7 +4,7 @@ import { JSX, useState } from 'react';
 import { useUser } from '~/entities/user';
 import musclesIconSrc from '~/shared/assets/svg/musclesBlack.svg';
 import { Toggler } from '~/shared/ui/atoms/Toggler.js';
-import { CommonPageLayout } from '~/widgets/CommonPageLayout';
+import { CommonPageLayout } from '~/widgets/layouts/CommonPageLayout.js';
 
 import { mft, warmup } from './trainingWarmupConfig';
 import { TrainingWarmupScreen } from './TrainingWarmupScreen.js';

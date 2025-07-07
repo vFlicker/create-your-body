@@ -5,7 +5,7 @@ import pdfSrc from '~/shared/assets/pdf/begin.pdf';
 import healthIconSrc from '~/shared/assets/svg/health.svg';
 import { Toggler } from '~/shared/ui/atoms/Toggler';
 import { PdfViewer } from '~/shared/ui/molecules/pdfViewer';
-import { CommonPageLayout } from '~/widgets/CommonPageLayout';
+import { CommonPageLayout } from '~/widgets/layouts/CommonPageLayout';
 
 import { useViewMode, ViewMode } from './beginPageLib';
 import { VideoScreen } from './VideoScreen';

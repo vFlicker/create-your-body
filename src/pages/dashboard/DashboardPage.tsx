@@ -1,14 +1,10 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { MeasurementsChart } from '~/entities/measurement';
 import { hasActiveSubscription } from '~/entities/subscription';
 import { useUser } from '~/entities/user';
-import plusIconSrc from '~/shared/assets/svg/plus.svg';
-import { AppRoute } from '~/shared/router';
-import { ButtonLink } from '~/shared/ui/atoms/Button';
-import { IconButton } from '~/shared/ui/atoms/IconButton';
-import { CommonPageLayout } from '~/widgets/CommonPageLayout';
+import { CommonPageLayout } from '~/widgets/layouts/CommonPageLayout';
+import { MeasurementsWidget } from '~/widgets/MeasurementsWidget';
 
 import { NoAccessMessage } from './ui/NoAccessMessage';
 
@@ -36,56 +32,23 @@ export function DashboardPage(): JSX.Element {
         {!hasAccess && <NoAccessMessage />}
 
         {hasAccess && (
-          <div>
-            {/* TODO: we can show History component here */}
-
-            <StyledMeasurementsWidget>
-              <MeasurementsChart />
-              <StyledMeasurementsActionWrapper>
-                <ButtonLink
-                  color="accent"
-                  variant="outlined"
-                  to={AppRoute.Measurements}
-                >
-                  Перейти к замерам
-                </ButtonLink>
-                <StyledAddMeasurementButton
-                  color="accent"
-                  iconSrc={plusIconSrc}
-                  isActive
-                />
-              </StyledMeasurementsActionWrapper>
-            </StyledMeasurementsWidget>
-          </div>
+          <StyledWidgetListWrapper>
+            <MeasurementsWidget />
+          </StyledWidgetListWrapper>
         )}
       </StyledContentWrapper>
     </CommonPageLayout>
   );
 }
 
-const StyledMeasurementsWidget = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-`;
-
-const StyledMeasurementsActionWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-`;
-
 const StyledContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px;
   flex-grow: 1;
 `;
 
-const StyledAddMeasurementButton = styled(IconButton)`
-  button {
-    width: 54px;
-    height: 54px;
-  }
+const StyledWidgetListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 `;

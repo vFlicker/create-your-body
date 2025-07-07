@@ -1,3 +1,11 @@
+export type MeasurementType =
+  | 'weight'
+  | 'chest'
+  | 'waist'
+  | 'abdominalCircumference'
+  | 'hips'
+  | 'legs';
+
 export type Measurements = {
   id: number;
   reportNumber: number;
