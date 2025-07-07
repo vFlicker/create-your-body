@@ -3,7 +3,8 @@ import { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useUser } from '~/entities/user';
-import backgroundImageSrc from '~/shared/assets/img/background-image.webp';
+import backgroundImageSrc from '~/shared/assets/img/background-image.jpg';
+import waveLineImageSrc from '~/shared/assets/img/wave-line.svg';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
 import { Loader } from '~/shared/ui/atoms/Loader';
@@ -23,7 +24,7 @@ export function StartPage(): JSX.Element {
 
   return (
     <StyledStartPage>
-      <StyledImage src={backgroundImageSrc} />
+      <StyledImageWrapper />
 
       <StyledContentWrapper>
         <StyledTextWrapper>
@@ -50,16 +51,37 @@ const StyledStartPage = styled.div`
   flex-direction: column;
   gap: 20px;
 
-  min-height: 100vh;
   width: 100%;
+  height: 100vh;
   padding-bottom: 32px;
 `;
 
-const StyledImage = styled.img`
-  width: 100%;
-  height: 100%;
+const backgroundImage = `url("${backgroundImageSrc}")`;
+const backgroundLineImage = `url("${waveLineImageSrc}")`;
 
-  z-index: 1;
+const StyledImageWrapper = styled.div`
+  position: relative;
+
+  display: flex;
+  flex-grow: 1;
+
+  background-image: ${backgroundImage};
+  background-size: cover;
+  background-position: center;
+
+  &::after {
+    position: absolute;
+    left: 0;
+    bottom: -20px;
+
+    content: '';
+
+    width: 100%;
+    height: 80px;
+
+    background-image: ${backgroundLineImage};
+    background-size: cover;
+  }
 `;
 
 const StyledContentWrapper = styled.div`
