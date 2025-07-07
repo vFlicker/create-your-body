@@ -72,15 +72,16 @@ const StyledImageWrapper = styled.div`
   &::after {
     position: absolute;
     left: 0;
-    bottom: -20px;
+    bottom: 0;
 
     content: '';
 
     width: 100%;
-    height: 80px;
+    height: 45px;
 
     background-image: ${backgroundLineImage};
-    background-size: cover;
+    background-size: auto;
+    background-repeat: repeat-x;
   }
 `;
 
