@@ -60,8 +60,6 @@ export function MeasurementsChart(): JSX.Element {
 
   return (
     <StyledChartContainer>
-      <StyledTitle>Мои замеры</StyledTitle>
-
       {hasNoMeasurements && (
         <StyledEmptyChart>
           Запишите замеры, чтобы начать отслеживать прогресс
@@ -88,11 +86,12 @@ export function MeasurementsChart(): JSX.Element {
                 tickLine={false}
                 dy={10}
                 tick={{ fill: '#878787', fontSize: 10, fontWeight: 500 }}
+                interval={0}
               />
               <YAxis
                 axisLine={false}
                 tickLine={false}
-                domain={['dataMin - 2', 'dataMax + 2']}
+                domain={['dataMin', 'dataMax']}
                 tick={{ fill: '#878787', fontSize: 10, fontWeight: 600 }}
               />
               <Area
@@ -138,15 +137,10 @@ export function MeasurementsChart(): JSX.Element {
   );
 }
 
-const StyledChartContainer = styled.div``;
-
-const StyledTitle = styled.h2`
-  margin-bottom: 12px;
-
-  color: #0d0d0d;
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 120%;
+const StyledChartContainer = styled.div`
+  svg {
+    outline: none;
+  }
 `;
 
 const StyledEmptyChart = styled.div`

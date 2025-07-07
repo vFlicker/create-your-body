@@ -13,6 +13,7 @@ export function MeasurementsWidget(): JSX.Element {
 
   return (
     <StyledMeasurementsWidget>
+      <StyledTitle>Мои замеры</StyledTitle>
       <MeasurementsChart />
       <StyledMeasurementsActionWrapper>
         <Button
@@ -37,6 +38,15 @@ const StyledMeasurementsWidget = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
+`;
+
+const StyledTitle = styled.h2`
+  margin-bottom: 12px;
+
+  color: #0d0d0d;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 120%;
 `;
 
 const StyledMeasurementsActionWrapper = styled.div`

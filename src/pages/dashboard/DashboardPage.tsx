@@ -3,6 +3,7 @@ import { JSX } from 'react';
 
 import { hasActiveSubscription } from '~/entities/subscription';
 import { useUser } from '~/entities/user';
+import { HealthTrackerWidget } from '~/widgets/HealthTrackerWidget';
 import { CommonPageLayout } from '~/widgets/layouts/CommonPageLayout';
 import { MeasurementsWidget } from '~/widgets/MeasurementsWidget';
 
@@ -33,6 +34,17 @@ export function DashboardPage(): JSX.Element {
 
         {hasAccess && (
           <StyledWidgetListWrapper>
+            <HealthTrackerWidget
+              onButtonClick={() => {}}
+              data={{
+                weight: 55.4,
+                steps: 12000,
+                calories: 2500,
+                proteins: 150,
+                fats: 70,
+                carbohydrates: 300,
+              }}
+            />
             <MeasurementsWidget />
           </StyledWidgetListWrapper>
         )}
