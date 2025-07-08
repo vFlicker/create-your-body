@@ -7,72 +7,21 @@ import {
   DialogStack,
   DialogStackBody,
   DialogStackContent,
-  DialogStackDescription,
-  DialogStackFooter,
-  DialogStackHeader,
-  DialogStackNext,
   DialogStackOverlay,
-  DialogStackPrevious,
-  DialogStackTitle,
-  DialogStackTrigger,
 } from '~/shared/ui/molecules/dialogStack';
 
 export function HealthTrackerWidget(): JSX.Element {
-  const [showDialogModal, setShowDialogModal] = useState(false);
+  // Простий діалог для редагування
+  const [isEditFormOpen, setIsEditFormOpen] = useState(false);
 
-  const handleChangeButtonClick = () => {
-    // show form logic can be handled here
+  const handleUpdateClick = () => {
+    setIsEditFormOpen(true);
   };
 
   return (
     <StyledHealthTrackerWidget>
-      <StyledHeader>
-        <StyledTitle>Сегодня</StyledTitle>
-        <DialogStack open={showDialogModal} onOpenChange={setShowDialogModal}>
-          <DialogStackTrigger asChild>
-            <StyledHistoryButton>История</StyledHistoryButton>
-          </DialogStackTrigger>
-          <DialogStackOverlay />
-          <DialogStackBody>
-            <DialogStackContent>
-              <DialogStackHeader>
-                <DialogStackTitle>История измерений</DialogStackTitle>
-                <DialogStackDescription>
-                  Просмотр и управление вашими измерениями
-                </DialogStackDescription>
-              </DialogStackHeader>
-              <div>
-                <p>Здесь будет отображаться история измерений</p>
-              </div>
-              <DialogStackFooter style={{ justifyContent: 'space-between' }}>
-                <button onClick={handleChangeButtonClick}>Добавить</button>
-                <DialogStackNext asChild>
-                  <button>Подробнее</button>
-                </DialogStackNext>
-              </DialogStackFooter>
-            </DialogStackContent>
-
-            <DialogStackContent>
-              <DialogStackHeader>
-                <DialogStackTitle>Добавить измерение</DialogStackTitle>
-                <DialogStackDescription>
-                  Добавьте новые данные о питании
-                </DialogStackDescription>
-              </DialogStackHeader>
-              <div>
-                <CreateNutritionReportForm />
-              </div>
-              <DialogStackFooter>
-                <DialogStackPrevious asChild>
-                  <button>Назад</button>
-                </DialogStackPrevious>
-              </DialogStackFooter>
-            </DialogStackContent>
-          </DialogStackBody>
-        </DialogStack>
-      </StyledHeader>
       <HealthTracker
-        onButtonClick={() => {}}
+        onButtonClick={handleUpdateClick}
         data={{
           weight: 55.4,
           steps: 12000,
@@ -82,6 +31,27 @@ export function HealthTrackerWidget(): JSX.Element {
           carbohydrates: 300,
         }}
       />
+
+      {/* Простий діалог з формою редагування */}
+      <DialogStack open={isEditFormOpen} onOpenChange={setIsEditFormOpen}>
+        <DialogStackOverlay />
+        <DialogStackBody>
+          <DialogStackContent>
+            <div>
+              <h2>Добавить отчет</h2>
+              <p>Обновите ваши показатели</p>
+            </div>
+
+            <FormContent>
+              <CreateNutritionReportForm />
+            </FormContent>
+
+            <div>
+              <SaveButton>Сохранить</SaveButton>
+            </div>
+          </DialogStackContent>
+        </DialogStackBody>
+      </DialogStack>
     </StyledHealthTrackerWidget>
   );
 }
@@ -92,22 +62,22 @@ const StyledHealthTrackerWidget = styled.div`
   gap: 12px;
 `;
 
-const StyledHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+const FormContent = styled.div`
+  margin: 16px 0;
 `;
 
-const StyledTitle = styled.h2`
-  color: #0d0d0d;
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 120%;
-`;
-
-const StyledHistoryButton = styled.button`
-  color: #7a66ff;
-  font-size: 14px;
+const SaveButton = styled.button`
+  padding: 12px 24px;
+  background: #7a66ff;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  font-size: 16px;
   font-weight: 600;
-  line-height: 120%;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background: #6854e6;
+  }
 `;

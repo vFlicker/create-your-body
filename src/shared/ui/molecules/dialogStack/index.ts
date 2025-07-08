@@ -1,15 +1,13 @@
 export {
   DialogStack,
   DialogStackBody,
+  type DialogStackBodyProps,
   DialogStackContent,
-  DialogStackDescription,
-  DialogStackFooter,
-  DialogStackHeader,
-  DialogStackNext,
+  type DialogStackContentProps,
   DialogStackOverlay,
+  type DialogStackOverlayProps,
   DialogStackPrevious,
-  DialogStackTitle,
-  DialogStackTrigger,
+  type DialogStackPreviousProps,
+  type DialogStackProps,
 } from './DialogStack';
-export type { UseDialogStackReturn } from './useDialogStack';
 export { useDialogStack } from './useDialogStack';

@@ -14,11 +14,8 @@ import {
   SetStateAction,
   useCallback,
   useContext,
-  useEffect,
   useState,
 } from 'react';
-
-import { Color } from '~/shared/theme/colors';
 
 import { ReactPortal } from '../modal/ReactPortal';
 
@@ -52,6 +49,8 @@ export type DialogStackProps = PropsWithChildren<{
   onOpenChange?: (open: boolean) => void;
   defaultOpen?: boolean;
   className?: string;
+  activeIndex?: number;
+  onActiveIndexChange?: (index: number) => void;
 }>;
 
 export function DialogStack({
@@ -61,29 +60,45 @@ export function DialogStack({
   defaultOpen = false,
   onOpenChange,
   clickable = false,
+  activeIndex: controlledActiveIndex,
+  onActiveIndexChange,
 }: DialogStackProps) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+  const [internalActiveIndex, setInternalActiveIndex] = useState(0);
+  const [internalIsOpen, setInternalIsOpen] = useState(defaultOpen);
 
-  useEffect(() => {
-    if (open !== undefined) {
-      setIsOpen(open);
-    }
-  }, [open]);
+  // Use controlled values if provided, otherwise use internal
+  const activeIndex =
+    controlledActiveIndex !== undefined
+      ? controlledActiveIndex
+      : internalActiveIndex;
 
-  useEffect(() => {
-    if (onOpenChange && isOpen !== undefined) {
-      onOpenChange(isOpen);
-    }
-  }, [isOpen, onOpenChange]);
+  const isOpen = open !== undefined ? open : internalIsOpen;
+
+  const setActiveIndex = useCallback(
+    (index: number | ((prev: number) => number)) => {
+      const newIndex = typeof index === 'function' ? index(activeIndex) : index;
+      if (onActiveIndexChange) {
+        onActiveIndexChange(newIndex);
+      } else {
+        setInternalActiveIndex(newIndex);
+      }
+    },
+    [activeIndex, onActiveIndexChange],
+  );
 
   const handleSetIsOpen = useCallback(
     (value: boolean | ((prev: boolean) => boolean)) => {
       const newValue = typeof value === 'function' ? value(isOpen) : value;
-      setIsOpen(newValue);
-      onOpenChange?.(newValue);
+      if (open !== undefined) {
+        // Controlled mode - notify parent
+        onOpenChange?.(newValue);
+      } else {
+        // Uncontrolled mode - update internal state
+        setInternalIsOpen(newValue);
+        onOpenChange?.(newValue);
+      }
     },
-    [isOpen, onOpenChange],
+    [isOpen, onOpenChange, open],
   );
 
   return (
@@ -100,50 +115,6 @@ export function DialogStack({
     >
       <div className={className}>{children}</div>
     </DialogStackContext.Provider>
-  );
-}
-
-export type DialogStackTriggerProps =
-  ButtonHTMLAttributes<HTMLButtonElement> & {
-    asChild?: boolean;
-  };
-
-export function DialogStackTrigger({
-  children,
-  className,
-  onClick,
-  asChild,
-  ...props
-}: DialogStackTriggerProps) {
-  const context = useContext(DialogStackContext);
-  if (!context) {
-    throw new Error('DialogStackTrigger must be used within a DialogStack');
-  }
-
-  const handleClick: MouseEventHandler<HTMLButtonElement> = (e) => {
-    context.setIsOpen(true);
-    onClick?.(e);
-  };
-
-  if (asChild && children) {
-    const child = children as ReactElement<{
-      onClick: MouseEventHandler<HTMLButtonElement>;
-      className?: string;
-    }>;
-    return cloneElement(child, {
-      onClick: (e: MouseEvent<HTMLButtonElement>) => {
-        handleClick(e);
-        child.props.onClick?.(e);
-      },
-      className: `${className || ''} ${child.props.className || ''}`.trim(),
-      ...props,
-    });
-  }
-
-  return (
-    <StyledTriggerButton className={className} onClick={handleClick} {...props}>
-      {children}
-    </StyledTriggerButton>
   );
 }
 
@@ -282,111 +253,6 @@ export function DialogStackContent({
   );
 }
 
-export type DialogStackTitleProps = HTMLAttributes<HTMLHeadingElement>;
-
-export function DialogStackTitle({
-  children,
-  className,
-  ...props
-}: DialogStackTitleProps) {
-  return (
-    <StyledTitle className={className} {...props}>
-      {children}
-    </StyledTitle>
-  );
-}
-
-export type DialogStackDescriptionProps = HTMLAttributes<HTMLParagraphElement>;
-
-export function DialogStackDescription({
-  children,
-  className,
-  ...props
-}: DialogStackDescriptionProps) {
-  return (
-    <StyledDescription className={className} {...props}>
-      {children}
-    </StyledDescription>
-  );
-}
-
-export type DialogStackHeaderProps = HTMLAttributes<HTMLDivElement>;
-
-export function DialogStackHeader({
-  className,
-  children,
-  ...props
-}: DialogStackHeaderProps) {
-  return (
-    <StyledHeader className={className} {...props}>
-      {children}
-    </StyledHeader>
-  );
-}
-
-export type DialogStackFooterProps = HTMLAttributes<HTMLDivElement>;
-
-export function DialogStackFooter({
-  children,
-  className,
-  ...props
-}: DialogStackFooterProps) {
-  return (
-    <StyledFooter className={className} {...props}>
-      {children}
-    </StyledFooter>
-  );
-}
-
-export type DialogStackNextProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  asChild?: boolean;
-};
-
-export function DialogStackNext({
-  children,
-  className,
-  asChild,
-  ...props
-}: DialogStackNextProps) {
-  const context = useContext(DialogStackContext);
-  if (!context) {
-    throw new Error('DialogStackNext must be used within a DialogStack');
-  }
-
-  const handleNext = () => {
-    if (context.activeIndex < context.totalDialogs - 1) {
-      context.setActiveIndex(context.activeIndex + 1);
-    }
-  };
-
-  if (asChild && children) {
-    const child = children as ReactElement<{
-      onClick: MouseEventHandler<HTMLButtonElement>;
-      className?: string;
-    }>;
-    return cloneElement(child, {
-      onClick: (e: MouseEvent<HTMLButtonElement>) => {
-        handleNext();
-        child.props.onClick?.(e);
-      },
-      className: `${className || ''} ${child.props.className || ''}`.trim(),
-      ...props,
-    });
-  }
-
-  return (
-    <StyledButton
-      className={className}
-      disabled={context.activeIndex >= context.totalDialogs - 1}
-      onClick={handleNext}
-      type="button"
-      {...props}
-    >
-      {children || 'Далі'}
-    </StyledButton>
-  );
-}
-
 export type DialogStackPreviousProps =
   ButtonHTMLAttributes<HTMLButtonElement> & {
     asChild?: boolean;
@@ -425,7 +291,7 @@ export function DialogStackPrevious({
   }
 
   return (
-    <StyledButton
+    <button
       className={className}
       disabled={context.activeIndex <= 0}
       onClick={handlePrevious}
@@ -433,38 +299,11 @@ export function DialogStackPrevious({
       {...props}
     >
       {children || 'Назад'}
-    </StyledButton>
+    </button>
   );
 }
 
 // Styled components
-const StyledTriggerButton = styled.button`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 14px;
-  transition: all 0.2s;
-  outline: none;
-  border: none;
-  cursor: pointer;
-
-  padding: 12px 16px;
-  background-color: #7a66ff;
-  color: ${Color.White};
-
-  &:hover {
-    background-color: #6854e6;
-  }
-
-  &:disabled {
-    pointer-events: none;
-    opacity: 0.5;
-  }
-`;
-
 const StyledOverlay = styled.div`
   position: fixed;
   inset: 0;
@@ -511,7 +350,7 @@ const StyledContent = styled.div`
   width: 100%;
   border-radius: 20px 20px 0 0;
   border: none;
-  background-color: ${Color.White};
+  background-color: white;
   padding: 24px;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
@@ -524,62 +363,4 @@ const StyledContentInner = styled.div<{ isActive: boolean }>`
   pointer-events: ${({ isActive }) => (isActive ? 'auto' : 'none')};
   user-select: ${({ isActive }) => (isActive ? 'auto' : 'none')};
   opacity: ${({ isActive }) => (isActive ? 1 : 0)};
-`;
-
-const StyledTitle = styled.h2`
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 1.2;
-  letter-spacing: -0.025em;
-  color: #0d0d0d;
-  margin: 0;
-`;
-
-const StyledDescription = styled.p`
-  color: #666666;
-  font-size: 14px;
-  margin: 8px 0 0 0;
-`;
-
-const StyledHeader = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  text-align: center;
-  margin-bottom: 24px;
-`;
-
-const StyledFooter = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: 24px;
-`;
-
-const StyledButton = styled.button`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 14px;
-  transition: all 0.2s;
-  outline: none;
-  border: 1px solid #e5e5e5;
-  cursor: pointer;
-
-  padding: 8px 16px;
-  background-color: ${Color.White};
-  color: #0d0d0d;
-
-  &:hover:not(:disabled) {
-    background-color: #f5f5f5;
-  }
-
-  &:disabled {
-    pointer-events: none;
-    opacity: 0.5;
-  }
 `;

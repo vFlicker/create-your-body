@@ -1,64 +1,67 @@
 import { useCallback, useState } from 'react';
 
-export interface UseDialogStackReturn {
+export interface useDialogStackReturn {
   isOpen: boolean;
   activeIndex: number;
-  open: () => void;
+  totalDialogs: number;
+  open: (startIndex?: number) => void;
   close: () => void;
-  toggle: () => void;
   goToNext: () => void;
   goToPrevious: () => void;
-  goToIndex: (index: number) => void;
-  setIsOpen: (open: boolean) => void;
+  canGoBack: boolean;
+  canGoNext: boolean;
+  setTotalDialogs: (total: number) => void;
   setActiveIndex: (index: number) => void;
 }
 
-export function useDialogStack(
-  initialOpen = false,
-  initialIndex = 0,
-): UseDialogStackReturn {
-  const [isOpen, setIsOpen] = useState(initialOpen);
-  const [activeIndex, setActiveIndex] = useState(initialIndex);
+export function useDialogStack(totalDialogs = 1): useDialogStackReturn {
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [dialogsCount, setDialogsCount] = useState(totalDialogs);
 
-  const open = useCallback(() => {
+  const open = useCallback((startIndex = 0) => {
+    setActiveIndex(startIndex);
     setIsOpen(true);
   }, []);
 
   const close = useCallback(() => {
     setIsOpen(false);
-    // Reset to first dialog when closing
-    setActiveIndex(0);
+    setActiveIndex(0); // Reset to first dialog when closing
   }, []);
-
-  const toggle = useCallback(() => {
-    setIsOpen((prev) => !prev);
-    if (isOpen) {
-      setActiveIndex(0);
-    }
-  }, [isOpen]);
 
   const goToNext = useCallback(() => {
-    setActiveIndex((prev) => prev + 1);
-  }, []);
+    setActiveIndex((prev) => Math.min(prev + 1, dialogsCount - 1));
+  }, [dialogsCount]);
 
   const goToPrevious = useCallback(() => {
-    setActiveIndex((prev) => Math.max(0, prev - 1));
+    setActiveIndex((prev) => Math.max(prev - 1, 0));
   }, []);
 
-  const goToIndex = useCallback((index: number) => {
-    setActiveIndex(Math.max(0, index));
+  const setTotalDialogs = useCallback((total: number) => {
+    setDialogsCount(total);
   }, []);
+
+  const setActiveIndexDirect = useCallback(
+    (index: number) => {
+      setActiveIndex(Math.max(0, Math.min(index, dialogsCount - 1)));
+    },
+    [dialogsCount],
+  );
+
+  const canGoBack = activeIndex > 0;
+  const canGoNext = activeIndex < dialogsCount - 1;
 
   return {
     isOpen,
     activeIndex,
+    totalDialogs: dialogsCount,
+    canGoBack,
+    canGoNext,
     open,
     close,
-    toggle,
     goToNext,
     goToPrevious,
-    goToIndex,
-    setIsOpen,
-    setActiveIndex,
+    setTotalDialogs,
+    setActiveIndex: setActiveIndexDirect,
   };
 }
