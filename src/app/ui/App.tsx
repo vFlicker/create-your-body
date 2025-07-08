@@ -1,5 +1,6 @@
 import { JSX, useEffect } from 'react';
 
+import { ModalHost } from '~/entities/modal';
 import { useUpdateUserAvatar, useUser } from '~/entities/user';
 import { userSession } from '~/shared/libs/userSession';
 import { Loader } from '~/shared/ui/atoms/Loader';
@@ -33,7 +34,12 @@ function App(): JSX.Element {
     return <Loader />;
   }
 
-  return <Routing />;
+  return (
+    <>
+      <Routing />
+      <ModalHost />
+    </>
+  );
 }
 
 export const AppWithProviders = withProviders(App);

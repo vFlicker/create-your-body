@@ -1,11 +1,8 @@
 import styled from '@emotion/styled';
-import { JSX, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { JSX } from 'react';
 
 import backIconSrc from '~/shared/assets/svg/back.svg';
 import { Color } from '~/shared/theme/colors';
-
-const PREVIOUS_PAGE = -1;
 
 type BackButtonProps = {
   className?: string;
@@ -16,24 +13,8 @@ export function BackButton({
   className,
   onClick,
 }: BackButtonProps): JSX.Element {
-  const navigate = useNavigate();
-
-  const defaultOnClick = () => navigate(PREVIOUS_PAGE);
-  const handleClick = onClick || defaultOnClick;
-
-  useEffect(() => {
-    const backButton = Telegram.WebApp.BackButton;
-    backButton.show();
-    backButton.onClick(handleClick);
-
-    return () => {
-      backButton.offClick(handleClick);
-      backButton.hide();
-    };
-  }, [handleClick]);
-
   return (
-    <StyledBackButton className={className} onClick={handleClick}>
+    <StyledBackButton className={className} onClick={onClick}>
       <img src={backIconSrc} />
       Назад
     </StyledBackButton>

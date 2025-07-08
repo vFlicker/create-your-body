@@ -1,24 +1,28 @@
 import styled from '@emotion/styled';
-import { JSX, useState } from 'react';
+import { JSX } from 'react';
 
 import { MeasurementOverview } from '~/entities/measurement/ui/MeasurementOverview';
+import { Modal, useModalStore } from '~/entities/modal';
 import { CreateMeasurementsForm } from '~/features/measurement/createMeasurements';
 import alertIconSrc from '~/shared/assets/svg/alert-circle.svg';
-import { Modal } from '~/shared/ui/molecules/modal';
 import { UserPageLayout } from '~/widgets/layouts/UserPageLayout';
 
 export function CreateMeasurementsPage(): JSX.Element {
-  const [showDialogModal, setShowDialogModal] = useState(false);
-
-  const onHowToMeasureClick = () => {
-    setShowDialogModal(true);
-  };
+  const { openModal } = useModalStore();
 
   return (
     <UserPageLayout isLoading={false}>
       <StyledHeader>
         <StyledTitle>Мои параметры</StyledTitle>
-        <StyledHowToMeasureButton onClick={onHowToMeasureClick}>
+        <StyledHowToMeasureButton
+          onClick={() =>
+            openModal(
+              <Modal>
+                <MeasurementOverview />
+              </Modal>,
+            )
+          }
+        >
           <img src={alertIconSrc} />
           <span>Как измерить?</span>
         </StyledHowToMeasureButton>
@@ -29,10 +33,6 @@ export function CreateMeasurementsPage(): JSX.Element {
       </StyledHeader>
 
       <CreateMeasurementsForm />
-
-      <Modal isOpen={showDialogModal} onClose={() => setShowDialogModal(false)}>
-        <MeasurementOverview />
-      </Modal>
     </UserPageLayout>
   );
 }

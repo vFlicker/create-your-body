@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
-import { JSX, useState } from 'react';
+import { JSX } from 'react';
 
+import { Modal, useModalStore } from '~/entities/modal';
 import { Notification } from '~/entities/notification';
 import notificationIconSrc from '~/shared/assets/svg/notification.svg';
 import { IconButton } from '~/shared/ui/atoms/IconButton';
-import { Modal } from '~/shared/ui/molecules/modal';
 
 export function ShowNotificationsButton(): JSX.Element {
-  const [showDialogModal, setShowDialogModal] = useState(false);
+  const { openModal } = useModalStore();
 
   return (
     <>
@@ -15,12 +15,14 @@ export function ShowNotificationsButton(): JSX.Element {
         color="accent"
         iconSrc={notificationIconSrc}
         isActive
-        onClick={() => setShowDialogModal(true)}
+        onClick={() =>
+          openModal(
+            <Modal>
+              <Notification />
+            </Modal>,
+          )
+        }
       />
-
-      <Modal isOpen={showDialogModal} onClose={() => setShowDialogModal(false)}>
-        <Notification />
-      </Modal>
     </>
   );
 }

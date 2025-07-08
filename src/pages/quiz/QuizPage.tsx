@@ -3,7 +3,7 @@ import { ChangeEvent, JSX, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useUpdateUser, useUser } from '~/entities/user';
-import { BackButton } from '~/features/BackButton';
+import { ShowPrevPageButton } from '~/features/ShowPrevPageButton';
 import { formatDateForApi, formatDateForView } from '~/shared/libs/date';
 import { AppRoute } from '~/shared/router';
 import { Color } from '~/shared/theme/colors';
@@ -255,7 +255,7 @@ export function QuizPage(): JSX.Element {
   return (
     <StyledQuizPage ref={formRef}>
       <StyledForBack>
-        {step !== 1 && <BackButton onClick={handleBack} />}
+        {step !== 1 && <ShowPrevPageButton onClick={handleBack} />}
       </StyledForBack>
       <StyledTopPage isExpanded={step > 1}>
         <StyledTitleContainer>

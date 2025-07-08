@@ -2,8 +2,8 @@ import styled from '@emotion/styled';
 import { JSX, PropsWithChildren } from 'react';
 
 import { StreamsInfo, UserMeta } from '~/entities/user';
-import { BackButton } from '~/features/BackButton';
 import { CloseAppButton } from '~/features/CloseAppButton';
+import { ShowPrevPageButton } from '~/features/ShowPrevPageButton';
 import { Color } from '~/shared/theme/colors';
 import { Loader } from '~/shared/ui/atoms/Loader';
 import { Nav } from '~/shared/ui/molecules/nav';
@@ -29,7 +29,7 @@ export function CommonPageLayout({
   return (
     <StyledPageWrapper>
       <StyledButtonsWrapper>
-        {hasBackButton && <BackButton />}
+        {hasBackButton && <ShowPrevPageButton />}
         <StyledCloseAppButton />
       </StyledButtonsWrapper>
 
