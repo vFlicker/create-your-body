@@ -51,11 +51,9 @@ const StyledModalWrapper = styled(Content)`
 
   display: flex;
   flex-direction: column;
-  gap: 30px;
 
   width: 100%;
   height: 80%;
-  padding: 16px;
   border-radius: 20px 20px 0 0;
 
   background-color: #ffffff;
@@ -66,6 +64,7 @@ const StyledModalWrapper = styled(Content)`
 const StyledHeader = styled.div`
   display: flex;
   width: 100%;
+  padding: 16px;
   border-radius: 20px 20px 0 0;
 
   background-color: #ffffff;
@@ -77,5 +76,6 @@ const StyledCloseButton = styled(CloseButton)`
 `;
 
 const StyledContent = styled.div`
+  padding: 16px;
   overflow-y: auto;
 `;
