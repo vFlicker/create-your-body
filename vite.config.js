@@ -1,4 +1,5 @@
 import react from '@vitejs/plugin-react';
+import svgr from 'vite-plugin-svgr';
 import { defineConfig } from 'vite';
 import checker from 'vite-plugin-checker';
 
@@ -11,6 +12,7 @@ export default defineConfig({
         plugins: ['@emotion/babel-plugin'],
       },
     }),
+    svgr(),
     checker({
       typescript: {
         tsconfigPath: './tsconfig.app.json',
