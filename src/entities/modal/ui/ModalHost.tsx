@@ -3,6 +3,7 @@ import { Overlay, Portal, Root } from '@radix-ui/react-dialog';
 import { JSX } from 'react';
 
 import { useModalStore } from '../model/modalStore';
+import { Modal } from './Modal';
 
 export function ModalHost(): JSX.Element {
   const modals = useModalStore((store) => store.modals);
@@ -18,7 +19,7 @@ export function ModalHost(): JSX.Element {
         <Root key={id} open onOpenChange={handleOpenChange}>
           <Portal>
             <StyledOverlay />
-            {component}
+            <Modal>{component}</Modal>
           </Portal>
         </Root>
       ))}

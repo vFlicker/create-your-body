@@ -3,7 +3,6 @@ import { JSX } from 'react';
 
 import { hasActiveSubscription } from '~/entities/subscription';
 import { useUser } from '~/entities/user';
-import { HealthTrackerHistoryButton } from '~/widgets/HealthTrackerHistoryButton';
 import { HealthTrackerWidget } from '~/widgets/HealthTrackerWidget';
 import { CommonPageLayout } from '~/widgets/layouts/CommonPageLayout';
 import { MeasurementsWidget } from '~/widgets/MeasurementsWidget';
@@ -35,13 +34,7 @@ export function DashboardPage(): JSX.Element {
 
         {hasAccess && (
           <StyledWidgetListWrapper>
-            <StyledHealthSection>
-              <StyledSectionHeader>
-                <StyledSectionTitle>Сегодня</StyledSectionTitle>
-                <HealthTrackerHistoryButton />
-              </StyledSectionHeader>
-              <HealthTrackerWidget />
-            </StyledHealthSection>
+            <HealthTrackerWidget />
             <MeasurementsWidget />
           </StyledWidgetListWrapper>
         )}
@@ -60,24 +53,4 @@ const StyledWidgetListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
-`;
-
-const StyledHealthSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`;
-
-const StyledSectionHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const StyledSectionTitle = styled.h2`
-  color: #0d0d0d;
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 120%;
-  margin: 0;
 `;

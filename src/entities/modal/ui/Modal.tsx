@@ -9,15 +9,12 @@ import { useModalStore } from '../model/modalStore';
 
 type ModalProps = {
   children: JSX.Element;
-  canGoBack?: boolean;
+  onBack?: () => void;
   onClose?: () => void;
 };
 
-export function Modal({
-  children,
-  canGoBack,
-  onClose,
-}: ModalProps): JSX.Element {
+export function Modal({ children, onBack, onClose }: ModalProps): JSX.Element {
+  const canGoBack = useModalStore((store) => store.canGoBack);
   const closeAll = useModalStore((store) => store.closeAll);
   const closeModal = useModalStore((store) => store.closeModal);
 
@@ -31,6 +28,7 @@ export function Modal({
   };
 
   const handleBackButtonClick = () => {
+    onBack?.();
     closeModal();
   };
 

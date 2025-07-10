@@ -39,35 +39,51 @@ export function CreateNutritionReportForm(): JSX.Element {
   };
 
   return (
-    <StyledForm onSubmit={handleSubmit(onSubmit)}>
-      <StyledInputsWrapper>
-        {nutritionReportInputs.map((inputsGroup) => {
-          return (
-            <StyledInputsGroup columns={inputsGroup.length}>
-              {inputsGroup.map(({ label, name }) => (
-                <Input
-                  key={name}
-                  label={label}
-                  type="number"
-                  placeholder="0"
-                  {...register(name)}
-                  error={errors[name]?.message}
-                />
-              ))}
-            </StyledInputsGroup>
-          );
-        })}
-      </StyledInputsWrapper>
-      <StyledSubmitButton
-        type="submit"
-        color="accent"
-        disabled={isCreateNutritionReportPending}
-      >
-        Сохранить
-      </StyledSubmitButton>
-    </StyledForm>
+    <StyledCreateNutritionReportFormWrapper>
+      <StyledTitle>Добавить отчет</StyledTitle>
+      <StyledForm onSubmit={handleSubmit(onSubmit)}>
+        <StyledInputsWrapper>
+          {nutritionReportInputs.map((inputsGroup) => {
+            return (
+              <StyledInputsGroup columns={inputsGroup.length}>
+                {inputsGroup.map(({ label, name }) => (
+                  <Input
+                    key={name}
+                    label={label}
+                    type="number"
+                    placeholder="0"
+                    {...register(name)}
+                    error={errors[name]?.message}
+                  />
+                ))}
+              </StyledInputsGroup>
+            );
+          })}
+        </StyledInputsWrapper>
+        <StyledSubmitButton
+          type="submit"
+          color="accent"
+          disabled={isCreateNutritionReportPending}
+        >
+          Сохранить
+        </StyledSubmitButton>
+      </StyledForm>
+    </StyledCreateNutritionReportFormWrapper>
   );
 }
+
+const StyledCreateNutritionReportFormWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const StyledTitle = styled.div`
+  color: #0d0d0d;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 120%;
+`;
 
 const StyledForm = styled.form`
   display: flex;

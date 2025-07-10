@@ -1,27 +1,51 @@
 import styled from '@emotion/styled';
-import { JSX, useState } from 'react';
+import { JSX } from 'react';
 
+import { useModalStore } from '~/entities/modal';
 import { HealthTracker } from '~/entities/nutrition';
-import { CreateNutritionReportForm } from '~/features/nutrition/createNutritionReport/ui/CreateNutritionReportForm';
-import {
-  DialogStack,
-  DialogStackBody,
-  DialogStackContent,
-  DialogStackOverlay,
-} from '~/shared/ui/molecules/dialogStack';
+import { CreateNutritionReportForm } from '~/features/nutrition/createNutritionReport';
 
 export function HealthTrackerWidget(): JSX.Element {
-  // Простий діалог для редагування
-  const [isEditFormOpen, setIsEditFormOpen] = useState(false);
+  const { openModal } = useModalStore();
 
-  const handleUpdateClick = () => {
-    setIsEditFormOpen(true);
+  const handleHealthTrackerButtonClick = () => {
+    openModal(<CreateNutritionReportForm />);
+  };
+
+  const handleHistoryClick = () => {
+    openModal(
+      <StyledHistoryContent>
+        <h2>Мои показатели</h2>
+        <p>Сегодня</p>
+
+        <HealthTracker
+          onButtonClick={handleHealthTrackerButtonClick}
+          data={{
+            weight: 55.4,
+            steps: 12000,
+            calories: 2500,
+            proteins: 150,
+            fats: 70,
+            carbohydrates: 300,
+          }}
+        />
+
+        <div>Список записів</div>
+      </StyledHistoryContent>,
+    );
   };
 
   return (
     <StyledHealthTrackerWidget>
+      <StyledSectionHeader>
+        <StyledSectionTitle>Сегодня</StyledSectionTitle>
+        <StyledHistoryButton onClick={handleHistoryClick}>
+          История
+        </StyledHistoryButton>
+      </StyledSectionHeader>
+
       <HealthTracker
-        onButtonClick={handleUpdateClick}
+        onButtonClick={handleHealthTrackerButtonClick}
         data={{
           weight: 55.4,
           steps: 12000,
@@ -31,27 +55,6 @@ export function HealthTrackerWidget(): JSX.Element {
           carbohydrates: 300,
         }}
       />
-
-      {/* Простий діалог з формою редагування */}
-      <DialogStack open={isEditFormOpen} onOpenChange={setIsEditFormOpen}>
-        <DialogStackOverlay />
-        <DialogStackBody>
-          <DialogStackContent>
-            <div>
-              <h2>Добавить отчет</h2>
-              <p>Обновите ваши показатели</p>
-            </div>
-
-            <FormContent>
-              <CreateNutritionReportForm />
-            </FormContent>
-
-            <div>
-              <SaveButton>Сохранить</SaveButton>
-            </div>
-          </DialogStackContent>
-        </DialogStackBody>
-      </DialogStack>
     </StyledHealthTrackerWidget>
   );
 }
@@ -62,22 +65,32 @@ const StyledHealthTrackerWidget = styled.div`
   gap: 12px;
 `;
 
-const FormContent = styled.div`
-  margin: 16px 0;
+const StyledHistoryButton = styled.button`
+  color: #7a66ff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 120%;
+  background: none;
+  border: none;
+  cursor: pointer;
 `;
 
-const SaveButton = styled.button`
-  padding: 12px 24px;
-  background: #7a66ff;
-  border: none;
-  border-radius: 20px;
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
+const StyledSectionHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
 
-  &:hover {
-    background: #6854e6;
-  }
+const StyledSectionTitle = styled.h2`
+  color: #0d0d0d;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 120%;
+  margin: 0;
+`;
+
+const StyledHistoryContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 `;
