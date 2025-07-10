@@ -8,6 +8,7 @@ type ButtonBaseProps = {
   color: `${ButtonColor}`;
   variant?: `${ButtonVariant}`;
   iconSrc?: string;
+  iconComponent?: JSX.Element;
   iconPosition?: 'left' | 'right';
 };
 
@@ -26,6 +27,7 @@ const enum ButtonVariant {
 
 function Button({
   iconSrc,
+  iconComponent,
   iconPosition = 'left',
   children,
   ...props
@@ -35,8 +37,10 @@ function Button({
   return (
     <StyledButton {...props}>
       {isLeftIcon && iconSrc && <img src={iconSrc} />}
+      {isLeftIcon && iconComponent}
       {children}
       {!isLeftIcon && iconSrc && <img src={iconSrc} />}
+      {!isLeftIcon && iconComponent}
     </StyledButton>
   );
 }
@@ -102,7 +106,7 @@ const StyledButton = styled.button<Pick<ButtonBaseProps, 'color' | 'variant'>>`
 
   svg {
     flex-shrink: 0;
-    width: 24px;
-    height: 24px;
+    width: 16px;
+    height: 16px;
   }
 `;

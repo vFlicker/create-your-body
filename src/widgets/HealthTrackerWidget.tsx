@@ -2,8 +2,9 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 
 import { useModalStore } from '~/entities/modal';
-import { HealthTracker } from '~/entities/nutrition';
+import { HealthTracker, nutritionHistoryData } from '~/entities/nutrition';
 import { CreateNutritionReportForm } from '~/features/nutrition/createNutritionReport';
+import { ShowNutritionHistory } from '~/features/nutrition/showNutritionHistory/ui/ShowNutritionHistory';
 
 export function HealthTrackerWidget(): JSX.Element {
   const { openModal } = useModalStore();
@@ -12,48 +13,18 @@ export function HealthTrackerWidget(): JSX.Element {
     openModal(<CreateNutritionReportForm />);
   };
 
-  const handleHistoryClick = () => {
-    openModal(
-      <StyledHistoryContent>
-        <h2>Мои показатели</h2>
-        <p>Сегодня</p>
-
-        <HealthTracker
-          onButtonClick={handleHealthTrackerButtonClick}
-          data={{
-            weight: 55.4,
-            steps: 12000,
-            calories: 2500,
-            proteins: 150,
-            fats: 70,
-            carbohydrates: 300,
-          }}
-        />
-
-        <div>Список записів</div>
-      </StyledHistoryContent>,
-    );
-  };
-
   return (
     <StyledHealthTrackerWidget>
       <StyledSectionHeader>
         <StyledSectionTitle>Сегодня</StyledSectionTitle>
-        <StyledHistoryButton onClick={handleHistoryClick}>
-          История
-        </StyledHistoryButton>
+        <ShowNutritionHistory
+          onHealthTrackerButtonClick={handleHealthTrackerButtonClick}
+        />
       </StyledSectionHeader>
 
       <HealthTracker
         onButtonClick={handleHealthTrackerButtonClick}
-        data={{
-          weight: 55.4,
-          steps: 12000,
-          calories: 2500,
-          proteins: 150,
-          fats: 70,
-          carbohydrates: 300,
-        }}
+        data={nutritionHistoryData[0]}
       />
     </StyledHealthTrackerWidget>
   );
@@ -63,16 +34,6 @@ const StyledHealthTrackerWidget = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-`;
-
-const StyledHistoryButton = styled.button`
-  color: #7a66ff;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 120%;
-  background: none;
-  border: none;
-  cursor: pointer;
 `;
 
 const StyledSectionHeader = styled.div`
@@ -87,10 +48,4 @@ const StyledSectionTitle = styled.h2`
   font-weight: 700;
   line-height: 120%;
   margin: 0;
-`;
-
-const StyledHistoryContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
 `;

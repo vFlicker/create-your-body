@@ -3,7 +3,7 @@ import { JSX } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { EditMeasurementsForm } from '~/features/measurement/editMeasurements/';
-import { formatDateForView } from '~/shared/libs/date';
+import { formatDateForView } from '~/shared/libs/format';
 import { UserPageLayout } from '~/widgets/layouts/UserPageLayout';
 
 const mockMeasurements = {

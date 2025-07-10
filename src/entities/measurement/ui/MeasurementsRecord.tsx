@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import negativeDirectionIconSrc from '~/shared/assets/svg/arrow-narrow-down.svg';
 import positiveDirectionIconSrc from '~/shared/assets/svg/arrow-narrow-up.svg';
 import neutralDirectionIconSrc from '~/shared/assets/svg/minus.svg';
-import { formatDateForView } from '~/shared/libs/date';
+import { formatDateForView } from '~/shared/libs/format';
 import { AppRoute } from '~/shared/router';
 import { EditButton } from '~/shared/ui/molecules/EditButton';
 

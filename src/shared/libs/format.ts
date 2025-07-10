@@ -13,3 +13,7 @@ export const formatDateForView = (date: string): string => {
     year: 'numeric',
   });
 };
+
+export const formatNumberWithThousands = (value: number): string => {
+  return new Intl.NumberFormat('ru-RU').format(value);
+};

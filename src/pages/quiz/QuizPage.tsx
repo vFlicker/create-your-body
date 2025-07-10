@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useUpdateUser, useUser } from '~/entities/user';
 import { ShowPrevPageButton } from '~/features/ShowPrevPageButton';
-import { formatDateForApi, formatDateForView } from '~/shared/libs/date';
+import { formatDateForApi, formatDateForView } from '~/shared/libs/format';
 import { AppRoute } from '~/shared/router';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';

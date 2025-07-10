@@ -3,7 +3,7 @@ import { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { MeasurementsChart } from '~/entities/measurement';
-import plusIconSrc from '~/shared/assets/svg/plus.svg';
+import PlusIcon from '~/shared/assets/svg/plus.svg?react';
 import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/atoms/Button';
 import { IconButton } from '~/shared/ui/atoms/IconButton';
@@ -25,7 +25,7 @@ export function MeasurementsWidget(): JSX.Element {
         </Button>
         <StyledCreateMeasurementButton
           color="accent"
-          iconSrc={plusIconSrc}
+          iconComponent={<PlusIcon stroke="#ffffff" />}
           isActive
           onClick={() => navigate(AppRoute.CreateMeasurements)}
         />

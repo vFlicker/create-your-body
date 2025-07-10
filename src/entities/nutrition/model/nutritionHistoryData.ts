@@ -1,0 +1,32 @@
+export const nutritionHistoryData = [
+  {
+    id: '1',
+    date: '10.07.2025',
+    weight: 55.4,
+    steps: 10000,
+    calories: 1420,
+    proteins: 40,
+    fats: 30,
+    carbohydrates: 60,
+  },
+  {
+    id: '2',
+    date: '09.07.2025',
+    weight: 55.6,
+    steps: 8000,
+    calories: 1300,
+    proteins: 130,
+    fats: 65,
+    carbohydrates: 315,
+  },
+  {
+    id: '3',
+    date: '08.07.2025',
+    weight: 55.7,
+    steps: 10025,
+    calories: 1320,
+    proteins: 140,
+    fats: 70,
+    carbohydrates: 200,
+  },
+];

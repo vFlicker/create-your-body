@@ -7,7 +7,8 @@ import { Color } from '~/shared/theme/colors';
 
 type IconButtonProps = {
   className?: string;
-  iconSrc: string;
+  iconSrc?: string;
+  iconComponent?: JSX.Element;
   color: `${IconButtonColor}`;
   text?: string;
   isActive?: boolean;
@@ -28,6 +29,7 @@ const enum IconButtonColor {
 export function IconButton({
   className,
   iconSrc,
+  iconComponent,
   text,
   color,
   isActive = false,
@@ -42,7 +44,8 @@ export function IconButton({
         color={color}
         onClick={onClick}
       >
-        <StyledIcon src={disabled ? lockIconSrc : iconSrc} />
+        {iconSrc && <StyledIcon src={disabled ? lockIconSrc : iconSrc} />}
+        {iconComponent}
       </StyledIconButton>
       {text && <StyledText>{text}</StyledText>}
     </StyledIconButtonWrapper>

@@ -11,7 +11,7 @@ import {
   calculateMeasurementsHistory,
   MeasurementsRecord,
 } from '~/entities/measurement';
-import plusIconSrc from '~/shared/assets/svg/plus.svg';
+import PlusIcon from '~/shared/assets/svg/plus.svg?react';
 import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/atoms/Button';
 import { ImageUploader } from '~/shared/ui/molecules/ImageUploader';
@@ -90,7 +90,7 @@ export function MeasurementsPage(): JSX.Element {
         <StyledButtonWrapper>
           <Button
             color="accent"
-            iconSrc={plusIconSrc}
+            iconComponent={<PlusIcon stroke="#ffffff" />}
             onClick={() => navigate(AppRoute.CreateMeasurements)}
           >
             Записать замеры

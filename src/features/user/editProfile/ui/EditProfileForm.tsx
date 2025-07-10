@@ -5,7 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { useUpdateUser, useUser } from '~/entities/user';
-import { formatDateForApi, formatDateForView } from '~/shared/libs/date';
+import { formatDateForApi, formatDateForView } from '~/shared/libs/format';
 import { showTelegramAlert } from '~/shared/libs/telegram';
 import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/atoms/Button';
