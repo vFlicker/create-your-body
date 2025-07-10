@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import { JSX, PropsWithChildren } from 'react';
 
 import { StreamsInfo, UserMeta } from '~/entities/user';
-import { CloseAppButton } from '~/features/CloseAppButton';
 import { ShowPrevPageButton } from '~/features/ShowPrevPageButton';
 import { Color } from '~/shared/theme/colors';
 import { Loader } from '~/shared/ui/atoms/Loader';
@@ -30,7 +29,6 @@ export function CommonPageLayout({
     <StyledPageWrapper>
       <StyledButtonsWrapper>
         {hasBackButton && <ShowPrevPageButton />}
-        <StyledCloseAppButton />
       </StyledButtonsWrapper>
 
       <StyledMainWrapper>
@@ -73,10 +71,6 @@ const StyledButtonsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-`;
-
-const StyledCloseAppButton = styled(CloseAppButton)`
-  margin-left: auto;
 `;
 
 const StyledMainWrapper = styled.div`

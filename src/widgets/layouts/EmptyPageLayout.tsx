@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import { JSX, PropsWithChildren } from 'react';
 
-import { CloseAppButton } from '~/features/CloseAppButton';
 import { ShowPrevPageButton } from '~/features/ShowPrevPageButton';
 import { Color } from '~/shared/theme/colors';
 import { Loader } from '~/shared/ui/atoms/Loader';
@@ -20,7 +19,6 @@ export function EmptyPageLayout({
     <StyledPageWrapper>
       <StyledButtonsWrapper>
         <ShowPrevPageButton />
-        <CloseAppButton />
       </StyledButtonsWrapper>
 
       <StyledMainWrapper>

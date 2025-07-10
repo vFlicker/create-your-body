@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import { JSX, PropsWithChildren } from 'react';
 
 import { UserMeta } from '~/entities/user';
-import { CloseAppButton } from '~/features/CloseAppButton';
 import { ShowNotificationsButton } from '~/features/ShowNotifications';
 import { ShowPrevPageButton } from '~/features/ShowPrevPageButton';
 import { Color } from '~/shared/theme/colors';
@@ -22,7 +21,6 @@ export function UserPageLayout({
     <StyledPageWrapper>
       <StyledButtonsWrapper>
         <ShowPrevPageButton />
-        <CloseAppButton />
       </StyledButtonsWrapper>
 
       <StyledMainWrapper>
