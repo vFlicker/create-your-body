@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import calendarIconSrc from '~/shared/assets/svg/calendar.svg';
+import CalendarIcon from '~/shared/assets/svg/calendar.svg?react';
 import lightningIconSrc from '~/shared/assets/svg/lightning.svg';
 import { Button } from '~/shared/ui/atoms/Button';
 
@@ -19,7 +19,7 @@ export function FirstSubscriptionCard({
       <StyledContent>
         <StyledTitle>Старт 2-го потока</StyledTitle>
         <StyledDate>
-          <img src={calendarIconSrc} />
+          <CalendarIcon stroke="#ffffff" />
           25 июн, 2025
         </StyledDate>
         <StyledButton color="accent" iconSrc={lightningIconSrc}>

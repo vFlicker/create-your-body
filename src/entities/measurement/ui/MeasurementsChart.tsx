@@ -9,8 +9,8 @@ import {
   YAxis,
 } from 'recharts';
 
-import chevronLeftIconSrc from '~/shared/assets/svg/chevron-left.svg';
-import chevronRightIconSrc from '~/shared/assets/svg/chevron-right.svg';
+import ChevronLeftIcon from '~/shared/assets/svg/chevron-left.svg?react';
+import ChevronRightIcon from '~/shared/assets/svg/chevron-right.svg?react';
 import { Loader } from '~/shared/ui/atoms/Loader';
 
 import { useMeasurements } from '../api/useMeasurements';
@@ -118,13 +118,13 @@ export function MeasurementsChart(): JSX.Element {
         </StyledAdjacentMeasurementLeft>
         <StyledMainControl>
           <StyledArrowButton onClick={() => handleMeasurementChange('prev')}>
-            <img src={chevronLeftIconSrc} />
+            <ChevronLeftIcon stroke="#7A66FF" />
           </StyledArrowButton>
           <StyledCurrentMeasurement>
             {getCurrentMeasurement(activeMeasurement)}
           </StyledCurrentMeasurement>
           <StyledArrowButton onClick={() => handleMeasurementChange('next')}>
-            <img src={chevronRightIconSrc} />
+            <ChevronRightIcon stroke="#7A66FF" />
           </StyledArrowButton>
         </StyledMainControl>
         <StyledAdjacentMeasurementRight

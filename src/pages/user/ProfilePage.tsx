@@ -3,9 +3,9 @@ import { JSX } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ChangeUserLevel } from '~/features/ChangeUserLevel';
-import chevronRightIconSrc from '~/shared/assets/profile/chevron-right.svg';
 import userIconSrc from '~/shared/assets/profile/user.svg';
 import walletIconSrc from '~/shared/assets/profile/wallet.svg';
+import ChevronRightIcon from '~/shared/assets/svg/chevron-right.svg?react';
 import { AppRoute } from '~/shared/router';
 import { UserPageLayout } from '~/widgets/layouts/UserPageLayout';
 
@@ -33,7 +33,7 @@ export function ProfilePage(): JSX.Element {
             <StyledLink key={to} to={to}>
               <StyledLinkIcon src={iconSrc} />
               {label}
-              <StyledChevronRightIcon src={chevronRightIconSrc} />
+              <StyledChevronRightIcon stroke="#8888bc" />
             </StyledLink>
           ))}
         </StyledLinkList>
@@ -86,8 +86,8 @@ const StyledLinkIcon = styled.img`
   margin-right: 10px;
 `;
 
-const StyledChevronRightIcon = styled.img`
-  width: 16px;
-  height: 16px;
+const StyledChevronRightIcon = styled(ChevronRightIcon)`
+  width: 14px;
+  height: 14px;
   margin-left: auto;
 `;

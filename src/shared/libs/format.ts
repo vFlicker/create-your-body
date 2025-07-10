@@ -17,3 +17,7 @@ export const formatDateForView = (date: string): string => {
 export const formatNumberWithThousands = (value: number): string => {
   return new Intl.NumberFormat('ru-RU').format(value);
 };
+
+export const capitalize = (str: string): string => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};

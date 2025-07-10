@@ -5,6 +5,7 @@ import { useModalStore } from '~/entities/modal';
 import { HealthTracker, nutritionHistoryData } from '~/entities/nutrition';
 import { CreateNutritionReportForm } from '~/features/nutrition/createNutritionReport';
 import { ShowNutritionHistory } from '~/features/nutrition/showNutritionHistory/ui/ShowNutritionHistory';
+import { HorizontalDatePicker } from '~/shared/ui/molecules/HorizontalDatePicker';
 
 export function HealthTrackerWidget(): JSX.Element {
   const { openModal } = useModalStore();
@@ -14,19 +15,22 @@ export function HealthTrackerWidget(): JSX.Element {
   };
 
   return (
-    <StyledHealthTrackerWidget>
-      <StyledSectionHeader>
-        <StyledSectionTitle>Сегодня</StyledSectionTitle>
-        <ShowNutritionHistory
-          onHealthTrackerButtonClick={handleHealthTrackerButtonClick}
-        />
-      </StyledSectionHeader>
+    <>
+      <HorizontalDatePicker />
+      <StyledHealthTrackerWidget>
+        <StyledSectionHeader>
+          <StyledSectionTitle>Сегодня</StyledSectionTitle>
+          <ShowNutritionHistory
+            onHealthTrackerButtonClick={handleHealthTrackerButtonClick}
+          />
+        </StyledSectionHeader>
 
-      <HealthTracker
-        onButtonClick={handleHealthTrackerButtonClick}
-        data={nutritionHistoryData[0]}
-      />
-    </StyledHealthTrackerWidget>
+        <HealthTracker
+          onButtonClick={handleHealthTrackerButtonClick}
+          data={nutritionHistoryData[0]}
+        />
+      </StyledHealthTrackerWidget>
+    </>
   );
 }
 
