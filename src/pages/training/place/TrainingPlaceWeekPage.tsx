@@ -39,12 +39,12 @@ export function TrainingPlaceWeekPage(): JSX.Element {
       isLoading={isTrainingsByWeekPending}
     >
       <StyledWeeksList>
-        {trainingsByWeek?.map(({ _id, title, coverImage }) => (
+        {trainingsByWeek?.map(({ _id, title, coverImage, exerciseCount }) => (
           <TitleCard
             key={_id}
             title={title}
             // TODO: add at the backend
-            subTitle={`Упражнений НОМЕР`}
+            subTitle={`Упражнений ${exerciseCount}`}
             iconSrc={coverImage.url || mockupImageSrc}
             isFullWidthImage={true}
             onClick={() => handleLessonSelect(_id)}

@@ -19,6 +19,7 @@ type Training = {
   stream: number;
   type: string;
   level: string;
+  exerciseCount: number;
   duration: number;
   coverImage: {
     fileId: string;
