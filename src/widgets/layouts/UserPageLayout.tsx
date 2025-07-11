@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import { JSX, PropsWithChildren } from 'react';
 
 import { UserMeta } from '~/entities/user';
-import { ShowNotificationsButton } from '~/features/ShowNotifications';
 import { ShowPrevPageButton } from '~/features/ShowPrevPageButton';
 import { Color } from '~/shared/theme/colors';
 import { Loader } from '~/shared/ui/atoms/Loader';
@@ -27,7 +26,6 @@ export function UserPageLayout({
         <StyledHeader>
           <StyledTopHeader>
             <UserMeta view="name" />
-            <ShowNotificationsButton />
           </StyledTopHeader>
         </StyledHeader>
         <StyledContentWrapper>

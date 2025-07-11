@@ -71,7 +71,7 @@ export function MeasurementsChart(): JSX.Element {
           <ResponsiveContainer>
             <AreaChart
               data={measurementData}
-              margin={{ top: 5, right: 0, left: -32, bottom: 5 }}
+              margin={{ top: 5, right: 20, left: -32, bottom: 5 }}
             >
               <defs>
                 <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
@@ -128,7 +128,7 @@ export function MeasurementsChart(): JSX.Element {
           </StyledArrowButton>
         </StyledMainControl>
         <StyledAdjacentMeasurementRight
-          onClick={() => handleMeasurementChange('prev')}
+          onClick={() => handleMeasurementChange('next')}
         >
           {getAdjacentMeasurement(activeMeasurement, 'next')}
         </StyledAdjacentMeasurementRight>

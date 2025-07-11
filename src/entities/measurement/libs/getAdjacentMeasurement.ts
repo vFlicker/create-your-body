@@ -2,11 +2,11 @@ import { MeasurementType } from '../measurementTypes';
 
 const measurementTranslations: Record<MeasurementType, string> = {
   weight: 'Вес',
-  chest: 'Обхват груди',
-  waist: 'Обхват талии',
-  abdominalCircumference: 'Обхват живота',
-  hips: 'Обхват бёдер',
-  legs: 'Обхват ноги',
+  chest: 'Грудь',
+  waist: 'Талия',
+  abdominalCircumference: 'Живот',
+  hips: 'Бёдера',
+  legs: 'Нога',
 } as const;
 
 export const getAdjacentMeasurementKey = (

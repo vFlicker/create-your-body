@@ -38,7 +38,7 @@ const measurement = {
     unit: 'см',
   },
   legs: {
-    title: 'Обхват ноги',
+    title: 'Нога',
     unit: 'см',
   },
 };
