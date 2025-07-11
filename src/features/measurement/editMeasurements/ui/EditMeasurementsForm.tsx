@@ -55,11 +55,12 @@ export function EditMeasurementsForm({
     <StyledForm className={className} onSubmit={handleSubmit(onSubmit)}>
       <StyledFieldset>
         <StyledInputsWrapper>
-          {measurementsInputs.map(({ label, name, postfix }) => (
+          {measurementsInputs.map(({ label, name, postfix, step }) => (
             <Input
               key={name}
               label={label}
               type="number"
+              step={step}
               placeholder="0"
               postfix={postfix}
               {...register(name)}

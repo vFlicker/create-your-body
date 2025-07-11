@@ -1,8 +1,13 @@
 export const measurementsInputs = [
-  { name: 'weight', label: 'Вес', postfix: 'кг' },
-  { name: 'chest', label: 'Грудь', postfix: 'см' },
-  { name: 'waist', label: 'Талия', postfix: 'см' },
-  { name: 'abdominalCircumference', label: 'Живот', postfix: 'см' },
-  { name: 'hips', label: 'Бёдера', postfix: 'см' },
-  { name: 'legs', label: 'Нога', postfix: 'см' },
+  { name: 'weight', step: 0.1, label: 'Вес', postfix: 'кг' },
+  { name: 'chest', step: undefined, label: 'Грудь', postfix: 'см' },
+  { name: 'waist', step: undefined, label: 'Талия', postfix: 'см' },
+  {
+    name: 'abdominalCircumference',
+    step: undefined,
+    label: 'Живот',
+    postfix: 'см',
+  },
+  { name: 'hips', step: undefined, label: 'Бёдера', postfix: 'см' },
+  { name: 'legs', step: undefined, label: 'Нога', postfix: 'см' },
 ] as const;
