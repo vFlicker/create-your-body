@@ -1,82 +1,101 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
+import arrowDownIconSrc from '~/shared/assets/svg/arrow-narrow-down.svg';
+import EditIcon from '~/shared/assets/svg/pencil.svg?react';
+import PlusIcon from '~/shared/assets/svg/plus.svg?react';
 import StepsIcon from '~/shared/assets/svg/run-green.svg?react';
 import ForkIcon from '~/shared/assets/svg/small-button.svg?react';
 import WeightIcon from '~/shared/assets/svg/weight.svg?react';
 import { formatNumberWithThousands } from '~/shared/libs/format';
 import { Color } from '~/shared/theme/colors';
+import { Button } from '~/shared/ui/atoms/Button';
 
-type NutritionHistoryItemProps = {
-  className?: string;
-  weight: number;
-  steps: number;
-  calories: number;
-  proteins: number;
-  fats: number;
-  carbohydrates: number;
+type HealthTrackerProps = {
+  data?: {
+    weight: number;
+    steps: number;
+    calories: number;
+    proteins: number;
+    fats: number;
+    carbs: number;
+  };
+  onButtonClick: () => void;
 };
 
-export function NutritionHistoryItem({
-  className,
-  calories,
-  carbohydrates,
-  fats,
-  proteins,
-  steps,
-  weight,
-}: NutritionHistoryItemProps): JSX.Element {
+export function HealthTracker({
+  data,
+  onButtonClick,
+}: HealthTrackerProps): JSX.Element {
+  const hasData = !!data;
+
   return (
-    <StyledHealthTrackerWrapper className={className}>
+    <StyledHealthTrackerWrapper>
       <StyledMetrics>
-        <StyledNutrientWrapper>
+        <StyledMetric>
           <StyledIconWrapper>
-            <WeightIcon stroke="#7a66ff" />
+            <WeightIcon stroke="#CBFF52" />
           </StyledIconWrapper>
           <StyledMetricValue>
-            {weight} <span>кг</span>
+            {hasData ? `${data.weight}` : '-'} <span>кг</span>
+            {hasData && <StyledArrowIcon src={arrowDownIconSrc} />}
           </StyledMetricValue>
-        </StyledNutrientWrapper>
-        <StyledNutrientWrapper>
+        </StyledMetric>
+        <StyledMetric>
           <StyledIconWrapper>
-            <StepsIcon stroke="#7a66ff" />
+            <StepsIcon stroke="#CBFF52" />
           </StyledIconWrapper>
           <StyledMetricValue>
-            {formatNumberWithThousands(steps)} <span>шагов</span>
+            {hasData ? `${formatNumberWithThousands(data.steps)}` : '-'}{' '}
+            <span>шагов</span>
           </StyledMetricValue>
-        </StyledNutrientWrapper>
+        </StyledMetric>
       </StyledMetrics>
       <StyledHorizontalDivider />
       <StyledNutrients>
         <StyledNutrientWrapper>
           <StyledIconWrapper>
-            <ForkIcon fill="#7a66ff" />
+            <ForkIcon fill="#CBFF52" />
           </StyledIconWrapper>
           <StyledNutrient>
-            <StyledNutrientValue>{calories}</StyledNutrientValue>
-            <StyledNutrientLabel>Ккал</StyledNutrientLabel>
+            <StyledNutrientValue>{data?.calories ?? '-'}</StyledNutrientValue>
+            <StyledNutrientLabel>ККАЛ</StyledNutrientLabel>
           </StyledNutrient>
         </StyledNutrientWrapper>
         <StyledVerticalDivider />
         <StyledNutrient>
           <StyledNutrientValue>
-            {proteins} <span>г</span>
+            {data?.proteins ?? '-'} <span>г</span>
           </StyledNutrientValue>
-          <StyledNutrientLabel>Белки</StyledNutrientLabel>
+          <StyledNutrientLabel>БЕЛКИ</StyledNutrientLabel>
         </StyledNutrient>
         <StyledNutrient>
           <StyledNutrientValue>
-            {fats} <span>г</span>
+            {data?.fats ?? '-'} <span>г</span>
           </StyledNutrientValue>
-          <StyledNutrientLabel>Жиры</StyledNutrientLabel>
+          <StyledNutrientLabel>ЖИРЫ</StyledNutrientLabel>
         </StyledNutrient>
         <StyledNutrient>
           <StyledNutrientValue>
-            {carbohydrates} <span>г</span>
+            {data?.carbs ?? '-'} <span>г</span>
           </StyledNutrientValue>
-          <StyledNutrientLabel>Углеводы</StyledNutrientLabel>
+          <StyledNutrientLabel>УГЛЕВОДЫ</StyledNutrientLabel>
         </StyledNutrient>
       </StyledNutrients>
+      <StyledButton
+        variant="filled"
+        color="secondary"
+        iconComponent={
+          hasData ? (
+            <EditIcon stroke="#ffffff" />
+          ) : (
+            <PlusIcon stroke="#ffffff" />
+          )
+        }
+        onClick={onButtonClick}
+      >
+        {hasData ? 'Обновить данные' : 'Внести данные'}
+      </StyledButton>
     </StyledHealthTrackerWrapper>
   );
 }
@@ -84,17 +103,23 @@ export function NutritionHistoryItem({
 const StyledHealthTrackerWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
 
-  padding: 20px 18px;
+  padding: 18px 18px 22px 18px;
   border-radius: 10px;
-  color: ${Color.Black};
-  background-color: #f7f6fb;
+  color: ${Color.White};
+  background-image: linear-gradient(90deg, #7a66ff 0%, #8877fc 100%);
 `;
 
 const StyledMetrics = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+`;
+
+const StyledMetric = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 `;
 
 const StyledNutrientWrapper = styled.div`
@@ -110,7 +135,7 @@ const StyledIconWrapper = styled.div`
   width: 32px;
   height: 26px;
   border-radius: 6px;
-  background-color: rgba(122, 102, 255, 0.12);
+  background: rgba(255, 255, 255, 0.12);
 `;
 
 const StyledMetricValue = styled.div`
@@ -118,21 +143,25 @@ const StyledMetricValue = styled.div`
   align-items: baseline;
   gap: 6px;
 
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 600;
   line-height: 100%;
 
   span {
-    color: #9994ab;
     font-size: 10px;
     text-transform: uppercase;
   }
 `;
 
+const StyledArrowIcon = styled.img`
+  width: 12px;
+  height: 12px;
+`;
+
 const StyledHorizontalDivider = styled.hr`
   height: 1px;
   border: none;
-  background-color: #e8e5f3;
+  background-color: rgba(255, 255, 255, 0.2);
 `;
 
 const StyledVerticalDivider = styled.div`
@@ -140,7 +169,7 @@ const StyledVerticalDivider = styled.div`
   border: none;
   width: 1px;
   height: 32px;
-  background-color: #e8e5f3;
+  background-color: rgba(255, 255, 255, 0.2);
 `;
 
 const StyledNutrients = styled.div`
@@ -161,16 +190,27 @@ const StyledNutrientValue = styled.div`
   line-height: 100%;
 
   span {
-    color: #9994ab;
     font-size: 11px;
     text-transform: uppercase;
   }
 `;
 
 const StyledNutrientLabel = styled.div`
-  color: #9994ab;
   font-size: 10px;
   font-weight: 600;
   line-height: 100%;
   text-transform: uppercase;
+`;
+
+const StyledButton = styled(Button)`
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  color: ${Color.White};
+
+  background-color: rgba(255, 255, 255, 0.2);
+  background-image: linear-gradient(
+    98deg,
+    rgba(255, 255, 255, 0.2) 32.98%,
+    rgba(255, 255, 255, 0.3) 65.01%
+  );
 `;

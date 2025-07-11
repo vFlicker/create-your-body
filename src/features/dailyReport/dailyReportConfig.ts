@@ -1,4 +1,4 @@
-export const nutritionReportInputs = [
+export const dailyReportInputs = [
   [
     { name: 'weight', label: 'Вес', postfix: 'кг' },
     { name: 'steps', label: 'Шаги', postfix: 'шагов' },
@@ -7,6 +7,6 @@ export const nutritionReportInputs = [
   [
     { name: 'proteins', label: 'Белки', postfix: 'г' },
     { name: 'fats', label: 'Жиры', postfix: 'г' },
-    { name: 'carbohydrates', label: 'Углеводы', postfix: 'г' },
+    { name: 'carbs', label: 'Углеводы', postfix: 'г' },
   ],
 ] as const;

@@ -1,21 +1,21 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { useModalStore } from '~/entities/modal';
 import {
+  DailyReportCard,
+  dailyReportsData,
   HealthTracker,
-  nutritionHistoryData,
-  NutritionHistoryItem,
-} from '~/entities/nutrition';
+} from '~/entities/dailyReport';
+import { useModalStore } from '~/entities/modal';
 import EditIcon from '~/shared/assets/svg/pencil.svg?react';
 
-type ShowNutritionHistoryProps = {
+type ShowDailyReportHistoryProps = {
   onHealthTrackerButtonClick: () => void;
 };
 
-export function ShowNutritionHistory({
+export function ShowDailyReportHistory({
   onHealthTrackerButtonClick,
-}: ShowNutritionHistoryProps): JSX.Element {
+}: ShowDailyReportHistoryProps): JSX.Element {
   const { openModal } = useModalStore();
 
   const handleButtonClick = () => {
@@ -28,22 +28,22 @@ export function ShowNutritionHistory({
 
           <HealthTracker
             onButtonClick={onHealthTrackerButtonClick}
-            data={nutritionHistoryData[0]}
+            data={dailyReportsData[0]}
           />
         </StyledHealthTrackerWrapper>
 
         <StyledHistoryList>
-          {nutritionHistoryData.slice(1).map(({ id, date, ...props }) => (
-            <StyledNutritionHistoryItemWrapper key={id}>
-              <StyledNutritionHistoryItemHeader>
+          {dailyReportsData.slice(1).map(({ id, date, ...props }) => (
+            <StyledDailyReportCardWrapper key={id}>
+              <StyledDailyReportCardHeader>
                 <StyledSubtitle>{date}</StyledSubtitle>
                 <StyledEditButton>
                   Изменить
                   <EditIcon stroke="#8B8B9F" />
                 </StyledEditButton>
-              </StyledNutritionHistoryItemHeader>
-              <NutritionHistoryItem {...props} />
-            </StyledNutritionHistoryItemWrapper>
+              </StyledDailyReportCardHeader>
+              <DailyReportCard {...props} />
+            </StyledDailyReportCardWrapper>
           ))}
         </StyledHistoryList>
       </StyledHistoryContent>,
@@ -92,13 +92,13 @@ const StyledHistoryList = styled.div`
   gap: 20px;
 `;
 
-const StyledNutritionHistoryItemWrapper = styled.div`
+const StyledDailyReportCardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
 `;
 
-const StyledNutritionHistoryItemHeader = styled.div`
+const StyledDailyReportCardHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;

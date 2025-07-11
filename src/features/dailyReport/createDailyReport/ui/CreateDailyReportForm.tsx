@@ -2,48 +2,51 @@ import styled from '@emotion/styled';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { JSX } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
+import { useCreateDailyReport } from '~/entities/dailyReport/api/useCreateDailyReport';
 import { showTelegramAlert } from '~/shared/libs/telegram';
+import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/atoms/Button';
+import { ErrorText } from '~/shared/ui/atoms/ErrorText';
 import { Input } from '~/shared/ui/molecules/Input';
 
-import { nutritionReportInputs } from '../../measurementsConfig';
+import { dailyReportInputs } from '../../dailyReportConfig';
 import {
-  CreateNutritionReport,
-  createNutritionReportSchema,
-} from '../model/createNutritionReportSchema';
+  CreateDailyReport,
+  createDailyReportSchema,
+} from '../model/createDailyReportSchema';
 
-export function CreateNutritionReportForm(): JSX.Element {
-  const isCreateNutritionReportPending = false;
-  // const { createNutritionReport, isCreateNutritionReportPending } =
-  //   useCreateMeasurements();
+export function CreateDailyReportForm(): JSX.Element {
+  const navigate = useNavigate();
+
+  const { createDailyReport, isCreateDailyReportPending } =
+    useCreateDailyReport();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<CreateNutritionReport>({
-    resolver: zodResolver(createNutritionReportSchema),
+  } = useForm<CreateDailyReport>({
+    resolver: zodResolver(createDailyReportSchema),
   });
 
-  const onSubmit = async (data: CreateNutritionReport) => {
+  const onSubmit = async (data: CreateDailyReport) => {
     try {
-      console.log('Measurements saved:', data);
-
-      // await createMeasurements({ dto: data });
-      // navigate(AppRoute.Measurements);
+      await createDailyReport({ dto: data });
+      navigate(AppRoute.Dashboard);
     } catch (error) {
-      console.error('Error saving nutrition report:', error);
+      console.error('Error saving daily report:', error);
       showTelegramAlert('Ошибка при сохранении отчёта о питании');
     }
   };
 
   return (
-    <StyledCreateNutritionReportFormWrapper>
+    <StyledCreateDailyReportFormWrapper>
       <StyledTitle>Добавить отчет</StyledTitle>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <StyledInputsWrapper>
-          {nutritionReportInputs.map((inputsGroup) => {
+          {dailyReportInputs.map((inputsGroup) => {
             return (
               <StyledInputsGroup columns={inputsGroup.length}>
                 {inputsGroup.map(({ label, name }) => (
@@ -60,19 +63,22 @@ export function CreateNutritionReportForm(): JSX.Element {
             );
           })}
         </StyledInputsWrapper>
+
+        {errors.common && <ErrorText>{errors.common.message}</ErrorText>}
+
         <StyledSubmitButton
           type="submit"
           color="accent"
-          disabled={isCreateNutritionReportPending}
+          disabled={isCreateDailyReportPending}
         >
           Сохранить
         </StyledSubmitButton>
       </StyledForm>
-    </StyledCreateNutritionReportFormWrapper>
+    </StyledCreateDailyReportFormWrapper>
   );
 }
 
-const StyledCreateNutritionReportFormWrapper = styled.div`
+const StyledCreateDailyReportFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;

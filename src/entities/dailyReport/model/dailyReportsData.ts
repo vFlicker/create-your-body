@@ -1,4 +1,4 @@
-export const nutritionHistoryData = [
+export const dailyReportsData = [
   {
     id: '1',
     date: '10.07.2025',
@@ -7,7 +7,7 @@ export const nutritionHistoryData = [
     calories: 1420,
     proteins: 40,
     fats: 30,
-    carbohydrates: 60,
+    carbs: 60,
   },
   {
     id: '2',
@@ -17,7 +17,7 @@ export const nutritionHistoryData = [
     calories: 1300,
     proteins: 130,
     fats: 65,
-    carbohydrates: 315,
+    carbs: 315,
   },
   {
     id: '3',
@@ -27,6 +27,6 @@ export const nutritionHistoryData = [
     calories: 1320,
     proteins: 140,
     fats: 70,
-    carbohydrates: 200,
+    carbs: 200,
   },
 ];
