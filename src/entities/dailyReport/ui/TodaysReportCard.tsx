@@ -11,17 +11,19 @@ import { formatNumberWithThousands } from '~/shared/libs/format';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
 
-import { DailyReport } from '../dailyReportTypes';
+import { useDailyReports } from '../api/useDailyReports';
+import { getTodayReport } from '../dailyReportLib';
 
 type TodaysReportCardProps = {
-  report: DailyReport | null;
   onButtonClick: () => void;
 };
 
 export function TodaysReportCard({
-  report,
   onButtonClick,
 }: TodaysReportCardProps): JSX.Element {
+  const { dailyReports, isDailyReportsPending } = useDailyReports();
+
+  const report = !isDailyReportsPending ? getTodayReport(dailyReports) : null;
   const hasTodayReport = !!report;
 
   return (

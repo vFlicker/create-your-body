@@ -36,3 +36,11 @@ export type GetDailyReportsResponse = {
     dailyLogs: DailyReport[];
   };
 };
+
+export type GetDailyReportByIdResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    dailyLog: DailyReport;
+  };
+};

@@ -2,6 +2,7 @@ import { httpClient } from '~/shared/api';
 
 import {
   CreateDailyReportDto,
+  GetDailyReportByIdResponse,
   GetDailyReportsResponse,
   UpdateDailyReportDto,
 } from '../dailyReportTypes';
@@ -29,6 +30,18 @@ export const dailyReportApiService = {
       return data.data.dailyLogs;
     } catch (error) {
       console.error('Error fetching measurements:', error);
+      throw error;
+    }
+  },
+
+  getDailyReportById: async (id: number) => {
+    try {
+      const { data } = await httpClient.get<GetDailyReportByIdResponse>(
+        `/v2/api/client/user/daily-logs/${id}`,
+      );
+      return data.data.dailyLog;
+    } catch (error) {
+      console.error('Error fetching daily report by ID:', error);
       throw error;
     }
   },

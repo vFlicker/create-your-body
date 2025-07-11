@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { JSX } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { DailyReport, useUpdateDailyReport } from '~/entities/dailyReport';
+import { useDailyReports, useUpdateDailyReport } from '~/entities/dailyReport';
 import { showTelegramAlert } from '~/shared/libs/telegram';
 import { Button } from '~/shared/ui/atoms/Button';
 import { ErrorText } from '~/shared/ui/atoms/ErrorText';
@@ -17,30 +17,33 @@ import {
 
 type EditDailyReportFormProps = {
   className?: string;
-  report: DailyReport;
+  reportId: number;
   onFormSubmit?: () => void;
 };
 
 export function EditDailyReportForm({
   className,
-  report,
+  reportId,
   onFormSubmit,
 }: EditDailyReportFormProps): JSX.Element {
+  const { dailyReports } = useDailyReports();
   const { updateDailyReportsMutate, isUpdateDailyReportsPending } =
     useUpdateDailyReport();
 
+  const dailyReport = dailyReports?.find(({ id }) => id === reportId);
+
   const {
+    formState: { errors },
     register,
     handleSubmit,
-    formState: { errors },
   } = useForm<EditDailyReport>({
     resolver: zodResolver(editDailyReportSchema),
-    defaultValues: report,
+    defaultValues: dailyReport,
   });
 
   const onSubmit = async (data: EditDailyReport) => {
     try {
-      await updateDailyReportsMutate({ id: report.id, dto: data });
+      await updateDailyReportsMutate({ id: reportId, dto: data });
       onFormSubmit?.();
     } catch (error) {
       console.error('Error saving daily report:', error);
@@ -50,7 +53,7 @@ export function EditDailyReportForm({
 
   return (
     <StyledEditDailyReportFormWrapper className={className}>
-      <StyledTitle>Отчёт #{report.reportNumber}</StyledTitle>
+      <StyledTitle>Отчёт #{dailyReport?.reportNumber}</StyledTitle>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <StyledInputsWrapper>
           {dailyReportInputs.map((inputsGroup) => {

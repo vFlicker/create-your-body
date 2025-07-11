@@ -24,7 +24,10 @@ export function HealthTrackerWidget(): JSX.Element {
   const handleHealthTrackerButtonClick = () => {
     if (todayReport) {
       openModal(
-        <EditDailyReportForm report={todayReport} onFormSubmit={closeModal} />,
+        <EditDailyReportForm
+          reportId={todayReport.id}
+          onFormSubmit={closeModal}
+        />,
       );
       return;
     }
@@ -36,7 +39,7 @@ export function HealthTrackerWidget(): JSX.Element {
     const report = dailyReports?.find((report) => report.id === id);
     if (report) {
       openModal(
-        <EditDailyReportForm report={report} onFormSubmit={closeModal} />,
+        <EditDailyReportForm reportId={report.id} onFormSubmit={closeModal} />,
       );
     }
   };
@@ -49,16 +52,12 @@ export function HealthTrackerWidget(): JSX.Element {
           <StyledSectionTitle>Сегодня</StyledSectionTitle>
           <ShowDailyReportHistory
             reports={dailyReports}
-            report={todayReport}
             onHealthTrackerButtonClick={handleHealthTrackerButtonClick}
             onEditButtonClick={handleEditButtonClick}
           />
         </StyledSectionHeader>
 
-        <TodaysReportCard
-          report={todayReport}
-          onButtonClick={handleHealthTrackerButtonClick}
-        />
+        <TodaysReportCard onButtonClick={handleHealthTrackerButtonClick} />
       </StyledHealthTrackerWidget>
     </>
   );

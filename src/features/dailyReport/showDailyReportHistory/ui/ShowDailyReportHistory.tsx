@@ -3,23 +3,18 @@ import { JSX } from 'react';
 
 import {
   DailyReport,
-  DailyReportCard,
+  DailyReportHistory,
   TodaysReportCard,
 } from '~/entities/dailyReport';
 import { useModalStore } from '~/entities/modal';
-import EditIcon from '~/shared/assets/svg/pencil.svg?react';
-import { formatDateForView } from '~/shared/libs/format';
 
 type ShowDailyReportHistoryProps = {
-  report: DailyReport | null;
   reports?: DailyReport[];
   onHealthTrackerButtonClick: () => void;
   onEditButtonClick: (id: number) => void;
 };
 
 export function ShowDailyReportHistory({
-  reports,
-  report,
   onHealthTrackerButtonClick,
   onEditButtonClick,
 }: ShowDailyReportHistoryProps): JSX.Element {
@@ -32,27 +27,10 @@ export function ShowDailyReportHistory({
 
         <StyledHealthTrackerWrapper>
           <StyledSubtitle>Сегодня</StyledSubtitle>
-
-          <TodaysReportCard
-            report={report}
-            onButtonClick={onHealthTrackerButtonClick}
-          />
+          <TodaysReportCard onButtonClick={onHealthTrackerButtonClick} />
         </StyledHealthTrackerWrapper>
 
-        <StyledHistoryList>
-          {reports?.map(({ id, date, ...props }) => (
-            <StyledDailyReportCardWrapper key={id}>
-              <StyledDailyReportCardHeader>
-                <StyledSubtitle>{formatDateForView(date)}</StyledSubtitle>
-                <StyledEditButton onClick={() => onEditButtonClick(id)}>
-                  Изменить
-                  <EditIcon stroke="#8B8B9F" />
-                </StyledEditButton>
-              </StyledDailyReportCardHeader>
-              <DailyReportCard {...props} />
-            </StyledDailyReportCardWrapper>
-          ))}
-        </StyledHistoryList>
+        <DailyReportHistory onEdit={onEditButtonClick} />
       </StyledHistoryContent>,
     );
   };
@@ -91,36 +69,6 @@ const StyledSubtitle = styled.p`
   font-size: 12px;
   font-weight: 500;
   line-height: 120%;
-`;
-
-const StyledHistoryList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
-
-const StyledDailyReportCardWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`;
-
-const StyledDailyReportCardHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const StyledEditButton = styled.button`
-  color: #8b8b9f;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 120%;
-  text-decoration: underline;
-
-  display: flex;
-  align-items: center;
-  gap: 8px;
 `;
 
 const StyledHistoryButton = styled.button`
