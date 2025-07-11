@@ -2,7 +2,8 @@ import { httpClient } from '~/shared/api/httpClient';
 
 import {
   CreateMeasurementsDto,
-  GetMeasurementsResponse,
+  GetMeasurementsByIdResponse,
+  GetMeasurementsListResponse,
   GetTransformationPhotoResponse,
   UpdateMeasurementsDto,
 } from '../measurementTypes';
@@ -55,14 +56,26 @@ export const measurementApiService = {
     }
   },
 
-  getMeasurements: async () => {
+  getMeasurementsList: async () => {
     try {
-      const { data } = await httpClient.get<GetMeasurementsResponse>(
+      const { data } = await httpClient.get<GetMeasurementsListResponse>(
         `/v2/api/client/user/measurements`,
       );
       return data.data.measurements;
     } catch (error) {
       console.error('Error fetching measurements:', error);
+      throw error;
+    }
+  },
+
+  getMeasurementsById: async (id: string) => {
+    try {
+      const { data } = await httpClient.get<GetMeasurementsByIdResponse>(
+        `/v2/api/client/user/measurements/${id}`,
+      );
+      return data.data.measurement;
+    } catch (error) {
+      console.error('Error fetching measurements by ID:', error);
       throw error;
     }
   },

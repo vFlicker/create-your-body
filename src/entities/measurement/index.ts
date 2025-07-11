@@ -1,5 +1,6 @@
 export { useCreateMeasurements } from './api/useCreateMeasurements';
-export { useMeasurements } from './api/useMeasurements';
+export { useMeasurementsById } from './api/useMeasurementsById';
+export { useMeasurementsList } from './api/useMeasurementsList';
 export { useTransformationPhoto } from './api/useTransformationPhoto';
 export { useUpdateMeasurements } from './api/useUpdateMeasurements';
 export { useUpdateTransformationPhoto } from './api/useUpdateTransformationPhoto';

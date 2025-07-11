@@ -9,7 +9,7 @@ export const useUpdateMeasurements = () => {
     mutationFn: measurementApiService.updateMeasurements,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['user-measurements'],
+        queryKey: ['measurements-list'],
       });
     },
   });

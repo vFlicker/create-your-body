@@ -2,32 +2,24 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { useMeasurementsById } from '~/entities/measurement';
 import { EditMeasurementsForm } from '~/features/measurement/editMeasurements/';
 import { formatDateForView } from '~/shared/libs/format';
 import { UserPageLayout } from '~/widgets/layouts/UserPageLayout';
 
-const mockMeasurements = {
-  id: 759,
-  userId: 1423,
-  reportNumber: 30,
-  chest: 3333,
-  waist: 3333,
-  abdominalCircumference: 3333,
-  legs: 3333,
-  hips: 3333,
-  weight: 3333,
-  createdAt: '2025-07-06T15:41:31.352Z',
-};
-
 export function EditMeasurementsPage(): JSX.Element {
   const { reportId } = useParams<{ reportId: string }>();
 
-  // const { measurement, isMeasurementPending } = useMeasurementsByReportNumber(reportNumber);
-  const measurements = mockMeasurements; // Mock data for demonstration
-  const isMeasurementPending = false;
+  const { measurements, isMeasurementsPending } = useMeasurementsById(
+    reportId!,
+  );
+
+  if (!measurements || isMeasurementsPending) {
+    return <UserPageLayout isLoading={isMeasurementsPending} />;
+  }
 
   return (
-    <UserPageLayout isLoading={isMeasurementPending}>
+    <UserPageLayout isLoading={isMeasurementsPending}>
       <StyledHeader>
         <StyledTitle>Отчет #{measurements.reportNumber}</StyledTitle>
         <StyledDate>

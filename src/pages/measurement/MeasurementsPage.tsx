@@ -3,7 +3,7 @@ import { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
-  useMeasurements,
+  useMeasurementsList,
   useTransformationPhoto,
   useUpdateTransformationPhoto,
 } from '~/entities/measurement';
@@ -22,7 +22,7 @@ export function MeasurementsPage(): JSX.Element {
 
   const { transformationPhoto, isTransformationPhotoPending } =
     useTransformationPhoto();
-  const { measurements, isMeasurementsPending } = useMeasurements();
+  const { measurementsList, isMeasurementsListPending } = useMeasurementsList();
 
   const {
     updateTransformationPhoto,
@@ -38,10 +38,12 @@ export function MeasurementsPage(): JSX.Element {
     };
   };
 
-  const measurementsHistory = calculateMeasurementsHistory(measurements || []);
+  const measurementsHistory = calculateMeasurementsHistory(
+    measurementsList || [],
+  );
 
   return (
-    <EmptyPageLayout isLoading={isMeasurementsPending}>
+    <EmptyPageLayout isLoading={isMeasurementsListPending}>
       <StyledMeasurementsPageWrapper>
         <StyledTitle>Мои замеры</StyledTitle>
 
@@ -75,9 +77,10 @@ export function MeasurementsPage(): JSX.Element {
           <StyledSubTitle>Мои отчёты</StyledSubTitle>
           <StyledMeasurementsHistory>
             {measurementsHistory.map(
-              ({ createdAt, reportNumber, measurementsRows }, index) => (
+              ({ id, createdAt, reportNumber, measurementsRows }) => (
                 <MeasurementsRecord
-                  key={createdAt + index}
+                  key={id}
+                  id={id}
                   reportNumber={reportNumber}
                   date={createdAt}
                   measurements={measurementsRows}

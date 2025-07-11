@@ -55,10 +55,18 @@ export type GetTransformationPhotoResponse = {
   };
 };
 
-export type GetMeasurementsResponse = {
+export type GetMeasurementsListResponse = {
   success: boolean;
   message: string;
   data: {
     measurements: Measurements[];
+  };
+};
+
+export type GetMeasurementsByIdResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    measurement: Measurements;
   };
 };

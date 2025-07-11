@@ -10,6 +10,7 @@ export type MeasurementRow = {
 };
 
 type MeasurementHistoryRecord = {
+  id: number;
   createdAt: string;
   reportNumber: number;
   measurementsRows: MeasurementRow[];
@@ -69,6 +70,7 @@ export const calculateMeasurementsHistory = (
     }
 
     measurementHistory.push({
+      id: currentMeasurement.id,
       reportNumber: currentMeasurement.reportNumber,
       createdAt: currentMeasurement.createdAt,
       measurementsRows: measurementChanges,

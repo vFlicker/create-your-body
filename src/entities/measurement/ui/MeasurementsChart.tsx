@@ -13,7 +13,7 @@ import ChevronLeftIcon from '~/shared/assets/svg/chevron-left.svg?react';
 import ChevronRightIcon from '~/shared/assets/svg/chevron-right.svg?react';
 import { Loader } from '~/shared/ui/atoms/Loader';
 
-import { useMeasurements } from '../api/useMeasurements';
+import { useMeasurementsList } from '../api/useMeasurementsList';
 import {
   getAdjacentMeasurement,
   getAdjacentMeasurementKey,
@@ -27,9 +27,9 @@ export function MeasurementsChart(): JSX.Element {
   const [activeMeasurement, setActiveMeasurement] =
     useState<MeasurementType>('weight');
 
-  const { measurements, isMeasurementsPending } = useMeasurements();
+  const { measurementsList, isMeasurementsListPending } = useMeasurementsList();
 
-  if (isMeasurementsPending) return <Loader />;
+  if (isMeasurementsListPending) return <Loader />;
 
   const handleMeasurementChange = (direction: 'prev' | 'next') => {
     const adjacentMeasurementKey = getAdjacentMeasurementKey(
@@ -40,7 +40,7 @@ export function MeasurementsChart(): JSX.Element {
     setActiveMeasurement(adjacentMeasurementKey);
   };
 
-  const measurementData = measurements
+  const measurementData = measurementsList
     ?.slice(0, MAX_MEASUREMENT_LIMIT)
     .toReversed()
     .map((measurement) => ({

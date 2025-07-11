@@ -13,6 +13,7 @@ import { MeasurementRow } from '../libs/calculateMeasurementsHistory';
 import { DeltaDirection } from '../libs/getDeltaDirection';
 
 type MeasurementsRecordProps = {
+  id: number;
   reportNumber: number;
   date: string;
   measurements: MeasurementRow[];
@@ -25,6 +26,7 @@ const directionIconSrc: Record<DeltaDirection, string> = {
 };
 
 export function MeasurementsRecord({
+  id,
   date,
   measurements,
   reportNumber,
@@ -32,7 +34,7 @@ export function MeasurementsRecord({
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`${AppRoute.Measurements}/edit/${reportNumber}`);
+    navigate(`${AppRoute.Measurements}/edit/${id}`);
   };
 
   return (
