@@ -2,19 +2,26 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 
 import {
+  DailyReport,
   DailyReportCard,
-  dailyReportsData,
-  HealthTracker,
+  TodaysReportCard,
 } from '~/entities/dailyReport';
 import { useModalStore } from '~/entities/modal';
 import EditIcon from '~/shared/assets/svg/pencil.svg?react';
+import { formatDateForView } from '~/shared/libs/format';
 
 type ShowDailyReportHistoryProps = {
+  report: DailyReport | null;
+  reports?: DailyReport[];
   onHealthTrackerButtonClick: () => void;
+  onEditButtonClick: (id: number) => void;
 };
 
 export function ShowDailyReportHistory({
+  reports,
+  report,
   onHealthTrackerButtonClick,
+  onEditButtonClick,
 }: ShowDailyReportHistoryProps): JSX.Element {
   const { openModal } = useModalStore();
 
@@ -26,18 +33,18 @@ export function ShowDailyReportHistory({
         <StyledHealthTrackerWrapper>
           <StyledSubtitle>Сегодня</StyledSubtitle>
 
-          <HealthTracker
+          <TodaysReportCard
+            report={report}
             onButtonClick={onHealthTrackerButtonClick}
-            data={dailyReportsData[0]}
           />
         </StyledHealthTrackerWrapper>
 
         <StyledHistoryList>
-          {dailyReportsData.slice(1).map(({ id, date, ...props }) => (
+          {reports?.map(({ id, date, ...props }) => (
             <StyledDailyReportCardWrapper key={id}>
               <StyledDailyReportCardHeader>
-                <StyledSubtitle>{date}</StyledSubtitle>
-                <StyledEditButton>
+                <StyledSubtitle>{formatDateForView(date)}</StyledSubtitle>
+                <StyledEditButton onClick={() => onEditButtonClick(id)}>
                   Изменить
                   <EditIcon stroke="#8B8B9F" />
                 </StyledEditButton>

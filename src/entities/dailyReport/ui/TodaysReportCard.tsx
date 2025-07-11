@@ -11,23 +11,18 @@ import { formatNumberWithThousands } from '~/shared/libs/format';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
 
-type HealthTrackerProps = {
-  data?: {
-    weight: number;
-    steps: number;
-    calories: number;
-    proteins: number;
-    fats: number;
-    carbs: number;
-  };
+import { DailyReport } from '../dailyReportTypes';
+
+type TodaysReportCardProps = {
+  report: DailyReport | null;
   onButtonClick: () => void;
 };
 
-export function HealthTracker({
-  data,
+export function TodaysReportCard({
+  report,
   onButtonClick,
-}: HealthTrackerProps): JSX.Element {
-  const hasData = !!data;
+}: TodaysReportCardProps): JSX.Element {
+  const hasTodayReport = !!report;
 
   return (
     <StyledHealthTrackerWrapper>
@@ -37,8 +32,8 @@ export function HealthTracker({
             <WeightIcon stroke="#CBFF52" />
           </StyledIconWrapper>
           <StyledMetricValue>
-            {hasData ? `${data.weight}` : '-'} <span>кг</span>
-            {hasData && <StyledArrowIcon src={arrowDownIconSrc} />}
+            {hasTodayReport ? `${report?.weight}` : '-'} <span>кг</span>
+            {hasTodayReport && <StyledArrowIcon src={arrowDownIconSrc} />}
           </StyledMetricValue>
         </StyledMetric>
         <StyledMetric>
@@ -46,7 +41,9 @@ export function HealthTracker({
             <StepsIcon stroke="#CBFF52" />
           </StyledIconWrapper>
           <StyledMetricValue>
-            {hasData ? `${formatNumberWithThousands(data.steps)}` : '-'}{' '}
+            {hasTodayReport
+              ? `${formatNumberWithThousands(report?.steps ?? 0)}`
+              : '-'}{' '}
             <span>шагов</span>
           </StyledMetricValue>
         </StyledMetric>
@@ -58,26 +55,28 @@ export function HealthTracker({
             <ForkIcon fill="#CBFF52" />
           </StyledIconWrapper>
           <StyledNutrient>
-            <StyledNutrientValue>{data?.calories ?? '-'}</StyledNutrientValue>
+            <StyledNutrientValue>
+              {hasTodayReport ? report?.calories : '-'}
+            </StyledNutrientValue>
             <StyledNutrientLabel>ККАЛ</StyledNutrientLabel>
           </StyledNutrient>
         </StyledNutrientWrapper>
         <StyledVerticalDivider />
         <StyledNutrient>
           <StyledNutrientValue>
-            {data?.proteins ?? '-'} <span>г</span>
+            {hasTodayReport ? report?.proteins : '-'} <span>г</span>
           </StyledNutrientValue>
           <StyledNutrientLabel>БЕЛКИ</StyledNutrientLabel>
         </StyledNutrient>
         <StyledNutrient>
           <StyledNutrientValue>
-            {data?.fats ?? '-'} <span>г</span>
+            {hasTodayReport ? report?.fats : '-'} <span>г</span>
           </StyledNutrientValue>
           <StyledNutrientLabel>ЖИРЫ</StyledNutrientLabel>
         </StyledNutrient>
         <StyledNutrient>
           <StyledNutrientValue>
-            {data?.carbs ?? '-'} <span>г</span>
+            {hasTodayReport ? report?.carbs : '-'} <span>г</span>
           </StyledNutrientValue>
           <StyledNutrientLabel>УГЛЕВОДЫ</StyledNutrientLabel>
         </StyledNutrient>
@@ -86,7 +85,7 @@ export function HealthTracker({
         variant="filled"
         color="secondary"
         iconComponent={
-          hasData ? (
+          hasTodayReport ? (
             <EditIcon stroke="#ffffff" />
           ) : (
             <PlusIcon stroke="#ffffff" />
@@ -94,7 +93,7 @@ export function HealthTracker({
         }
         onClick={onButtonClick}
       >
-        {hasData ? 'Обновить данные' : 'Внести данные'}
+        {hasTodayReport ? 'Обновить данные' : 'Внести данные'}
       </StyledButton>
     </StyledHealthTrackerWrapper>
   );

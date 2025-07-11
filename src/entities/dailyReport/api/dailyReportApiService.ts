@@ -3,6 +3,7 @@ import { httpClient } from '~/shared/api';
 import {
   CreateDailyReportDto,
   GetDailyReportsResponse,
+  UpdateDailyReportDto,
 } from '../dailyReportTypes';
 
 export const dailyReportApiService = {
@@ -28,6 +29,25 @@ export const dailyReportApiService = {
       return data.data.dailyLogs;
     } catch (error) {
       console.error('Error fetching measurements:', error);
+      throw error;
+    }
+  },
+
+  updateDailyReport: async ({
+    id,
+    dto,
+  }: {
+    id: number;
+    dto: UpdateDailyReportDto;
+  }) => {
+    try {
+      const response = await httpClient.put(
+        `/v2/api/client/user/daily-logs/${id}`,
+        dto,
+      );
+      return response;
+    } catch (error) {
+      console.error('Error updating daily report:', error);
       throw error;
     }
   },

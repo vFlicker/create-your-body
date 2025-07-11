@@ -1,17 +1,44 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { dailyReportsData, HealthTracker } from '~/entities/dailyReport';
+import {
+  getTodayReport,
+  TodaysReportCard,
+  useDailyReports,
+} from '~/entities/dailyReport';
 import { useModalStore } from '~/entities/modal';
 import { CreateDailyReportForm } from '~/features/dailyReport/createDailyReport';
+import { EditDailyReportForm } from '~/features/dailyReport/editDailyReport';
 import { ShowDailyReportHistory } from '~/features/dailyReport/showDailyReportHistory';
 import { HorizontalDatePicker } from '~/shared/ui/molecules/HorizontalDatePicker';
 
 export function HealthTrackerWidget(): JSX.Element {
-  const { openModal } = useModalStore();
+  const { openModal, closeModal } = useModalStore();
+
+  const { dailyReports, isDailyReportsPending } = useDailyReports();
+
+  const todayReport = !isDailyReportsPending
+    ? getTodayReport(dailyReports)
+    : null;
 
   const handleHealthTrackerButtonClick = () => {
-    openModal(<CreateDailyReportForm />);
+    if (todayReport) {
+      openModal(
+        <EditDailyReportForm report={todayReport} onFormSubmit={closeModal} />,
+      );
+      return;
+    }
+
+    openModal(<CreateDailyReportForm onFormSubmit={closeModal} />);
+  };
+
+  const handleEditButtonClick = (id: number) => {
+    const report = dailyReports?.find((report) => report.id === id);
+    if (report) {
+      openModal(
+        <EditDailyReportForm report={report} onFormSubmit={closeModal} />,
+      );
+    }
   };
 
   return (
@@ -21,13 +48,16 @@ export function HealthTrackerWidget(): JSX.Element {
         <StyledSectionHeader>
           <StyledSectionTitle>Сегодня</StyledSectionTitle>
           <ShowDailyReportHistory
+            reports={dailyReports}
+            report={todayReport}
             onHealthTrackerButtonClick={handleHealthTrackerButtonClick}
+            onEditButtonClick={handleEditButtonClick}
           />
         </StyledSectionHeader>
 
-        <HealthTracker
+        <TodaysReportCard
+          report={todayReport}
           onButtonClick={handleHealthTrackerButtonClick}
-          data={dailyReportsData[0]}
         />
       </StyledHealthTrackerWidget>
     </>

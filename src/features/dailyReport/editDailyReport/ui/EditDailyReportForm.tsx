@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { JSX } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useCreateDailyReport } from '~/entities/dailyReport';
+import { DailyReport, useUpdateDailyReport } from '~/entities/dailyReport';
 import { showTelegramAlert } from '~/shared/libs/telegram';
 import { Button } from '~/shared/ui/atoms/Button';
 import { ErrorText } from '~/shared/ui/atoms/ErrorText';
@@ -11,31 +11,36 @@ import { Input } from '~/shared/ui/molecules/Input';
 
 import { dailyReportInputs } from '../../dailyReportConfig';
 import {
-  CreateDailyReport,
-  createDailyReportSchema,
-} from '../model/createDailyReportSchema';
+  EditDailyReport,
+  editDailyReportSchema,
+} from '../model/editDailyReportSchema';
 
-type CreateDailyReportFormProps = {
+type EditDailyReportFormProps = {
+  className?: string;
+  report: DailyReport;
   onFormSubmit?: () => void;
 };
 
-export function CreateDailyReportForm({
+export function EditDailyReportForm({
+  className,
+  report,
   onFormSubmit,
-}: CreateDailyReportFormProps): JSX.Element {
-  const { createDailyReport, isCreateDailyReportPending } =
-    useCreateDailyReport();
+}: EditDailyReportFormProps): JSX.Element {
+  const { updateDailyReportsMutate, isUpdateDailyReportsPending } =
+    useUpdateDailyReport();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<CreateDailyReport>({
-    resolver: zodResolver(createDailyReportSchema),
+  } = useForm<EditDailyReport>({
+    resolver: zodResolver(editDailyReportSchema),
+    defaultValues: report,
   });
 
-  const onSubmit = async (data: CreateDailyReport) => {
+  const onSubmit = async (data: EditDailyReport) => {
     try {
-      await createDailyReport({ dto: data });
+      await updateDailyReportsMutate({ id: report.id, dto: data });
       onFormSubmit?.();
     } catch (error) {
       console.error('Error saving daily report:', error);
@@ -44,8 +49,8 @@ export function CreateDailyReportForm({
   };
 
   return (
-    <StyledCreateDailyReportFormWrapper>
-      <StyledTitle>Добавить отчет</StyledTitle>
+    <StyledEditDailyReportFormWrapper className={className}>
+      <StyledTitle>Отчёт #{report.reportNumber}</StyledTitle>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <StyledInputsWrapper>
           {dailyReportInputs.map((inputsGroup) => {
@@ -71,16 +76,16 @@ export function CreateDailyReportForm({
         <StyledSubmitButton
           type="submit"
           color="accent"
-          disabled={isCreateDailyReportPending}
+          disabled={isUpdateDailyReportsPending}
         >
           Сохранить
         </StyledSubmitButton>
       </StyledForm>
-    </StyledCreateDailyReportFormWrapper>
+    </StyledEditDailyReportFormWrapper>
   );
 }
 
-const StyledCreateDailyReportFormWrapper = styled.div`
+const StyledEditDailyReportFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
