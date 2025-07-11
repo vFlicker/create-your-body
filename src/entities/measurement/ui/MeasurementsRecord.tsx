@@ -48,7 +48,7 @@ export function MeasurementsRecord({
       </StyledHeader>
       <StyledList>
         {measurements.map(({ id, title, unit, deltaDirection, value }) => (
-          <StyledItem key={id}>
+          <StyledItem key={title + id}>
             <StyledRecordTitle>{title}</StyledRecordTitle>
             <StyledRecord>
               {value}
@@ -130,7 +130,7 @@ const StyledList = styled.div`
   gap: 16px 10px;
 `;
 
-const StyledItem = styled.p`
+const StyledItem = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
