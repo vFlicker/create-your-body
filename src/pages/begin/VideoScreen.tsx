@@ -1,12 +1,9 @@
 import styled from '@emotion/styled';
-import { JSX, useCallback, useRef, useState } from 'react';
+import { JSX, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useUpdateGreetVideoProgress } from '~/entities/user';
 import checkIconSrc from '~/shared/assets/svg/check.svg';
 import beginVideoSrc from '~/shared/assets/video/begin.mp4';
-import { debounce } from '~/shared/libs/debounce';
-import { userSession } from '~/shared/libs/userSession';
 import { Button } from '~/shared/ui/atoms/Button';
 import { VideoPlayer } from '~/shared/ui/molecules/videoPlayer';
 
@@ -16,28 +13,10 @@ export function VideoScreen(): JSX.Element {
   const navigate = useNavigate();
   const [isVideoEnded, setIsVideoEnded] = useState(false);
 
-  const currentUserSession = userSession.getCurrentUser();
-  const { updateGreetVideoProgress } = useUpdateGreetVideoProgress();
-
   const handleButtonClick = () => {
     if (isVideoEnded) navigate('/dashboard');
     else togglePlayRef.current(); // Toggle play/pause
   };
-
-  const debouncedSendVideoUpdate = useCallback(
-    ({ duration }: { currentTime: string; duration: string }) => {
-      return debounce(async () => {
-        try {
-          if (!currentUserSession) return;
-          const { tgId } = currentUserSession;
-          await updateGreetVideoProgress({ tgId, duration: duration });
-        } catch (err) {
-          console.error('Failed to send video update:', err);
-        }
-      }, 5000)();
-    },
-    [currentUserSession, updateGreetVideoProgress],
-  );
 
   return (
     <StyledViewVideoModeWrapper>
@@ -45,7 +24,6 @@ export function VideoScreen(): JSX.Element {
         <VideoPlayer
           togglePlayRef={togglePlayRef}
           videoSrc={beginVideoSrc}
-          onVideoUpdate={debouncedSendVideoUpdate}
           onVideoEnd={setIsVideoEnded}
         />
         <StyledText>

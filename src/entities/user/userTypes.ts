@@ -12,7 +12,7 @@ type User = {
   role: string;
   sex: 'male' | 'female';
   subscriptions: Subscription[];
-  tgId: number | null;
+  tgId: number;
   userpic: string | null;
 };
 

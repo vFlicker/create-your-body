@@ -1,7 +1,5 @@
 type UserSession = {
   userQuery: string;
-  tgId: number;
-  userImage?: string;
 };
 
 const USER_SESSION_KEY_NAME = 'create-user-body';

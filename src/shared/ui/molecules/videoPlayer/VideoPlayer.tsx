@@ -17,7 +17,7 @@ import { formatTime } from './videoPlayerLib';
 
 type VideoPlayerProps = {
   videoSrc: string;
-  onVideoUpdate: (data: { currentTime: string; duration: string }) => void;
+  onVideoUpdate?: (data: { currentTime: string; duration: string }) => void;
   onVideoEnd?: (ended: boolean) => void;
   togglePlayRef?: RefObject<() => void>;
 };
@@ -58,7 +58,7 @@ export function VideoPlayer({
       duration: formatTime(duration),
     };
 
-    onVideoUpdate(videoData);
+    onVideoUpdate?.(videoData);
   }, [onVideoUpdate]);
 
   const togglePlay = useCallback(() => {

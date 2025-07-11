@@ -1,7 +1,4 @@
-export { useUpdateGreetVideoProgress } from './api/useUpdateGreetVideoProgress';
 export { useUpdateUser } from './api/useUpdateUser';
-export { useUpdateUserAvatar } from './api/useUpdateUserAvatar';
-export { useUpdateVideoProgress } from './api/useUpdateVideoProgress';
 export { useUser } from './api/useUser';
 export { getMaxStream } from './model/getMaxStream';
 export { useStreamStore } from './model/streamStore';

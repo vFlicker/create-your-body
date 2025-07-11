@@ -1,7 +1,7 @@
-import { JSX, useEffect } from 'react';
+import { JSX } from 'react';
 
 import { ModalHost } from '~/entities/modal';
-import { useUpdateUserAvatar, useUser } from '~/entities/user';
+import { useUser } from '~/entities/user';
 import { userSession } from '~/shared/libs/userSession';
 import { Loader } from '~/shared/ui/atoms/Loader';
 
@@ -13,24 +13,9 @@ function App(): JSX.Element {
   useInitTgApp();
 
   const currentUserSession = userSession.getCurrentUser();
-  const { updateUserAvatar, isUpdateUserAvatarPending } = useUpdateUserAvatar();
-
-  const { tgId, userImage } = currentUserSession || {};
-
-  useEffect(() => {
-    if (tgId && userImage) {
-      updateUserAvatar({ userId: tgId, userImage: userImage });
-    }
-  }, [tgId, userImage, updateUserAvatar]);
-
   const { user, isUserPending } = useUser();
 
-  if (
-    !user ||
-    isUpdateUserAvatarPending ||
-    isUserPending ||
-    !currentUserSession
-  ) {
+  if (!user || isUserPending || !currentUserSession) {
     return <Loader />;
   }
 
