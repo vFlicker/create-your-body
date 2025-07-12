@@ -38,7 +38,7 @@ const QUERY_ID =
 
 const MOCK_ID = '5003100894';
 
-function Layout({ data }) {
+function Layout() {
   const location = useLocation();
   const hiddenPathsBack = ['/', '/quiz', '/result', '/dashboard'];
   const showControlsBack = !hiddenPathsBack.includes(location.pathname);
@@ -59,7 +59,7 @@ function Layout({ data }) {
             </PageTransition>
           </AnimatePresence>
         </div>
-        {showControlsNav && <Nav data={data} />}
+        {showControlsNav && <Nav />}
       </div>
     </>
   );
@@ -105,13 +105,13 @@ export function App() {
       window.Telegram.WebApp.expand();
       window.Telegram.WebApp.disableVerticalSwipes();
 
-      const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
-      const currentUserQuery = window.Telegram.WebApp.initData;
+      const telegramUser = window.Telegram.WebApp.initDataUnsafe.user || {};
+      const currentUserQuery = window.Telegram.WebApp.initData || QUERY_ID;
       console.log({ telegram: window.Telegram });
 
       setUserId(telegramUser.id);
       setUserQuery(currentUserQuery);
-      addLog('Telegram User ID:', telegramUser.id);
+      addLog('Telegram User ID:', telegramUser.id || MOCK_ID);
       addLog('Telegram User Photo URL:', telegramUser.photo_url);
 
       const addImage = async () => {
@@ -198,7 +198,7 @@ export function App() {
       ) : (
         <Routes>
           {hasAccess ? (
-            <Route path="/" element={<Layout data={data} />}>
+            <Route path="/" element={<Layout />}>
               <Route index element={<StartPage data={data} />} />
               <Route
                 path={AppRoute.QUIZ}

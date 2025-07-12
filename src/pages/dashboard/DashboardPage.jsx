@@ -127,7 +127,7 @@ const getContainerData = (subscriptions) => {
   });
 
   if (secondSteamIsPro) {
-    // Всё открыто
+    // all open
     pageContainersData.push(
       {
         name: 'Тренировки',
@@ -157,53 +157,18 @@ const getContainerData = (subscriptions) => {
         name: 'Рецепты',
         icon: recipes,
         closed: null,
-        buy: false,
-        instruction: false,
-        to: AppRoute.RECIPES,
-      },
-    );
-  } else if (secondSteamBase && thirdSteamIsPro) {
-    pageContainersData.push(
-      {
-        name: 'Тренировки',
-        icon: muscules,
-        closed: null,
-        buy: false,
-        instruction: false,
-        to: AppRoute.TRAINING,
-      },
-      {
-        name: 'Питание',
-        icon: food,
-        closed: null,
-        buy: false,
-        instruction: false,
-        to: AppRoute.FOOD,
-      },
-      {
-        name: 'Лекции',
-        icon: book,
-        closed: '12 июля',
-        buy: false,
-        instruction: false,
-        to: AppRoute.LECTURES,
-      },
-      {
-        name: 'Рецепты',
-        icon: recipes,
-        closed: '12 июля',
         buy: false,
         instruction: false,
         to: AppRoute.RECIPES,
       },
     );
   } else if (thirdSteamIsPro) {
-    // all open 10 may
+    // all open
     pageContainersData.push(
       {
         name: 'Тренировки',
         icon: muscules,
-        closed: '12 июля',
+        closed: null,
         buy: false,
         instruction: false,
         to: AppRoute.TRAINING,
@@ -211,7 +176,7 @@ const getContainerData = (subscriptions) => {
       {
         name: 'Питание',
         icon: food,
-        closed: '12 июля',
+        closed: null,
         buy: false,
         instruction: false,
         to: AppRoute.FOOD,
@@ -219,7 +184,7 @@ const getContainerData = (subscriptions) => {
       {
         name: 'Лекции',
         icon: book,
-        closed: '12 июля',
+        closed: null,
         buy: false,
         instruction: false,
         to: AppRoute.LECTURES,
@@ -227,14 +192,14 @@ const getContainerData = (subscriptions) => {
       {
         name: 'Рецепты',
         icon: recipes,
-        closed: '12 июля',
+        closed: null,
         buy: false,
         instruction: false,
         to: AppRoute.RECIPES,
       },
     );
   } else if (secondSteamBase) {
-    // lectures and recipes -- buy, else access
+    // lectures and recipes -- buy, else open
     pageContainersData.push(
       {
         name: 'Тренировки',
@@ -270,12 +235,12 @@ const getContainerData = (subscriptions) => {
       },
     );
   } else if (thirdSteamBase) {
-    // lectures and recipes -- buy, else 'open 10 may'
+    // lectures and recipes -- buy, else open
     pageContainersData.push(
       {
         name: 'Тренировки',
         icon: muscules,
-        closed: '12 июля',
+        closed: null,
         buy: false,
         instruction: false,
         to: AppRoute.TRAINING,
@@ -283,7 +248,7 @@ const getContainerData = (subscriptions) => {
       {
         name: 'Питание',
         icon: food,
-        closed: '12 июля',
+        closed: null,
         buy: false,
         instruction: false,
         to: AppRoute.FOOD,
