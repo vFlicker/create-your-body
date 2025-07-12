@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { isToday } from 'date-fns';
 import { JSX } from 'react';
 
 import EditIcon from '~/shared/assets/svg/pencil.svg?react';
@@ -21,9 +22,13 @@ export function DailyReportHistory({
 
   if (isDailyReportsPending) return <Loader />;
 
+  const reportWithoutToday = dailyReports!.filter(
+    ({ date }) => !isToday(new Date(date)),
+  );
+
   return (
     <StyledHistoryList className={className}>
-      {dailyReports?.slice(1).map(({ id, date, ...props }) => (
+      {reportWithoutToday.map(({ id, date, ...props }) => (
         <StyledDailyReportCardWrapper key={id}>
           <StyledDailyReportCardHeader>
             <StyledTitle>{formatDateForView(date)}</StyledTitle>
