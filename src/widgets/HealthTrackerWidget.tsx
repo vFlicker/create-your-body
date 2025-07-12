@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
-import { JSX } from 'react';
+import { JSX, useState } from 'react';
 
 import {
+  DailyReportCard,
   getTodayReport,
-  TodaysReportCard,
   useDailyReports,
 } from '~/entities/dailyReport';
 import { useModalStore } from '~/entities/modal';
@@ -13,6 +13,8 @@ import { ShowDailyReportHistory } from '~/features/dailyReport/showDailyReportHi
 import { HorizontalDatePicker } from '~/shared/ui/molecules/HorizontalDatePicker';
 
 export function HealthTrackerWidget(): JSX.Element {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
   const { openModal, closeModal } = useModalStore();
 
   const { dailyReports, isDailyReportsPending } = useDailyReports();
@@ -46,7 +48,10 @@ export function HealthTrackerWidget(): JSX.Element {
 
   return (
     <>
-      <HorizontalDatePicker />
+      <HorizontalDatePicker
+        selectedDate={selectedDate}
+        onDateChange={setSelectedDate}
+      />
       <StyledHealthTrackerWidget>
         <StyledSectionHeader>
           <StyledSectionTitle>Сегодня</StyledSectionTitle>
@@ -57,7 +62,7 @@ export function HealthTrackerWidget(): JSX.Element {
           />
         </StyledSectionHeader>
 
-        <TodaysReportCard onButtonClick={handleHealthTrackerButtonClick} />
+        <DailyReportCard onButtonClick={handleHealthTrackerButtonClick} />
       </StyledHealthTrackerWidget>
     </>
   );

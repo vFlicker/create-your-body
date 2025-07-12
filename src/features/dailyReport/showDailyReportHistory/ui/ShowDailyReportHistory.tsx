@@ -3,8 +3,8 @@ import { JSX } from 'react';
 
 import {
   DailyReport,
+  DailyReportCard,
   DailyReportHistory,
-  TodaysReportCard,
 } from '~/entities/dailyReport';
 import { useModalStore } from '~/entities/modal';
 
@@ -27,7 +27,7 @@ export function ShowDailyReportHistory({
 
         <StyledHealthTrackerWrapper>
           <StyledSubtitle>Сегодня</StyledSubtitle>
-          <TodaysReportCard onButtonClick={onHealthTrackerButtonClick} />
+          <DailyReportCard onButtonClick={onHealthTrackerButtonClick} />
         </StyledHealthTrackerWrapper>
 
         <DailyReportHistory onEdit={onEditButtonClick} />

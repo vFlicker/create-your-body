@@ -10,11 +10,18 @@ import { capitalize } from '~/shared/libs/format';
 
 const weekdays = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
 
-export function HorizontalDatePicker(): JSX.Element {
+type HorizontalDatePickerProps = {
+  selectedDate: Date;
+  onDateChange: (date: Date) => void;
+};
+
+export function HorizontalDatePicker({
+  selectedDate,
+  onDateChange,
+}: HorizontalDatePickerProps): JSX.Element {
   const [currentWeekStart, setCurrentWeekStart] = useState(
     startOfWeek(new Date(), { weekStartsOn: 1 }),
   );
-  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const days = Array.from({ length: 7 }).map((_, i) =>
     addDays(currentWeekStart, i),
@@ -54,7 +61,7 @@ export function HorizontalDatePicker(): JSX.Element {
               isDisabled={isDisabled}
               onClick={() => {
                 if (isDisabled) return;
-                setSelectedDate(date);
+                onDateChange(date);
               }}
             >
               <StyledDayNumber selected={isSelected}>

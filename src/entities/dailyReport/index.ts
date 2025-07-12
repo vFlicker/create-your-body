@@ -5,5 +5,5 @@ export { useUpdateDailyReport } from './api/useUpdateDailyReport';
 export { getTodayReport } from './dailyReportLib';
 export type { DailyReport } from './dailyReportTypes';
 export { DailyReportCard } from './ui/DailyReportCard';
+export { DailyReportFlatCard } from './ui/DailyReportFlatCard';
 export { DailyReportHistory } from './ui/DailyReportHistory';
-export { TodaysReportCard } from './ui/TodaysReportCard';

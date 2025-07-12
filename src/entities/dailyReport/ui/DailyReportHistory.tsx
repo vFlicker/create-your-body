@@ -6,7 +6,7 @@ import { formatDateForView } from '~/shared/libs/format';
 import { Loader } from '~/shared/ui/atoms/Loader';
 
 import { useDailyReports } from '../api/useDailyReports';
-import { DailyReportCard } from './DailyReportCard';
+import { DailyReportFlatCard } from './DailyReportFlatCard';
 
 type DailyReportHistoryProps = {
   className?: string;
@@ -32,7 +32,7 @@ export function DailyReportHistory({
               <EditIcon stroke="#8B8B9F" />
             </StyledEditButton>
           </StyledDailyReportCardHeader>
-          <DailyReportCard {...props} />
+          <DailyReportFlatCard {...props} />
         </StyledDailyReportCardWrapper>
       ))}
     </StyledHistoryList>
