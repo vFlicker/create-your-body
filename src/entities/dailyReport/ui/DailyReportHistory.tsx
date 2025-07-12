@@ -10,12 +10,12 @@ import { DailyReportFlatCard } from './DailyReportFlatCard';
 
 type DailyReportHistoryProps = {
   className?: string;
-  onEdit: (id: number) => void;
+  onEditReportClick: (id: number) => void;
 };
 
 export function DailyReportHistory({
   className,
-  onEdit,
+  onEditReportClick,
 }: DailyReportHistoryProps): JSX.Element {
   const { dailyReports, isDailyReportsPending } = useDailyReports();
 
@@ -23,11 +23,11 @@ export function DailyReportHistory({
 
   return (
     <StyledHistoryList className={className}>
-      {dailyReports?.map(({ id, date, ...props }) => (
+      {dailyReports?.slice(1).map(({ id, date, ...props }) => (
         <StyledDailyReportCardWrapper key={id}>
           <StyledDailyReportCardHeader>
             <StyledTitle>{formatDateForView(date)}</StyledTitle>
-            <StyledEditButton onClick={() => onEdit(id)}>
+            <StyledEditButton onClick={() => onEditReportClick(id)}>
               Изменить
               <EditIcon stroke="#8B8B9F" />
             </StyledEditButton>

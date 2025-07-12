@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { isToday } from 'date-fns';
 import { JSX } from 'react';
 
 import arrowDownIconSrc from '~/shared/assets/svg/arrow-narrow-down.svg';
@@ -12,19 +13,35 @@ import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
 
 import { useDailyReports } from '../api/useDailyReports';
-import { getTodayReport } from '../dailyReportLib';
+import { getReportForDate } from '../dailyReportLib';
 
 type DailyReportCardProps = {
-  onButtonClick: () => void;
+  date: Date;
+  onCreateReportClick: () => void;
+  onEditReportClick: (id: number) => void;
 };
 
 export function DailyReportCard({
-  onButtonClick,
+  date,
+  onCreateReportClick,
+  onEditReportClick,
 }: DailyReportCardProps): JSX.Element {
   const { dailyReports, isDailyReportsPending } = useDailyReports();
 
-  const report = !isDailyReportsPending ? getTodayReport(dailyReports) : null;
-  const hasTodayReport = !!report;
+  const isTodayReport = isToday(date);
+  const reportForToday = getReportForDate(date, dailyReports);
+
+  const showButton = reportForToday || isTodayReport;
+  const report = !isDailyReportsPending ? reportForToday : null;
+  const hasReport = !!report;
+
+  const handleButtonClick = () => {
+    if (hasReport) {
+      onEditReportClick(report.id);
+    } else if (isTodayReport) {
+      onCreateReportClick();
+    }
+  };
 
   return (
     <StyledHealthTrackerWrapper>
@@ -34,8 +51,8 @@ export function DailyReportCard({
             <WeightIcon stroke="#CBFF52" />
           </StyledIconWrapper>
           <StyledMetricValue>
-            {hasTodayReport ? `${report?.weight}` : '-'} <span>кг</span>
-            {hasTodayReport && <StyledArrowIcon src={arrowDownIconSrc} />}
+            {hasReport ? `${report?.weight}` : '-'} <span>кг</span>
+            {hasReport && <StyledArrowIcon src={arrowDownIconSrc} />}
           </StyledMetricValue>
         </StyledMetric>
         <StyledMetric>
@@ -43,7 +60,7 @@ export function DailyReportCard({
             <StepsIcon stroke="#CBFF52" />
           </StyledIconWrapper>
           <StyledMetricValue>
-            {hasTodayReport
+            {hasReport
               ? `${formatNumberWithThousands(report?.steps ?? 0)}`
               : '-'}{' '}
             <span>шагов</span>
@@ -58,7 +75,7 @@ export function DailyReportCard({
           </StyledIconWrapper>
           <StyledNutrient>
             <StyledNutrientValue>
-              {hasTodayReport ? report?.calories : '-'}
+              {hasReport ? report?.calories : '-'}
             </StyledNutrientValue>
             <StyledNutrientLabel>ККАЛ</StyledNutrientLabel>
           </StyledNutrient>
@@ -66,37 +83,34 @@ export function DailyReportCard({
         <StyledVerticalDivider />
         <StyledNutrient>
           <StyledNutrientValue>
-            {hasTodayReport ? report?.proteins : '-'} <span>г</span>
+            {hasReport ? report?.proteins : '-'} <span>г</span>
           </StyledNutrientValue>
           <StyledNutrientLabel>БЕЛКИ</StyledNutrientLabel>
         </StyledNutrient>
         <StyledNutrient>
           <StyledNutrientValue>
-            {hasTodayReport ? report?.fats : '-'} <span>г</span>
+            {hasReport ? report?.fats : '-'} <span>г</span>
           </StyledNutrientValue>
           <StyledNutrientLabel>ЖИРЫ</StyledNutrientLabel>
         </StyledNutrient>
         <StyledNutrient>
           <StyledNutrientValue>
-            {hasTodayReport ? report?.carbs : '-'} <span>г</span>
+            {hasReport ? report?.carbs : '-'} <span>г</span>
           </StyledNutrientValue>
           <StyledNutrientLabel>УГЛЕВОДЫ</StyledNutrientLabel>
         </StyledNutrient>
       </StyledNutrients>
-      <StyledButton
-        variant="filled"
-        color="secondary"
-        iconComponent={
-          hasTodayReport ? (
-            <EditIcon stroke="#ffffff" />
-          ) : (
-            <PlusIcon stroke="#ffffff" />
-          )
-        }
-        onClick={onButtonClick}
-      >
-        {hasTodayReport ? 'Обновить данные' : 'Внести данные'}
-      </StyledButton>
+
+      {showButton && (
+        <StyledButton
+          variant="filled"
+          color="secondary"
+          iconComponent={hasReport ? <EditIcon /> : <PlusIcon />}
+          onClick={handleButtonClick}
+        >
+          {hasReport ? 'Обновить данные' : 'Внести данные'}
+        </StyledButton>
+      )}
     </StyledHealthTrackerWrapper>
   );
 }
@@ -214,4 +228,6 @@ const StyledButton = styled(Button)`
     rgba(255, 255, 255, 0.2) 32.98%,
     rgba(255, 255, 255, 0.3) 65.01%
   );
+
+  stroke: ${Color.White};
 `;

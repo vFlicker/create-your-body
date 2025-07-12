@@ -1,12 +1,16 @@
-import { isToday } from 'date-fns';
+import { isSameDay } from 'date-fns';
 
 import { DailyReport } from './dailyReportTypes';
 
-export const getTodayReport = (
+export const getReportForDate = (
+  date?: Date,
   dailyReports?: DailyReport[],
 ): DailyReport | null => {
-  const todayReport = dailyReports?.[0];
-  const isTodayReport = todayReport && isToday(new Date(todayReport.date));
-  const report = isTodayReport ? todayReport : null;
-  return report;
+  if (!date || !dailyReports) return null;
+
+  const reportForDate = dailyReports.find((report) => {
+    return isSameDay(new Date(report.date), date);
+  });
+
+  return reportForDate || null;
 };

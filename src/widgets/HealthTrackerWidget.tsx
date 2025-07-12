@@ -1,15 +1,13 @@
 import styled from '@emotion/styled';
+import { isToday } from 'date-fns';
 import { JSX, useState } from 'react';
 
-import {
-  DailyReportCard,
-  getTodayReport,
-  useDailyReports,
-} from '~/entities/dailyReport';
+import { DailyReportCard } from '~/entities/dailyReport';
 import { useModalStore } from '~/entities/modal';
 import { CreateDailyReportForm } from '~/features/dailyReport/createDailyReport';
 import { EditDailyReportForm } from '~/features/dailyReport/editDailyReport';
 import { ShowDailyReportHistory } from '~/features/dailyReport/showDailyReportHistory';
+import { formatDateForView } from '~/shared/libs/format';
 import { HorizontalDatePicker } from '~/shared/ui/molecules/HorizontalDatePicker';
 
 export function HealthTrackerWidget(): JSX.Element {
@@ -17,70 +15,65 @@ export function HealthTrackerWidget(): JSX.Element {
 
   const { openModal, closeModal } = useModalStore();
 
-  const { dailyReports, isDailyReportsPending } = useDailyReports();
-
-  const todayReport = !isDailyReportsPending
-    ? getTodayReport(dailyReports)
-    : null;
-
-  const handleHealthTrackerButtonClick = () => {
-    if (todayReport) {
-      openModal(
-        <EditDailyReportForm
-          reportId={todayReport.id}
-          onFormSubmit={closeModal}
-        />,
-      );
-      return;
-    }
-
+  // We should use the handlers here
+  // because ShowDailyReportHistory feature can't include another feature
+  const handleCreateReportClick = () => {
     openModal(<CreateDailyReportForm onFormSubmit={closeModal} />);
   };
 
-  const handleEditButtonClick = (id: number) => {
-    const report = dailyReports?.find((report) => report.id === id);
-    if (report) {
-      openModal(
-        <EditDailyReportForm reportId={report.id} onFormSubmit={closeModal} />,
-      );
-    }
+  const handleUpdateReportClick = (id: number) => {
+    openModal(<EditDailyReportForm reportId={id} onFormSubmit={closeModal} />);
   };
 
+  const title = isToday(selectedDate)
+    ? 'Сегодня'
+    : formatDateForView(selectedDate);
+
   return (
-    <>
+    <StyledHealthTrackerWrapper>
       <HorizontalDatePicker
         selectedDate={selectedDate}
         onDateChange={setSelectedDate}
       />
-      <StyledHealthTrackerWidget>
-        <StyledSectionHeader>
-          <StyledSectionTitle>Сегодня</StyledSectionTitle>
-          <ShowDailyReportHistory
-            reports={dailyReports}
-            onHealthTrackerButtonClick={handleHealthTrackerButtonClick}
-            onEditButtonClick={handleEditButtonClick}
-          />
-        </StyledSectionHeader>
 
-        <DailyReportCard onButtonClick={handleHealthTrackerButtonClick} />
-      </StyledHealthTrackerWidget>
-    </>
+      <DailyReportCardWrapper>
+        <StyledHeader>
+          <StyledTitle>{title}</StyledTitle>
+          <ShowDailyReportHistory
+            onCreateReportClick={handleCreateReportClick}
+            onEditReportClick={handleUpdateReportClick}
+          />
+        </StyledHeader>
+
+        <DailyReportCard
+          date={selectedDate}
+          onCreateReportClick={handleCreateReportClick}
+          onEditReportClick={handleUpdateReportClick}
+        />
+      </DailyReportCardWrapper>
+    </StyledHealthTrackerWrapper>
   );
 }
 
-const StyledHealthTrackerWidget = styled.div`
+const StyledHealthTrackerWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const DailyReportCardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
 `;
 
-const StyledSectionHeader = styled.div`
+const StyledHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
-const StyledSectionTitle = styled.h2`
+const StyledTitle = styled.h2`
   color: #0d0d0d;
   font-size: 18px;
   font-weight: 700;

@@ -3,10 +3,8 @@ export const formatDateForApi = (date: string): string => {
   return `${year}-${month}-${day}T00:00:00.000Z`;
 };
 
-export const formatDateForView = (date: string): string => {
-  if (!date) return '';
-
-  const parsedDate = new Date(date);
+export const formatDateForView = (date: Date | string): string => {
+  const parsedDate = typeof date === 'string' ? new Date(date) : date;
   return parsedDate.toLocaleDateString('ru-RU', {
     day: '2-digit',
     month: '2-digit',
