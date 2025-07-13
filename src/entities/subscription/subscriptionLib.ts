@@ -3,8 +3,9 @@ import { Subscription } from '../user/userTypes';
 export const hasActiveSubscription = (
   subscriptions: Subscription[],
 ): boolean => {
-  const now = new Date();
-  return subscriptions.some((sub) => new Date(sub.expiresAt) > now);
+  return subscriptions.some(
+    (sub) => sub.status === 'active' || sub.status === 'pre',
+  );
 };
 
 export const formatSubscriptionDateRange = (

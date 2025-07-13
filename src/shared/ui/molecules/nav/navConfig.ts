@@ -11,7 +11,7 @@ type NavItem = {
   disabled: boolean;
 };
 
-export const navConfig: NavItem[] = [
+export const getNavConfig = (hasAccess: boolean): NavItem[] => [
   {
     to: AppRoute.Dashboard,
     iconSrc: homeOpenIconSrc,
@@ -22,7 +22,7 @@ export const navConfig: NavItem[] = [
     to: AppRoute.Learning,
     iconSrc: bookOpenIconSrc,
     text: 'Обучение',
-    disabled: false,
+    disabled: !hasAccess,
   },
   {
     to: AppRoute.Communication,
