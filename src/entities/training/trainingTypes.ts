@@ -15,6 +15,7 @@ type Week = {
 type Training = {
   _id: string;
   title: string;
+  done: boolean;
   week: number;
   stream: number;
   type: string;
@@ -99,4 +100,10 @@ export type TrainingsResponse = {
 export type TrainingDetailResponse = {
   status: string;
   data: TrainingDetail;
+};
+
+export type UpdateWorkoutProgressDto = {
+  workoutMongoId: string;
+  status: 'started' | 'in_progress' | 'completed';
+  currentStep: number;
 };

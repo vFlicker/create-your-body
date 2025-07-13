@@ -19,7 +19,7 @@ type TitleCardProps = {
 
 type StyledTitleCardWrapperProps = Pick<
   TitleCardProps,
-  'disabled' | 'isHighlight'
+  'disabled' | 'isHighlight' | 'isFullWidthImage'
 >;
 
 export function TitleCard({
@@ -43,10 +43,11 @@ export function TitleCard({
       className={className}
       disabled={disabled}
       isHighlight={isHighlight}
+      isFullWidthImage={isFullWidthImage}
       onClick={handleClick}
     >
       <StyledHeader>
-        <StyledImage src={iconSrc} alt={title} isFullWith={isFullWidthImage} />
+        <StyledImage src={iconSrc} isFullWith={isFullWidthImage} />
         <StyledTitle>{title}</StyledTitle>
         {subTitle && <StyledSubTitle>{subTitle}</StyledSubTitle>}
       </StyledHeader>
@@ -67,7 +68,7 @@ const StyledTitleCardWrapper = styled.div<StyledTitleCardWrapperProps>`
   justify-content: space-between;
 
   min-height: 110px;
-  padding: 16px;
+  padding: ${({ isFullWidthImage }) => (isFullWidthImage ? '10px' : '16px')};
   border: 1px solid;
   border-radius: 14px;
   border-color: ${({ isHighlight }) =>
@@ -77,8 +78,6 @@ const StyledTitleCardWrapper = styled.div<StyledTitleCardWrapperProps>`
     isHighlight ? Color.Violet_100 : '#fafafa'};
 
   opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
-
-  cursor: pointer;
 `;
 
 const ImageCss = {
@@ -98,6 +97,7 @@ const ImageCss = {
 const StyledImage = styled.img<{ isFullWith: boolean }>`
   ${({ isFullWith }) =>
     isFullWith ? ImageCss['full-width'] : ImageCss.default};
+  border-radius: ${({ isFullWith }) => (isFullWith ? '10px' : '0')};
 `;
 
 const StyledHeader = styled.div`

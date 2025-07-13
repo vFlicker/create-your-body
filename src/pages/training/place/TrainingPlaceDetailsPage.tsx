@@ -1,8 +1,11 @@
 import styled from '@emotion/styled';
-import { JSX, useState } from 'react';
+import { JSX, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { useTrainingDetailsById } from '~/entities/training';
+import {
+  useTrainingDetailsById,
+  useUpdateWorkoutProgress,
+} from '~/entities/training';
 import arrowIconSrc from '~/shared/assets/svg/arrow.svg';
 import backIconSrc from '~/shared/assets/svg/arrowBack.svg';
 import checkIconSrc from '~/shared/assets/svg/check.svg';
@@ -24,12 +27,27 @@ export function TrainingPlaceDetailsPage(): JSX.Element {
   const { trainingDetails, isTrainingDetailsPending } = useTrainingDetailsById(
     id!,
   );
+  const { updateWorkoutProgress } = useUpdateWorkoutProgress();
 
   const showPreviousPage = (): void => {
     navigate(`${AppRoute.TrainingPlace}/${type}/${week}`);
   };
 
-  if (!trainingDetails)
+  useEffect(() => {
+    if (!trainingDetails) return;
+
+    if (currentStepIndex > 0) {
+      updateWorkoutProgress({
+        dto: {
+          workoutMongoId: trainingDetails._id,
+          status: 'in_progress',
+          currentStep: currentStepIndex + 1,
+        },
+      });
+    }
+  }, [currentStepIndex, trainingDetails, updateWorkoutProgress]);
+
+  if (!trainingDetails) {
     return (
       <CommonPageLayout
         title={'Тренировки'}
@@ -37,13 +55,26 @@ export function TrainingPlaceDetailsPage(): JSX.Element {
         isLoading={isTrainingDetailsPending}
       />
     );
+  }
 
   const { type, week, steps } = trainingDetails;
 
   const handleNextClick = () => {
     const isLastStep = currentStepIndex === steps.length - 1;
-    if (isLastStep) showPreviousPage();
-    else setCurrentStepIndex((prev) => prev + 1);
+
+    if (isLastStep) {
+      showPreviousPage();
+
+      updateWorkoutProgress({
+        dto: {
+          workoutMongoId: trainingDetails._id,
+          status: 'completed',
+          currentStep: currentStepIndex + 1,
+        },
+      });
+    } else {
+      setCurrentStepIndex((prev) => prev + 1);
+    }
   };
 
   const handleBack = () => {

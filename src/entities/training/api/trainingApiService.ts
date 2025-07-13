@@ -3,6 +3,7 @@ import { httpClient } from '~/shared/api';
 import {
   TrainingDetailResponse,
   TrainingsResponse,
+  UpdateWorkoutProgressDto,
   WeeksResponse,
 } from '../trainingTypes';
 
@@ -54,6 +55,19 @@ export const trainingApiService = {
       return data.data;
     } catch (error) {
       console.error('Error fetching training details by id:', error);
+      throw error;
+    }
+  },
+
+  updateWorkoutProgress: async ({ dto }: { dto: UpdateWorkoutProgressDto }) => {
+    try {
+      const response = await httpClient.post(
+        `/v2/api/client/workout-progress`,
+        dto,
+      );
+      return response;
+    } catch (error) {
+      console.error('Error updating workout progress:', error);
       throw error;
     }
   },

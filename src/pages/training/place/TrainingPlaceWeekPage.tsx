@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useTrainingsByWeek } from '~/entities/training';
 import { useStreamStore, useUser } from '~/entities/user';
 import mockupImageSrc from '~/shared/assets/img/mockup.jpeg';
+import checkImageSrc from '~/shared/assets/svg/check.svg';
 import musclesIconSrc from '~/shared/assets/svg/musclesBlack.svg';
 import { AppRoute } from '~/shared/router';
 import { TitleCard } from '~/shared/ui/molecules/TitleCard';
@@ -39,17 +40,20 @@ export function TrainingPlaceWeekPage(): JSX.Element {
       isLoading={isTrainingsByWeekPending}
     >
       <StyledWeeksList>
-        {trainingsByWeek?.map(({ _id, title, coverImage, exerciseCount }) => (
-          <TitleCard
-            key={_id}
-            title={title}
-            // TODO: add at the backend
-            subTitle={`Упражнений ${exerciseCount}`}
-            iconSrc={coverImage.url || mockupImageSrc}
-            isFullWidthImage={true}
-            onClick={() => handleLessonSelect(_id)}
-          />
-        ))}
+        {trainingsByWeek?.map(
+          ({ _id, title, coverImage, exerciseCount, done }) => (
+            <StyledTitleCard
+              isComplied={done}
+              key={_id}
+              title={title}
+              // TODO: add at the backend
+              subTitle={`Упражнений ${exerciseCount}`}
+              iconSrc={coverImage.url || mockupImageSrc}
+              isFullWidthImage={true}
+              onClick={() => handleLessonSelect(_id)}
+            />
+          ),
+        )}
       </StyledWeeksList>
     </CommonPageLayout>
   );
@@ -59,4 +63,31 @@ const StyledWeeksList = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
+`;
+
+const backgroundImage = `url("${checkImageSrc}")`;
+const StyledTitleCard = styled(TitleCard)<{ isComplied: boolean }>`
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 16px;
+    right: 16px;
+
+    display: ${({ isComplied }) => (isComplied ? 'flex' : 'none')};
+    justify-content: center;
+    align-items: center;
+
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+
+    background-color: #cbff52;
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    background-image: ${backgroundImage};
+  }
 `;
