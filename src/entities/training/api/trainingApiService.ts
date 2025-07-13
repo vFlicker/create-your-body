@@ -1,6 +1,7 @@
 import { httpClient } from '~/shared/api';
 
 import {
+  LastUnfinishedWorkoutResponse,
   TrainingDetailResponse,
   TrainingsResponse,
   UpdateWorkoutProgressDto,
@@ -68,6 +69,18 @@ export const trainingApiService = {
       return response;
     } catch (error) {
       console.error('Error updating workout progress:', error);
+      throw error;
+    }
+  },
+
+  getLastUnfinishedWorkout: async () => {
+    try {
+      const { data } = await httpClient.get<LastUnfinishedWorkoutResponse>(
+        `/cms/api/workouts/client-last-unfinished`,
+      );
+      return data.data;
+    } catch (error) {
+      console.error('Error fetching last unfinished workout:', error);
       throw error;
     }
   },

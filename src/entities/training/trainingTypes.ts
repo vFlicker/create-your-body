@@ -12,6 +12,35 @@ type Week = {
   count: number;
 };
 
+type LastUnfinishedWorkout = {
+  _id: string;
+  title: string;
+  week: number;
+  stream: number;
+  type: string;
+  level: string;
+  duration: number;
+  coverImage: {
+    fileId: string;
+    fileName: string;
+    originalName: string;
+    url: string;
+    size: number;
+  };
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  exerciseCount: number;
+  done: boolean;
+  progress: {
+    status: 'started' | 'in_progress' | 'completed';
+    currentStep: number;
+    startedAt: string;
+    updatedAt: string;
+  };
+};
+
 type Training = {
   _id: string;
   title: string;
@@ -106,4 +135,9 @@ export type UpdateWorkoutProgressDto = {
   workoutMongoId: string;
   status: 'started' | 'in_progress' | 'completed';
   currentStep: number;
+};
+
+export type LastUnfinishedWorkoutResponse = {
+  status: string;
+  data: LastUnfinishedWorkout;
 };

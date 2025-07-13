@@ -1,28 +1,33 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+import { useLastUnfinishedWorkout } from '~/entities/training/api/useLastUnfinishedWorkout';
 import backgroundImageSrc from '~/shared/assets/img/continue-workout-bg.jpg';
-import ClockIcon from '~/shared/assets/svg/clock-stopwatch.svg?react';
 import MusclesIcon from '~/shared/assets/svg/muscles.svg?react';
 import PlayIcon from '~/shared/assets/svg/play.svg?react';
+import { AppRoute } from '~/shared/router';
 import { Color } from '~/shared/theme/colors';
 
 type ContinueWorkoutCardProps = {
   className?: string;
 };
 
-const data = {
-  title: 'Тренировка #1',
-  duration: '15',
-  exercisesCount: 5,
-};
-
 export function ContinueWorkoutCard({
   className,
 }: ContinueWorkoutCardProps): JSX.Element {
-  const { title, duration, exercisesCount } = data;
+  const navigate = useNavigate();
 
-  const handleClick = () => {};
+  const { lastUnfinishedWorkout, isLastUnfinishedWorkoutPending } =
+    useLastUnfinishedWorkout();
+
+  if (isLastUnfinishedWorkoutPending || !lastUnfinishedWorkout) return <></>;
+
+  const { type, week, _id, title, exerciseCount } = lastUnfinishedWorkout;
+
+  const handleClick = () => {
+    navigate(`${AppRoute.TrainingPlace}/${type}/${week}/${_id}`);
+  };
 
   return (
     <StyledContinueWorkoutCardWrapper
@@ -33,12 +38,8 @@ export function ContinueWorkoutCard({
         <StyledTitle>{title}</StyledTitle>
         <StyledMeta>
           <StyledMetaItem>
-            <ClockIcon />
-            {duration} мин
-          </StyledMetaItem>
-          <StyledMetaItem>
             <MusclesIcon />
-            {exercisesCount} упр
+            {exerciseCount} упр
           </StyledMetaItem>
         </StyledMeta>
       </StyledInfo>
