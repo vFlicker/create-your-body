@@ -2,10 +2,14 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import {
+  hasActiveSubscription,
+  useSubscriptions,
+} from '~/entities/subscription';
 import { Color } from '~/shared/theme/colors';
 import { IconButton } from '~/shared/ui/atoms/IconButton';
 
-import { navConfig } from './navConfig';
+import { getNavConfig } from './navConfig';
 
 type NavProps = {
   className?: string;
@@ -15,10 +19,16 @@ export function Nav({ className }: NavProps): JSX.Element | null {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
+  const { subscriptions, isSubscriptionsPending } = useSubscriptions();
+
+  if (isSubscriptionsPending) return null;
+
+  const hasAccess = hasActiveSubscription(subscriptions || []);
+
   return (
     <StyledNavWrapper className={className}>
       <StyledNavMenu>
-        {navConfig.map(({ iconSrc, text, to, disabled }) => {
+        {getNavConfig(hasAccess).map(({ iconSrc, text, to, disabled }) => {
           const isActive = pathname === to || pathname.startsWith(`${to}/`);
 
           const handleNavItemClick = () => {
