@@ -14,6 +14,7 @@ type CommonPageLayoutProps = PropsWithChildren<{
   hasStreamInfo?: boolean;
   iconSrc?: string;
   action?: JSX.Element;
+  component?: JSX.Element;
 }>;
 
 export function CommonPageLayout({
@@ -23,6 +24,7 @@ export function CommonPageLayout({
   hasStreamInfo = false,
   iconSrc,
   action,
+  component,
   children,
 }: CommonPageLayoutProps): JSX.Element {
   return (
@@ -44,6 +46,7 @@ export function CommonPageLayout({
             </StyledTitleWrapper>
             {action}
           </StyledTitleSectionWrapper>
+          {component}
         </StyledHeader>
         <StyledContentWrapper>
           {isLoading && <Loader />}

@@ -30,8 +30,6 @@ export function LearningPage(): JSX.Element {
       hasBackButton={false}
     >
       <StyledContentWrapper>
-        {/* TODO: we can show History component here */}
-
         <StyledDashboardList>
           {pageContainersData.map(({ title, to, ...props }) => (
             <TitleCard

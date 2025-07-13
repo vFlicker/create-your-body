@@ -20,7 +20,7 @@ export function StartPage(): JSX.Element {
   }
 
   const type = user.bornDate ? 'training' : 'start';
-  const { buttonText, buttonIconSrc, onButtonClick } = buttonConfig[type];
+  const { buttonText, buttonIcon, onButtonClick } = buttonConfig[type];
 
   return (
     <StyledStartPage>
@@ -34,13 +34,13 @@ export function StartPage(): JSX.Element {
           <p>Построй тело своей мечты</p>
         </StyledTextWrapper>
 
-        <Button
+        <StyledButton
           color="neutral"
-          iconSrc={buttonIconSrc}
+          iconComponent={buttonIcon}
           onClick={() => onButtonClick(navigate)}
         >
           {buttonText}
-        </Button>
+        </StyledButton>
       </StyledContentWrapper>
     </StyledStartPage>
   );
@@ -99,6 +99,13 @@ const StyledTextWrapper = styled.div`
   gap: 16px;
 
   color: ${Color.Black_950};
+`;
+
+const StyledButton = styled(Button)`
+  svg {
+    width: 24px;
+    height: 24px;
+  }
 `;
 
 const StyledTitle = styled.h1`
