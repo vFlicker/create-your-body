@@ -1,43 +1,36 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import {
-  FirstSubscriptionCard,
-  PurchaseCard,
-  SubscriptionCard,
-} from '~/entities/subscription';
-import diamondIconSrc from '~/shared/assets/svg/diamond.svg';
-import lightningIconSrc from '~/shared/assets/svg/lightning.svg';
-import { Button } from '~/shared/ui/atoms/Button';
+import { PurchaseCard, useSubscriptions } from '~/entities/subscription';
 import { UserPageLayout } from '~/widgets/layouts/UserPageLayout';
 
 export function SubscriptionsPage(): JSX.Element {
+  const { subscriptions, isSubscriptionsPending } = useSubscriptions();
+
+  if (!subscriptions || isSubscriptionsPending) {
+    return <UserPageLayout isLoading={isSubscriptionsPending} />;
+  }
+
+  const hasSubscriptions = subscriptions.length > 0;
+
+  console.log({ subscriptions });
+
   return (
     <UserPageLayout isLoading={false}>
       <StyledContentWrapper>
         <StyledTitle>Все покупки</StyledTitle>
 
-        <StyledPurchaseCardList>
+        {!hasSubscriptions && (
           <StyledText>У вас пока нет приобретённых подписок.</StyledText>
-          <PurchaseCard />
-          <PurchaseCard />
-        </StyledPurchaseCardList>
+        )}
 
-        <StyledCardList>
-          <FirstSubscriptionCard />
-          <StyledCardWrapper>
-            <SubscriptionCard status="active" />
-            <Button color="accent" iconSrc={diamondIconSrc}>
-              Повысить до Pro
-            </Button>
-          </StyledCardWrapper>
-          <StyledCardWrapper>
-            <SubscriptionCard status="inactive" />
-            <Button color="accent" iconSrc={lightningIconSrc}>
-              Купить подписку
-            </Button>
-          </StyledCardWrapper>
-        </StyledCardList>
+        {hasSubscriptions && (
+          <StyledPurchaseCardList>
+            {subscriptions.map((subscription) => (
+              <PurchaseCard key={subscription.id} {...subscription} />
+            ))}
+          </StyledPurchaseCardList>
+        )}
       </StyledContentWrapper>
     </UserPageLayout>
   );
@@ -65,16 +58,4 @@ const StyledPurchaseCardList = styled.div`
 const StyledText = styled.p`
   color: #797996;
   font-size: 12px;
-`;
-
-const StyledCardList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const StyledCardWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
 `;

@@ -1,25 +1,38 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import slashCircleIconSrc from '~/shared/assets/svg/slash-circle.svg';
+import { planLabels, subscriptionLabelConfig } from '../subscriptionConfig';
+import { formatSubscriptionDateRange } from '../subscriptionLib';
+import { Subscription } from '../subscriptionTypes';
 
 type PurchaseCardProps = {
   className?: string;
-};
+} & Subscription;
 
-export function PurchaseCard({ className }: PurchaseCardProps): JSX.Element {
+export function PurchaseCard({
+  className,
+  startedAt,
+  expiresAt,
+  plan,
+  status,
+  stream,
+}: PurchaseCardProps): JSX.Element {
+  const { statusText, iconComponent } = subscriptionLabelConfig[status];
+
   return (
     <StyledPurchaseCardWrapper className={className}>
       <StyledHeader>
-        <StyledTitle>Базовый тариф</StyledTitle>
-        <StyledActiveStatus>
-          <img src={slashCircleIconSrc} />
-          Неактивен
+        <StyledTitle statusType={status}>{planLabels[plan]}</StyledTitle>
+        <StyledActiveStatus statusType={status}>
+          {iconComponent}
+          {statusText}
         </StyledActiveStatus>
       </StyledHeader>
       <StyledFooter>
-        <StyledStream>Поток 1</StyledStream>
-        <StyledDate>1 янв — 1 фев 2025</StyledDate>
+        <StyledStream statusType={status}>Поток {stream}</StyledStream>
+        <StyledDate>
+          {formatSubscriptionDateRange(startedAt, expiresAt)}
+        </StyledDate>
       </StyledFooter>
     </StyledPurchaseCardWrapper>
   );
@@ -52,12 +65,14 @@ const StyledFooter = styled.div`
   align-items: center;
 `;
 
-const StyledTitle = styled.h2`
+const StyledTitle = styled.h2<{ statusType: Subscription['status'] }>`
+  color: ${({ statusType }) =>
+    statusType === 'active' ? '#373737' : '#8A8AAA'};
   font-size: 18px;
   font-weight: 700;
 `;
 
-const StyledActiveStatus = styled.div`
+const StyledActiveStatus = styled.div<{ statusType: Subscription['status'] }>`
   display: flex;
   align-items: center;
   gap: 4px;
@@ -65,10 +80,13 @@ const StyledActiveStatus = styled.div`
   padding: 6px 10px;
   border-radius: 20px;
 
+  color: ${({ statusType }) =>
+    statusType === 'active' ? '#FFFFFF' : '#8A8AAA'};
   font-size: 12px;
   font-weight: 600;
 
-  background-color: #eaeaf0;
+  background-color: ${({ statusType }) =>
+    statusType === 'active' ? '#00C964' : '#eaeaf0'};
 `;
 
 const StyledDate = styled.p`
@@ -80,11 +98,16 @@ const StyledDate = styled.p`
   font-weight: 600;
 `;
 
-const StyledStream = styled.div`
+const StyledStream = styled.div<{ statusType: Subscription['status'] }>`
   padding: 6px 12px;
-  border: 1px solid #817e95;
+  border-style: solid;
+  border-width: 1px;
+  border-color: ${({ statusType }) =>
+    statusType === 'active' ? '#7A66FF' : '#817e95'};
   border-radius: 8px;
 
+  color: ${({ statusType }) =>
+    statusType === 'active' ? '#7A66FF' : '#817e95'};
   font-size: 12px;
   font-weight: 600;
 `;
