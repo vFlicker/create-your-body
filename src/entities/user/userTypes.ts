@@ -1,4 +1,4 @@
-type User = {
+export type User = {
   bornDate: string;
   createdAt: string;
   debugMode: boolean;

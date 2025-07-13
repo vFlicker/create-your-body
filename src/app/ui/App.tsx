@@ -6,6 +6,7 @@ import { userSession } from '~/shared/libs/userSession';
 import { Loader } from '~/shared/ui/atoms/Loader';
 
 import { useInitTgApp } from '../hooks/useInitTgApp';
+import { useInitUserStream } from '../hooks/useInitUserStream';
 import { withProviders } from '../providers';
 import { Routing } from './Routing';
 
@@ -14,6 +15,8 @@ function App(): JSX.Element {
 
   const currentUserSession = userSession.getCurrentUser();
   const { user, isUserPending } = useUser();
+
+  useInitUserStream(user);
 
   if (!user || isUserPending || !currentUserSession) {
     return <Loader />;
