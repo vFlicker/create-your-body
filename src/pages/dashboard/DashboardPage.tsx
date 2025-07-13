@@ -29,7 +29,7 @@ export function DashboardPage(): JSX.Element {
       title={`Привет, ${user.name}!`}
       hasStreamInfo={true}
       hasBackButton={false}
-      component={<ContinueWorkoutCard />}
+      component={hasAccess ? <ContinueWorkoutCard /> : <></>}
     >
       <StyledContentWrapper>
         {!hasAccess && <NoAccessMessage />}
