@@ -68,72 +68,35 @@ export const getTitleCards = (subscriptions: Subscription[]) => {
         isHighlight: false,
       },
     );
-  } else if (secondSteamBase && thirdSteamIsPro) {
-    pageContainersData.push(
-      {
-        title: 'Тренировки',
-        iconSrc: musculesIconSrc,
-        disabled: false,
-        to: AppRoute.TrainingCategories,
-        isHighlight: false,
-      },
-      {
-        title: 'Питание',
-        iconSrc: foodIconSrc,
-        disabled: false,
-        to: AppRoute.FoodCategories,
-        isHighlight: false,
-      },
-      {
-        to: AppRoute.LectureWeeks,
-        title: 'Лекции',
-        iconSrc: bookIconSrc,
-        labelText: 'Доступно с 12 июля',
-        disabled: true,
-        isHighlight: false,
-      },
-      {
-        to: AppRoute.RecipeCategories,
-        title: 'Рецепты',
-        iconSrc: recipesIconSrc,
-        labelText: 'Доступно с 12 июля',
-        disabled: true,
-        isHighlight: false,
-      },
-    );
   } else if (thirdSteamIsPro) {
-    // all open 12 июля
+    // all open
     pageContainersData.push(
       {
         to: AppRoute.TrainingCategories,
         title: 'Тренировки',
         iconSrc: musculesIconSrc,
-        labelText: 'Доступно с 12 июля',
-        disabled: true,
+        disabled: false,
         isHighlight: false,
       },
       {
         to: AppRoute.FoodCategories,
         title: 'Питание',
         iconSrc: foodIconSrc,
-        labelText: 'Доступно с 12 июля',
-        disabled: true,
+        disabled: false,
         isHighlight: false,
       },
       {
         to: AppRoute.LectureWeeks,
         title: 'Лекции',
         iconSrc: bookIconSrc,
-        labelText: 'Доступно с 12 июля',
-        disabled: true,
+        disabled: false,
         isHighlight: false,
       },
       {
         to: AppRoute.RecipeCategories,
         title: 'Рецепты',
         iconSrc: recipesIconSrc,
-        labelText: 'Доступно с 12 июля',
-        disabled: true,
+        disabled: false,
         isHighlight: false,
       },
     );
@@ -178,16 +141,14 @@ export const getTitleCards = (subscriptions: Subscription[]) => {
         to: AppRoute.TrainingCategories,
         title: 'Тренировки',
         iconSrc: musculesIconSrc,
-        labelText: 'Доступно с 12 июля',
-        disabled: true,
+        disabled: false,
         isHighlight: false,
       },
       {
         to: AppRoute.FoodCategories,
         title: 'Питание',
         iconSrc: foodIconSrc,
-        labelText: 'Доступно с 12 июля',
-        disabled: true,
+        disabled: false,
         isHighlight: false,
       },
       {
