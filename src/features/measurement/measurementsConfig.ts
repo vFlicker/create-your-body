@@ -8,6 +8,6 @@ export const measurementsInputs = [
     label: 'Живот',
     postfix: 'см',
   },
-  { name: 'hips', step: undefined, label: 'Бёдера', postfix: 'см' },
+  { name: 'hips', step: undefined, label: 'Бёдра', postfix: 'см' },
   { name: 'legs', step: undefined, label: 'Нога', postfix: 'см' },
 ] as const;

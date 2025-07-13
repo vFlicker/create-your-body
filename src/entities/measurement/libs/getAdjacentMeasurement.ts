@@ -5,7 +5,7 @@ const measurementTranslations: Record<MeasurementType, string> = {
   chest: 'Грудь',
   waist: 'Талия',
   abdominalCircumference: 'Живот',
-  hips: 'Бёдера',
+  hips: 'Бёдра',
   legs: 'Нога',
 } as const;
 
