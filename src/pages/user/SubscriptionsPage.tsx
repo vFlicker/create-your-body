@@ -13,8 +13,6 @@ export function SubscriptionsPage(): JSX.Element {
 
   const hasSubscriptions = subscriptions.length > 0;
 
-  console.log({ subscriptions });
-
   return (
     <UserPageLayout isLoading={false}>
       <StyledContentWrapper>
