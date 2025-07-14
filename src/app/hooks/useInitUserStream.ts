@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { User, useStreamStore } from '~/entities/user';
 
 export const useInitUserStream = (user?: User): void => {
-  const { stream, setStream } = useStreamStore();
+  const { setStream } = useStreamStore();
 
   useEffect(() => {
     if (!user) return;
@@ -15,5 +15,5 @@ export const useInitUserStream = (user?: User): void => {
       const maxStream = Math.max(...streams);
       setStream(maxStream);
     }
-  }, [user, stream, setStream]);
+  }, [user, setStream]);
 };
