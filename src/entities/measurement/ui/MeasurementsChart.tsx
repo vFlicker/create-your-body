@@ -29,7 +29,7 @@ export function MeasurementsChart(): JSX.Element {
 
   const { measurementsList, isMeasurementsListPending } = useMeasurementsList();
 
-  if (isMeasurementsListPending) return <Loader />;
+  if (!measurementsList && isMeasurementsListPending) return <Loader />;
 
   const handleMeasurementChange = (direction: 'prev' | 'next') => {
     const adjacentMeasurementKey = getAdjacentMeasurementKey(
@@ -42,7 +42,7 @@ export function MeasurementsChart(): JSX.Element {
 
   const measurementData = measurementsList
     ?.slice(0, MAX_MEASUREMENT_LIMIT)
-    .toReversed()
+    .reverse()
     .map((measurement) => ({
       date: new Date(measurement.createdAt).toLocaleDateString('ru-RU', {
         month: 'short',
