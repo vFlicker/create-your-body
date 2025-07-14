@@ -58,7 +58,7 @@ const StyledInput = styled.input`
   border-radius: 50px;
 
   color: #0d0d0d;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
 
   background-color: #f2f2f2;
