@@ -44,12 +44,13 @@ export function CreateMeasurementsForm(): JSX.Element {
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
       <StyledFieldset>
         <StyledInputsWrapper>
-          {measurementsInputs.map(({ label, name, step }) => (
+          {measurementsInputs.map(({ label, name, step, inputMode, type }) => (
             <Input
               key={name}
               label={label}
-              type="number"
               step={step}
+              type={type}
+              inputMode={inputMode}
               placeholder="0"
               {...register(name)}
               error={errors[name]?.message}

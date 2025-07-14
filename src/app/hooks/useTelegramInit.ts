@@ -1,8 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { userSession } from '~/shared/libs/userSession';
 
-export const useInitTgApp = () => {
+export const useTelegramInit = (): boolean => {
+  const [isInitialized, setIsInitialized] = useState(false);
+
   useEffect(() => {
     if (Telegram && Telegram.WebApp) {
       const { WebApp } = Telegram;
@@ -17,5 +19,9 @@ export const useInitTgApp = () => {
         userQuery: initData,
       });
     }
+
+    setIsInitialized(true);
   }, []);
+
+  return isInitialized;
 };

@@ -51,11 +51,13 @@ export function CreateDailyReportForm({
           {dailyReportInputs.map((inputsGroup) => {
             return (
               <StyledInputsGroup columns={inputsGroup.length}>
-                {inputsGroup.map(({ label, name }) => (
+                {inputsGroup.map(({ label, name, type, inputMode, step }) => (
                   <Input
                     key={name}
                     label={label}
-                    type="number"
+                    type={type}
+                    inputMode={inputMode}
+                    step={step}
                     placeholder="0"
                     {...register(name)}
                     error={errors[name]?.message}

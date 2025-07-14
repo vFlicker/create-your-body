@@ -2,23 +2,20 @@ import { JSX } from 'react';
 
 import { ModalHost } from '~/entities/modal';
 import { useUser } from '~/entities/user';
-import { userSession } from '~/shared/libs/userSession';
 import { Loader } from '~/shared/ui/atoms/Loader';
 
-import { useInitTgApp } from '../hooks/useInitTgApp';
 import { useInitUserStream } from '../hooks/useInitUserStream';
+import { useTelegramInit } from '../hooks/useTelegramInit';
 import { withProviders } from '../providers';
 import { Routing } from './Routing';
 
 function App(): JSX.Element {
-  useInitTgApp();
-
-  const currentUserSession = userSession.getCurrentUser();
-  const { user, isUserPending } = useUser();
+  const isTgInitialized = useTelegramInit();
+  const { user, isUserPending } = useUser({ enabled: isTgInitialized });
 
   useInitUserStream(user);
 
-  if (!user || isUserPending || !currentUserSession) {
+  if (!isTgInitialized || !user || isUserPending) {
     return <Loader />;
   }
 
