@@ -3,11 +3,14 @@ import { ComponentProps, JSX } from 'react';
 
 import { Color } from '~/shared/theme/colors';
 
-type RadioProps = ComponentProps<typeof StyledInput> & {
+type RadioButtonProps = ComponentProps<typeof StyledInput> & {
   label: string;
 };
 
-export function Radio({ label, ...props }: RadioProps): JSX.Element {
+export function RadioButton({
+  label,
+  ...props
+}: RadioButtonProps): JSX.Element {
   return (
     <StyledLabel>
       <StyledInput type="radio" {...props} />

@@ -10,7 +10,10 @@ import { showTelegramAlert } from '~/shared/libs/telegram';
 import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/atoms/Button';
 import { Input } from '~/shared/ui/molecules/Input';
-import { Radio, RadioGroup } from '~/shared/ui/molecules/radio';
+import {
+  RadioButton,
+  RadioButtonGroup,
+} from '~/shared/ui/molecules/radioButton';
 
 import { EditProfile, editProfileSchema } from '../models/editProfileSchema';
 
@@ -85,9 +88,13 @@ export function EditProfileForm({
           name="sex"
           control={control}
           render={({ field: { name, value: selectedValue, onChange } }) => (
-            <RadioGroup label="Пол" name={name} error={errors.sex?.message}>
+            <RadioButtonGroup
+              label="Пол"
+              name={name}
+              error={errors.sex?.message}
+            >
               {GENDER_OPTIONS.map(({ label, value }) => (
-                <Radio
+                <RadioButton
                   key={label}
                   label={label}
                   value={value}
@@ -95,7 +102,7 @@ export function EditProfileForm({
                   onChange={onChange}
                 />
               ))}
-            </RadioGroup>
+            </RadioButtonGroup>
           )}
         />
 

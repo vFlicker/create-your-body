@@ -3,7 +3,7 @@ import { Children, cloneElement, JSX } from 'react';
 
 import { ErrorText } from '../../atoms/ErrorText';
 
-type RadioGroupProps = {
+type RadioButtonGroupProps = {
   className?: string;
   label: string;
   name: string;
@@ -11,25 +11,25 @@ type RadioGroupProps = {
   children: JSX.Element | JSX.Element[];
 };
 
-export function RadioGroup({
+export function RadioButtonGroup({
   className,
   label,
   name,
   error,
   children,
-}: RadioGroupProps): JSX.Element {
+}: RadioButtonGroupProps): JSX.Element {
   return (
-    <StyledRadioGroup className={className}>
+    <StyledRadioButtonGroup className={className}>
       <Label>{label}</Label>
-      <StyledRadioWrapper>
+      <StyledRadioButtonWrapper>
         {Children.map(children, (child) => cloneElement(child, { name }))}
-      </StyledRadioWrapper>
+      </StyledRadioButtonWrapper>
       {error && <ErrorText>{error}</ErrorText>}
-    </StyledRadioGroup>
+    </StyledRadioButtonGroup>
   );
 }
 
-const StyledRadioGroup = styled.div`
+const StyledRadioButtonGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -40,7 +40,7 @@ const Label = styled.div`
   color: #0d0d0d;
 `;
 
-const StyledRadioWrapper = styled.div`
+const StyledRadioButtonWrapper = styled.div`
   display: flex;
   gap: 10px;
 `;
