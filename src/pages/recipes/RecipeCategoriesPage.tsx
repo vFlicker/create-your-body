@@ -32,7 +32,7 @@ export function RecipeCategoriesPage(): JSX.Element {
     navigate(`${AppRoute.RecipeCategories}/${category}`);
   };
 
-  const sortedCategories = recipeCategories?.toSorted((a, b) => {
+  const sortedCategories = recipeCategories?.slice().sort((a, b) => {
     const orderA = orderedCategory.get(a.name) ?? Infinity;
     const orderB = orderedCategory.get(b.name) ?? Infinity;
     return orderA - orderB;
