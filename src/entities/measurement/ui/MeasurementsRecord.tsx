@@ -7,7 +7,7 @@ import positiveDirectionIconSrc from '~/shared/assets/svg/arrow-narrow-up.svg';
 import neutralDirectionIconSrc from '~/shared/assets/svg/minus.svg';
 import { formatDateForView } from '~/shared/libs/format';
 import { AppRoute } from '~/shared/router';
-import { EditButton } from '~/shared/ui/molecules/EditButton';
+import { EditButton } from '~/shared/ui/molecules/buttons/EditButton';
 
 import { MeasurementRow } from '../libs/calculateMeasurementsHistory';
 import { DeltaDirection } from '../libs/getDeltaDirection';

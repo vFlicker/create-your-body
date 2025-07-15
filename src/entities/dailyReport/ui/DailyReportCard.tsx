@@ -3,10 +3,10 @@ import { isToday } from 'date-fns';
 import { JSX } from 'react';
 
 import arrowDownIconSrc from '~/shared/assets/svg/arrow-narrow-down.svg';
+import ForkIcon from '~/shared/assets/svg/fork.svg?react';
 import EditIcon from '~/shared/assets/svg/pencil.svg?react';
 import PlusIcon from '~/shared/assets/svg/plus.svg?react';
 import StepsIcon from '~/shared/assets/svg/run-green.svg?react';
-import ForkIcon from '~/shared/assets/svg/small-button.svg?react';
 import WeightIcon from '~/shared/assets/svg/weight.svg?react';
 import { formatNumberWithThousands } from '~/shared/libs/format';
 import { Color } from '~/shared/theme/colors';

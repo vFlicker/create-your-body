@@ -1,7 +1,7 @@
 import { JSX, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { BackButton } from '~/shared/ui/molecules/BackButton';
+import { BackButton } from '~/shared/ui/molecules/buttons/BackButton';
 
 const PREVIOUS_PAGE = -1;
 

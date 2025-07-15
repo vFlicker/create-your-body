@@ -3,7 +3,7 @@ import { Content } from '@radix-ui/react-dialog';
 import { JSX, MouseEvent } from 'react';
 
 import { CloseButton } from '~/shared/ui/atoms/CloseButton';
-import { BackButton } from '~/shared/ui/molecules/BackButton';
+import { BackButton } from '~/shared/ui/molecules/buttons/BackButton';
 
 import { useModalStore } from '../model/modalStore';
 

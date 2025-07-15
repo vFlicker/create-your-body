@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import PencilIcon from '../../assets/svg/pencil.svg?react';
-import { IconButton } from '../atoms/IconButton';
+import PencilIcon from '../../../assets/svg/pencil.svg?react';
+import { IconButton } from '../../atoms/IconButton';
 
 type EditButtonProps = {
   className?: string;
