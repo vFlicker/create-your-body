@@ -2,18 +2,36 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 
 import { TrainingCard } from '~/entities/workoutDiary';
+import { ExerciseCard } from '~/entities/workoutDiary/ui/ExerciseCard';
 import { Button } from '~/shared/ui/atoms/Button';
 
 export function WorkoutDiaryWidget(): JSX.Element {
   return (
     <StyledMeasurementsWidget>
       <StyledTitle>Дневник тренировок</StyledTitle>
+
+      <StyledExerciseCardList>
+        <ExerciseCard
+          positionNumber={1}
+          title="Подъём ног и таза"
+          approaches={[
+            { repetitions: 10, weight: 50 },
+            { repetitions: 8, weight: 55 },
+          ]}
+        />
+        <ExerciseCard
+          positionNumber={2}
+          title="Скручивания на скамье"
+          description="Добавьте подходы и повторения"
+        />
+      </StyledExerciseCardList>
+
       <StyledContentWrapper>
         <StyledListDescription>Последние тренировки</StyledListDescription>
-        <StyledList>
+        <StyledTrainingCardList>
           <TrainingCard />
           <TrainingCard />
-        </StyledList>
+        </StyledTrainingCardList>
         <Button color="accent" variant="outlined">
           Перейти в дневник
         </Button>
@@ -52,13 +70,24 @@ const StyledListDescription = styled.div`
   line-height: 120%;
 `;
 
-const StyledList = styled.div`
+const StyledTrainingCardList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
 
   & > div:not(:last-child) {
     padding-bottom: 12px;
+    border-bottom: 1px solid #f0f0f3;
+  }
+`;
+
+const StyledExerciseCardList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  & > div:not(:last-child) {
+    padding-bottom: 16px;
     border-bottom: 1px solid #f0f0f3;
   }
 `;
