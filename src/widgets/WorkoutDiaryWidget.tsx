@@ -4,11 +4,43 @@ import { JSX } from 'react';
 import { TrainingCard } from '~/entities/workoutDiary';
 import { ExerciseCard } from '~/entities/workoutDiary/ui/ExerciseCard';
 import { Button } from '~/shared/ui/atoms/Button';
+import { Radio, RadioGroup } from '~/shared/ui/molecules/radio';
+
+const inputGroup = [
+  {
+    label: 'На пресс',
+    name: 'press',
+    options: [
+      { label: 'Подъём ног и таза', value: 'press' },
+      { label: 'Подъём ног и таза', value: 'legs' },
+      { label: 'Подъём ног и таза', value: 'back' },
+    ],
+  },
+  {
+    label: 'На ягодицы',
+    name: 'glutes',
+    options: [
+      { label: 'Скручивания на скамье', value: 'glutes' },
+      { label: 'Скручивания на скамье', value: 'legs' },
+      { label: 'Скручивания на скамье', value: 'back' },
+    ],
+  },
+];
 
 export function WorkoutDiaryWidget(): JSX.Element {
   return (
     <StyledMeasurementsWidget>
       <StyledTitle>Дневник тренировок</StyledTitle>
+
+      <StyledInputGroupList>
+        {inputGroup.map(({ label, name, options }) => (
+          <RadioGroup key={name} label={label} name={name}>
+            {options.map(({ label, value }) => (
+              <Radio key={label} label={label} value={value} />
+            ))}
+          </RadioGroup>
+        ))}
+      </StyledInputGroupList>
 
       <StyledExerciseCardList>
         <ExerciseCard
@@ -51,6 +83,12 @@ const StyledTitle = styled.h2`
   font-size: 18px;
   font-weight: 700;
   line-height: 120%;
+`;
+
+const StyledInputGroupList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 `;
 
 const StyledContentWrapper = styled.div`

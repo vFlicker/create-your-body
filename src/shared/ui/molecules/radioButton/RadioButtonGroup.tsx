@@ -20,7 +20,7 @@ export function RadioButtonGroup({
 }: RadioButtonGroupProps): JSX.Element {
   return (
     <StyledRadioButtonGroup className={className}>
-      <Label>{label}</Label>
+      <StyledLabel>{label}</StyledLabel>
       <StyledRadioButtonWrapper>
         {Children.map(children, (child) => cloneElement(child, { name }))}
       </StyledRadioButtonWrapper>
@@ -35,7 +35,7 @@ const StyledRadioButtonGroup = styled.div`
   gap: 8px;
 `;
 
-const Label = styled.div`
+const StyledLabel = styled.div`
   font-size: 12px;
   color: #0d0d0d;
 `;
