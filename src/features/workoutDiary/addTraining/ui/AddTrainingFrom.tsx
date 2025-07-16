@@ -7,12 +7,17 @@ import { Button } from '~/shared/ui/atoms/Button';
 import { AddButton } from '~/shared/ui/molecules/buttons/AddButton';
 import { Input } from '~/shared/ui/molecules/Input';
 
+import { AddApproachesFrom } from '../../addApproaches';
 import { AddExerciseForm } from '../../addExercise';
 
 export function AddTrainingFrom(): JSX.Element {
-  const { exercises, trainingName, setTrainingName } = useWorkoutDiaryStore();
+  const { exercises, name, setTrainingName, clear } = useWorkoutDiaryStore();
 
   const { openModal } = useModalStore();
+
+  const handleSaveClick = () => {
+    clear();
+  };
 
   return (
     <StyledAddTrainingFromWrapper>
@@ -22,12 +27,12 @@ export function AddTrainingFrom(): JSX.Element {
         <Input
           label="Название"
           placeholder="Новая тренировка"
-          value={trainingName}
-          onChange={(e) => setTrainingName(e.target.value)}
+          value={name}
+          onChange={(evt) => setTrainingName(evt.target.value)}
         />
       </StyledInputsWrapper>
 
-      <StyledStyledLessonsWrapper>
+      <StyledLessonsWrapper>
         <StyledLessons>Упражнения</StyledLessons>
 
         {exercises.length === 0 && (
@@ -40,17 +45,20 @@ export function AddTrainingFrom(): JSX.Element {
               <ExerciseCard
                 key={index}
                 positionNumber={index + 1}
-                title={exercise.title}
+                title={exercise.name}
                 approaches={exercise.approaches}
+                onEdit={() =>
+                  openModal(<AddApproachesFrom exerciseName={exercise.name} />)
+                }
               />
             ))}
           </StyledExerciseCardList>
         )}
 
         <AddButton onClick={() => openModal(<AddExerciseForm />)} />
-      </StyledStyledLessonsWrapper>
+      </StyledLessonsWrapper>
 
-      <StyledSaveButton color="accent" disabled>
+      <StyledSaveButton color="accent" onClick={handleSaveClick} disabled>
         Сохранить тренировку
       </StyledSaveButton>
     </StyledAddTrainingFromWrapper>
@@ -79,7 +87,7 @@ const StyledInputsWrapper = styled.div`
   gap: 16px;
 `;
 
-const StyledStyledLessonsWrapper = styled.div`
+const StyledLessonsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 24px;

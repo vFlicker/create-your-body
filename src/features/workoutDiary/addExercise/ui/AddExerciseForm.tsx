@@ -12,7 +12,7 @@ import { Radio, RadioGroup } from '~/shared/ui/molecules/radio';
 import { inputGroup } from '../addExerciseConfig';
 
 export function AddExerciseForm(): JSX.Element {
-  const { exercises, setExercises } = useWorkoutDiaryStore();
+  const { exercises, updateExercises } = useWorkoutDiaryStore();
   const { closeModal } = useModalStore();
 
   return (
@@ -23,27 +23,14 @@ export function AddExerciseForm(): JSX.Element {
       <StyledInputGroupList>
         {inputGroup.map(({ label, name, options }) => (
           <RadioGroup key={name} label={label} name={name}>
-            {options.map(({ label, value }) => (
+            {options.map(({ value }) => (
               <Radio
-                key={label}
-                label={label}
+                key={value}
+                label={value}
                 value={value}
-                checked={exercises.some((exercise) => exercise.title === value)}
-                onChange={() => {
-                  const isExerciseAdded = exercises.some(
-                    (exercise) => exercise.title === value,
-                  );
-                  if (isExerciseAdded) {
-                    setExercises(
-                      exercises.filter((exercise) => exercise.title !== value),
-                    );
-                  } else {
-                    setExercises([
-                      ...exercises,
-                      { title: value, approaches: [] },
-                    ]);
-                  }
-                }}
+                type="checkbox"
+                checked={exercises.some(({ name: title }) => title === value)}
+                onChange={() => updateExercises(value)}
               />
             ))}
           </RadioGroup>

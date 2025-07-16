@@ -5,25 +5,45 @@ type Approach = {
   weight: number;
 };
 
-type Exercise = {
-  title: string;
+export type Exercise = {
+  name: string;
   approaches: Approach[];
 };
 
 type WorkoutDiaryStore = {
-  trainingName: string;
+  name: string;
   exercises: Exercise[];
-
   setTrainingName: (name: string) => void;
-
-  setExercises: (exercises: Exercise[]) => void;
+  updateExercises: (name: string) => void;
+  clear: () => void;
 };
 
 export const useWorkoutDiaryStore = create<WorkoutDiaryStore>((set) => ({
-  trainingName: '',
+  name: '',
   exercises: [],
 
-  setTrainingName: (name: string) => set({ trainingName: name }),
+  setTrainingName: (name: string) => set({ name }),
 
-  setExercises: (exercises: Exercise[]) => set({ exercises }),
+  updateExercises: (name: string) => {
+    set(({ exercises }) => {
+      const exerciseIndex = exercises.findIndex(
+        (exercise) => exercise.name === name,
+      );
+
+      if (exerciseIndex !== -1) {
+        return {
+          exercises: [
+            ...exercises.slice(0, exerciseIndex),
+            ...exercises.slice(exerciseIndex + 1),
+          ],
+        };
+      }
+
+      return {
+        exercises: [...exercises, { name, approaches: [] }],
+      };
+    });
+  },
+
+  clear: () => set({ name: '', exercises: [] }),
 }));

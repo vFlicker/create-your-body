@@ -3,18 +3,18 @@ export const inputGroup = [
     label: 'На пресс',
     name: 'press',
     options: [
-      { label: 'Подъём ног и таза', value: 'press' },
-      { label: 'Подъём ног и таза', value: 'legs' },
-      { label: 'Подъём ног и таза', value: 'back' },
+      { value: 'Скручивания на скамье' },
+      { value: 'Подъем ног в висе' },
+      { value: 'Планка' },
     ],
   },
   {
     label: 'На ягодицы',
     name: 'glutes',
     options: [
-      { label: 'Скручивания на скамье', value: 'glutes1' },
-      { label: 'Скручивания на скамье', value: 'glutes2' },
-      { label: 'Скручивания на скамье', value: 'glutes3' },
+      { value: 'Приседания с гантелями' },
+      { value: 'Мостик' },
+      { value: 'Выпады' },
     ],
   },
 ];

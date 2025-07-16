@@ -8,6 +8,7 @@ type ExerciseCardProps = {
   title: string;
   positionNumber: number;
   approaches?: { repetitions: number; weight: number }[];
+  onEdit: () => void;
 };
 
 export function ExerciseCard({
@@ -15,6 +16,7 @@ export function ExerciseCard({
   title,
   positionNumber,
   approaches,
+  onEdit,
 }: ExerciseCardProps): JSX.Element {
   const hasApproaches = approaches && approaches.length > 0;
 
@@ -23,7 +25,7 @@ export function ExerciseCard({
       <StyledHeader>
         <StyledPositionNumber>{positionNumber}</StyledPositionNumber>
         <StyledTitle>{title}</StyledTitle>
-        <EditButton onClick={() => {}} />
+        <EditButton onClick={onEdit} />
       </StyledHeader>
       <StyledContent>
         {!hasApproaches && (
