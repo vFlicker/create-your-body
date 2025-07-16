@@ -7,7 +7,7 @@ type ExerciseCardProps = {
   className?: string;
   title: string;
   positionNumber: number;
-  approaches?: { repetitions: number; weight: number }[];
+  approaches?: { repetitions?: number; weight?: number }[];
   onEdit: () => void;
 };
 
@@ -37,7 +37,7 @@ export function ExerciseCard({
             {approaches?.map(({ repetitions, weight }, index) => (
               <Fragment key={index}>
                 <StyledText>{repetitions}</StyledText>
-                <StyledText>{weight} кг</StyledText>
+                {weight && <StyledText>{weight} кг</StyledText>}
               </Fragment>
             ))}
           </StyledApproachList>

@@ -18,11 +18,17 @@ type AddApproachesFromProps = {
 export function AddApproachesFrom({
   exerciseName,
 }: AddApproachesFromProps): JSX.Element {
-  const { exercises } = useWorkoutDiaryStore();
+  const {
+    exercises,
+    createApproach,
+    updateApproach,
+    duplicateApproach,
+    removeApproach,
+  } = useWorkoutDiaryStore();
 
   const { closeModal } = useModalStore();
 
-  const { name } = exercises.find(
+  const { approaches, name } = exercises.find(
     (exercises) => exercises.name === exerciseName,
   ) as Exercise;
 
@@ -31,25 +37,49 @@ export function AddApproachesFrom({
       <StyledTitle>{name}</StyledTitle>
       <StyledSubTitle>Подходы и повторения</StyledSubTitle>
 
-      <StyledApproachRow>
-        <StyledHeader>
-          <StyledApproachNumber>1</StyledApproachNumber>
+      {approaches.map(({ repetitions, weight }, index) => (
+        <StyledApproachRow key={index}>
+          <StyledHeader>
+            <StyledApproachNumber>{index + 1}</StyledApproachNumber>
 
-          <StyledActions>
-            <StyledDuplicateButton onClick={() => {}}>
-              Дублировать <PlusIcon strokeWidth="1.5" />
-            </StyledDuplicateButton>
-            <RemoveButton onClick={() => {}} />
-          </StyledActions>
-        </StyledHeader>
+            <StyledActions>
+              <StyledDuplicateButton
+                onClick={() => duplicateApproach(exerciseName, index)}
+              >
+                Дублировать <PlusIcon strokeWidth="1.5" />
+              </StyledDuplicateButton>
+              <RemoveButton
+                onClick={() => removeApproach(exerciseName, index)}
+              />
+            </StyledActions>
+          </StyledHeader>
 
-        <StyledFooter>
-          <Input label="Повторения" />
-          <Input label="Вес снаряда" />
-        </StyledFooter>
-      </StyledApproachRow>
+          <StyledFooter>
+            <Input
+              type="number"
+              label="Повторения"
+              value={repetitions}
+              onChange={(evt) =>
+                updateApproach(exerciseName, index, {
+                  repetitions: Number(evt.target.value),
+                })
+              }
+            />
+            <Input
+              type="number"
+              label="Вес снаряда"
+              value={weight}
+              onChange={(evt) =>
+                updateApproach(exerciseName, index, {
+                  weight: Number(evt.target.value),
+                })
+              }
+            />
+          </StyledFooter>
+        </StyledApproachRow>
+      ))}
 
-      <StyledAddButton onClick={() => {}} />
+      <StyledAddButton onClick={() => createApproach(exerciseName)} />
 
       <StyledSavedButton color="accent" onClick={closeModal}>
         Сохранить
