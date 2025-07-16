@@ -37,9 +37,9 @@ export function DashboardPage(): JSX.Element {
 
         {hasAccess && (
           <StyledWidgetListWrapper>
-            <WorkoutDiaryWidget />
             <HealthTrackerWidget />
             <MeasurementsWidget />
+            <WorkoutDiaryWidget />
           </StyledWidgetListWrapper>
         )}
       </StyledContentWrapper>

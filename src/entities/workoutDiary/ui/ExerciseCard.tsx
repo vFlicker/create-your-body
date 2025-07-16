@@ -7,7 +7,6 @@ type ExerciseCardProps = {
   className?: string;
   title: string;
   positionNumber: number;
-  description?: string;
   approaches?: { repetitions: number; weight: number }[];
 };
 
@@ -15,9 +14,10 @@ export function ExerciseCard({
   className,
   title,
   positionNumber,
-  description,
   approaches,
 }: ExerciseCardProps): JSX.Element {
+  const hasApproaches = approaches && approaches.length > 0;
+
   return (
     <StyledExerciseCard className={className}>
       <StyledHeader>
@@ -26,9 +26,11 @@ export function ExerciseCard({
         <EditButton onClick={() => {}} />
       </StyledHeader>
       <StyledContent>
-        {description && <StyledText>{description}</StyledText>}
+        {!hasApproaches && (
+          <StyledText>Добавьте подходы и повторения</StyledText>
+        )}
 
-        {approaches && (
+        {hasApproaches && (
           <StyledApproachList>
             {approaches?.map(({ repetitions, weight }, index) => (
               <Fragment key={index}>

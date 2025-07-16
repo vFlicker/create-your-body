@@ -11,9 +11,8 @@ import {
   calculateMeasurementsHistory,
   MeasurementsRecord,
 } from '~/entities/measurement';
-import PlusIcon from '~/shared/assets/svg/plus.svg?react';
 import { AppRoute } from '~/shared/router';
-import { Button } from '~/shared/ui/atoms/Button';
+import { AddButton } from '~/shared/ui/molecules/buttons/AddButton';
 import { ImageUploader } from '~/shared/ui/molecules/ImageUploader';
 import { EmptyPageLayout } from '~/widgets/layouts/EmptyPageLayout';
 
@@ -91,13 +90,7 @@ export function MeasurementsPage(): JSX.Element {
         </StyledSection>
 
         <StyledButtonWrapper>
-          <Button
-            color="accent"
-            iconComponent={<PlusIcon stroke="#ffffff" />}
-            onClick={() => navigate(AppRoute.CreateMeasurements)}
-          >
-            Записать замеры
-          </Button>
+          <AddButton onClick={() => navigate(AppRoute.CreateMeasurements)} />
         </StyledButtonWrapper>
       </StyledMeasurementsPageWrapper>
     </EmptyPageLayout>

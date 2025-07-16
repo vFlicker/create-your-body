@@ -7,23 +7,38 @@ import { RemoveButton } from '~/shared/ui/molecules/buttons/RemoveButton';
 
 type TrainingCardProps = {
   className?: string;
+  title: string;
+  exercisesCount: number;
+  date: string;
+  onRemove?: () => void;
+  onRepeat?: () => void;
 };
 
-export function TrainingCard({ className }: TrainingCardProps): JSX.Element {
+export function TrainingCard({
+  className,
+  title,
+  exercisesCount,
+  date,
+  onRemove,
+  onRepeat,
+}: TrainingCardProps): JSX.Element {
   return (
     <StyledTrainingCard className={className}>
       <StyledContent>
-        <StyledTitle>Тренировка</StyledTitle>
+        <StyledTitle>{title}</StyledTitle>
         <StyledExercise>
-          <ClockStopWatchIcon />5 упражнений
+          <ClockStopWatchIcon />
+          {exercisesCount} упражнений
         </StyledExercise>
-        <StyledDate>23 июн, пн</StyledDate>
+        <StyledDate>{date}</StyledDate>
       </StyledContent>
       <StyledActions>
-        <RemoveButton onClick={() => {}} />
-        <StyledRepeatButton>
-          Повторить <RefreshIcon stroke="#867EBD" />
-        </StyledRepeatButton>
+        {onRemove && <RemoveButton onClick={onRemove} />}
+        {onRepeat && (
+          <StyledRepeatButton onClick={onRepeat}>
+            Повторить <RefreshIcon stroke="#867EBD" />
+          </StyledRepeatButton>
+        )}
       </StyledActions>
     </StyledTrainingCard>
   );

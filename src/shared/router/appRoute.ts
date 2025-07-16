@@ -23,8 +23,8 @@ export const enum AppRoute {
   ProfileEdit = '/profile/edit',
   Subscriptions = '/profile/subscriptions',
 
-  // Communication routes
-  Communication = '/communication',
+  // Workout diary
+  WorkoutDiary = '/workout-diary',
 
   // Training routes
   TrainingCategories = '/training',
@@ -49,6 +49,6 @@ export const enum AppRoute {
   RecipeCategory = '/recipes/:category',
   RecipeDetails = '/recipes/:category/:id',
 
-  // Error routes
-  NoEntry = '/no-entry',
+  // Communication routes
+  Communication = '/communication',
 }

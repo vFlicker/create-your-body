@@ -31,6 +31,7 @@ import {
   TrainingWarmupPage,
 } from '~/pages/training';
 import { ProfileEditPage, ProfilePage, SubscriptionsPage } from '~/pages/user';
+import { WorkoutDiaryPage } from '~/pages/workoutDiary';
 import { AppRoute } from '~/shared/router';
 
 export function Routing(): JSX.Element {
@@ -55,6 +56,9 @@ export function Routing(): JSX.Element {
         <Route path={AppRoute.Profile} element={<ProfilePage />} />
         <Route path={AppRoute.ProfileEdit} element={<ProfileEditPage />} />
         <Route path={AppRoute.Subscriptions} element={<SubscriptionsPage />} />
+
+        {/* Workout Diary */}
+        <Route path={AppRoute.WorkoutDiary} element={<WorkoutDiaryPage />} />
 
         {/* Measurements */}
         <Route path={AppRoute.Measurements} element={<MeasurementsPage />} />
