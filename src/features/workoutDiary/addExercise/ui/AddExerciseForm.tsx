@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 
 import { useModalStore } from '~/entities/modal';
-import { useWorkoutDiaryStore } from '~/entities/workoutDiary';
 import PlusIcon from '~/shared/assets/svg/plus.svg?react';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
@@ -10,10 +9,16 @@ import { Input } from '~/shared/ui/molecules/Input';
 import { Radio, RadioGroup } from '~/shared/ui/molecules/radio';
 
 import { inputGroup } from '../addExerciseConfig';
+import { useExerciseSelection } from '../addExerciseLib';
 
 export function AddExerciseForm(): JSX.Element {
-  const { exercises, updateExercises } = useWorkoutDiaryStore();
+  const { toggleExercise, isExerciseSelected, selectedExercisesCount } =
+    useExerciseSelection();
   const { closeModal } = useModalStore();
+
+  const handleSaveClick = () => {
+    closeModal();
+  };
 
   return (
     <StyledAddExerciseForm>
@@ -29,8 +34,8 @@ export function AddExerciseForm(): JSX.Element {
                 label={value}
                 value={value}
                 type="checkbox"
-                checked={exercises.some(({ name: title }) => title === value)}
-                onChange={() => updateExercises(value)}
+                checked={isExerciseSelected(value)}
+                onChange={() => toggleExercise(value)}
               />
             ))}
           </RadioGroup>
@@ -42,10 +47,10 @@ export function AddExerciseForm(): JSX.Element {
           color="accent"
           variant="filled"
           iconComponent={<PlusIcon stroke="#ffffff" />}
-          disabled={exercises.length === 0}
-          onClick={() => closeModal()}
+          disabled={selectedExercisesCount === 0}
+          onClick={handleSaveClick}
         >
-          Добавить упражнения ({exercises.length})
+          Добавить упражнения ({selectedExercisesCount})
         </StyledSaveButton>
       </StyledButtonWrapper>
     </StyledAddExerciseForm>

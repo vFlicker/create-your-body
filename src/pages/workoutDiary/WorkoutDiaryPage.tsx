@@ -12,6 +12,10 @@ import { workoutDiaryPageConfig } from './workoutDiaryPageConfig';
 export function WorkoutDiaryPage(): JSX.Element {
   const { openModal } = useModalStore();
 
+  const handleAddTraining = () => {
+    openModal(<AddTrainingFrom />);
+  };
+
   return (
     <UserPageLayout>
       <StyledWorkoutDiaryPageWrapper>
@@ -19,7 +23,7 @@ export function WorkoutDiaryPage(): JSX.Element {
 
         <StyledTrainingList>
           {workoutDiaryPageConfig.map(({ date, trainings }) => (
-            <StyledTrainingItem>
+            <StyledTrainingItem key={date}>
               <StyledSubTitle>{date}</StyledSubTitle>
               <StyledTrainingCardList>
                 {trainings.map(({ id, title, exercisesCount, date }) => (
@@ -28,8 +32,12 @@ export function WorkoutDiaryPage(): JSX.Element {
                     title={title}
                     exercisesCount={exercisesCount}
                     date={date}
-                    onRemove={() => {}}
-                    onRepeat={() => {}}
+                    onRemove={() => {
+                      // TODO: Implement remove training
+                    }}
+                    onRepeat={() => {
+                      // TODO: Implement repeat training
+                    }}
                   />
                 ))}
               </StyledTrainingCardList>
@@ -38,7 +46,7 @@ export function WorkoutDiaryPage(): JSX.Element {
         </StyledTrainingList>
 
         <StyledButtonWrapper>
-          <AddButton onClick={() => openModal(<AddTrainingFrom />)} />
+          <AddButton onClick={handleAddTraining} />
         </StyledButtonWrapper>
       </StyledWorkoutDiaryPageWrapper>
     </UserPageLayout>

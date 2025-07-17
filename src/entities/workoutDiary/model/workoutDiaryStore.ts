@@ -5,52 +5,112 @@ type Approach = {
   weight?: number;
 };
 
-export type Exercise = {
+type Exercise = {
   name: string;
   approaches: Approach[];
 };
 
-type WorkoutDiaryStore = {
+type Training = {
   name: string;
   exercises: Exercise[];
+};
+
+type WorkoutDiaryStore = {
+  // Training state
+  training: Training;
+
+  // Training actions
   setTrainingName: (name: string) => void;
-  updateExercises: (name: string) => void;
+  clearTraining: () => void;
+
+  // Exercise actions
+  addExercise: (exerciseName: string) => void;
+  removeExercise: (exerciseName: string) => void;
+  toggleExercise: (exerciseName: string) => void;
+
+  // Approach actions
+  createApproach: (exerciseName: string) => void;
   updateApproach: (
     exerciseName: string,
     approachIndex: number,
     data: Partial<Approach>,
   ) => void;
-  createApproach: (exerciseName: string) => void;
   duplicateApproach: (exerciseName: string, approachIndex: number) => void;
   removeApproach: (exerciseName: string, approachIndex: number) => void;
-  clear: () => void;
+
+  // Computed values
+  isTrainingValid: () => boolean;
+  getExerciseByName: (name: string) => Exercise;
 };
 
-export const useWorkoutDiaryStore = create<WorkoutDiaryStore>((set) => ({
-  name: '',
-  exercises: [],
+export const useWorkoutDiaryStore = create<WorkoutDiaryStore>((set, get) => ({
+  training: {
+    name: '',
+    exercises: [],
+  },
 
-  setTrainingName: (name: string) => set({ name }),
+  // Training actions
+  setTrainingName: (name: string) => {
+    set((state) => ({
+      training: { ...state.training, name },
+    }));
+  },
 
-  updateExercises: (name: string) => {
-    set(({ exercises }) => {
-      const exerciseIndex = exercises.findIndex(
-        (exercise) => exercise.name === name,
-      );
-
-      if (exerciseIndex !== -1) {
-        return {
-          exercises: [
-            ...exercises.slice(0, exerciseIndex),
-            ...exercises.slice(exerciseIndex + 1),
-          ],
-        };
-      }
-
-      return {
-        exercises: [...exercises, { name, approaches: [] }],
-      };
+  clearTraining: () => {
+    set({
+      training: { name: '', exercises: [] },
     });
+  },
+
+  // Exercise actions
+  addExercise: (exerciseName: string) => {
+    set((state) => ({
+      training: {
+        ...state.training,
+        exercises: [
+          ...state.training.exercises,
+          { name: exerciseName, approaches: [] },
+        ],
+      },
+    }));
+  },
+
+  removeExercise: (exerciseName: string) => {
+    set((state) => ({
+      training: {
+        ...state.training,
+        exercises: state.training.exercises.filter(
+          (exercise) => exercise.name !== exerciseName,
+        ),
+      },
+    }));
+  },
+
+  toggleExercise: (exerciseName: string) => {
+    const { training, removeExercise, addExercise } = get();
+    const exerciseExists = training.exercises.some(
+      (exercise) => exercise.name === exerciseName,
+    );
+
+    if (exerciseExists) {
+      removeExercise(exerciseName);
+    } else {
+      addExercise(exerciseName);
+    }
+  },
+
+  // Approach actions
+  createApproach: (exerciseName: string) => {
+    set((state) => ({
+      training: {
+        ...state.training,
+        exercises: state.training.exercises.map((exercise) =>
+          exercise.name === exerciseName
+            ? { ...exercise, approaches: [...exercise.approaches, {}] }
+            : exercise,
+        ),
+      },
+    }));
   },
 
   updateApproach: (
@@ -58,80 +118,76 @@ export const useWorkoutDiaryStore = create<WorkoutDiaryStore>((set) => ({
     approachIndex: number,
     data: Partial<Approach>,
   ) => {
-    set(({ exercises }) => {
-      const exercise = exercises.find(
-        ({ name }) => name === exerciseName,
-      ) as Exercise;
-
-      const updatedApproaches = exercise.approaches.map((approach, index) =>
-        index === approachIndex ? { ...approach, ...data } : approach,
-      );
-
-      const updatedExercises = exercises.map((exercise) =>
-        exercise.name === exerciseName
-          ? { ...exercise, approaches: updatedApproaches }
-          : exercise,
-      );
-
-      return { exercises: updatedExercises };
-    });
-  },
-
-  createApproach: (exerciseName: string) => {
-    set(({ exercises }) => {
-      const newApproach: Approach = {};
-
-      return {
-        exercises: exercises.map((exercise) =>
-          exercise.name === exerciseName
-            ? { ...exercise, approaches: [...exercise.approaches, newApproach] }
-            : exercise,
-        ),
-      };
-    });
-  },
-
-  duplicateApproach: (exerciseName: string, approachIndex: number) => {
-    set(({ exercises }) => {
-      const exercise = exercises.find(
-        ({ name }) => name === exerciseName,
-      ) as Exercise;
-
-      const approachToDuplicate = exercise.approaches[approachIndex];
-      const duplicatedApproach = { ...approachToDuplicate };
-
-      return {
-        exercises: exercises.map((exercise) =>
+    set((state) => ({
+      training: {
+        ...state.training,
+        exercises: state.training.exercises.map((exercise) =>
           exercise.name === exerciseName
             ? {
                 ...exercise,
-                approaches: [...exercise.approaches, duplicatedApproach],
+                approaches: exercise.approaches.map((approach, index) =>
+                  index === approachIndex ? { ...approach, ...data } : approach,
+                ),
               }
             : exercise,
         ),
+      },
+    }));
+  },
+
+  duplicateApproach: (exerciseName: string, approachIndex: number) => {
+    set((state) => {
+      const exercise = state.training.exercises.find(
+        (ex) => ex.name === exerciseName,
+      ) as Exercise;
+
+      const approachToDuplicate = exercise.approaches[approachIndex];
+
+      return {
+        training: {
+          ...state.training,
+          exercises: state.training.exercises.map((ex) =>
+            ex.name === exerciseName
+              ? {
+                  ...ex,
+                  approaches: [...ex.approaches, { ...approachToDuplicate }],
+                }
+              : ex,
+          ),
+        },
       };
     });
   },
 
   removeApproach: (exerciseName: string, approachIndex: number) => {
-    set(({ exercises }) => {
-      const exercise = exercises.find(
-        ({ name }) => name === exerciseName,
-      ) as Exercise;
-
-      const updatedApproaches = exercise.approaches.filter(
-        (_, index) => index !== approachIndex,
-      );
-
-      return {
-        exercises: exercises.map((exercise) =>
+    set((state) => ({
+      training: {
+        ...state.training,
+        exercises: state.training.exercises.map((exercise) =>
           exercise.name === exerciseName
-            ? { ...exercise, approaches: updatedApproaches }
+            ? {
+                ...exercise,
+                approaches: exercise.approaches.filter(
+                  (_, index) => index !== approachIndex,
+                ),
+              }
             : exercise,
         ),
-      };
-    });
+      },
+    }));
   },
 
-  clear: () => set({ name: '', exercises: [] }),
+  // Computed values
+  isTrainingValid: () => {
+    const { training } = get();
+    return training.name.trim().length > 0 && training.exercises.length > 0;
+  },
+
+  getExerciseByName: (name: string) => {
+    const { training } = get();
+
+    return training.exercises.find(
+      (exercise) => exercise.name === name,
+    ) as Exercise;
+  },
 }));

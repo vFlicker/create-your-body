@@ -11,12 +11,15 @@ import { AddApproachesFrom } from '../../addApproaches';
 import { AddExerciseForm } from '../../addExercise';
 
 export function AddTrainingFrom(): JSX.Element {
-  const { exercises, name, setTrainingName, clear } = useWorkoutDiaryStore();
-
+  const { training, setTrainingName, isTrainingValid, clearTraining } =
+    useWorkoutDiaryStore();
   const { openModal } = useModalStore();
 
   const handleSaveClick = () => {
-    clear();
+    if (isTrainingValid()) {
+      // TODO: Implement save logic
+      clearTraining();
+    }
   };
 
   return (
@@ -27,23 +30,23 @@ export function AddTrainingFrom(): JSX.Element {
         <Input
           label="Название"
           placeholder="Новая тренировка"
-          value={name}
+          value={training.name}
           onChange={(evt) => setTrainingName(evt.target.value)}
         />
       </StyledInputsWrapper>
 
-      <StyledLessonsWrapper>
-        <StyledLessons>Упражнения</StyledLessons>
+      <StyledExercisesWrapper>
+        <StyledExercisesTitle>Упражнения</StyledExercisesTitle>
 
-        {exercises.length === 0 && (
-          <StyledText>Не добавлено ни одного упражнения</StyledText>
+        {training.exercises.length === 0 && (
+          <StyledEmptyText>Не добавлено ни одного упражнения</StyledEmptyText>
         )}
 
-        {exercises.length > 0 && (
+        {training.exercises.length > 0 && (
           <StyledExerciseCardList>
-            {exercises.map((exercise, index) => (
+            {training.exercises.map((exercise, index) => (
               <ExerciseCard
-                key={index}
+                key={exercise.name}
                 positionNumber={index + 1}
                 title={exercise.name}
                 approaches={exercise.approaches}
@@ -56,9 +59,13 @@ export function AddTrainingFrom(): JSX.Element {
         )}
 
         <AddButton onClick={() => openModal(<AddExerciseForm />)} />
-      </StyledLessonsWrapper>
+      </StyledExercisesWrapper>
 
-      <StyledSaveButton color="accent" onClick={handleSaveClick} disabled>
+      <StyledSaveButton
+        color="accent"
+        onClick={handleSaveClick}
+        disabled={!isTrainingValid()}
+      >
         Сохранить тренировку
       </StyledSaveButton>
     </StyledAddTrainingFromWrapper>
@@ -87,13 +94,13 @@ const StyledInputsWrapper = styled.div`
   gap: 16px;
 `;
 
-const StyledLessonsWrapper = styled.div`
+const StyledExercisesWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 24px;
 `;
 
-const StyledLessons = styled.div`
+const StyledExercisesTitle = styled.div`
   margin-bottom: 16px;
 
   color: #0d0d0d;
@@ -102,7 +109,7 @@ const StyledLessons = styled.div`
   line-height: 100%;
 `;
 
-const StyledText = styled.div`
+const StyledEmptyText = styled.div`
   color: #797996;
   font-size: 12px;
   line-height: 140%;

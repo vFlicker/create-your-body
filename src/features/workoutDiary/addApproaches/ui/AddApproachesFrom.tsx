@@ -2,16 +2,15 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 
 import { useModalStore } from '~/entities/modal';
-import { useWorkoutDiaryStore } from '~/entities/workoutDiary';
-import { Exercise } from '~/entities/workoutDiary/model/workoutDiaryStore';
 import PlusIcon from '~/shared/assets/svg/plus.svg?react';
 import { Button } from '~/shared/ui/atoms/Button';
 import { AddButton } from '~/shared/ui/molecules/buttons/AddButton';
 import { RemoveButton } from '~/shared/ui/molecules/buttons/RemoveButton';
 import { Input } from '~/shared/ui/molecules/Input';
 
+import { useApproachesManagement } from '../addApproachesLib';
+
 type AddApproachesFromProps = {
-  positionIndex?: number;
   exerciseName: string;
 };
 
@@ -19,18 +18,20 @@ export function AddApproachesFrom({
   exerciseName,
 }: AddApproachesFromProps): JSX.Element {
   const {
-    exercises,
+    exercise,
     createApproach,
     updateApproach,
     duplicateApproach,
     removeApproach,
-  } = useWorkoutDiaryStore();
+  } = useApproachesManagement(exerciseName);
 
   const { closeModal } = useModalStore();
 
-  const { approaches, name } = exercises.find(
-    (exercises) => exercises.name === exerciseName,
-  ) as Exercise;
+  const { approaches, name } = exercise;
+
+  const handleSaveClick = () => {
+    closeModal();
+  };
 
   return (
     <StyledAddApproachesFromWrapper>
@@ -43,14 +44,10 @@ export function AddApproachesFrom({
             <StyledApproachNumber>{index + 1}</StyledApproachNumber>
 
             <StyledActions>
-              <StyledDuplicateButton
-                onClick={() => duplicateApproach(exerciseName, index)}
-              >
+              <StyledDuplicateButton onClick={() => duplicateApproach(index)}>
                 Дублировать <PlusIcon strokeWidth="1.5" />
               </StyledDuplicateButton>
-              <RemoveButton
-                onClick={() => removeApproach(exerciseName, index)}
-              />
+              <RemoveButton onClick={() => removeApproach(index)} />
             </StyledActions>
           </StyledHeader>
 
@@ -58,32 +55,28 @@ export function AddApproachesFrom({
             <Input
               type="number"
               label="Повторения"
-              value={repetitions}
+              value={repetitions?.toString() || ''}
               onChange={(evt) =>
-                updateApproach(exerciseName, index, {
-                  repetitions: Number(evt.target.value),
-                })
+                updateApproach(index, 'repetitions', evt.target.value)
               }
             />
             <Input
               type="number"
               label="Вес снаряда"
-              value={weight}
+              value={weight?.toString() || ''}
               onChange={(evt) =>
-                updateApproach(exerciseName, index, {
-                  weight: Number(evt.target.value),
-                })
+                updateApproach(index, 'weight', evt.target.value)
               }
             />
           </StyledFooter>
         </StyledApproachRow>
       ))}
 
-      <StyledAddButton onClick={() => createApproach(exerciseName)} />
+      <StyledAddButton onClick={createApproach} />
 
-      <StyledSavedButton color="accent" onClick={closeModal}>
+      <StyledSaveButton color="accent" onClick={handleSaveClick}>
         Сохранить
-      </StyledSavedButton>
+      </StyledSaveButton>
     </StyledAddApproachesFromWrapper>
   );
 }
@@ -173,6 +166,6 @@ const StyledAddButton = styled(AddButton)`
   margin-bottom: 24px;
 `;
 
-const StyledSavedButton = styled(Button)`
+const StyledSaveButton = styled(Button)`
   margin-top: auto;
 `;
