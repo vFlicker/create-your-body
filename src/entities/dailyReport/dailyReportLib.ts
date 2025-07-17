@@ -1,4 +1,4 @@
-import { isSameDay } from 'date-fns';
+import { format } from 'date-fns';
 
 import { DailyReport } from './dailyReportTypes';
 
@@ -8,8 +8,11 @@ export const getReportForDate = (
 ): DailyReport | null => {
   if (!date || !dailyReports) return null;
 
+  const targetDate = format(date, 'yyyy-MM-dd');
+
   const reportForDate = dailyReports.find((report) => {
-    return isSameDay(new Date(report.date), date);
+    const reportDate = report.date.split('T')[0];
+    return reportDate === targetDate;
   });
 
   return reportForDate || null;
