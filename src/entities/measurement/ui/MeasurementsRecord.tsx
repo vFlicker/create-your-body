@@ -2,9 +2,9 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import negativeDirectionIconSrc from '~/shared/assets/svg/arrow-narrow-down.svg';
-import positiveDirectionIconSrc from '~/shared/assets/svg/arrow-narrow-up.svg';
-import neutralDirectionIconSrc from '~/shared/assets/svg/minus.svg';
+import DownArrowIcon from '~/shared/assets/svg/arrow-narrow-down.svg?react';
+import UpArrowIcon from '~/shared/assets/svg/arrow-narrow-up.svg?react';
+import MinusIcon from '~/shared/assets/svg/minus.svg?react';
 import { formatDateForView } from '~/shared/libs/format';
 import { AppRoute } from '~/shared/router';
 import { EditButton } from '~/shared/ui/molecules/EditButton';
@@ -19,10 +19,10 @@ type MeasurementsRecordProps = {
   measurements: MeasurementRow[];
 };
 
-const directionIconSrc: Record<DeltaDirection, string> = {
-  negative: negativeDirectionIconSrc,
-  positive: positiveDirectionIconSrc,
-  neutral: neutralDirectionIconSrc,
+const directionIcon: Record<DeltaDirection, JSX.Element> = {
+  up: <UpArrowIcon stroke="#F65C5C" />,
+  down: <DownArrowIcon stroke="#00BB13" />,
+  same: <MinusIcon stroke="#878787" />,
 };
 
 export function MeasurementsRecord({
@@ -53,7 +53,7 @@ export function MeasurementsRecord({
             <StyledRecord>
               {value}
               <span>{unit}</span>
-              <img src={directionIconSrc[deltaDirection]} />
+              {directionIcon[deltaDirection]}
             </StyledRecord>
           </StyledItem>
         ))}
