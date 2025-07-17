@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { JSX } from 'react';
+import { ChangeEvent, JSX, useState } from 'react';
 
 import { useModalStore } from '~/entities/modal';
 import { useExercises } from '~/entities/workoutDiary/api/useExercises';
@@ -13,12 +13,15 @@ import { Radio, RadioGroup } from '~/shared/ui/molecules/radio';
 import { useExerciseSelection } from '../addExerciseLib';
 
 export function AddExerciseForm(): JSX.Element {
+  const [searchValue, setSearchValue] = useState('');
+  const searchQuery = searchValue.length > 3 ? searchValue : undefined;
+
   const { toggleExercise, isExerciseSelected, selectedExercisesCount } =
     useExerciseSelection();
 
   const { closeModal } = useModalStore();
 
-  const { exercises, isExercisesPending } = useExercises();
+  const { exercises, isExercisesPending } = useExercises(searchQuery);
 
   if (!exercises || isExercisesPending) {
     return <Loader />;
@@ -28,10 +31,19 @@ export function AddExerciseForm(): JSX.Element {
     closeModal();
   };
 
+  const handleSearchChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(evt.target.value);
+  };
+
   return (
     <StyledAddExerciseForm>
       <StyledTitle>Добавить упражнения</StyledTitle>
-      <StyledInput label="Выберите упражнения" placeholder="Поиск" />
+      <StyledInput
+        label="Выберите упражнения"
+        placeholder="Поиск"
+        value={searchValue}
+        onChange={handleSearchChange}
+      />
 
       <StyledInputGroupList>
         {exercises.map(({ label, name, options }) => (
