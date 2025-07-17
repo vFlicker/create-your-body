@@ -2,19 +2,27 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 
 import { useModalStore } from '~/entities/modal';
+import { useExercises } from '~/entities/workoutDiary/api/useExercises';
 import PlusIcon from '~/shared/assets/svg/plus.svg?react';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
+import { Loader } from '~/shared/ui/atoms/Loader';
 import { Input } from '~/shared/ui/molecules/Input';
 import { Radio, RadioGroup } from '~/shared/ui/molecules/radio';
 
-import { inputGroup } from '../addExerciseConfig';
 import { useExerciseSelection } from '../addExerciseLib';
 
 export function AddExerciseForm(): JSX.Element {
   const { toggleExercise, isExerciseSelected, selectedExercisesCount } =
     useExerciseSelection();
+
   const { closeModal } = useModalStore();
+
+  const { exercises, isExercisesPending } = useExercises();
+
+  if (!exercises || isExercisesPending) {
+    return <Loader />;
+  }
 
   const handleSaveClick = () => {
     closeModal();
@@ -26,7 +34,7 @@ export function AddExerciseForm(): JSX.Element {
       <StyledInput label="Выберите упражнения" placeholder="Поиск" />
 
       <StyledInputGroupList>
-        {inputGroup.map(({ label, name, options }) => (
+        {exercises.map(({ label, name, options }) => (
           <RadioGroup key={name} label={label} name={name}>
             {options.map(({ value }) => (
               <Radio
