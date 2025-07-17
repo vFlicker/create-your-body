@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { isToday } from 'date-fns';
+import { isPast, isToday } from 'date-fns';
 import { JSX } from 'react';
 
 import arrowDownIconSrc from '~/shared/assets/svg/arrow-narrow-down.svg';
@@ -17,7 +17,7 @@ import { getReportForDate } from '../dailyReportLib';
 
 type DailyReportCardProps = {
   date: Date;
-  onCreateReportClick: () => void;
+  onCreateReportClick: (date: Date) => void;
   onEditReportClick: (id: number) => void;
 };
 
@@ -28,18 +28,18 @@ export function DailyReportCard({
 }: DailyReportCardProps): JSX.Element {
   const { dailyReports, isDailyReportsPending } = useDailyReports();
 
-  const isTodayReport = isToday(date);
-  const reportForToday = getReportForDate(date, dailyReports);
+  const isTodayOrPastReport = isToday(date) || isPast(date);
+  const reportForDate = getReportForDate(date, dailyReports);
 
-  const showButton = reportForToday || isTodayReport;
-  const report = !isDailyReportsPending ? reportForToday : null;
+  const showButton = isTodayOrPastReport;
+  const report = !isDailyReportsPending ? reportForDate : null;
   const hasReport = !!report;
 
   const handleButtonClick = () => {
     if (hasReport) {
       onEditReportClick(report.id);
-    } else if (isTodayReport) {
-      onCreateReportClick();
+    } else if (isTodayOrPastReport) {
+      onCreateReportClick(date);
     }
   };
 

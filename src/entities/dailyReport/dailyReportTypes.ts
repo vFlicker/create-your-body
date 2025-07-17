@@ -12,6 +12,7 @@ export type DailyReport = {
 };
 
 export type CreateDailyReportDto = {
+  date: string;
   weight?: number;
   calories?: number;
   proteins?: number;
