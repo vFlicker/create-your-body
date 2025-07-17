@@ -5,7 +5,7 @@ import { DailyReportCard, DailyReportHistory } from '~/entities/dailyReport';
 import { useModalStore } from '~/entities/modal';
 
 type ShowDailyReportHistoryProps = {
-  onCreateReportClick: () => void;
+  onCreateReportClick: (date: Date) => void;
   onEditReportClick: (id: number) => void;
 };
 

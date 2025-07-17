@@ -4,6 +4,7 @@ import { JSX } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useCreateDailyReport } from '~/entities/dailyReport';
+import { formatDateForApi } from '~/shared/libs/format';
 import { showTelegramAlert } from '~/shared/libs/telegram';
 import { Button } from '~/shared/ui/atoms/Button';
 import { ErrorText } from '~/shared/ui/atoms/ErrorText';
@@ -16,10 +17,12 @@ import {
 } from '../model/createDailyReportSchema';
 
 type CreateDailyReportFormProps = {
+  date: Date;
   onFormSubmit?: () => void;
 };
 
 export function CreateDailyReportForm({
+  date,
   onFormSubmit,
 }: CreateDailyReportFormProps): JSX.Element {
   const { createDailyReport, isCreateDailyReportPending } =
@@ -33,9 +36,11 @@ export function CreateDailyReportForm({
     resolver: zodResolver(createDailyReportSchema),
   });
 
-  const onSubmit = async (data: CreateDailyReport) => {
+  const onSubmit = async (report: CreateDailyReport) => {
     try {
-      await createDailyReport({ dto: data });
+      await createDailyReport({
+        dto: { ...report, date: formatDateForApi(date) },
+      });
       onFormSubmit?.();
     } catch (error) {
       console.error('Error saving daily report:', error);

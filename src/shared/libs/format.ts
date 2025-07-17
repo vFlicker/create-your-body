@@ -1,6 +1,28 @@
-export const formatDateForApi = (date: string): string => {
-  const [day, month, year] = date.split('.');
-  return `${year}-${month}-${day}T00:00:00.000Z`;
+import { parse } from 'date-fns';
+
+/**
+ * input: 31.12.2025 or new Date('2025-12-31')
+ *
+ * output: 2025-12-31T00:00:00.000Z
+ */
+export const formatDateForApi = (date: string | Date): string => {
+  let parsedDate: Date;
+
+  if (typeof date === 'string') {
+    parsedDate = parse(date, 'dd.MM.yyyy', new Date());
+  } else {
+    parsedDate = date;
+  }
+
+  const utcDate = new Date(
+    Date.UTC(
+      parsedDate.getFullYear(),
+      parsedDate.getMonth(),
+      parsedDate.getDate(),
+    ),
+  );
+
+  return utcDate.toISOString();
 };
 
 export const formatDateForView = (date: Date | string): string => {
