@@ -20,7 +20,7 @@ export function RadioGroup({
 }: RadioGroupProps): JSX.Element {
   return (
     <StyledRadioGroup className={className}>
-      <Label>{label}</Label>
+      <StyledLabel>{label}</StyledLabel>
       <StyledRadioWrapper>
         {Children.map(children, (child) => cloneElement(child, { name }))}
       </StyledRadioWrapper>
@@ -32,15 +32,50 @@ export function RadioGroup({
 const StyledRadioGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 28px;
 `;
 
-const Label = styled.div`
-  font-size: 12px;
-  color: #0d0d0d;
+const StyledLabel = styled.div`
+  position: relative;
+
+  color: #7a66ff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 120%;
+
+  &::after {
+    content: '';
+
+    position: absolute;
+    bottom: -12px;
+    left: 0;
+
+    width: 100%;
+    height: 1px;
+
+    background-color: #f0f0f3;
+  }
 `;
 
 const StyledRadioWrapper = styled.div`
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  gap: 32px;
+
+  & label:not(:last-child) {
+    position: relative;
+
+    &::after {
+      content: '';
+
+      position: absolute;
+      bottom: -16px;
+      left: 0;
+
+      width: 100%;
+      height: 1px;
+
+      background-color: #f0f0f3;
+    }
+  }
 `;

@@ -7,7 +7,7 @@ import UpArrowIcon from '~/shared/assets/svg/arrow-narrow-up.svg?react';
 import MinusIcon from '~/shared/assets/svg/minus.svg?react';
 import { formatDateForView } from '~/shared/libs/format';
 import { AppRoute } from '~/shared/router';
-import { EditButton } from '~/shared/ui/molecules/EditButton';
+import { EditButton } from '~/shared/ui/molecules/buttons/EditButton';
 
 import { MeasurementRow } from '../libs/calculateMeasurementsHistory';
 import { DeltaDirection } from '../libs/getDeltaDirection';

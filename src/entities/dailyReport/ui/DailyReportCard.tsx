@@ -2,12 +2,13 @@ import styled from '@emotion/styled';
 import { isPast, isToday } from 'date-fns';
 import { JSX } from 'react';
 
+
+import ForkIcon from '~/shared/assets/svg/fork.svg?react';
 import DownArrowIcon from '~/shared/assets/svg/arrow-narrow-down.svg?react';
 import UpArrowIcon from '~/shared/assets/svg/arrow-narrow-up.svg?react';
 import EditIcon from '~/shared/assets/svg/pencil.svg?react';
 import PlusIcon from '~/shared/assets/svg/plus.svg?react';
 import StepsIcon from '~/shared/assets/svg/run-green.svg?react';
-import ForkIcon from '~/shared/assets/svg/small-button.svg?react';
 import WeightIcon from '~/shared/assets/svg/weight.svg?react';
 import { formatNumberWithThousands } from '~/shared/libs/format';
 import { Color } from '~/shared/theme/colors';

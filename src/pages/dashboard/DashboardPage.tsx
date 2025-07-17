@@ -7,6 +7,7 @@ import { ContinueWorkoutCard } from '~/features/training/continueWorkout';
 import { HealthTrackerWidget } from '~/widgets/HealthTrackerWidget';
 import { CommonPageLayout } from '~/widgets/layouts/CommonPageLayout';
 import { MeasurementsWidget } from '~/widgets/MeasurementsWidget';
+import { WorkoutDiaryWidget } from '~/widgets/WorkoutDiaryWidget';
 
 import { NoAccessMessage } from './ui/NoAccessMessage';
 
@@ -38,6 +39,7 @@ export function DashboardPage(): JSX.Element {
           <StyledWidgetListWrapper>
             <HealthTrackerWidget />
             <MeasurementsWidget />
+            <WorkoutDiaryWidget />
           </StyledWidgetListWrapper>
         )}
       </StyledContentWrapper>

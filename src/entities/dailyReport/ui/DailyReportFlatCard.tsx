@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
+import ForkIcon from '~/shared/assets/svg/fork.svg?react';
 import StepsIcon from '~/shared/assets/svg/run-green.svg?react';
-import ForkIcon from '~/shared/assets/svg/small-button.svg?react';
 import WeightIcon from '~/shared/assets/svg/weight.svg?react';
 import { formatNumberWithThousands } from '~/shared/libs/format';
 import { Color } from '~/shared/theme/colors';

@@ -1,0 +1,172 @@
+import { create } from 'zustand';
+import { immer } from 'zustand/middleware/immer';
+
+type Approach = {
+  repetitions?: number;
+  weight?: number;
+};
+
+type Exercise = {
+  name: string;
+  approaches: Approach[];
+};
+
+type Training = {
+  name: string;
+  exercises: Exercise[];
+};
+
+type WorkoutDiaryStore = {
+  // Training state
+  training: Training;
+
+  // Training actions
+  setTrainingName: (name: string) => void;
+  clearTraining: () => void;
+
+  // Exercise actions
+  addExercise: (exerciseName: string) => void;
+  removeExercise: (exerciseName: string) => void;
+  toggleExercise: (exerciseName: string) => void;
+
+  // Approach actions
+  createApproach: (exerciseName: string) => void;
+  updateApproach: (
+    exerciseName: string,
+    approachIndex: number,
+    data: Partial<Approach>,
+  ) => void;
+  duplicateApproach: (exerciseName: string, approachIndex: number) => void;
+  removeApproach: (exerciseName: string, approachIndex: number) => void;
+
+  // Computed values
+  isTrainingValid: () => boolean;
+  getExerciseByName: (name: string) => Exercise;
+};
+
+export const useWorkoutDiaryStore = create<WorkoutDiaryStore>()(
+  immer((set, get) => ({
+    training: {
+      name: '',
+      exercises: [],
+    },
+
+    // Training actions
+    setTrainingName: (name: string) => {
+      set((state) => {
+        state.training.name = name;
+      });
+    },
+
+    clearTraining: () => {
+      set((state) => {
+        state.training.name = '';
+        state.training.exercises = [];
+      });
+    },
+
+    // Exercise actions
+    addExercise: (exerciseName: string) => {
+      set((state) => {
+        state.training.exercises.push({
+          name: exerciseName,
+          approaches: [],
+        });
+      });
+    },
+
+    removeExercise: (exerciseName: string) => {
+      set((state) => {
+        const index = state.training.exercises.findIndex(
+          (exercise) => exercise.name === exerciseName,
+        );
+
+        if (index !== -1) {
+          state.training.exercises.splice(index, 1);
+        }
+      });
+    },
+
+    toggleExercise: (exerciseName: string) => {
+      const { training, removeExercise, addExercise } = get();
+
+      const exerciseExists = training.exercises.some(
+        (exercise) => exercise.name === exerciseName,
+      );
+
+      if (exerciseExists) {
+        removeExercise(exerciseName);
+      } else {
+        addExercise(exerciseName);
+      }
+    },
+
+    // Approach actions
+    createApproach: (exerciseName: string) => {
+      set((state) => {
+        const exercise = state.training.exercises.find(
+          (ex) => ex.name === exerciseName,
+        );
+
+        if (exercise) {
+          exercise.approaches.push({});
+        }
+      });
+    },
+
+    updateApproach: (
+      exerciseName: string,
+      approachIndex: number,
+      data: Partial<Approach>,
+    ) => {
+      set((state) => {
+        const exercise = state.training.exercises.find(
+          (ex) => ex.name === exerciseName,
+        );
+
+        if (exercise && exercise.approaches[approachIndex]) {
+          Object.assign(exercise.approaches[approachIndex], data);
+        }
+      });
+    },
+
+    duplicateApproach: (exerciseName: string, approachIndex: number) => {
+      set((state) => {
+        const exercise = state.training.exercises.find(
+          (ex) => ex.name === exerciseName,
+        );
+
+        if (exercise && exercise.approaches[approachIndex]) {
+          const approachToDuplicate = exercise.approaches[approachIndex];
+          exercise.approaches.push({ ...approachToDuplicate });
+        }
+      });
+    },
+
+    removeApproach: (exerciseName: string, approachIndex: number) => {
+      set((state) => {
+        const exercise = state.training.exercises.find(
+          (ex) => ex.name === exerciseName,
+        );
+
+        if (exercise) {
+          exercise.approaches.splice(approachIndex, 1);
+        }
+      });
+    },
+
+    // Computed values
+    isTrainingValid: () => {
+      const { training } = get();
+      return training.name.trim().length > 0 && training.exercises.length > 0;
+    },
+
+    getExerciseByName: (name: string) => {
+      const { training } = get();
+
+      return training.exercises.find(
+        (exercise) => exercise.name === name,
+      ) as Exercise;
+    },
+  })),
+);
