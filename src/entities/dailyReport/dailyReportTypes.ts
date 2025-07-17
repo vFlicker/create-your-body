@@ -9,9 +9,14 @@ export type DailyReport = {
   carbs: number;
   steps: number;
   date: string;
+  weightChange: {
+    direction: 'up' | 'down' | 'same';
+    value: number;
+  };
 };
 
 export type CreateDailyReportDto = {
+  date: string;
   weight?: number;
   calories?: number;
   proteins?: number;

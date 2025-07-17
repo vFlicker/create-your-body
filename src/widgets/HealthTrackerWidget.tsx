@@ -17,8 +17,8 @@ export function HealthTrackerWidget(): JSX.Element {
 
   // We should use the handlers here
   // because ShowDailyReportHistory feature can't include another feature
-  const handleCreateReportClick = () => {
-    openModal(<CreateDailyReportForm onFormSubmit={closeModal} />);
+  const handleCreateReportClick = (date: Date) => {
+    openModal(<CreateDailyReportForm date={date} onFormSubmit={closeModal} />);
   };
 
   const handleUpdateReportClick = (id: number) => {

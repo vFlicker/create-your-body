@@ -1,9 +1,11 @@
 import styled from '@emotion/styled';
-import { isToday } from 'date-fns';
+import { isPast, isToday } from 'date-fns';
 import { JSX } from 'react';
 
-import arrowDownIconSrc from '~/shared/assets/svg/arrow-narrow-down.svg';
+
 import ForkIcon from '~/shared/assets/svg/fork.svg?react';
+import DownArrowIcon from '~/shared/assets/svg/arrow-narrow-down.svg?react';
+import UpArrowIcon from '~/shared/assets/svg/arrow-narrow-up.svg?react';
 import EditIcon from '~/shared/assets/svg/pencil.svg?react';
 import PlusIcon from '~/shared/assets/svg/plus.svg?react';
 import StepsIcon from '~/shared/assets/svg/run-green.svg?react';
@@ -17,8 +19,14 @@ import { getReportForDate } from '../dailyReportLib';
 
 type DailyReportCardProps = {
   date: Date;
-  onCreateReportClick: () => void;
+  onCreateReportClick: (date: Date) => void;
   onEditReportClick: (id: number) => void;
+};
+
+const directionIcon = {
+  up: <DownArrowIcon stroke="#CBFF52" />,
+  down: <UpArrowIcon stroke="#f66e5c" />,
+  same: <></>,
 };
 
 export function DailyReportCard({
@@ -28,18 +36,18 @@ export function DailyReportCard({
 }: DailyReportCardProps): JSX.Element {
   const { dailyReports, isDailyReportsPending } = useDailyReports();
 
-  const isTodayReport = isToday(date);
-  const reportForToday = getReportForDate(date, dailyReports);
+  const isTodayOrPastReport = isToday(date) || isPast(date);
+  const reportForDate = getReportForDate(date, dailyReports);
 
-  const showButton = reportForToday || isTodayReport;
-  const report = !isDailyReportsPending ? reportForToday : null;
+  const showButton = isTodayOrPastReport;
+  const report = !isDailyReportsPending ? reportForDate : null;
   const hasReport = !!report;
 
   const handleButtonClick = () => {
     if (hasReport) {
       onEditReportClick(report.id);
-    } else if (isTodayReport) {
-      onCreateReportClick();
+    } else if (isTodayOrPastReport) {
+      onCreateReportClick(date);
     }
   };
 
@@ -52,7 +60,7 @@ export function DailyReportCard({
           </StyledIconWrapper>
           <StyledMetricValue>
             {hasReport ? `${report?.weight}` : '-'} <span>кг</span>
-            {hasReport && <StyledArrowIcon src={arrowDownIconSrc} />}
+            {hasReport && directionIcon[report.weightChange.direction]}
           </StyledMetricValue>
         </StyledMetric>
         <StyledMetric>
@@ -166,11 +174,13 @@ const StyledMetricValue = styled.div`
     font-size: 10px;
     text-transform: uppercase;
   }
-`;
 
-const StyledArrowIcon = styled.img`
-  width: 12px;
-  height: 12px;
+  svg {
+    position: relative;
+    bottom: -2px;
+    width: 12px;
+    height: 12px;
+  }
 `;
 
 const StyledHorizontalDivider = styled.hr`

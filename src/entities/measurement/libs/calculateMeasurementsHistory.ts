@@ -47,7 +47,7 @@ export const calculateMeasurementsHistory = (
   measurements: Measurements[],
 ): MeasurementHistoryRecord[] => {
   const measurementHistory: MeasurementHistoryRecord[] = [];
-  const reversedMeasurements = measurements.toReversed();
+  const reversedMeasurements = [...measurements].reverse();
 
   for (let index = 0; index < reversedMeasurements.length; index++) {
     const currentMeasurement = reversedMeasurements[index];
@@ -77,5 +77,5 @@ export const calculateMeasurementsHistory = (
     });
   }
 
-  return measurementHistory.toReversed();
+  return [...measurementHistory].reverse();
 };
