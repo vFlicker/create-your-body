@@ -1,7 +1,7 @@
-export type DeltaDirection = 'positive' | 'negative' | 'neutral';
+export type DeltaDirection = 'up' | 'down' | 'same';
 
 export const getDeltaDirection = (delta: number): DeltaDirection => {
-  if (delta < 0) return 'negative';
-  if (delta > 0) return 'positive';
-  return 'neutral';
+  if (delta < 0) return 'down';
+  if (delta > 0) return 'up';
+  return 'same';
 };

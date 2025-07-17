@@ -2,6 +2,8 @@ import styled from '@emotion/styled';
 import { isPast, isToday } from 'date-fns';
 import { JSX } from 'react';
 
+import DownArrowIcon from '~/shared/assets/svg/arrow-narrow-down.svg?react';
+import UpArrowIcon from '~/shared/assets/svg/arrow-narrow-up.svg?react';
 import EditIcon from '~/shared/assets/svg/pencil.svg?react';
 import PlusIcon from '~/shared/assets/svg/plus.svg?react';
 import StepsIcon from '~/shared/assets/svg/run-green.svg?react';
@@ -18,6 +20,12 @@ type DailyReportCardProps = {
   date: Date;
   onCreateReportClick: (date: Date) => void;
   onEditReportClick: (id: number) => void;
+};
+
+const directionIcon = {
+  up: <DownArrowIcon stroke="#CBFF52" />,
+  down: <UpArrowIcon stroke="#f66e5c" />,
+  same: <></>,
 };
 
 export function DailyReportCard({
@@ -51,6 +59,7 @@ export function DailyReportCard({
           </StyledIconWrapper>
           <StyledMetricValue>
             {hasReport ? `${report?.weight}` : '-'} <span>кг</span>
+            {hasReport && directionIcon[report.weightChange.direction]}
           </StyledMetricValue>
         </StyledMetric>
         <StyledMetric>
@@ -163,6 +172,13 @@ const StyledMetricValue = styled.div`
   span {
     font-size: 10px;
     text-transform: uppercase;
+  }
+
+  svg {
+    position: relative;
+    bottom: -2px;
+    width: 12px;
+    height: 12px;
   }
 `;
 
