@@ -12,7 +12,7 @@ type Exercise = {
   approaches: Approach[];
 };
 
-type Training = {
+export type Training = {
   name: string;
   exercises: Exercise[];
 };
@@ -24,6 +24,7 @@ type WorkoutDiaryStore = {
   // Training actions
   setTrainingName: (name: string) => void;
   clearTraining: () => void;
+  setTrainingFromExisting: (training: Training) => void;
 
   // Exercise actions
   addExercise: (exerciseId: number, exerciseName: string) => void;
@@ -63,6 +64,12 @@ export const useWorkoutDiaryStore = create<WorkoutDiaryStore>()(
       set((state) => {
         state.training.name = '';
         state.training.exercises = [];
+      });
+    },
+
+    setTrainingFromExisting: (training: Training) => {
+      set((state) => {
+        state.training = training;
       });
     },
 

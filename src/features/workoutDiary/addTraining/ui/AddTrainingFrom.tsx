@@ -1,9 +1,14 @@
 import styled from '@emotion/styled';
-import { JSX } from 'react';
+import { JSX, useEffect } from 'react';
 
 import { useModalStore } from '~/entities/modal';
-import { ExerciseCard, useWorkoutDiaryStore } from '~/entities/workoutDiary';
+import {
+  ExerciseCard,
+  Training,
+  useWorkoutDiaryStore,
+} from '~/entities/workoutDiary';
 import { useCreateWorkoutReport } from '~/entities/workoutDiary';
+import { formatDateToISO } from '~/shared/libs/format';
 import { Button } from '~/shared/ui/atoms/Button';
 import { AddButton } from '~/shared/ui/molecules/buttons/AddButton';
 import { Input } from '~/shared/ui/molecules/Input';
@@ -11,18 +16,34 @@ import { Input } from '~/shared/ui/molecules/Input';
 import { AddApproachesFrom } from '../../addApproaches';
 import { AddExerciseForm } from '../../addExercise';
 
-export function AddTrainingFrom(): JSX.Element {
-  const { training, setTrainingName, isTrainingValid, clearTraining } =
-    useWorkoutDiaryStore();
+type AddTrainingFromProps = {
+  initialTraining?: Training;
+};
+
+export function AddTrainingFrom({
+  initialTraining,
+}: AddTrainingFromProps): JSX.Element {
   const { openModal, closeModal } = useModalStore();
+
+  const {
+    training,
+    setTrainingName,
+    isTrainingValid,
+    clearTraining,
+    setTrainingFromExisting,
+  } = useWorkoutDiaryStore();
 
   const { createWorkoutReport, isCreateWorkoutReportPending } =
     useCreateWorkoutReport();
 
+  useEffect(() => {
+    if (initialTraining) setTrainingFromExisting(initialTraining);
+  }, [initialTraining, setTrainingFromExisting]);
+
   const handleSaveClick = async () => {
     if (isTrainingValid()) {
       await createWorkoutReport({
-        dto: { ...training, date: '2024-07-18' },
+        dto: { ...training, date: formatDateToISO(new Date()) },
       });
       clearTraining();
       closeModal();
@@ -31,7 +52,9 @@ export function AddTrainingFrom(): JSX.Element {
 
   return (
     <StyledAddTrainingFromWrapper>
-      <StyledTitle>Новая тренировка</StyledTitle>
+      <StyledTitle>
+        {initialTraining ? 'Повторить тренировку' : 'Новая тренировка'}
+      </StyledTitle>
 
       <StyledInputsWrapper>
         <Input

@@ -1,20 +1,14 @@
 import { Pagination } from '~/shared/api';
 
-type Exercise = {
-  id: number;
-  value: string;
+type Approaches = {
+  repetitions?: number;
+  weight?: number;
 };
 
-export type GetExercisesResponse = {
-  success: boolean;
-  message: string;
-  data: {
-    exercises: {
-      label: string;
-      name: string;
-      options: Exercise[];
-    }[];
-  };
+type Exercise = {
+  id: number;
+  name: string;
+  approaches: Approaches[];
 };
 
 type WorkoutDiary = {
@@ -22,15 +16,14 @@ type WorkoutDiary = {
   userId: number;
   name: string;
   date: string;
-  exercises: {
-    name: string;
-    approaches: {
-      weight?: number;
-      repetitions?: number;
-    }[];
-  }[];
+  exercises: Exercise[];
   createdAt: string;
   updatedAt: string;
+};
+
+type Options = {
+  id: number;
+  value: string;
 };
 
 export type GetWorkoutReportsResponse = {
@@ -45,16 +38,21 @@ export type GetWorkoutReportsResponse = {
 export type CreateWorkoutReportDto = {
   name: string;
   date: string;
-  exercises: {
-    id: number;
-    name: string;
-    approaches: {
-      repetitions?: number;
-      weight?: number;
-    }[];
-  }[];
+  exercises: Exercise[];
 };
 
 export type RemoveWorkoutReportDto = {
   id: number;
+};
+
+export type GetExercisesResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    exercises: {
+      label: string;
+      name: string;
+      options: Options[];
+    }[];
+  };
 };

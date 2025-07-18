@@ -17,8 +17,7 @@ export function WorkoutDiaryPage(): JSX.Element {
   const { openModal } = useModalStore();
 
   const { workoutReports, isWorkoutReportsPending } = useWorkoutReports();
-  const { removeWorkoutReport, isRemoveWorkoutReportPending } =
-    useRemoveWorkoutReport();
+  const { removeWorkoutReport } = useRemoveWorkoutReport();
 
   const handleAddTraining = () => {
     openModal(<AddTrainingFrom />);
@@ -27,6 +26,13 @@ export function WorkoutDiaryPage(): JSX.Element {
   if (!workoutReports || isWorkoutReportsPending) {
     return <UserPageLayout isLoading={isWorkoutReportsPending} />;
   }
+
+  const handleRepeatTraining = (id: number) => {
+    const workoutToRepeat = workoutReports.find((workout) => workout.id === id);
+    if (workoutToRepeat) {
+      openModal(<AddTrainingFrom initialTraining={workoutToRepeat} />);
+    }
+  };
 
   return (
     <UserPageLayout>
@@ -46,9 +52,7 @@ export function WorkoutDiaryPage(): JSX.Element {
                     exercisesCount={exercises.length}
                     date={date}
                     onRemove={() => removeWorkoutReport({ dto: { id } })}
-                    onRepeat={() => {
-                      // TODO: Implement repeat training
-                    }}
+                    onRepeat={() => handleRepeatTraining(id)}
                   />
                 ))}
               </StyledTrainingCardList>
