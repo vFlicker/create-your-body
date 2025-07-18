@@ -48,14 +48,14 @@ export function AddExerciseForm(): JSX.Element {
       <StyledInputGroupList>
         {exercises.map(({ label, name, options }) => (
           <RadioGroup key={name} label={label} name={name}>
-            {options.map(({ value }) => (
+            {options.map(({ id, value }) => (
               <Radio
-                key={value}
+                key={id}
                 label={value}
                 value={value}
                 type="checkbox"
                 checked={isExerciseSelected(value)}
-                onChange={() => toggleExercise(value)}
+                onChange={() => toggleExercise(id, value)}
               />
             ))}
           </RadioGroup>

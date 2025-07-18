@@ -7,6 +7,7 @@ type Approach = {
 };
 
 type Exercise = {
+  id: number;
   name: string;
   approaches: Approach[];
 };
@@ -25,9 +26,9 @@ type WorkoutDiaryStore = {
   clearTraining: () => void;
 
   // Exercise actions
-  addExercise: (exerciseName: string) => void;
+  addExercise: (exerciseId: number, exerciseName: string) => void;
   removeExercise: (exerciseName: string) => void;
-  toggleExercise: (exerciseName: string) => void;
+  toggleExercise: (exerciseId: number, exerciseName: string) => void;
 
   // Approach actions
   createApproach: (exerciseName: string) => void;
@@ -66,9 +67,10 @@ export const useWorkoutDiaryStore = create<WorkoutDiaryStore>()(
     },
 
     // Exercise actions
-    addExercise: (exerciseName: string) => {
+    addExercise: (exerciseId: number, exerciseName: string) => {
       set((state) => {
         state.training.exercises.push({
+          id: exerciseId,
           name: exerciseName,
           approaches: [],
         });
@@ -87,7 +89,7 @@ export const useWorkoutDiaryStore = create<WorkoutDiaryStore>()(
       });
     },
 
-    toggleExercise: (exerciseName: string) => {
+    toggleExercise: (exerciseId: number, exerciseName: string) => {
       const { training, removeExercise, addExercise } = get();
 
       const exerciseExists = training.exercises.some(
@@ -97,7 +99,7 @@ export const useWorkoutDiaryStore = create<WorkoutDiaryStore>()(
       if (exerciseExists) {
         removeExercise(exerciseName);
       } else {
-        addExercise(exerciseName);
+        addExercise(exerciseId, exerciseName);
       }
     },
 

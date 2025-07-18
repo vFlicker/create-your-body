@@ -3,6 +3,7 @@ import { JSX } from 'react';
 
 import { useModalStore } from '~/entities/modal';
 import { ExerciseCard, useWorkoutDiaryStore } from '~/entities/workoutDiary';
+import { useCreateWorkoutReport } from '~/entities/workoutDiary';
 import { Button } from '~/shared/ui/atoms/Button';
 import { AddButton } from '~/shared/ui/molecules/buttons/AddButton';
 import { Input } from '~/shared/ui/molecules/Input';
@@ -13,12 +14,18 @@ import { AddExerciseForm } from '../../addExercise';
 export function AddTrainingFrom(): JSX.Element {
   const { training, setTrainingName, isTrainingValid, clearTraining } =
     useWorkoutDiaryStore();
-  const { openModal } = useModalStore();
+  const { openModal, closeModal } = useModalStore();
 
-  const handleSaveClick = () => {
+  const { createWorkoutReport, isCreateWorkoutReportPending } =
+    useCreateWorkoutReport();
+
+  const handleSaveClick = async () => {
     if (isTrainingValid()) {
-      // TODO: Implement save logic
+      await createWorkoutReport({
+        dto: { ...training, date: '2024-07-18' },
+      });
       clearTraining();
+      closeModal();
     }
   };
 
@@ -64,7 +71,7 @@ export function AddTrainingFrom(): JSX.Element {
       <StyledSaveButton
         color="accent"
         onClick={handleSaveClick}
-        disabled={!isTrainingValid()}
+        disabled={!isTrainingValid() || isCreateWorkoutReportPending}
       >
         Сохранить тренировку
       </StyledSaveButton>

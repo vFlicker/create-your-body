@@ -3,10 +3,12 @@ import { JSX } from 'react';
 
 import ClockStopWatchIcon from '~/shared/assets/svg/clock-stopwatch.svg?react';
 import RefreshIcon from '~/shared/assets/svg/refresh.svg?react';
+import { formatDateForView } from '~/shared/libs/format';
 import { RemoveButton } from '~/shared/ui/molecules/buttons/RemoveButton';
 
 type TrainingCardProps = {
   className?: string;
+  id: number;
   title: string;
   exercisesCount: number;
   date: string;
@@ -30,7 +32,7 @@ export function TrainingCard({
           <ClockStopWatchIcon />
           {exercisesCount} упражнений
         </StyledExercise>
-        <StyledDate>{date}</StyledDate>
+        <StyledDate>{formatDateForView(date)}</StyledDate>
       </StyledContent>
       <StyledActions>
         {onRemove && <RemoveButton onClick={onRemove} />}
@@ -108,7 +110,7 @@ const StyledActions = styled.div`
   padding: 4px 0;
 `;
 
-const StyledRepeatButton = styled.div`
+const StyledRepeatButton = styled.button`
   display: flex;
   align-items: center;
   gap: 6px;

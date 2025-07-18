@@ -3,6 +3,10 @@ import { JSX } from 'react';
 
 import { useModalStore } from '~/entities/modal';
 import { TrainingCard } from '~/entities/workoutDiary';
+import {
+  useRemoveWorkoutReport,
+  useWorkoutReports,
+} from '~/entities/workoutDiary';
 import { AddTrainingFrom } from '~/features/workoutDiary/addTraining';
 import { AddButton } from '~/shared/ui/molecules/buttons/AddButton';
 import { UserPageLayout } from '~/widgets/layouts/UserPageLayout';
@@ -12,9 +16,17 @@ import { workoutDiaryPageConfig } from './workoutDiaryPageConfig';
 export function WorkoutDiaryPage(): JSX.Element {
   const { openModal } = useModalStore();
 
+  const { workoutReports, isWorkoutReportsPending } = useWorkoutReports();
+  const { removeWorkoutReport, isRemoveWorkoutReportPending } =
+    useRemoveWorkoutReport();
+
   const handleAddTraining = () => {
     openModal(<AddTrainingFrom />);
   };
+
+  if (!workoutReports || isWorkoutReportsPending) {
+    return <UserPageLayout isLoading={isWorkoutReportsPending} />;
+  }
 
   return (
     <UserPageLayout>
@@ -22,19 +34,18 @@ export function WorkoutDiaryPage(): JSX.Element {
         <StyledTitle>Дневник тренировок</StyledTitle>
 
         <StyledTrainingList>
-          {workoutDiaryPageConfig.map(({ date, trainings }) => (
+          {workoutDiaryPageConfig.map(({ date }) => (
             <StyledTrainingItem key={date}>
               <StyledSubTitle>{date}</StyledSubTitle>
               <StyledTrainingCardList>
-                {trainings.map(({ id, title, exercisesCount, date }) => (
+                {workoutReports.map(({ id, name, exercises, date }) => (
                   <TrainingCard
                     key={id}
-                    title={title}
-                    exercisesCount={exercisesCount}
+                    id={id}
+                    title={name}
+                    exercisesCount={exercises.length}
                     date={date}
-                    onRemove={() => {
-                      // TODO: Implement remove training
-                    }}
+                    onRemove={() => removeWorkoutReport({ dto: { id } })}
                     onRepeat={() => {
                       // TODO: Implement repeat training
                     }}
