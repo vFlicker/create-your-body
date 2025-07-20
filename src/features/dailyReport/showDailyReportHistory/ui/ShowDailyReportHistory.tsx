@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 
 import { DailyReportCard, DailyReportHistory } from '~/entities/dailyReport';
-import { useModalStore } from '~/entities/modal';
+import { Modal, useModalStore } from '~/entities/modal';
 
 type ShowDailyReportHistoryProps = {
   onCreateReportClick: (date: Date) => void;
@@ -17,20 +17,22 @@ export function ShowDailyReportHistory({
 
   const handleButtonClick = () => {
     openModal(
-      <StyledHistoryContent>
-        <StyledTitle>Мои показатели</StyledTitle>
+      <Modal>
+        <StyledHistoryContent>
+          <StyledTitle>Мои показатели</StyledTitle>
 
-        <StyledHealthTrackerWrapper>
-          <StyledSubtitle>Сегодня</StyledSubtitle>
-          <DailyReportCard
-            date={new Date()}
-            onCreateReportClick={onCreateReportClick}
-            onEditReportClick={onEditReportClick}
-          />
-        </StyledHealthTrackerWrapper>
+          <StyledHealthTrackerWrapper>
+            <StyledSubtitle>Сегодня</StyledSubtitle>
+            <DailyReportCard
+              date={new Date()}
+              onCreateReportClick={onCreateReportClick}
+              onEditReportClick={onEditReportClick}
+            />
+          </StyledHealthTrackerWrapper>
 
-        <DailyReportHistory onEditReportClick={onEditReportClick} />
-      </StyledHistoryContent>,
+          <DailyReportHistory onEditReportClick={onEditReportClick} />
+        </StyledHistoryContent>
+      </Modal>,
     );
   };
 

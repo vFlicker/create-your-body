@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { useModalStore } from '~/entities/modal';
+import { Modal, useModalStore } from '~/entities/modal';
 import { Notification } from '~/entities/notification';
 import notificationIconSrc from '~/shared/assets/svg/notification.svg';
 import { IconButton } from '~/shared/ui/atoms/IconButton';
@@ -15,7 +15,13 @@ export function ShowNotificationsButton(): JSX.Element {
         color="accent"
         iconSrc={notificationIconSrc}
         isActive
-        onClick={() => openModal(<Notification />)}
+        onClick={() =>
+          openModal(
+            <Modal>
+              <Notification />
+            </Modal>,
+          )
+        }
       />
     </>
   );

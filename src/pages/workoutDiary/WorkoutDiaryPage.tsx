@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { useModalStore } from '~/entities/modal';
-import { TrainingCard } from '~/entities/workoutDiary';
+import { Modal, useModalStore } from '~/entities/modal';
+import { TrainingCard, useWorkoutDiaryStore } from '~/entities/workoutDiary';
 import {
   useRemoveWorkoutReport,
   useWorkoutReports,
@@ -16,6 +16,8 @@ import { workoutDiaryPageConfig } from './workoutDiaryPageConfig';
 export function WorkoutDiaryPage(): JSX.Element {
   const { openModal } = useModalStore();
 
+  const { clearTraining } = useWorkoutDiaryStore();
+
   const { workoutReports, isWorkoutReportsPending } = useWorkoutReports();
   const { removeWorkoutReport } = useRemoveWorkoutReport();
 
@@ -27,28 +29,36 @@ export function WorkoutDiaryPage(): JSX.Element {
     const workoutToUpdate = workoutReports.find((workout) => workout.id === id);
     if (workoutToUpdate) {
       openModal(
-        <TrainingFrom
-          type="update"
-          title="Редактировать тренировку"
-          initialTraining={workoutToUpdate}
-        />,
+        <Modal onClose={clearTraining}>
+          <TrainingFrom
+            type="update"
+            title="Редактировать тренировку"
+            initialTraining={workoutToUpdate}
+          />
+        </Modal>,
       );
     }
   };
 
   const handleAddTraining = () => {
-    openModal(<TrainingFrom type="create" title="Новая тренировка" />);
+    openModal(
+      <Modal onClose={clearTraining}>
+        <TrainingFrom type="create" title="Новая тренировка" />
+      </Modal>,
+    );
   };
 
   const handleRepeatTraining = (id: number) => {
     const workoutToRepeat = workoutReports.find((workout) => workout.id === id);
     if (workoutToRepeat) {
       openModal(
-        <TrainingFrom
-          type="create"
-          title="Повторить тренировку"
-          initialTraining={workoutToRepeat}
-        />,
+        <Modal onClose={clearTraining}>
+          <TrainingFrom
+            type="create"
+            title="Повторить тренировку"
+            initialTraining={workoutToRepeat}
+          />
+        </Modal>,
       );
     }
   };

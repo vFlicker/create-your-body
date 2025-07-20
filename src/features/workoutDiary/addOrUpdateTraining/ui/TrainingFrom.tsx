@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { JSX, useEffect } from 'react';
 
-import { useModalStore } from '~/entities/modal';
+import { Modal, useModalStore } from '~/entities/modal';
 import {
   ExerciseCard,
   useWorkoutDiaryStore,
@@ -98,14 +98,26 @@ export function TrainingFrom({
                 title={exercise.name}
                 approaches={exercise.approaches}
                 onEdit={() =>
-                  openModal(<AddApproachesFrom exerciseName={exercise.name} />)
+                  openModal(
+                    <Modal>
+                      <AddApproachesFrom exerciseName={exercise.name} />
+                    </Modal>,
+                  )
                 }
               />
             ))}
           </StyledExerciseCardList>
         )}
 
-        <AddButton onClick={() => openModal(<AddExerciseForm />)} />
+        <AddButton
+          onClick={() =>
+            openModal(
+              <Modal>
+                <AddExerciseForm />
+              </Modal>,
+            )
+          }
+        />
       </StyledExercisesWrapper>
 
       <StyledSaveButton

@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 
 import { MeasurementOverview } from '~/entities/measurement/ui/MeasurementOverview';
-import { useModalStore } from '~/entities/modal';
+import { Modal, useModalStore } from '~/entities/modal';
 import { CreateMeasurementsForm } from '~/features/measurement/createMeasurements';
 import alertIconSrc from '~/shared/assets/svg/alert-circle.svg';
 import { UserPageLayout } from '~/widgets/layouts/UserPageLayout';
@@ -15,7 +15,13 @@ export function CreateMeasurementsPage(): JSX.Element {
       <StyledHeader>
         <StyledTitle>Мои параметры</StyledTitle>
         <StyledHowToMeasureButton
-          onClick={() => openModal(<MeasurementOverview />)}
+          onClick={() =>
+            openModal(
+              <Modal>
+                <MeasurementOverview />
+              </Modal>,
+            )
+          }
         >
           <img src={alertIconSrc} />
           <span>Как измерить?</span>
