@@ -14,7 +14,7 @@ import { useExerciseSelection } from '../addExerciseLib';
 
 export function AddExerciseForm(): JSX.Element {
   const [searchValue, setSearchValue] = useState('');
-  const searchQuery = searchValue.length > 3 ? searchValue : undefined;
+  const searchQuery = searchValue.length >= 3 ? searchValue : undefined;
 
   const { toggleExercise, isExerciseSelected, selectedExercisesCount } =
     useExerciseSelection();
@@ -23,10 +23,6 @@ export function AddExerciseForm(): JSX.Element {
 
   const { exercises, isExercisesPending } = useExercises(searchQuery);
 
-  if (!exercises || isExercisesPending) {
-    return <Loader />;
-  }
-
   const handleSaveClick = () => {
     closeModal();
   };
@@ -34,6 +30,8 @@ export function AddExerciseForm(): JSX.Element {
   const handleSearchChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(evt.target.value);
   };
+
+  const isLoading = !exercises || isExercisesPending;
 
   return (
     <StyledAddExerciseForm>
@@ -45,22 +43,26 @@ export function AddExerciseForm(): JSX.Element {
         onChange={handleSearchChange}
       />
 
-      <StyledInputGroupList>
-        {exercises.map(({ label, name, options }) => (
-          <RadioGroup key={name} label={label} name={name}>
-            {options.map(({ id, value }) => (
-              <Radio
-                key={id}
-                label={value}
-                value={value}
-                type="checkbox"
-                checked={isExerciseSelected(value)}
-                onChange={() => toggleExercise(id, value)}
-              />
-            ))}
-          </RadioGroup>
-        ))}
-      </StyledInputGroupList>
+      {isLoading && <Loader />}
+
+      {!isLoading && (
+        <StyledInputGroupList>
+          {exercises.map(({ label, name, options }) => (
+            <RadioGroup key={name} label={label} name={name}>
+              {options.map(({ id, value }) => (
+                <Radio
+                  key={id}
+                  label={value}
+                  value={value}
+                  type="checkbox"
+                  checked={isExerciseSelected(value)}
+                  onChange={() => toggleExercise(id, value)}
+                />
+              ))}
+            </RadioGroup>
+          ))}
+        </StyledInputGroupList>
+      )}
 
       <StyledButtonWrapper>
         <StyledSaveButton

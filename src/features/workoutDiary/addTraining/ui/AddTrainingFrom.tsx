@@ -8,7 +8,7 @@ import {
   useWorkoutDiaryStore,
 } from '~/entities/workoutDiary';
 import { useCreateWorkoutReport } from '~/entities/workoutDiary';
-import { formatDateToISO } from '~/shared/libs/format';
+import { formatDateToIsoLocal } from '~/shared/libs/format';
 import { Button } from '~/shared/ui/atoms/Button';
 import { AddButton } from '~/shared/ui/molecules/buttons/AddButton';
 import { Input } from '~/shared/ui/molecules/Input';
@@ -43,7 +43,7 @@ export function AddTrainingFrom({
   const handleSaveClick = async () => {
     if (isTrainingValid()) {
       await createWorkoutReport({
-        dto: { ...training, date: formatDateToISO(new Date()) },
+        dto: { ...training, date: formatDateToIsoLocal(new Date()) },
       });
       clearTraining();
       closeModal();

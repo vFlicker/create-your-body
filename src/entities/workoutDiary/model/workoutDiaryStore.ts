@@ -167,7 +167,7 @@ export const useWorkoutDiaryStore = create<WorkoutDiaryStore>()(
     // Computed values
     isTrainingValid: () => {
       const { training } = get();
-      return training.name.trim().length > 0 && training.exercises.length > 0;
+      return training.name.trim().length > 0;
     },
 
     getExerciseByName: (name: string) => {
