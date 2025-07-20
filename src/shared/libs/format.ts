@@ -17,7 +17,7 @@ export const formatDateForApi = (date: string | Date): string => {
   return parsedDate.toISOString();
 };
 
-export const formatDateForView = (date: Date | string): string => {
+export const formatDateToLocaleRu = (date: Date | string): string => {
   const parsedDate = typeof date === 'string' ? new Date(date) : date;
   return parsedDate.toLocaleDateString('ru-RU', {
     day: '2-digit',
@@ -26,10 +26,15 @@ export const formatDateForView = (date: Date | string): string => {
   });
 };
 
-export const formatDateToIsoLocal = (date: Date): string => {
+export const formatDateToLocalIso = (date: Date): string => {
   const year = date.getFullYear();
   const month = `${date.getMonth() + 1}`.padStart(2, '0');
   const day = `${date.getDate()}`.padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+export const convertRuDateToIso = (date: string): string => {
+  const [day, month, year] = date.split('.');
   return `${year}-${month}-${day}`;
 };
 

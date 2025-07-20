@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import DownArrowIcon from '~/shared/assets/svg/arrow-narrow-down.svg?react';
 import UpArrowIcon from '~/shared/assets/svg/arrow-narrow-up.svg?react';
 import MinusIcon from '~/shared/assets/svg/minus.svg?react';
-import { formatDateForView } from '~/shared/libs/format';
+import { formatDateToLocaleRu } from '~/shared/libs/format';
 import { AppRoute } from '~/shared/router';
 import { EditButton } from '~/shared/ui/molecules/buttons/EditButton';
 
@@ -42,7 +42,7 @@ export function MeasurementsRecord({
       <StyledHeader>
         <StyledHeaderTextWrapper>
           <StyledTitle>Отчёт #{reportNumber}</StyledTitle>
-          <StyledDate>{formatDateForView(date)}</StyledDate>
+          <StyledDate>{formatDateToLocaleRu(date)}</StyledDate>
         </StyledHeaderTextWrapper>
         <EditButton onClick={handleClick} />
       </StyledHeader>

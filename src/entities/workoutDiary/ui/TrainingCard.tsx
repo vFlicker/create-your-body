@@ -3,7 +3,7 @@ import { JSX, MouseEvent } from 'react';
 
 import ClockStopWatchIcon from '~/shared/assets/svg/clock-stopwatch.svg?react';
 import RefreshIcon from '~/shared/assets/svg/refresh.svg?react';
-import { formatDateForView } from '~/shared/libs/format';
+import { formatDateToLocaleRu } from '~/shared/libs/format';
 import { RemoveButton } from '~/shared/ui/molecules/buttons/RemoveButton';
 
 type TrainingCardProps = {
@@ -44,7 +44,7 @@ export function TrainingCard({
           <ClockStopWatchIcon />
           {exercisesCount} упражнений
         </StyledExercise>
-        <StyledDate>{formatDateForView(date)}</StyledDate>
+        <StyledDate>{formatDateToLocaleRu(date)}</StyledDate>
       </StyledContent>
       <StyledActions>
         {onRemove && <RemoveButton onClick={handleRemove} />}

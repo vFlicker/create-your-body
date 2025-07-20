@@ -5,7 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { useUpdateUser, useUser } from '~/entities/user';
-import { formatDateForApi, formatDateForView } from '~/shared/libs/format';
+import { formatDateForApi, formatDateToLocaleRu } from '~/shared/libs/format';
 import { showTelegramAlert } from '~/shared/libs/telegram';
 import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/atoms/Button';
@@ -44,7 +44,7 @@ export function EditProfileForm({
     resolver: zodResolver(editProfileSchema),
     defaultValues: {
       name: user?.name || '',
-      bornDate: formatDateForView(user?.bornDate || ''),
+      bornDate: formatDateToLocaleRu(user?.bornDate || ''),
       sex: user?.sex,
       phone: user?.phone || '+7',
     },

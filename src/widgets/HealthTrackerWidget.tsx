@@ -7,7 +7,7 @@ import { Modal, useModalStore } from '~/entities/modal';
 import { CreateDailyReportForm } from '~/features/dailyReport/createDailyReport';
 import { EditDailyReportForm } from '~/features/dailyReport/editDailyReport';
 import { ShowDailyReportHistory } from '~/features/dailyReport/showDailyReportHistory';
-import { formatDateForView } from '~/shared/libs/format';
+import { formatDateToLocaleRu } from '~/shared/libs/format';
 import { HorizontalDatePicker } from '~/shared/ui/molecules/HorizontalDatePicker';
 
 export function HealthTrackerWidget(): JSX.Element {
@@ -35,7 +35,7 @@ export function HealthTrackerWidget(): JSX.Element {
 
   const title = isToday(selectedDate)
     ? 'Сегодня'
-    : formatDateForView(selectedDate);
+    : formatDateToLocaleRu(selectedDate);
 
   return (
     <StyledHealthTrackerWrapper>

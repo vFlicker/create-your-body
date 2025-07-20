@@ -13,7 +13,6 @@ type Exercise = {
 };
 
 type Training = {
-  name: string;
   exercises: Exercise[];
 };
 
@@ -22,7 +21,6 @@ type WorkoutDiaryStore = {
   training: Training;
 
   // Training actions
-  setTrainingName: (name: string) => void;
   clearTraining: () => void;
   setTrainingFromExisting: (training: Training) => void;
 
@@ -42,27 +40,18 @@ type WorkoutDiaryStore = {
   removeApproach: (exerciseName: string, approachIndex: number) => void;
 
   // Computed values
-  isTrainingValid: () => boolean;
   getExerciseByName: (name: string) => Exercise;
 };
 
 export const useWorkoutDiaryStore = create<WorkoutDiaryStore>()(
   immer((set, get) => ({
     training: {
-      name: '',
       exercises: [],
     },
 
     // Training actions
-    setTrainingName: (name: string) => {
-      set((state) => {
-        state.training.name = name;
-      });
-    },
-
     clearTraining: () => {
       set((state) => {
-        state.training.name = '';
         state.training.exercises = [];
       });
     },
@@ -165,11 +154,6 @@ export const useWorkoutDiaryStore = create<WorkoutDiaryStore>()(
     },
 
     // Computed values
-    isTrainingValid: () => {
-      const { training } = get();
-      return training.name.trim().length > 0;
-    },
-
     getExerciseByName: (name: string) => {
       const { training } = get();
 

@@ -4,7 +4,7 @@ import { JSX } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useCreateDailyReport } from '~/entities/dailyReport';
-import { formatDateToIsoLocal } from '~/shared/libs/format';
+import { formatDateToLocalIso } from '~/shared/libs/format';
 import { showTelegramAlert } from '~/shared/libs/telegram';
 import { Button } from '~/shared/ui/atoms/Button';
 import { ErrorText } from '~/shared/ui/atoms/ErrorText';
@@ -39,7 +39,7 @@ export function CreateDailyReportForm({
   const onSubmit = async (report: CreateDailyReport) => {
     try {
       await createDailyReport({
-        dto: { ...report, date: formatDateToIsoLocal(date) },
+        dto: { ...report, date: formatDateToLocalIso(date) },
       });
       onFormSubmit?.();
     } catch (error) {

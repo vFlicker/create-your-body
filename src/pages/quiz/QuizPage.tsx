@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useUpdateUser, useUser } from '~/entities/user';
 import { ShowPrevPageButton } from '~/features/ShowPrevPageButton';
-import { formatDateForApi, formatDateForView } from '~/shared/libs/format';
+import { formatDateForApi, formatDateToLocaleRu } from '~/shared/libs/format';
 import { AppRoute } from '~/shared/router';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
@@ -39,7 +39,7 @@ export function QuizPage(): JSX.Element {
     if (user) {
       setName(user.name || '');
       setTel(user.phone ? user.phone.replace(/\s/g, '') : '');
-      setBirthday(user.bornDate ? formatDateForView(user.bornDate) : '');
+      setBirthday(user.bornDate ? formatDateToLocaleRu(user.bornDate) : '');
     }
   }, [user]);
 

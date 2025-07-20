@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { JSX, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
 import { Modal, useModalStore } from '~/entities/modal';
 import {
@@ -11,13 +13,18 @@ import {
   useCreateWorkoutReport,
   useUpdateWorkoutReport,
 } from '~/entities/workoutDiary';
-import { formatDateToIsoLocal } from '~/shared/libs/format';
+import { convertRuDateToIso, formatDateToLocaleRu } from '~/shared/libs/format';
 import { Button } from '~/shared/ui/atoms/Button';
 import { AddButton } from '~/shared/ui/molecules/buttons/AddButton';
 import { Input } from '~/shared/ui/molecules/Input';
 
 import { AddApproachesFrom } from '../../addApproaches';
 import { AddExerciseForm } from '../../addExercise';
+import {
+  AddOrUpdateTraining,
+  addOrUpdateTrainingSchema,
+} from '../model/addOrUpdateTrainingSchema';
+import { trainingFromInputs } from '../trainingFromConfig';
 
 type TrainingFromProps = {
   title: string;
@@ -32,13 +39,8 @@ export function TrainingFrom({
 }: TrainingFromProps): JSX.Element {
   const { openModal, closeModal } = useModalStore();
 
-  const {
-    training,
-    setTrainingName,
-    isTrainingValid,
-    clearTraining,
-    setTrainingFromExisting,
-  } = useWorkoutDiaryStore();
+  const { training, clearTraining, setTrainingFromExisting } =
+    useWorkoutDiaryStore();
 
   const { createWorkoutReport, isCreateWorkoutReportPending } =
     useCreateWorkoutReport();
@@ -46,40 +48,65 @@ export function TrainingFrom({
     useUpdateWorkoutReport();
 
   useEffect(() => {
-    if (initialTraining) setTrainingFromExisting(initialTraining);
+    if (initialTraining)
+      setTrainingFromExisting({
+        exercises: initialTraining.exercises,
+      });
   }, [initialTraining, setTrainingFromExisting]);
 
-  const handleSaveClick = async () => {
-    if (isTrainingValid()) {
-      if (type === 'update' && initialTraining) {
-        await updateWorkoutReport({
-          id: initialTraining.id,
-          dto: { ...training, date: formatDateToIsoLocal(new Date()) },
-        });
-      }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<AddOrUpdateTraining>({
+    resolver: zodResolver(addOrUpdateTrainingSchema),
+    defaultValues: {
+      name: initialTraining?.name,
+      date: initialTraining ? formatDateToLocaleRu(initialTraining.date) : '',
+    },
+  });
 
-      if (type === 'create') {
-        await createWorkoutReport({
-          dto: { ...training, date: formatDateToIsoLocal(new Date()) },
-        });
-      }
-
-      clearTraining();
-      closeModal();
+  const onSubmit = async (data: AddOrUpdateTraining) => {
+    if (type === 'update' && initialTraining) {
+      await updateWorkoutReport({
+        id: initialTraining.id,
+        dto: {
+          name: data.name,
+          date: convertRuDateToIso(data.date),
+          ...training,
+        },
+      });
     }
+
+    if (type === 'create') {
+      await createWorkoutReport({
+        dto: {
+          name: data.name,
+          date: convertRuDateToIso(data.date),
+          ...training,
+        },
+      });
+    }
+
+    clearTraining();
+    closeModal();
   };
 
   return (
-    <StyledTrainingFromWrapper>
+    <StyledTrainingFrom onSubmit={handleSubmit(onSubmit)}>
       <StyledTitle>{title}</StyledTitle>
 
       <StyledInputsWrapper>
-        <Input
-          label="Название"
-          placeholder="Новая тренировка"
-          value={training.name}
-          onChange={(evt) => setTrainingName(evt.target.value)}
-        />
+        {trainingFromInputs.map(({ label, name, type, placeholder }) => (
+          <Input
+            key={name}
+            label={label}
+            type={type}
+            placeholder={placeholder}
+            {...register(name)}
+            error={errors[name]?.message}
+          />
+        ))}
       </StyledInputsWrapper>
 
       <StyledExercisesWrapper>
@@ -121,21 +148,17 @@ export function TrainingFrom({
       </StyledExercisesWrapper>
 
       <StyledSaveButton
+        type="submit"
         color="accent"
-        onClick={handleSaveClick}
-        disabled={
-          !isTrainingValid() ||
-          isCreateWorkoutReportPending ||
-          isUpdateWorkoutReportPending
-        }
+        disabled={isCreateWorkoutReportPending || isUpdateWorkoutReportPending}
       >
         Сохранить тренировку
       </StyledSaveButton>
-    </StyledTrainingFromWrapper>
+    </StyledTrainingFrom>
   );
 }
 
-const StyledTrainingFromWrapper = styled.div`
+const StyledTrainingFrom = styled.form`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
