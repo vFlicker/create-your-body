@@ -11,7 +11,7 @@ type Exercise = {
   approaches: Approaches[];
 };
 
-export type WorkoutDiary = {
+type WorkoutDiary = {
   id: number;
   userId: number;
   name: string;
@@ -21,9 +21,29 @@ export type WorkoutDiary = {
   updatedAt: string;
 };
 
+export type WorkoutReportGroupedByDate = {
+  weekStart: string;
+  weekEnd: string;
+  label: string;
+  trainings: {
+    id: number;
+    title: string;
+    exercisesCount: number;
+    date: string;
+  }[];
+};
+
 type Options = {
   id: number;
   value: string;
+};
+
+export type GetWorkoutReportResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    workoutDiary: WorkoutDiary;
+  };
 };
 
 export type GetWorkoutReportsResponse = {
@@ -31,6 +51,15 @@ export type GetWorkoutReportsResponse = {
   message: string;
   data: {
     workoutDiaries: WorkoutDiary[];
+    pagination: Pagination;
+  };
+};
+
+export type GetWorkoutReportsGroupedByDateResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    workoutDiaries: WorkoutReportGroupedByDate[];
     pagination: Pagination;
   };
 };

@@ -3,6 +3,8 @@ import { httpClient } from '~/shared/api/httpClient';
 import {
   CreateWorkoutReportDto,
   GetExercisesResponse,
+  GetWorkoutReportResponse,
+  GetWorkoutReportsGroupedByDateResponse,
   GetWorkoutReportsResponse,
   RemoveWorkoutReportDto,
   UpdateWorkoutReportDto,
@@ -22,6 +24,18 @@ export const workoutDiaryApiService = {
     }
   },
 
+  getWorkoutReport: async (id: number) => {
+    try {
+      const { data } = await httpClient.get<GetWorkoutReportResponse>(
+        `/v2/api/client/user/workout-diary/${id}`,
+      );
+      return data.data.workoutDiary;
+    } catch (error) {
+      console.error('Error fetching workout report:', error);
+      throw error;
+    }
+  },
+
   getWorkoutReports: async () => {
     try {
       const { data } = await httpClient.get<GetWorkoutReportsResponse>(
@@ -30,6 +44,20 @@ export const workoutDiaryApiService = {
       return data.data;
     } catch (error) {
       console.error('Error fetching workout reports:', error);
+      throw error;
+    }
+  },
+
+  getWorkoutReportsGroupedByDate: async () => {
+    try {
+      const { data } =
+        await httpClient.get<GetWorkoutReportsGroupedByDateResponse>(
+          '/v2/api/client/user/workout-diary/weeks',
+        );
+
+      return data.data;
+    } catch (error) {
+      console.error('Error fetching workout reports grouped by date:', error);
       throw error;
     }
   },

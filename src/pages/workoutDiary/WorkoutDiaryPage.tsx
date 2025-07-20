@@ -2,37 +2,32 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 
 import { Dialog, Modal, useModalStore } from '~/entities/modal';
-import { TrainingCard, useWorkoutDiaryStore } from '~/entities/workoutDiary';
-import { useWorkoutReports } from '~/entities/workoutDiary';
+import {
+  TrainingCard,
+  useWorkoutDiaryStore,
+  useWorkoutReportsGroupedByDate,
+} from '~/entities/workoutDiary';
 import { TrainingFrom } from '~/features/workoutDiary/addOrUpdateTraining';
 import { RemoveTraining } from '~/features/workoutDiary/removeTraining';
 import { AddButton } from '~/shared/ui/molecules/buttons/AddButton';
 import { UserPageLayout } from '~/widgets/layouts/UserPageLayout';
-
-import { workoutDiaryPageConfig } from './workoutDiaryPageConfig';
 
 export function WorkoutDiaryPage(): JSX.Element {
   const { openModal } = useModalStore();
 
   const { clearTraining } = useWorkoutDiaryStore();
 
-  const { workoutReports, isWorkoutReportsPending } = useWorkoutReports();
+  const { workoutReports, isWorkoutReportsPending } =
+    useWorkoutReportsGroupedByDate();
 
   if (!workoutReports || isWorkoutReportsPending) {
     return <UserPageLayout isLoading={isWorkoutReportsPending} />;
   }
 
   const handleUpdateTraining = (id: number) => {
-    const workoutToUpdate = workoutReports.find((workout) => workout.id === id);
-    if (!workoutToUpdate) return;
-
     openModal(
       <Modal onClose={clearTraining}>
-        <TrainingFrom
-          type="update"
-          title="Редактировать тренировку"
-          initialTraining={workoutToUpdate}
-        />
+        <TrainingFrom type="update" title="Редактировать тренировку" id={id} />
       </Modal>,
     );
   };
@@ -46,27 +41,17 @@ export function WorkoutDiaryPage(): JSX.Element {
   };
 
   const handleRepeatTraining = (id: number) => {
-    const workoutToRepeat = workoutReports.find((workout) => workout.id === id);
-    if (!workoutToRepeat) return;
-
     openModal(
       <Modal onClose={clearTraining}>
-        <TrainingFrom
-          type="create"
-          title="Повторить тренировку"
-          initialTraining={workoutToRepeat}
-        />
+        <TrainingFrom type="create" title="Повторить тренировку" id={id} />
       </Modal>,
     );
   };
 
   const handleRemoveTraining = (id: number) => {
-    const workoutToRemove = workoutReports.find((workout) => workout.id === id);
-    if (!workoutToRemove) return;
-
     openModal(
       <Dialog>
-        <RemoveTraining id={id} title={workoutToRemove.name} />
+        <RemoveTraining id={id} />
       </Dialog>,
     );
   };
@@ -77,16 +62,16 @@ export function WorkoutDiaryPage(): JSX.Element {
         <StyledTitle>Дневник тренировок</StyledTitle>
 
         <StyledTrainingList>
-          {workoutDiaryPageConfig.map(({ date }) => (
-            <StyledTrainingItem key={date}>
-              <StyledSubTitle>{date}</StyledSubTitle>
+          {workoutReports.map(({ label, trainings }) => (
+            <StyledTrainingItem key={label}>
+              <StyledSubTitle>{label}</StyledSubTitle>
               <StyledTrainingCardList>
-                {workoutReports.map(({ id, name, exercises, date }) => (
+                {trainings.map(({ id, date, exercisesCount, title }) => (
                   <TrainingCard
                     key={id}
                     id={id}
-                    title={name}
-                    exercisesCount={exercises.length}
+                    title={title}
+                    exercisesCount={exercisesCount}
                     date={date}
                     onClick={() => handleUpdateTraining(id)}
                     onRemove={() => handleRemoveTraining(id)}

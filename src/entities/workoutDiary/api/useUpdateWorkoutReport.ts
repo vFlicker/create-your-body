@@ -11,6 +11,9 @@ export const useUpdateWorkoutReport = () => {
       queryClient.invalidateQueries({
         queryKey: ['workout-reports'],
       });
+      queryClient.invalidateQueries({
+        queryKey: ['workout-reports-grouped-by-date'],
+      });
     },
   });
 

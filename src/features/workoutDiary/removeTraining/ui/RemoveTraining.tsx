@@ -3,29 +3,33 @@ import { JSX } from 'react';
 
 import { useModalStore } from '~/entities/modal';
 import { useRemoveWorkoutReport } from '~/entities/workoutDiary';
+import { useWorkoutReport } from '~/entities/workoutDiary';
 import TrashIcon from '~/shared/assets/svg/trash.svg?react';
+import { Loader } from '~/shared/ui/atoms/Loader';
 
 type RemoveTrainingProps = {
   id: number;
-  title: string;
 };
 
-export function RemoveTraining({
-  id,
-  title,
-}: RemoveTrainingProps): JSX.Element {
+export function RemoveTraining({ id }: RemoveTrainingProps): JSX.Element {
   const { closeModal } = useModalStore();
+
+  const { workoutReport, isWorkoutReportPending } = useWorkoutReport(id);
 
   const { removeWorkoutReport } = useRemoveWorkoutReport();
 
-  const handleRemove = async () => {
-    await removeWorkoutReport({ dto: { id } });
+  if (!workoutReport || isWorkoutReportPending) {
+    return <Loader />;
+  }
+
+  const handleRemove = () => {
+    removeWorkoutReport({ dto: { id } });
     closeModal();
   };
 
   return (
     <StyledRemoveTrainingWrapper>
-      <StyledTitle>Вы точно хотите удалить «{title}»?</StyledTitle>
+      <StyledTitle>Вы точно хотите удалить «{workoutReport.name}»?</StyledTitle>
 
       <StyledActionsWrapper>
         <StyledRemoveButton onClick={handleRemove}>

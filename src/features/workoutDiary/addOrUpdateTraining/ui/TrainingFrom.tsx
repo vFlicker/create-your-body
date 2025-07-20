@@ -4,15 +4,12 @@ import { JSX, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Modal, useModalStore } from '~/entities/modal';
-import {
-  ExerciseCard,
-  useWorkoutDiaryStore,
-  WorkoutDiary,
-} from '~/entities/workoutDiary';
+import { ExerciseCard, useWorkoutDiaryStore } from '~/entities/workoutDiary';
 import {
   useCreateWorkoutReport,
   useUpdateWorkoutReport,
 } from '~/entities/workoutDiary';
+import { useWorkoutReport } from '~/entities/workoutDiary/api/useWorkoutReport';
 import { convertRuDateToIso, formatDateToLocaleRu } from '~/shared/libs/format';
 import { Button } from '~/shared/ui/atoms/Button';
 import { AddButton } from '~/shared/ui/molecules/buttons/AddButton';
@@ -27,49 +24,55 @@ import {
 import { trainingFromInputs } from '../trainingFromConfig';
 
 type TrainingFromProps = {
-  title: string;
+  id?: number;
+  title?: string;
   type: 'create' | 'update';
-  initialTraining?: WorkoutDiary;
 };
 
 export function TrainingFrom({
+  id,
   title,
   type,
-  initialTraining,
 }: TrainingFromProps): JSX.Element {
   const { openModal, closeModal } = useModalStore();
 
   const { training, clearTraining, setTrainingFromExisting } =
     useWorkoutDiaryStore();
 
+  const { workoutReport } = useWorkoutReport(id);
   const { createWorkoutReport, isCreateWorkoutReportPending } =
     useCreateWorkoutReport();
   const { updateWorkoutReport, isUpdateWorkoutReportPending } =
     useUpdateWorkoutReport();
 
-  useEffect(() => {
-    if (initialTraining)
-      setTrainingFromExisting({
-        exercises: initialTraining.exercises,
-      });
-  }, [initialTraining, setTrainingFromExisting]);
-
   const {
+    formState: { errors },
     register,
     handleSubmit,
-    formState: { errors },
+    reset,
   } = useForm<AddOrUpdateTraining>({
     resolver: zodResolver(addOrUpdateTrainingSchema),
-    defaultValues: {
-      name: initialTraining?.name,
-      date: initialTraining ? formatDateToLocaleRu(initialTraining.date) : '',
-    },
   });
 
+  useEffect(() => {
+    if (workoutReport) {
+      setTrainingFromExisting({ exercises: workoutReport.exercises });
+    }
+  }, [workoutReport, setTrainingFromExisting]);
+
+  useEffect(() => {
+    if (workoutReport) {
+      reset({
+        name: workoutReport.name,
+        date: formatDateToLocaleRu(workoutReport.date),
+      });
+    }
+  }, [workoutReport, reset, type]);
+
   const onSubmit = async (data: AddOrUpdateTraining) => {
-    if (type === 'update' && initialTraining) {
+    if (type === 'update' && workoutReport) {
       await updateWorkoutReport({
-        id: initialTraining.id,
+        id: workoutReport.id,
         dto: {
           name: data.name,
           date: convertRuDateToIso(data.date),

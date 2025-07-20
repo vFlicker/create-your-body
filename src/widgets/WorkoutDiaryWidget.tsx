@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { TrainingCard, useWorkoutReports } from '~/entities/workoutDiary';
 // import { TrainingCard } from '~/entities/workoutDiary';
 import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/atoms/Button';
@@ -9,7 +10,8 @@ import { Button } from '~/shared/ui/atoms/Button';
 export function WorkoutDiaryWidget(): JSX.Element {
   const navigate = useNavigate();
 
-  const hasTrainings = false;
+  const { workoutReports } = useWorkoutReports();
+  const hasTrainings = workoutReports && workoutReports.length > 0;
 
   return (
     <StyledMeasurementsWidget>
@@ -21,8 +23,17 @@ export function WorkoutDiaryWidget(): JSX.Element {
             : 'Не добавлено ни одной тренировки'}
         </StyledListDescription>
         <StyledTrainingCardList>
-          {/* <TrainingCard />
-          <TrainingCard /> */}
+          {workoutReports
+            ?.slice(0, 2)
+            .map((report) => (
+              <TrainingCard
+                key={report.id}
+                id={report.id}
+                title={report.name}
+                exercisesCount={report.exercises.length}
+                date={report.date}
+              />
+            ))}
         </StyledTrainingCardList>
         <Button
           color="accent"

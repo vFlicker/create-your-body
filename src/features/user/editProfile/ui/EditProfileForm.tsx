@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { JSX } from 'react';
+import { JSX, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
@@ -36,19 +36,25 @@ export function EditProfileForm({
   const { updateUser, isUpdateUserLoading } = useUpdateUser();
 
   const {
+    formState: { errors },
     register,
     control,
     handleSubmit,
-    formState: { errors },
+    reset,
   } = useForm<EditProfile>({
     resolver: zodResolver(editProfileSchema),
-    defaultValues: {
-      name: user?.name || '',
-      bornDate: formatDateToLocaleRu(user?.bornDate || ''),
-      sex: user?.sex,
-      phone: user?.phone || '+7',
-    },
   });
+
+  useEffect(() => {
+    if (user) {
+      reset({
+        name: user.name,
+        bornDate: formatDateToLocaleRu(user.bornDate || ''),
+        sex: user.sex,
+        phone: user.phone || '+7',
+      });
+    }
+  }, [user, reset]);
 
   const onSubmit = async ({ bornDate, ...rest }: EditProfile) => {
     try {
