@@ -1,13 +1,11 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { Modal, useModalStore } from '~/entities/modal';
+import { Dialog, Modal, useModalStore } from '~/entities/modal';
 import { TrainingCard, useWorkoutDiaryStore } from '~/entities/workoutDiary';
-import {
-  useRemoveWorkoutReport,
-  useWorkoutReports,
-} from '~/entities/workoutDiary';
+import { useWorkoutReports } from '~/entities/workoutDiary';
 import { TrainingFrom } from '~/features/workoutDiary/addOrUpdateTraining';
+import { RemoveTraining } from '~/features/workoutDiary/removeTraining';
 import { AddButton } from '~/shared/ui/molecules/buttons/AddButton';
 import { UserPageLayout } from '~/widgets/layouts/UserPageLayout';
 
@@ -19,7 +17,6 @@ export function WorkoutDiaryPage(): JSX.Element {
   const { clearTraining } = useWorkoutDiaryStore();
 
   const { workoutReports, isWorkoutReportsPending } = useWorkoutReports();
-  const { removeWorkoutReport } = useRemoveWorkoutReport();
 
   if (!workoutReports || isWorkoutReportsPending) {
     return <UserPageLayout isLoading={isWorkoutReportsPending} />;
@@ -27,17 +24,17 @@ export function WorkoutDiaryPage(): JSX.Element {
 
   const handleUpdateTraining = (id: number) => {
     const workoutToUpdate = workoutReports.find((workout) => workout.id === id);
-    if (workoutToUpdate) {
-      openModal(
-        <Modal onClose={clearTraining}>
-          <TrainingFrom
-            type="update"
-            title="Редактировать тренировку"
-            initialTraining={workoutToUpdate}
-          />
-        </Modal>,
-      );
-    }
+    if (!workoutToUpdate) return;
+
+    openModal(
+      <Modal onClose={clearTraining}>
+        <TrainingFrom
+          type="update"
+          title="Редактировать тренировку"
+          initialTraining={workoutToUpdate}
+        />
+      </Modal>,
+    );
   };
 
   const handleAddTraining = () => {
@@ -50,17 +47,28 @@ export function WorkoutDiaryPage(): JSX.Element {
 
   const handleRepeatTraining = (id: number) => {
     const workoutToRepeat = workoutReports.find((workout) => workout.id === id);
-    if (workoutToRepeat) {
-      openModal(
-        <Modal onClose={clearTraining}>
-          <TrainingFrom
-            type="create"
-            title="Повторить тренировку"
-            initialTraining={workoutToRepeat}
-          />
-        </Modal>,
-      );
-    }
+    if (!workoutToRepeat) return;
+
+    openModal(
+      <Modal onClose={clearTraining}>
+        <TrainingFrom
+          type="create"
+          title="Повторить тренировку"
+          initialTraining={workoutToRepeat}
+        />
+      </Modal>,
+    );
+  };
+
+  const handleRemoveTraining = (id: number) => {
+    const workoutToRemove = workoutReports.find((workout) => workout.id === id);
+    if (!workoutToRemove) return;
+
+    openModal(
+      <Dialog>
+        <RemoveTraining id={id} title={workoutToRemove.name} />
+      </Dialog>,
+    );
   };
 
   return (
@@ -81,7 +89,7 @@ export function WorkoutDiaryPage(): JSX.Element {
                     exercisesCount={exercises.length}
                     date={date}
                     onClick={() => handleUpdateTraining(id)}
-                    onRemove={() => removeWorkoutReport({ dto: { id } })}
+                    onRemove={() => handleRemoveTraining(id)}
                     onRepeat={() => handleRepeatTraining(id)}
                   />
                 ))}

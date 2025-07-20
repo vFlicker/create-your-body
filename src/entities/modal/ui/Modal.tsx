@@ -56,8 +56,7 @@ const StyledModalWrapper = styled(Content)`
   height: 80%;
   border-radius: 20px 20px 0 0;
 
-  background-color: #ffffff;
-
+  overflow: hidden;
   z-index: 20;
 `;
 
@@ -65,7 +64,6 @@ const StyledHeader = styled.div`
   display: flex;
   width: 100%;
   padding: 16px;
-  border-radius: 20px 20px 0 0;
 
   background-color: #ffffff;
   z-index: 2;
@@ -81,6 +79,8 @@ const StyledContent = styled.div`
   flex-grow: 1;
 
   padding: 16px;
+
+  background-color: #ffffff;
 
   overflow-y: auto;
 `;
