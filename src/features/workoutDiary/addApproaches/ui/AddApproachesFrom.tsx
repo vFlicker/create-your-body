@@ -55,6 +55,7 @@ export function AddApproachesFrom({
             <Input
               type="number"
               label="Повторения"
+              postfix="раз"
               value={repetitions?.toString() || ''}
               onChange={(evt) =>
                 updateApproach(index, 'repetitions', evt.target.value)
@@ -63,6 +64,7 @@ export function AddApproachesFrom({
             <Input
               type="number"
               label="Вес снаряда"
+              postfix="кг"
               value={weight?.toString() || ''}
               onChange={(evt) =>
                 updateApproach(index, 'weight', evt.target.value)
