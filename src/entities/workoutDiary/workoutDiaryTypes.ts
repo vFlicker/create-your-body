@@ -11,7 +11,7 @@ type Exercise = {
   approaches: Approaches[];
 };
 
-type WorkoutDiary = {
+export type WorkoutDiary = {
   id: number;
   userId: number;
   name: string;
@@ -36,6 +36,12 @@ export type GetWorkoutReportsResponse = {
 };
 
 export type CreateWorkoutReportDto = {
+  name: string;
+  date: string;
+  exercises: Exercise[];
+};
+
+export type UpdateWorkoutReportDto = {
   name: string;
   date: string;
   exercises: Exercise[];

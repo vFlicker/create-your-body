@@ -6,15 +6,12 @@ import lockIconSrc from '~/shared/assets/svg/lock.svg';
 import { Color } from '~/shared/theme/colors';
 
 type IconButtonProps = {
-  className?: string;
   iconSrc?: string;
   iconComponent?: JSX.Element;
   color: `${IconButtonColor}`;
   text?: string;
   isActive?: boolean;
-  disabled?: boolean;
-  onClick?: () => void;
-};
+} & JSX.IntrinsicElements['button'];
 
 type StyledIconButtonProps = Pick<
   IconButtonProps,

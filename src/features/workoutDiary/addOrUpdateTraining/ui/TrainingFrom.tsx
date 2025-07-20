@@ -4,10 +4,13 @@ import { JSX, useEffect } from 'react';
 import { useModalStore } from '~/entities/modal';
 import {
   ExerciseCard,
-  Training,
   useWorkoutDiaryStore,
+  WorkoutDiary,
 } from '~/entities/workoutDiary';
-import { useCreateWorkoutReport } from '~/entities/workoutDiary';
+import {
+  useCreateWorkoutReport,
+  useUpdateWorkoutReport,
+} from '~/entities/workoutDiary';
 import { formatDateToIsoLocal } from '~/shared/libs/format';
 import { Button } from '~/shared/ui/atoms/Button';
 import { AddButton } from '~/shared/ui/molecules/buttons/AddButton';
@@ -16,13 +19,17 @@ import { Input } from '~/shared/ui/molecules/Input';
 import { AddApproachesFrom } from '../../addApproaches';
 import { AddExerciseForm } from '../../addExercise';
 
-type AddTrainingFromProps = {
-  initialTraining?: Training;
+type TrainingFromProps = {
+  title: string;
+  type: 'create' | 'update';
+  initialTraining?: WorkoutDiary;
 };
 
-export function AddTrainingFrom({
+export function TrainingFrom({
+  title,
+  type,
   initialTraining,
-}: AddTrainingFromProps): JSX.Element {
+}: TrainingFromProps): JSX.Element {
   const { openModal, closeModal } = useModalStore();
 
   const {
@@ -35,6 +42,8 @@ export function AddTrainingFrom({
 
   const { createWorkoutReport, isCreateWorkoutReportPending } =
     useCreateWorkoutReport();
+  const { updateWorkoutReport, isUpdateWorkoutReportPending } =
+    useUpdateWorkoutReport();
 
   useEffect(() => {
     if (initialTraining) setTrainingFromExisting(initialTraining);
@@ -42,19 +51,27 @@ export function AddTrainingFrom({
 
   const handleSaveClick = async () => {
     if (isTrainingValid()) {
-      await createWorkoutReport({
-        dto: { ...training, date: formatDateToIsoLocal(new Date()) },
-      });
+      if (type === 'update' && initialTraining) {
+        await updateWorkoutReport({
+          id: initialTraining.id,
+          dto: { ...training, date: formatDateToIsoLocal(new Date()) },
+        });
+      }
+
+      if (type === 'create') {
+        await createWorkoutReport({
+          dto: { ...training, date: formatDateToIsoLocal(new Date()) },
+        });
+      }
+
       clearTraining();
       closeModal();
     }
   };
 
   return (
-    <StyledAddTrainingFromWrapper>
-      <StyledTitle>
-        {initialTraining ? 'Повторить тренировку' : 'Новая тренировка'}
-      </StyledTitle>
+    <StyledTrainingFromWrapper>
+      <StyledTitle>{title}</StyledTitle>
 
       <StyledInputsWrapper>
         <Input
@@ -94,15 +111,19 @@ export function AddTrainingFrom({
       <StyledSaveButton
         color="accent"
         onClick={handleSaveClick}
-        disabled={!isTrainingValid() || isCreateWorkoutReportPending}
+        disabled={
+          !isTrainingValid() ||
+          isCreateWorkoutReportPending ||
+          isUpdateWorkoutReportPending
+        }
       >
         Сохранить тренировку
       </StyledSaveButton>
-    </StyledAddTrainingFromWrapper>
+    </StyledTrainingFromWrapper>
   );
 }
 
-const StyledAddTrainingFromWrapper = styled.div`
+const StyledTrainingFromWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;

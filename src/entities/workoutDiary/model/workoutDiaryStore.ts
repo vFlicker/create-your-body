@@ -12,7 +12,7 @@ type Exercise = {
   approaches: Approach[];
 };
 
-export type Training = {
+type Training = {
   name: string;
   exercises: Exercise[];
 };

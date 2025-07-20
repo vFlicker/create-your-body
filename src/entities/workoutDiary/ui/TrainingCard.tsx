@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { JSX } from 'react';
+import { JSX, MouseEvent } from 'react';
 
 import ClockStopWatchIcon from '~/shared/assets/svg/clock-stopwatch.svg?react';
 import RefreshIcon from '~/shared/assets/svg/refresh.svg?react';
@@ -12,6 +12,7 @@ type TrainingCardProps = {
   title: string;
   exercisesCount: number;
   date: string;
+  onClick?: () => void;
   onRemove?: () => void;
   onRepeat?: () => void;
 };
@@ -21,11 +22,22 @@ export function TrainingCard({
   title,
   exercisesCount,
   date,
+  onClick,
   onRemove,
   onRepeat,
 }: TrainingCardProps): JSX.Element {
+  const handleRemove = (evt: MouseEvent) => {
+    evt.stopPropagation();
+    if (onRemove) onRemove();
+  };
+
+  const handleRepeat = (evt: MouseEvent) => {
+    evt.stopPropagation();
+    if (onRepeat) onRepeat();
+  };
+
   return (
-    <StyledTrainingCard className={className}>
+    <StyledTrainingCard className={className} onClick={onClick}>
       <StyledContent>
         <StyledTitle>{title}</StyledTitle>
         <StyledExercise>
@@ -35,9 +47,9 @@ export function TrainingCard({
         <StyledDate>{formatDateForView(date)}</StyledDate>
       </StyledContent>
       <StyledActions>
-        {onRemove && <RemoveButton onClick={onRemove} />}
+        {onRemove && <RemoveButton onClick={handleRemove} />}
         {onRepeat && (
-          <StyledRepeatButton onClick={onRepeat}>
+          <StyledRepeatButton onClick={handleRepeat}>
             Повторить <RefreshIcon stroke="#867EBD" />
           </StyledRepeatButton>
         )}

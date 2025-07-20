@@ -7,7 +7,7 @@ import {
   useRemoveWorkoutReport,
   useWorkoutReports,
 } from '~/entities/workoutDiary';
-import { AddTrainingFrom } from '~/features/workoutDiary/addTraining';
+import { TrainingFrom } from '~/features/workoutDiary/addOrUpdateTraining';
 import { AddButton } from '~/shared/ui/molecules/buttons/AddButton';
 import { UserPageLayout } from '~/widgets/layouts/UserPageLayout';
 
@@ -19,18 +19,37 @@ export function WorkoutDiaryPage(): JSX.Element {
   const { workoutReports, isWorkoutReportsPending } = useWorkoutReports();
   const { removeWorkoutReport } = useRemoveWorkoutReport();
 
-  const handleAddTraining = () => {
-    openModal(<AddTrainingFrom />);
-  };
-
   if (!workoutReports || isWorkoutReportsPending) {
     return <UserPageLayout isLoading={isWorkoutReportsPending} />;
   }
 
+  const handleUpdateTraining = (id: number) => {
+    const workoutToUpdate = workoutReports.find((workout) => workout.id === id);
+    if (workoutToUpdate) {
+      openModal(
+        <TrainingFrom
+          type="update"
+          title="Редактировать тренировку"
+          initialTraining={workoutToUpdate}
+        />,
+      );
+    }
+  };
+
+  const handleAddTraining = () => {
+    openModal(<TrainingFrom type="create" title="Новая тренировка" />);
+  };
+
   const handleRepeatTraining = (id: number) => {
     const workoutToRepeat = workoutReports.find((workout) => workout.id === id);
     if (workoutToRepeat) {
-      openModal(<AddTrainingFrom initialTraining={workoutToRepeat} />);
+      openModal(
+        <TrainingFrom
+          type="create"
+          title="Повторить тренировку"
+          initialTraining={workoutToRepeat}
+        />,
+      );
     }
   };
 
@@ -51,6 +70,7 @@ export function WorkoutDiaryPage(): JSX.Element {
                     title={name}
                     exercisesCount={exercises.length}
                     date={date}
+                    onClick={() => handleUpdateTraining(id)}
                     onRemove={() => removeWorkoutReport({ dto: { id } })}
                     onRepeat={() => handleRepeatTraining(id)}
                   />

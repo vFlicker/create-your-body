@@ -4,10 +4,7 @@ import { JSX } from 'react';
 import TrashIcon from '../../../assets/svg/trash.svg?react';
 import { IconButton } from '../../atoms/IconButton';
 
-type RemoveButtonProps = {
-  className?: string;
-  onClick: () => void;
-};
+type RemoveButtonProps = JSX.IntrinsicElements['button'];
 
 export function RemoveButton({
   className,

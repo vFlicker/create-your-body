@@ -5,6 +5,7 @@ import {
   GetExercisesResponse,
   GetWorkoutReportsResponse,
   RemoveWorkoutReportDto,
+  UpdateWorkoutReportDto,
 } from '../workoutDiaryTypes';
 
 export const workoutDiaryApiService = {
@@ -29,6 +30,25 @@ export const workoutDiaryApiService = {
       return data.data;
     } catch (error) {
       console.error('Error fetching workout reports:', error);
+      throw error;
+    }
+  },
+
+  updateWorkoutReport: async ({
+    id,
+    dto,
+  }: {
+    id: number;
+    dto: UpdateWorkoutReportDto;
+  }) => {
+    try {
+      const { data } = await httpClient.put(
+        `/v2/api/client/user/workout-diary/${id}`,
+        dto,
+      );
+      return data;
+    } catch (error) {
+      console.error('Error updating workout report:', error);
       throw error;
     }
   },
