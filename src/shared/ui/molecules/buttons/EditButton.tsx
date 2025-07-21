@@ -6,17 +6,20 @@ import { IconButton } from '../../atoms/IconButton';
 
 type EditButtonProps = {
   className?: string;
+  type?: 'button' | 'submit';
   onClick: () => void;
 };
 
 export function EditButton({
   className,
+  type = 'button',
   onClick,
 }: EditButtonProps): JSX.Element {
   return (
     <StyledIconButton
       className={className}
       color="secondary"
+      type={type}
       iconComponent={<PencilIcon stroke="#867EBD" />}
       onClick={onClick}
     />

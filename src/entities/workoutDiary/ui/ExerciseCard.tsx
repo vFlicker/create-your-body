@@ -25,7 +25,7 @@ export function ExerciseCard({
       <StyledHeader>
         <StyledPositionNumber>{positionNumber}</StyledPositionNumber>
         <StyledTitle>{title}</StyledTitle>
-        <EditButton onClick={onEdit} />
+        <EditButton type="button" onClick={onEdit} />
       </StyledHeader>
       <StyledContent>
         {!hasApproaches && (
