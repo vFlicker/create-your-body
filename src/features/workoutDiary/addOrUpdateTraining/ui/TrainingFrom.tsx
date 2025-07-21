@@ -189,6 +189,14 @@ const StyledTrainingFrom = styled.form`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+
+  /* iOS Safari fix */
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  will-change: transform;
+  transform: translateZ(0);
 `;
 
 const StyledTitle = styled.h3`
