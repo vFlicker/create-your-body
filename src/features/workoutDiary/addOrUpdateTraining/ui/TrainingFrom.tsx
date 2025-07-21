@@ -52,6 +52,9 @@ export function TrainingFrom({
     reset,
   } = useForm<AddOrUpdateTraining>({
     resolver: zodResolver(addOrUpdateTrainingSchema),
+    defaultValues: {
+      date: formatDateToLocaleRu(new Date()),
+    },
   });
 
   useEffect(() => {
@@ -70,25 +73,18 @@ export function TrainingFrom({
   }, [workoutReport, reset, type]);
 
   const onSubmit = async (data: AddOrUpdateTraining) => {
+    const dto = {
+      name: data.name,
+      date: convertRuDateToIso(data.date),
+      exercises: training.exercises,
+    };
+
     if (type === 'update' && workoutReport) {
-      await updateWorkoutReport({
-        id: workoutReport.id,
-        dto: {
-          name: data.name,
-          date: convertRuDateToIso(data.date),
-          ...training,
-        },
-      });
+      await updateWorkoutReport({ id: workoutReport.id, dto });
     }
 
     if (type === 'create') {
-      await createWorkoutReport({
-        dto: {
-          name: data.name,
-          date: convertRuDateToIso(data.date),
-          ...training,
-        },
-      });
+      await createWorkoutReport({ dto });
     }
 
     clearTraining();

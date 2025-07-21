@@ -21,7 +21,7 @@ export function ExerciseCard({
   const hasApproaches = approaches && approaches.length > 0;
 
   return (
-    <StyledExerciseCard className={className}>
+    <StyledExerciseCard className={className} onClick={onEdit}>
       <StyledHeader>
         <StyledPositionNumber>{positionNumber}</StyledPositionNumber>
         <StyledTitle>{title}</StyledTitle>
