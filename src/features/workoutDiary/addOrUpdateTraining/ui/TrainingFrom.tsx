@@ -140,6 +140,7 @@ export function TrainingFrom({
         )}
 
         <AddButton
+          type="button"
           onClick={() =>
             openModal(
               <Modal>

@@ -31,16 +31,11 @@ export function IconButton({
   color,
   isActive = false,
   disabled = false,
-  onClick,
+  ...props
 }: IconButtonProps): JSX.Element {
   return (
     <StyledIconButtonWrapper className={className}>
-      <StyledIconButton
-        isActive={isActive}
-        disabled={disabled}
-        color={color}
-        onClick={onClick}
-      >
+      <StyledIconButton isActive={isActive} color={color} {...props}>
         {iconSrc && <StyledIcon src={disabled ? lockIconSrc : iconSrc} />}
         {iconComponent}
       </StyledIconButton>

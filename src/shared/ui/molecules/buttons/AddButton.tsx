@@ -6,15 +6,21 @@ import { IconButton } from '~/shared/ui/atoms/IconButton';
 
 type AddButtonProps = {
   className?: string;
+  type?: 'button' | 'submit';
   onClick?: () => void;
 };
 
-export function AddButton({ className, onClick }: AddButtonProps): JSX.Element {
+export function AddButton({
+  className,
+  type = 'button',
+  onClick,
+}: AddButtonProps): JSX.Element {
   return (
     <StyledAddButton
       className={className}
       color="accent"
       isActive
+      type={type}
       iconComponent={<PlusIcon stroke="#ffffff" />}
       onClick={onClick}
     />
