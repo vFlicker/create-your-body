@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { InputMask } from '@react-input/mask';
 import { JSX, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import { Modal, useModalStore } from '~/entities/modal';
 import { ExerciseCard, useWorkoutDiaryStore } from '~/entities/workoutDiary';
@@ -47,6 +48,7 @@ export function TrainingFrom({
 
   const {
     formState: { errors },
+    control,
     register,
     handleSubmit,
     reset,
@@ -96,16 +98,41 @@ export function TrainingFrom({
       <StyledTitle>{title}</StyledTitle>
 
       <StyledInputsWrapper>
-        {trainingFromInputs.map(({ label, name, type, placeholder }) => (
-          <Input
-            key={name}
-            label={label}
-            type={type}
-            placeholder={placeholder}
-            {...register(name)}
-            error={errors[name]?.message}
-          />
-        ))}
+        {trainingFromInputs.map((input) => {
+          const { label, name, type, placeholder } = input;
+
+          if (input.hasMask) {
+            return (
+              <Controller
+                key={name}
+                name={name}
+                control={control}
+                render={({ field }) => (
+                  <InputMask
+                    {...field}
+                    label={label}
+                    placeholder={placeholder}
+                    mask={input.mask}
+                    replacement={{ _: /\d/ }}
+                    error={errors[name]?.message}
+                    component={Input}
+                  />
+                )}
+              />
+            );
+          }
+
+          return (
+            <Input
+              key={name}
+              label={label}
+              type={type}
+              placeholder={placeholder}
+              {...register(name)}
+              error={errors[name]?.message}
+            />
+          );
+        })}
       </StyledInputsWrapper>
 
       <StyledExercisesWrapper>

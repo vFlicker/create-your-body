@@ -1,12 +1,15 @@
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import { AppWithProviders } from './app';
 import { ErrorBoundary } from './shared/ui/molecules/errorBoundary';
 
 createRoot(document.getElementById('root')!).render(
-  <ErrorBoundary>
-    <AppWithProviders />
-  </ErrorBoundary>,
+  <StrictMode>
+    <ErrorBoundary>
+      <AppWithProviders />
+    </ErrorBoundary>
+  </StrictMode>,
 );
 
 window.addEventListener('error', (evt) => {
