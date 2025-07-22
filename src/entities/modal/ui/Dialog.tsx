@@ -27,11 +27,10 @@ const StyledDialogWrapper = styled(Content)`
   left: 0;
 
   display: flex;
-  flex-direction: column;
-  justify-self: center;
-  align-self: center;
+  margin: auto;
 
   width: 340px;
+  height: 243px;
   border-radius: 10px;
 
   overflow: hidden;
