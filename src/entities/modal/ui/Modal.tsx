@@ -44,7 +44,7 @@ export function Modal({ children, onBack, onClose }: ModalProps): JSX.Element {
 }
 
 const StyledModalWrapper = styled(Content)`
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 0;
   right: 0;

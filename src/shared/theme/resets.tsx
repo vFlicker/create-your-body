@@ -95,6 +95,90 @@ const globalResets = css`
     -moz-user-select: none;
     -ms-user-select: none;
   }
+
+  img,
+  video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  textarea {
+    resize: none;
+  }
+
+  input:-webkit-autofill {
+    box-shadow: inset 0 0 0 1000px #ffffff;
+    -webkit-text-fill-color: #000000;
+  }
+
+  // firefox placeholder \ invalid fix + ios bdrs
+  input,
+  textarea {
+    border-radius: 0;
+
+    &::placeholder {
+      opacity: 1;
+    }
+
+    &:invalid {
+      box-shadow: none;
+    }
+  }
+
+  select {
+    border-radius: 0;
+  }
+
+  // ie11 X removal
+  input {
+    &::-ms-clear,
+    &::-ms-reveal {
+      display: none;
+    }
+  }
+
+  // chrome search X removal
+  input[type='search']::-webkit-search-decoration,
+  input[type='search']::-webkit-search-cancel-button,
+  input[type='search']::-webkit-search-results-button,
+  input[type='search']::-webkit-search-results-decoration {
+    appearance: none;
+  }
+
+  // input[number] arrows removal
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    margin: 0;
+
+    appearance: none;
+  }
+
+  input[type='number'] {
+    appearance: textfield;
+  }
+
+  // ios button \ inputs reset
+  select,
+  textarea,
+  input:matches(
+      [type='email'],
+      [type='number'],
+      [type='password'],
+      [type='search'],
+      [type='tel'],
+      [type='text'],
+      [type='url']
+    ) {
+    appearance: none;
+  }
+
+  button,
+  [type='button'],
+  [type='reset'],
+  [type='submit'] {
+    appearance: none;
+  }
 `;
 
 export { globalResets };
