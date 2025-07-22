@@ -2,8 +2,9 @@ import styled from '@emotion/styled';
 import { Content } from '@radix-ui/react-dialog';
 import { JSX, MouseEvent } from 'react';
 
+import backIconSrc from '~/shared/assets/svg/back.svg';
 import { CloseButton } from '~/shared/ui/atoms/CloseButton';
-import { BackButton } from '~/shared/ui/molecules/buttons/BackButton';
+import { NavButton } from '~/shared/ui/molecules/buttons/NavButton';
 
 import { useModalStore } from '../model/modalStore';
 
@@ -35,7 +36,13 @@ export function Modal({ children, onBack, onClose }: ModalProps): JSX.Element {
   return (
     <StyledModalWrapper onClick={handleModalWrapperClick}>
       <StyledHeader>
-        {canGoBack && <BackButton onClick={handleBackButtonClick} />}
+        {canGoBack && (
+          <NavButton
+            text="Назад"
+            iconSrc={backIconSrc}
+            onClick={handleBackButtonClick}
+          />
+        )}
         <StyledCloseButton onClick={handleCloseButtonClick} />
       </StyledHeader>
       <StyledContent>{children}</StyledContent>

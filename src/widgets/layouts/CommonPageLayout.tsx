@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { JSX, PropsWithChildren } from 'react';
 
 import { StreamsInfo, UserMeta } from '~/entities/user';
-import { ShowPrevPageButton } from '~/features/ShowPrevPageButton';
+import { CloseAppButton } from '~/features/CloseAppButton';
 import { Color } from '~/shared/theme/colors';
 import { Loader } from '~/shared/ui/atoms/Loader';
 import { Nav } from '~/shared/ui/molecules/nav';
@@ -30,7 +30,7 @@ export function CommonPageLayout({
   return (
     <StyledPageWrapper>
       <StyledButtonsWrapper>
-        {hasBackButton && <ShowPrevPageButton />}
+        {hasBackButton && <CloseAppButton />}
       </StyledButtonsWrapper>
 
       <StyledMainWrapper>
@@ -72,7 +72,7 @@ const StyledButtonsWrapper = styled.div`
   padding: 16px;
 
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
   width: 100%;
 `;
 

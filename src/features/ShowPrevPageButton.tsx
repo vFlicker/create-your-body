@@ -1,7 +1,8 @@
 import { JSX, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { BackButton } from '~/shared/ui/molecules/buttons/BackButton';
+import backIconSrc from '~/shared/assets/svg/back.svg';
+import { NavButton } from '~/shared/ui/molecules/buttons/NavButton';
 
 const PREVIOUS_PAGE = -1;
 
@@ -30,5 +31,12 @@ export function ShowPrevPageButton({
     };
   }, [handleClick]);
 
-  return <BackButton className={className} onClick={handleClick} />;
+  return (
+    <NavButton
+      className={className}
+      text="Назад"
+      iconSrc={backIconSrc}
+      onClick={handleClick}
+    />
+  );
 }

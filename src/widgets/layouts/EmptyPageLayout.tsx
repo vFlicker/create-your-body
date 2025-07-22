@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { JSX, PropsWithChildren } from 'react';
 
-import { ShowPrevPageButton } from '~/features/ShowPrevPageButton';
+import { CloseAppButton } from '~/features/CloseAppButton';
 import { Color } from '~/shared/theme/colors';
 import { Loader } from '~/shared/ui/atoms/Loader';
 import { Nav } from '~/shared/ui/molecules/nav';
@@ -18,7 +18,7 @@ export function EmptyPageLayout({
   return (
     <StyledPageWrapper>
       <StyledButtonsWrapper>
-        <ShowPrevPageButton />
+        <CloseAppButton />
       </StyledButtonsWrapper>
 
       <StyledMainWrapper>
@@ -46,7 +46,7 @@ const StyledButtonsWrapper = styled.div`
   padding: 16px 16px 48px;
 
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
   width: 100%;
 `;
 
