@@ -27,7 +27,7 @@ import { trainingFromInputs } from '../trainingFromConfig';
 type TrainingFromProps = {
   id?: number;
   title?: string;
-  type: 'create' | 'update';
+  type: 'create' | 'update' | 'repeat';
 };
 
 export function TrainingFrom({
@@ -67,9 +67,15 @@ export function TrainingFrom({
 
   useEffect(() => {
     if (workoutReport) {
+      const { name, date } = workoutReport;
+      const isRepeat = type === 'repeat';
+
+      const trainingName = isRepeat ? `${name} (копия)` : name;
+      const trainingDate = isRepeat ? new Date() : date;
+
       reset({
-        name: workoutReport.name,
-        date: formatDateToLocaleRu(workoutReport.date),
+        name: trainingName,
+        date: formatDateToLocaleRu(trainingDate),
       });
     }
   }, [workoutReport, reset, type]);
@@ -81,7 +87,7 @@ export function TrainingFrom({
       exercises: training.exercises,
     };
 
-    if (type === 'update' && workoutReport) {
+    if (workoutReport && (type === 'update' || type === 'repeat')) {
       await updateWorkoutReport({ id: workoutReport.id, dto });
     }
 

@@ -43,7 +43,7 @@ export function WorkoutDiaryPage(): JSX.Element {
   const handleRepeatTraining = (id: number) => {
     openModal(
       <Modal onClose={clearTraining}>
-        <TrainingFrom type="create" title="Повторить тренировку" id={id} />
+        <TrainingFrom type="repeat" title="Повторить тренировку" id={id} />
       </Modal>,
     );
   };
