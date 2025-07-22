@@ -4,6 +4,16 @@ import { createRoot } from 'react-dom/client';
 import { AppWithProviders } from './app';
 import { ErrorBoundary } from './shared/ui/molecules/errorBoundary';
 
+// Set the viewport height property for dynamic viewport height support
+const setVhProperty = () => {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+};
+
+setVhProperty();
+window.addEventListener('resize', setVhProperty);
+window.addEventListener('orientationchange', setVhProperty);
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ErrorBoundary>

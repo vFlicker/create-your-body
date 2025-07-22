@@ -44,7 +44,7 @@ export function Modal({ children, onBack, onClose }: ModalProps): JSX.Element {
 }
 
 const StyledModalWrapper = styled(Content)`
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
@@ -53,11 +53,22 @@ const StyledModalWrapper = styled(Content)`
   flex-direction: column;
 
   width: 100%;
-  height: 80%;
+  height: 80vh;
+  height: 80dvh;
   border-radius: 20px 20px 0 0;
 
   overflow: hidden;
   z-index: 20;
+
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+
+  /* iOS Safari фікс */
+  @supports (-webkit-touch-callout: none) {
+    height: calc(80 * var(--vh, 1vh));
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
 `;
 
 const StyledHeader = styled.div`
