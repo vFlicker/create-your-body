@@ -29,7 +29,11 @@ export function RemoveTraining({ id }: RemoveTrainingProps): JSX.Element {
 
   return (
     <StyledRemoveTrainingWrapper>
-      <StyledTitle>Вы точно хотите удалить «{workoutReport.name}»?</StyledTitle>
+      <StyledTitle>
+        Вы точно хотите удалить «{'\u00A0'}
+        {workoutReport.name}
+        {'\u00A0'}»{'\u00A0'}?
+      </StyledTitle>
 
       <StyledActionsWrapper>
         <StyledRemoveButton onClick={handleRemove}>
