@@ -45,7 +45,9 @@ export function Modal({ children, onBack, onClose }: ModalProps): JSX.Element {
         )}
         <StyledCloseButton onClick={handleCloseButtonClick} />
       </StyledHeader>
-      <StyledContent>{children}</StyledContent>
+      <StyledContent>
+        <ModalContainer>{children}</ModalContainer>
+      </StyledContent>
     </StyledModalWrapper>
   );
 }
@@ -67,10 +69,12 @@ const StyledModalWrapper = styled(Content)`
   overflow: hidden;
   z-index: 20;
 
+  background-color: #ffffff;
+
+  /* iOS Safari flicking fix */
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
 
-  /* iOS Safari фікс */
   @supports (-webkit-touch-callout: none) {
     height: calc(80 * var(--vh, 1vh));
     -webkit-backface-visibility: hidden;
@@ -83,7 +87,6 @@ const StyledHeader = styled.div`
   width: 100%;
   padding: 16px;
 
-  background-color: #ffffff;
   z-index: 2;
 `;
 
@@ -96,9 +99,11 @@ const StyledContent = styled.div`
   flex-direction: column;
   flex-grow: 1;
 
-  padding: 16px 16px 32px;
-
-  background-color: #ffffff;
+  padding: 16px 16px 0;
 
   overflow-y: auto;
+`;
+
+const ModalContainer = styled.div`
+  padding-bottom: 32px;
 `;
