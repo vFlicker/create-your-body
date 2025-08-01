@@ -8,7 +8,7 @@ import { formatDateToLocalIso } from '~/shared/libs/format';
 import { showTelegramAlert } from '~/shared/libs/telegram';
 import { Button } from '~/shared/ui/atoms/Button';
 import { ErrorText } from '~/shared/ui/atoms/ErrorText';
-import { Input } from '~/shared/ui/molecules/Input';
+import { Input } from '~/shared/ui/molecules/inputs/Input';
 
 import { dailyReportInputs } from '../../dailyReportConfig';
 import {

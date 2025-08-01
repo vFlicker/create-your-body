@@ -14,7 +14,7 @@ import { useWorkoutReport } from '~/entities/workoutDiary/api/useWorkoutReport';
 import { convertRuDateToIso, formatDateToLocaleRu } from '~/shared/libs/format';
 import { Button } from '~/shared/ui/atoms/Button';
 import { AddButton } from '~/shared/ui/molecules/buttons/AddButton';
-import { Input } from '~/shared/ui/molecules/Input';
+import { Input } from '~/shared/ui/molecules/inputs/Input';
 
 import { AddApproachesFrom } from '../../addApproaches';
 import { AddExerciseForm } from '../../addExercise';

@@ -6,7 +6,7 @@ import PlusIcon from '~/shared/assets/svg/plus.svg?react';
 import { Button } from '~/shared/ui/atoms/Button';
 import { AddButton } from '~/shared/ui/molecules/buttons/AddButton';
 import { RemoveButton } from '~/shared/ui/molecules/buttons/RemoveButton';
-import { Input } from '~/shared/ui/molecules/Input';
+import { Input } from '~/shared/ui/molecules/inputs/Input';
 
 import { useApproachesManagement } from '../addApproachesLib';
 
@@ -36,7 +36,6 @@ export function AddApproachesFrom({
   return (
     <StyledAddApproachesFromWrapper>
       <StyledTitle>{name}</StyledTitle>
-      <StyledSubTitle>Подходы и повторения</StyledSubTitle>
 
       {approaches.map(({ repetitions, weight }, index) => (
         <StyledApproachRow key={index}>
@@ -54,6 +53,7 @@ export function AddApproachesFrom({
           <StyledFooter>
             <Input
               type="number"
+              placeholder="Вес снаряда"
               label="Повторения"
               postfix="раз"
               value={repetitions?.toString() || ''}
@@ -63,6 +63,7 @@ export function AddApproachesFrom({
             />
             <Input
               type="number"
+              placeholder="Повторения"
               label="Вес снаряда"
               postfix="кг"
               value={weight?.toString() || ''}
@@ -95,15 +96,6 @@ const StyledTitle = styled.h3`
   color: #0d0d0d;
   font-size: 18px;
   font-weight: 700;
-`;
-
-const StyledSubTitle = styled.div`
-  margin-bottom: 16px;
-
-  color: #0d0d0d;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 100%;
 `;
 
 const StyledApproachRow = styled.div`

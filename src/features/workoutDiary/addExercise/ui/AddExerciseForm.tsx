@@ -7,7 +7,7 @@ import PlusIcon from '~/shared/assets/svg/plus.svg?react';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
 import { Loader } from '~/shared/ui/atoms/Loader';
-import { Input } from '~/shared/ui/molecules/Input';
+import { Input } from '~/shared/ui/molecules/inputs/Input';
 import { Radio, RadioGroup } from '~/shared/ui/molecules/radio';
 
 import { useExerciseSelection } from '../addExerciseLib';
