@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
-import { JSX } from 'react';
+import { JSX, useState } from 'react';
 
 import { useModalStore } from '~/entities/modal';
+import { useWorkoutDiaryStore } from '~/entities/workoutDiary';
 import PlusIcon from '~/shared/assets/svg/plus.svg?react';
+import TrashIcon from '~/shared/assets/svg/trash.svg?react';
 import { Button } from '~/shared/ui/atoms/Button';
-import { AddButton } from '~/shared/ui/molecules/buttons/AddButton';
-import { RemoveButton } from '~/shared/ui/molecules/buttons/RemoveButton';
-import { Input } from '~/shared/ui/molecules/inputs/Input';
+import { Input2 } from '~/shared/ui/molecules/inputs/Input2';
 
 import { useApproachesManagement } from '../addApproachesLib';
 
@@ -14,14 +14,69 @@ type AddApproachesFromProps = {
   exerciseName: string;
 };
 
+export function CreateNewApproachesFrom({
+  exerciseName,
+}: AddApproachesFromProps): JSX.Element {
+  const [repetitions, setRepetitions] = useState<number | undefined>(undefined);
+  const [weight, setWeight] = useState<number | undefined>(undefined);
+
+  const { createApproach } = useWorkoutDiaryStore();
+
+  const handleCreateApproach = () => {
+    if (repetitions !== undefined) {
+      createApproach(exerciseName, { repetitions, weight });
+      setRepetitions(undefined);
+      setWeight(undefined);
+    }
+  };
+
+  const isAddApproachButtonDisabled = repetitions === undefined;
+
+  return (
+    <StyledApproachRow>
+      <StyledApproachNumber>-</StyledApproachNumber>
+
+      <StyledInputsWrapper>
+        <Input2
+          type="number"
+          placeholder="Повторения"
+          postfix="раз"
+          value={repetitions ?? ''}
+          onChange={(evt) => {
+            const value = evt.target.value;
+            setRepetitions(value === '' ? undefined : Number(value));
+          }}
+        />
+
+        <Input2
+          type="number"
+          placeholder="Вес снаряда"
+          postfix="кг"
+          value={weight ?? ''}
+          onChange={(evt) => {
+            const value = evt.target.value;
+            setWeight(value === '' ? undefined : Number(value));
+          }}
+        />
+
+        <StyledAddApproachButton
+          disabled={isAddApproachButtonDisabled}
+          onClick={handleCreateApproach}
+        >
+          <PlusIcon strokeWidth="1.5" />
+        </StyledAddApproachButton>
+      </StyledInputsWrapper>
+    </StyledApproachRow>
+  );
+}
+
 export function AddApproachesFrom({
   exerciseName,
 }: AddApproachesFromProps): JSX.Element {
   const {
     exercise,
-    createApproach,
     updateApproach,
-    duplicateApproach,
+    // duplicateApproach,
     removeApproach,
   } = useApproachesManagement(exerciseName);
 
@@ -37,48 +92,47 @@ export function AddApproachesFrom({
     <StyledAddApproachesFromWrapper>
       <StyledTitle>{name}</StyledTitle>
 
-      {approaches.map(({ repetitions, weight }, index) => (
-        <StyledApproachRow key={index}>
-          <StyledHeader>
+      {approaches.map(({ repetitions, weight }, index) => {
+        return (
+          <StyledApproachRow key={index}>
             <StyledApproachNumber>{index + 1}</StyledApproachNumber>
 
-            <StyledActions>
-              <StyledDuplicateButton onClick={() => duplicateApproach(index)}>
-                Дублировать <PlusIcon strokeWidth="1.5" />
-              </StyledDuplicateButton>
-              <RemoveButton onClick={() => removeApproach(index)} />
-            </StyledActions>
-          </StyledHeader>
+            <StyledInputsWrapper>
+              <Input2
+                type="number"
+                placeholder="Повторения"
+                postfix="раз"
+                value={repetitions}
+                onChange={(evt) =>
+                  updateApproach(index, 'repetitions', evt.target.value)
+                }
+              />
 
-          <StyledFooter>
-            <Input
-              type="number"
-              placeholder="Вес снаряда"
-              label="Повторения"
-              postfix="раз"
-              value={repetitions?.toString() || ''}
-              onChange={(evt) =>
-                updateApproach(index, 'repetitions', evt.target.value)
-              }
-            />
-            <Input
-              type="number"
-              placeholder="Повторения"
-              label="Вес снаряда"
-              postfix="кг"
-              value={weight?.toString() || ''}
-              onChange={(evt) =>
-                updateApproach(index, 'weight', evt.target.value)
-              }
-            />
-          </StyledFooter>
-        </StyledApproachRow>
-      ))}
+              <Input2
+                type="number"
+                placeholder="Вес снаряда"
+                postfix="кг"
+                value={weight}
+                onChange={(evt) =>
+                  updateApproach(index, 'weight', evt.target.value)
+                }
+              />
 
-      <StyledAddButton onClick={createApproach} />
+              <StyledRemoveApproachButton
+                color="accent"
+                onClick={() => removeApproach(index)}
+              >
+                <TrashIcon />
+              </StyledRemoveApproachButton>
+            </StyledInputsWrapper>
+          </StyledApproachRow>
+        );
+      })}
+
+      <CreateNewApproachesFrom exerciseName={exerciseName} />
 
       <StyledSaveButton color="accent" onClick={handleSaveClick}>
-        Сохранить
+        Готово
       </StyledSaveButton>
     </StyledAddApproachesFromWrapper>
   );
@@ -100,64 +154,56 @@ const StyledTitle = styled.h3`
 
 const StyledApproachRow = styled.div`
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 20px;
 
   margin-bottom: 18px;
-`;
-
-const StyledHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
 `;
 
 const StyledApproachNumber = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px 16px;
-  border-radius: 52px;
+  flex-shrink: 0;
 
-  color: #7a66ff;
-  font-size: 14px;
+  width: 24px;
+  height: 24px;
+
+  color: #82829a;
+  font-size: 11px;
   font-weight: 600;
   line-height: 100%;
-
-  border: 1px solid #7a66ff;
 `;
 
-const StyledActions = styled.div`
-  display: flex;
+const StyledInputsWrapper = styled.div`
+  display: grid;
+  grid-template-columns: minmax(118px, 1fr) minmax(118px, 1fr) auto;
   gap: 8px;
 `;
 
-const StyledDuplicateButton = styled.div`
+const StyledActionButton = styled.button`
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 6px;
 
-  padding: 6px 10px;
-  border-radius: 6px;
-  background: #f0f0f6;
+  width: 48px;
+  height: 48px;
 
-  color: #867ebd;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 120%;
+  border-radius: 8px;
 
-  stroke: #867ebd;
+  &:disabled {
+    opacity: 0.5;
+  }
 `;
 
-const StyledFooter = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, minmax(150px, 1fr));
-  gap: 16px;
+const StyledAddApproachButton = styled(StyledActionButton)`
+  background-color: #7a66ff;
+  stroke: #ffffff;
 `;
 
-const StyledAddButton = styled(AddButton)`
-  margin-bottom: 24px;
+const StyledRemoveApproachButton = styled(StyledActionButton)`
+  background-color: #feebeb;
+  stroke: #f65c5c;
 `;
 
 const StyledSaveButton = styled(Button)`

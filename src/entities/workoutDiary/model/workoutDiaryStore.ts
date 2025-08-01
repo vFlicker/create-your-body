@@ -30,7 +30,7 @@ type WorkoutDiaryStore = {
   toggleExercise: (exerciseId: number, exerciseName: string) => void;
 
   // Approach actions
-  createApproach: (exerciseName: string) => void;
+  createApproach: (exerciseName: string, data?: Approach) => void;
   updateApproach: (
     exerciseName: string,
     approachIndex: number,
@@ -100,14 +100,14 @@ export const useWorkoutDiaryStore = create<WorkoutDiaryStore>()(
     },
 
     // Approach actions
-    createApproach: (exerciseName: string) => {
+    createApproach: (exerciseName, data) => {
       set((state) => {
         const exercise = state.training.exercises.find(
           (ex) => ex.name === exerciseName,
         );
 
         if (exercise) {
-          exercise.approaches.push({});
+          exercise.approaches.push(data || {});
         }
       });
     },

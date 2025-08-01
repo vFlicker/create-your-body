@@ -3,7 +3,6 @@ import { useWorkoutDiaryStore } from '~/entities/workoutDiary';
 export const useApproachesManagement = (exerciseName: string) => {
   const {
     getExerciseByName,
-    createApproach,
     updateApproach,
     duplicateApproach,
     removeApproach,
@@ -24,7 +23,6 @@ export const useApproachesManagement = (exerciseName: string) => {
 
   return {
     exercise,
-    createApproach: () => createApproach(exerciseName),
     updateApproach: handleUpdateApproach,
     duplicateApproach: (index: number) =>
       duplicateApproach(exerciseName, index),
