@@ -25,7 +25,13 @@ export function ExerciseCard({
       <StyledHeader>
         <StyledPositionNumber>{positionNumber}</StyledPositionNumber>
         <StyledTitle>{title}</StyledTitle>
-        <EditButton type="button" onClick={onEdit} />
+        <EditButton
+          type="button"
+          onClick={(evt) => {
+            evt.stopPropagation();
+            onEdit();
+          }}
+        />
       </StyledHeader>
       <StyledContent>
         {!hasApproaches && (

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { JSX } from 'react';
+import { JSX, MouseEvent } from 'react';
 
 import PencilIcon from '../../../assets/svg/pencil.svg?react';
 import { IconButton } from '../../atoms/IconButton';
@@ -7,7 +7,7 @@ import { IconButton } from '../../atoms/IconButton';
 type EditButtonProps = {
   className?: string;
   type?: 'button' | 'submit';
-  onClick: () => void;
+  onClick: (evt: MouseEvent<HTMLButtonElement>) => void;
 };
 
 export function EditButton({
