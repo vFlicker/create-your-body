@@ -16,8 +16,8 @@ import { Button } from '~/shared/ui/atoms/Button';
 import { AddButton } from '~/shared/ui/molecules/buttons/AddButton';
 import { Input } from '~/shared/ui/molecules/inputs/Input';
 
-import { AddApproachesFrom } from '../../addApproaches';
 import { AddExerciseForm } from '../../addExercise';
+import { ApproachesForm } from '../../addOrUpdateApproaches';
 import {
   AddOrUpdateTraining,
   addOrUpdateTrainingSchema,
@@ -159,7 +159,7 @@ export function TrainingFrom({
                 onEdit={() =>
                   openModal(
                     <Modal>
-                      <AddApproachesFrom exerciseName={exercise.name} />
+                      <ApproachesForm exerciseName={exercise.name} />
                     </Modal>,
                   )
                 }
