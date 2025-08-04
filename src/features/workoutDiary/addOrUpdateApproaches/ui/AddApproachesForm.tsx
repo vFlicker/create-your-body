@@ -75,7 +75,7 @@ export function AddApproachesForm({
 const StyledApproachRow = styled.div`
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 12px;
 
   margin-bottom: 18px;
 `;
@@ -97,7 +97,7 @@ const StyledApproachNumber = styled.div`
 
 const StyledInputsWrapper = styled.div`
   display: grid;
-  grid-template-columns: minmax(118px, 1fr) minmax(118px, 1fr) auto;
+  grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr) auto;
   gap: 8px;
 `;
 
