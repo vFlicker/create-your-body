@@ -41,6 +41,7 @@ type WorkoutDiaryStore = {
   ) => void;
   duplicateApproach: (exerciseName: string, approachIndex: number) => void;
   removeApproach: (exerciseName: string, approachIndex: number) => void;
+  removeAllApproaches: (exerciseName: string) => void;
 
   // History approach actions
   setSelectedApproachFromHistory: (approach: Approach | null) => void;
@@ -158,6 +159,18 @@ export const useWorkoutDiaryStore = create<WorkoutDiaryStore>()(
 
         if (exercise) {
           exercise.approaches.splice(approachIndex, 1);
+        }
+      });
+    },
+
+    removeAllApproaches: (exerciseName: string) => {
+      set((state) => {
+        const exercise = state.training.exercises.find(
+          (ex) => ex.name === exerciseName,
+        );
+
+        if (exercise) {
+          exercise.approaches = [];
         }
       });
     },

@@ -6,6 +6,7 @@ import { Button } from '~/shared/ui/atoms/Button';
 
 import { AddApproachesForm } from './AddApproachesForm';
 import { ApproachesHistory } from './ApproachesHistory';
+import { RemoveAllApproachButton } from './RemoveAllApproachButton';
 import { UpdateApproachForm } from './UpdateApproachForm';
 
 type ApproachesFormProps = {
@@ -31,9 +32,12 @@ export function ApproachesForm({
       <AddApproachesForm exerciseName={exerciseName} />
       <StyledApproachesHistory exerciseId={exerciseId} />
 
-      <StyledSaveButton color="accent" onClick={handleSaveClick}>
-        Готово
-      </StyledSaveButton>
+      <StyledFooter>
+        <RemoveAllApproachButton exerciseName={exerciseName} />
+        <StyledSaveButton color="accent" onClick={handleSaveClick}>
+          Готово
+        </StyledSaveButton>
+      </StyledFooter>
     </StyledAddApproachesFormWrapper>
   );
 }
@@ -56,6 +60,16 @@ const StyledApproachesHistory = styled(ApproachesHistory)`
   margin-bottom: 24px;
 `;
 
-const StyledSaveButton = styled(Button)`
+const StyledFooter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
   margin-top: auto;
+`;
+
+const StyledSaveButton = styled(Button)`
+  width: auto;
+  margin-top: auto;
+  padding: 0 32px;
 `;
