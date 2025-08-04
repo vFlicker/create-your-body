@@ -5,13 +5,16 @@ import { useModalStore } from '~/entities/modal';
 import { Button } from '~/shared/ui/atoms/Button';
 
 import { AddApproachesForm } from './AddApproachesForm';
+import { ApproachesHistory } from './ApproachesHistory';
 import { UpdateApproachForm } from './UpdateApproachForm';
 
 type ApproachesFormProps = {
+  exerciseId: number;
   exerciseName: string;
 };
 
 export function ApproachesForm({
+  exerciseId,
   exerciseName,
 }: ApproachesFormProps): JSX.Element {
   const { closeModal } = useModalStore();
@@ -26,6 +29,7 @@ export function ApproachesForm({
 
       <UpdateApproachForm exerciseName={exerciseName} />
       <AddApproachesForm exerciseName={exerciseName} />
+      <StyledApproachesHistory exerciseId={exerciseId} />
 
       <StyledSaveButton color="accent" onClick={handleSaveClick}>
         Готово
@@ -46,6 +50,10 @@ const StyledTitle = styled.h3`
   color: #0d0d0d;
   font-size: 18px;
   font-weight: 700;
+`;
+
+const StyledApproachesHistory = styled(ApproachesHistory)`
+  margin-bottom: 24px;
 `;
 
 const StyledSaveButton = styled(Button)`

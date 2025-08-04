@@ -87,11 +87,11 @@ export function TrainingFrom({
       exercises: training.exercises,
     };
 
-    if (workoutReport && (type === 'update' || type === 'repeat')) {
+    if (workoutReport && type === 'update') {
       await updateWorkoutReport({ id: workoutReport.id, dto });
     }
 
-    if (type === 'create') {
+    if (type === 'create' || type === 'repeat') {
       await createWorkoutReport({ dto });
     }
 
@@ -152,14 +152,17 @@ export function TrainingFrom({
           <StyledExerciseCardList>
             {training.exercises.map((exercise, index) => (
               <ExerciseCard
-                key={exercise.name}
+                key={exercise.id}
                 positionNumber={index + 1}
                 title={exercise.name}
                 approaches={exercise.approaches}
                 onEdit={() =>
                   openModal(
                     <Modal>
-                      <ApproachesForm exerciseName={exercise.name} />
+                      <ApproachesForm
+                        exerciseId={exercise.id}
+                        exerciseName={exercise.name}
+                      />
                     </Modal>,
                   )
                 }

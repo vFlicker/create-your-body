@@ -2,6 +2,7 @@ import { httpClient } from '~/shared/api/httpClient';
 
 import {
   CreateWorkoutReportDto,
+  GetExerciseHistoryResponse,
   GetExercisesResponse,
   GetWorkoutReportResponse,
   GetWorkoutReportsGroupedByDateResponse,
@@ -100,6 +101,18 @@ export const workoutDiaryApiService = {
       return data.data.exercises;
     } catch (error) {
       console.error('Error fetching user:', error);
+      throw error;
+    }
+  },
+
+  getApproachesHistory: async (exerciseId: number) => {
+    try {
+      const { data } = await httpClient.get<GetExerciseHistoryResponse>(
+        `/v2/api/client/user/exercise-history/${exerciseId}`,
+      );
+      return data.data;
+    } catch (error) {
+      console.error('Error fetching exercise history:', error);
       throw error;
     }
   },

@@ -1,3 +1,4 @@
+export { useApproachesHistory } from './api/useApproachesHistory';
 export { useCreateWorkoutReport } from './api/useCreateWorkoutReport';
 export { useRemoveWorkoutReport } from './api/useRemoveWorkoutReport';
 export { useUpdateWorkoutReport } from './api/useUpdateWorkoutReport';

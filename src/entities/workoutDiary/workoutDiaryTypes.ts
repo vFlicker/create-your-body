@@ -91,3 +91,23 @@ export type GetExercisesResponse = {
     }[];
   };
 };
+
+export type GetExerciseHistoryResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    history: {
+      id: number;
+      date: string;
+      sets: Approaches[];
+      workoutId: number;
+    }[];
+    pagination: {
+      page: number;
+      limit: number;
+      hasNextPage: boolean;
+      from: string;
+      to: string;
+    };
+  };
+};

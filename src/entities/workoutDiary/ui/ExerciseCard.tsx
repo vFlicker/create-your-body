@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Fragment, JSX } from 'react';
+import { JSX } from 'react';
 
 import { EditButton } from '~/shared/ui/molecules/buttons/EditButton';
 
@@ -41,10 +41,10 @@ export function ExerciseCard({
         {hasApproaches && (
           <StyledApproachList>
             {approaches?.map(({ repetitions, weight }, index) => (
-              <Fragment key={index}>
+              <StyledApproachItem key={index}>
                 <StyledText>{repetitions}</StyledText>
                 {weight && <StyledText>{weight} кг</StyledText>}
-              </Fragment>
+              </StyledApproachItem>
             ))}
           </StyledApproachList>
         )}
@@ -89,6 +89,12 @@ const StyledTitle = styled.div`
 
 const StyledContent = styled.div``;
 
+const StyledApproachList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
 const StyledText = styled.div`
   color: #a6a6ba;
   font-size: 12px;
@@ -96,15 +102,13 @@ const StyledText = styled.div`
   line-height: 100%;
 `;
 
-const StyledApproachList = styled.div`
+const StyledApproachItem = styled.div`
   display: grid;
   grid-template-columns: repeat(2, max-content);
   gap: 12px 17px;
 
   & ${StyledText} {
-    text-align: right;
-
-    &:nth-child(odd) {
+    &:not(:last-child) {
       position: relative;
 
       &::after {
