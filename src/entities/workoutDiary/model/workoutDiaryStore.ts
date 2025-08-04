@@ -20,6 +20,9 @@ type WorkoutDiaryStore = {
   // Training state
   training: Training;
 
+  // Selected approach from history
+  selectedApproachFromHistory: Approach | null;
+
   // Training actions
   clearTraining: () => void;
   setTrainingFromExisting: (training: Training) => void;
@@ -39,6 +42,10 @@ type WorkoutDiaryStore = {
   duplicateApproach: (exerciseName: string, approachIndex: number) => void;
   removeApproach: (exerciseName: string, approachIndex: number) => void;
 
+  // History approach actions
+  setSelectedApproachFromHistory: (approach: Approach | null) => void;
+  clearSelectedApproachFromHistory: () => void;
+
   // Computed values
   getExerciseByName: (name: string) => Exercise;
 };
@@ -48,6 +55,8 @@ export const useWorkoutDiaryStore = create<WorkoutDiaryStore>()(
     training: {
       exercises: [],
     },
+
+    selectedApproachFromHistory: null,
 
     // Training actions
     clearTraining: () => {
@@ -150,6 +159,19 @@ export const useWorkoutDiaryStore = create<WorkoutDiaryStore>()(
         if (exercise) {
           exercise.approaches.splice(approachIndex, 1);
         }
+      });
+    },
+
+    // History approach actions
+    setSelectedApproachFromHistory: (approach: Approach | null) => {
+      set((state) => {
+        state.selectedApproachFromHistory = approach;
+      });
+    },
+
+    clearSelectedApproachFromHistory: () => {
+      set((state) => {
+        state.selectedApproachFromHistory = null;
       });
     },
 

@@ -1,7 +1,10 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { useApproachesHistory } from '~/entities/workoutDiary';
+import {
+  useApproachesHistory,
+  useWorkoutDiaryStore,
+} from '~/entities/workoutDiary';
 import { Loader } from '~/shared/ui/atoms/Loader';
 
 type ApproachesHistoryProps = {
@@ -16,6 +19,12 @@ export function ApproachesHistory({
   const { approachesHistory, isApproachesHistoryPending } =
     useApproachesHistory(exerciseId);
 
+  const { setSelectedApproachFromHistory } = useWorkoutDiaryStore();
+
+  const handleApproachClick = (repetitions?: number, weight?: number) => {
+    setSelectedApproachFromHistory({ repetitions, weight });
+  };
+
   if (!approachesHistory || isApproachesHistoryPending) return <Loader />;
 
   return (
@@ -25,7 +34,10 @@ export function ApproachesHistory({
       {approachesHistory.history.map((approachesDay) => (
         <StyledDaysList key={approachesDay.id}>
           {approachesDay.sets.map(({ repetitions, weight }, index) => (
-            <StyledDaysItem key={index}>
+            <StyledDaysItem
+              key={index}
+              onClick={() => handleApproachClick(repetitions, weight)}
+            >
               <StyledApproach>#{index + 1}</StyledApproach>
               <StyledText>
                 {weight} кг x {repetitions} повт.

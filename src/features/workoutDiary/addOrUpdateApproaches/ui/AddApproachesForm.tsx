@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { JSX, useState } from 'react';
+import { JSX, useEffect, useState } from 'react';
 
 import { useWorkoutDiaryStore } from '~/entities/workoutDiary';
 import PlusIcon from '~/shared/assets/svg/plus.svg?react';
@@ -14,15 +14,35 @@ type AddApproachesFormProps = {
 export function AddApproachesForm({
   exerciseName,
 }: AddApproachesFormProps): JSX.Element {
-  const [approach, setApproach] = useState<Record<string, string>>({});
+  const [approach, setApproach] = useState<Record<string, number | undefined>>(
+    {},
+  );
 
-  const { createApproach } = useWorkoutDiaryStore();
+  const {
+    createApproach,
+    selectedApproachFromHistory,
+    clearSelectedApproachFromHistory,
+  } = useWorkoutDiaryStore();
+
+  useEffect(() => {
+    if (selectedApproachFromHistory) {
+      setApproach({
+        repetitions: selectedApproachFromHistory.repetitions,
+        weight: selectedApproachFromHistory.weight,
+      });
+    }
+  }, [selectedApproachFromHistory]);
 
   const handleCreateApproach = () => {
     if (approach.repetitions !== undefined) {
-      createApproach(exerciseName, approach);
       setApproach({});
+      createApproach(exerciseName, approach);
+      clearSelectedApproachFromHistory();
     }
+  };
+
+  const handleInputChange = (name: string, value: string) => {
+    setApproach({ ...approach, [name]: value ? Number(value) : undefined });
   };
 
   const isAddApproachButtonDisabled = approach.repetitions === undefined;
@@ -37,9 +57,7 @@ export function AddApproachesForm({
             key={name}
             {...inputProps}
             value={approach[name] ?? ''}
-            onChange={(evt) =>
-              setApproach({ ...approach, [name]: evt.target.value })
-            }
+            onChange={(evt) => handleInputChange(name, evt.target.value)}
           />
         ))}
 
