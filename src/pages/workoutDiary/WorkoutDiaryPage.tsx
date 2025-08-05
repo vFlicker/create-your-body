@@ -56,32 +56,42 @@ export function WorkoutDiaryPage(): JSX.Element {
     );
   };
 
+  const hasWorkoutReports = workoutReports.length > 0;
+
   return (
     <UserPageLayout>
       <StyledWorkoutDiaryPageWrapper>
         <StyledTitle>Дневник тренировок</StyledTitle>
 
-        <StyledTrainingList>
-          {workoutReports.map(({ label, trainings }) => (
-            <StyledTrainingItem key={label}>
-              <StyledSubTitle>{label}</StyledSubTitle>
-              <StyledTrainingCardList>
-                {trainings.map(({ id, date, exercisesCount, title }) => (
-                  <TrainingCard
-                    key={id}
-                    id={id}
-                    title={title}
-                    exercisesCount={exercisesCount}
-                    date={date}
-                    onClick={() => handleUpdateTraining(id)}
-                    onRemove={() => handleRemoveTraining(id)}
-                    onRepeat={() => handleRepeatTraining(id)}
-                  />
-                ))}
-              </StyledTrainingCardList>
-            </StyledTrainingItem>
-          ))}
-        </StyledTrainingList>
+        {!hasWorkoutReports && (
+          <StyledSubTitle>
+            Здесь пока ничего нет. Добавьте первую тренировку
+          </StyledSubTitle>
+        )}
+
+        {hasWorkoutReports && (
+          <StyledTrainingList>
+            {workoutReports.map(({ label, trainings }) => (
+              <StyledTrainingItem key={label}>
+                <StyledSubTitle>{label}</StyledSubTitle>
+                <StyledTrainingCardList>
+                  {trainings.map(({ id, date, exercisesCount, title }) => (
+                    <TrainingCard
+                      key={id}
+                      id={id}
+                      title={title}
+                      exercisesCount={exercisesCount}
+                      date={date}
+                      onClick={() => handleUpdateTraining(id)}
+                      onRemove={() => handleRemoveTraining(id)}
+                      onRepeat={() => handleRepeatTraining(id)}
+                    />
+                  ))}
+                </StyledTrainingCardList>
+              </StyledTrainingItem>
+            ))}
+          </StyledTrainingList>
+        )}
 
         <StyledButtonWrapper>
           <AddButton onClick={handleAddTraining} />
