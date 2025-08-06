@@ -21,7 +21,7 @@ type WorkoutDiaryStore = {
   training: Training;
 
   // Selected approach from history
-  selectedApproachFromHistory: Approach | null;
+  selectedApproachFromHistory: Approach;
 
   // Training actions
   clearTraining: () => void;
@@ -44,7 +44,7 @@ type WorkoutDiaryStore = {
   removeAllApproaches: (exerciseName: string) => void;
 
   // History approach actions
-  setSelectedApproachFromHistory: (approach: Approach | null) => void;
+  setSelectedApproachFromHistory: (approach: Approach) => void;
   clearSelectedApproachFromHistory: () => void;
 
   // Computed values
@@ -57,7 +57,7 @@ export const useWorkoutDiaryStore = create<WorkoutDiaryStore>()(
       exercises: [],
     },
 
-    selectedApproachFromHistory: null,
+    selectedApproachFromHistory: {},
 
     // Training actions
     clearTraining: () => {
@@ -176,7 +176,7 @@ export const useWorkoutDiaryStore = create<WorkoutDiaryStore>()(
     },
 
     // History approach actions
-    setSelectedApproachFromHistory: (approach: Approach | null) => {
+    setSelectedApproachFromHistory: (approach: Approach) => {
       set((state) => {
         state.selectedApproachFromHistory = approach;
       });
@@ -184,7 +184,7 @@ export const useWorkoutDiaryStore = create<WorkoutDiaryStore>()(
 
     clearSelectedApproachFromHistory: () => {
       set((state) => {
-        state.selectedApproachFromHistory = null;
+        state.selectedApproachFromHistory = {};
       });
     },
 

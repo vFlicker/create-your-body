@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 
 import { useModalStore } from '~/entities/modal';
+import { useWorkoutDiaryStore } from '~/entities/workoutDiary';
 import { Button } from '~/shared/ui/atoms/Button';
 
 import { AddApproachesForm } from './AddApproachesForm';
@@ -20,7 +21,21 @@ export function ApproachesForm({
 }: ApproachesFormProps): JSX.Element {
   const { closeModal } = useModalStore();
 
+  const {
+    createApproach,
+    selectedApproachFromHistory,
+    clearSelectedApproachFromHistory,
+  } = useWorkoutDiaryStore();
+
+  const createApproachHandler = () => {
+    if (selectedApproachFromHistory.repetitions !== undefined) {
+      createApproach(exerciseName, selectedApproachFromHistory);
+      clearSelectedApproachFromHistory();
+    }
+  };
+
   const handleSaveClick = () => {
+    createApproachHandler();
     closeModal();
   };
 

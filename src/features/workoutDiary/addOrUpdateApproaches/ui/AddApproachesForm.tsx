@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { JSX, useEffect, useState } from 'react';
+import { JSX } from 'react';
 
 import { useWorkoutDiaryStore } from '~/entities/workoutDiary';
 import PlusIcon from '~/shared/assets/svg/plus.svg?react';
@@ -14,38 +14,29 @@ type AddApproachesFormProps = {
 export function AddApproachesForm({
   exerciseName,
 }: AddApproachesFormProps): JSX.Element {
-  const [approach, setApproach] = useState<Record<string, number | undefined>>(
-    {},
-  );
-
   const {
     createApproach,
     selectedApproachFromHistory,
+    setSelectedApproachFromHistory,
     clearSelectedApproachFromHistory,
   } = useWorkoutDiaryStore();
 
-  useEffect(() => {
-    if (selectedApproachFromHistory) {
-      setApproach({
-        repetitions: selectedApproachFromHistory.repetitions,
-        weight: selectedApproachFromHistory.weight,
-      });
-    }
-  }, [selectedApproachFromHistory]);
-
   const handleCreateApproach = () => {
-    if (approach.repetitions !== undefined) {
-      setApproach({});
-      createApproach(exerciseName, approach);
+    if (selectedApproachFromHistory.repetitions !== undefined) {
+      createApproach(exerciseName, selectedApproachFromHistory);
       clearSelectedApproachFromHistory();
     }
   };
 
   const handleInputChange = (name: string, value: string) => {
-    setApproach({ ...approach, [name]: value ? Number(value) : undefined });
+    setSelectedApproachFromHistory({
+      ...selectedApproachFromHistory,
+      [name]: value ? Number(value) : undefined,
+    });
   };
 
-  const isAddApproachButtonDisabled = approach.repetitions === undefined;
+  const isAddApproachButtonDisabled =
+    selectedApproachFromHistory.repetitions === undefined;
 
   return (
     <StyledApproachRow>
@@ -56,7 +47,7 @@ export function AddApproachesForm({
           <Input2
             key={name}
             {...inputProps}
-            value={approach[name] ?? ''}
+            value={selectedApproachFromHistory[name] ?? ''}
             onChange={(evt) => handleInputChange(name, evt.target.value)}
           />
         ))}
@@ -117,6 +108,6 @@ const StyledActionButton = styled.button`
 `;
 
 const StyledAddApproachButton = styled(StyledActionButton)`
-  background-color: #7a66ff;
+  background-color: #a799ff;
   stroke: #ffffff;
 `;
