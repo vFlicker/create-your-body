@@ -37,8 +37,12 @@ export function TrainingFrom({
 }: TrainingFromProps): JSX.Element {
   const { openModal, closeModal } = useModalStore();
 
-  const { training, clearTraining, setTrainingFromExisting } =
-    useWorkoutDiaryStore();
+  const {
+    training,
+    clearTraining,
+    setTrainingFromExisting,
+    clearSelectedApproachFromHistory,
+  } = useWorkoutDiaryStore();
 
   const { workoutReport } = useWorkoutReport(id);
   const { createWorkoutReport, isCreateWorkoutReportPending } =
@@ -79,6 +83,11 @@ export function TrainingFrom({
       });
     }
   }, [workoutReport, reset, type]);
+
+  const handleCloseModal = () => {
+    clearTraining();
+    clearSelectedApproachFromHistory();
+  };
 
   const onSubmit = async (data: AddOrUpdateTraining) => {
     const dto = {
@@ -158,7 +167,7 @@ export function TrainingFrom({
                 approaches={exercise.approaches}
                 onEdit={() =>
                   openModal(
-                    <Modal>
+                    <Modal onClose={handleCloseModal}>
                       <ApproachesForm
                         exerciseId={exercise.id}
                         exerciseName={exercise.name}
@@ -175,7 +184,7 @@ export function TrainingFrom({
           type="button"
           onClick={() =>
             openModal(
-              <Modal>
+              <Modal onClose={handleCloseModal}>
                 <AddExerciseForm />
               </Modal>,
             )

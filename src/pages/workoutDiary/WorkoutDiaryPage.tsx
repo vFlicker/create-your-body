@@ -15,7 +15,8 @@ import { UserPageLayout } from '~/widgets/layouts/UserPageLayout';
 export function WorkoutDiaryPage(): JSX.Element {
   const { openModal } = useModalStore();
 
-  const { clearTraining } = useWorkoutDiaryStore();
+  const { clearTraining, clearSelectedApproachFromHistory } =
+    useWorkoutDiaryStore();
 
   const { workoutReports, isWorkoutReportsPending } =
     useWorkoutReportsGroupedByDate();
@@ -24,9 +25,14 @@ export function WorkoutDiaryPage(): JSX.Element {
     return <UserPageLayout isLoading={isWorkoutReportsPending} />;
   }
 
+  const handleCloseModal = () => {
+    clearTraining();
+    clearSelectedApproachFromHistory();
+  };
+
   const handleUpdateTraining = (id: number) => {
     openModal(
-      <Modal onClose={clearTraining}>
+      <Modal onClose={handleCloseModal}>
         <TrainingFrom type="update" title="Редактировать тренировку" id={id} />
       </Modal>,
     );
@@ -34,7 +40,7 @@ export function WorkoutDiaryPage(): JSX.Element {
 
   const handleAddTraining = () => {
     openModal(
-      <Modal onClose={clearTraining}>
+      <Modal onClose={handleCloseModal}>
         <TrainingFrom type="create" title="Новая тренировка" />
       </Modal>,
     );
@@ -42,7 +48,7 @@ export function WorkoutDiaryPage(): JSX.Element {
 
   const handleRepeatTraining = (id: number) => {
     openModal(
-      <Modal onClose={clearTraining}>
+      <Modal onClose={handleCloseModal}>
         <TrainingFrom type="repeat" title="Повторить тренировку" id={id} />
       </Modal>,
     );
