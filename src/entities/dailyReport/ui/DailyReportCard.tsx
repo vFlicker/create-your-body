@@ -23,8 +23,8 @@ type DailyReportCardProps = {
 };
 
 const directionIcon = {
-  up: <DownArrowIcon stroke="#CBFF52" />,
-  down: <UpArrowIcon stroke="#f66e5c" />,
+  up: <UpArrowIcon stroke="#ffffff" />,
+  down: <DownArrowIcon stroke="#ffffff" />,
   same: <></>,
 };
 
