@@ -11,6 +11,10 @@ import {
   LectureWeeksPage,
 } from '~/pages/lectures';
 import {
+  MacrosCalculatorPage,
+  MacrosCalculatorQuizPage,
+} from '~/pages/macrosCalculator';
+import {
   CreateMeasurementsPage,
   EditMeasurementsPage,
   MeasurementsPage,
@@ -44,6 +48,17 @@ export function Routing(): JSX.Element {
         {/* Quiz */}
         <Route path={AppRoute.Quiz} element={<QuizPage />} />
         <Route path={AppRoute.QuizResult} element={<QuizResultPage />} />
+
+        {/* Macros Calculator */}
+        <Route
+          path={AppRoute.MacrosCalculator}
+          element={<MacrosCalculatorPage />}
+        />
+
+        <Route
+          path={AppRoute.MacrosCalculatorQuiz}
+          element={<MacrosCalculatorQuizPage />}
+        />
 
         {/* Dashboard */}
         <Route path={AppRoute.Dashboard} element={<DashboardPage />} />
