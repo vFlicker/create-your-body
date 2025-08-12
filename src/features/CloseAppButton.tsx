@@ -1,6 +1,7 @@
 import { JSX, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import closeIconSrc from '~/shared/assets/svg/close.svg';
 import { NavButton } from '~/shared/ui/molecules/buttons/NavButton';
 
 const PREVIOUS_PAGE = -1;
@@ -32,6 +33,10 @@ export function CloseAppButton({
   };
 
   return (
-    <NavButton className={className} text="Закрыть" onClick={handleClick} />
+    <NavButton
+      className={className}
+      iconSrc={closeIconSrc}
+      onClick={handleClick}
+    />
   );
 }

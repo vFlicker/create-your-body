@@ -65,7 +65,7 @@ const StyledMacrosCalculatorPage = styled.div`
 const StyledHeader = styled.div`
   display: flex;
   justify-content: flex-end;
-  padding: 16px 10px;
+  padding: 16px;
 `;
 const StyledCloseAppButton = styled(CloseAppButton)`
   color: #ffffff;
