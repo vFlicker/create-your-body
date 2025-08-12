@@ -1,13 +1,15 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-interface StepProgressBarProps {
+type StepProgressBarProps = {
+  className?: string;
   title: string;
   currentStep: number;
   totalSteps: number;
-}
+};
 
 export function StepProgressBar({
+  className,
   title,
   currentStep,
   totalSteps,
@@ -15,7 +17,7 @@ export function StepProgressBar({
   const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
 
   return (
-    <StyledStepProgressBarWrapper>
+    <StyledStepProgressBarWrapper className={className}>
       <StyledProgressBar>
         <StyledFill style={{ width: `${progress}%` }} />
         <StyledCircle style={{ left: `calc(${progress}%)` }} />
