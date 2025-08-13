@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 
 import { BmiCard } from '~/entities/bmi';
+import { useBmiStore } from '~/entities/bmi/model/bmiStore';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
 
@@ -18,6 +19,8 @@ export function ParametersResultScreen({
   onNext,
   onBack,
 }: ParametersResultScreenProps): JSX.Element {
+  const { form } = useBmiStore();
+
   return (
     <StyledParametersResultScreenWrapper>
       <ScreenHeader
@@ -36,7 +39,7 @@ export function ParametersResultScreen({
           Мозг потребляет около <span>20%</span> всей энергии!
         </FactBlock>
 
-        <BmiCard height={1.74} weight={64} />
+        <BmiCard height={form.height!} weight={form.weight!} />
 
         <StyledActions>
           <Button color="neutral" onClick={onBack}>

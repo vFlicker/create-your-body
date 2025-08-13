@@ -1,7 +1,11 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { EnterParametersForm } from '~/features/bmiCalculator/enterParameters';
+import { useBmiStore } from '~/entities/bmi/model/bmiStore';
+import {
+  EnterParametersForm,
+  ToggleHasExtraWeight,
+} from '~/features/bmiCalculator/enterParameters';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
 
@@ -15,6 +19,10 @@ type EnterParametersScreenProps = {
 export function EnterParametersScreen({
   onNext,
 }: EnterParametersScreenProps): JSX.Element {
+  const { form } = useBmiStore();
+
+  const isDisabled = form.height === undefined || form.weight === undefined;
+
   return (
     <StyledEnterParametersScreenWrapper>
       <ScreenHeader
@@ -23,18 +31,23 @@ export function EnterParametersScreen({
       />
 
       <StyledMainWrapper>
-        <EnterParametersForm />
+        <StyledFormWrapper>
+          <EnterParametersForm />
+          <ToggleHasExtraWeight />
+        </StyledFormWrapper>
 
-        <FactBlock>
-          Мужчины обычно имеют базовый обмен веществ выше на <span>10-15%</span>{' '}
-          из-за большей мышечной массы
-        </FactBlock>
+        <StyledFooter>
+          <FactBlock>
+            Мужчины обычно имеют базовый обмен веществ выше на{' '}
+            <span>10-15%</span> из-за большей мышечной массы
+          </FactBlock>
 
-        <StyledActions>
-          <Button color="accent" onClick={onNext}>
-            Далее
-          </Button>
-        </StyledActions>
+          <StyledActions>
+            <Button color="accent" disabled={isDisabled} onClick={onNext}>
+              Далее
+            </Button>
+          </StyledActions>
+        </StyledFooter>
       </StyledMainWrapper>
     </StyledEnterParametersScreenWrapper>
   );
@@ -49,13 +62,26 @@ const StyledEnterParametersScreenWrapper = styled.div`
 const StyledMainWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 24px;
   flex-grow: 1;
+  gap: 24px;
 
   padding: 16px 16px 24px;
   border-radius: 20px 20px 0 0;
 
   background-color: ${Color.White};
+`;
+
+const StyledFormWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+`;
+
+const StyledFooter = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+  gap: 20px;
 `;
 
 const StyledActions = styled.div`

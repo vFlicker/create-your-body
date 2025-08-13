@@ -1,7 +1,8 @@
 import { bmiCardConfig } from './bmiConfig';
 
 export const calculateBmi = (weight: number, height: number) => {
-  return weight / (height * height);
+  const heightInMeters = height / 100;
+  return weight / (heightInMeters * heightInMeters);
 };
 
 export const getBmiCategory = (bmi: number) => {
