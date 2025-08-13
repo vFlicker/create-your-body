@@ -1,16 +1,11 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { useBmiStore } from '~/entities/bmi/model/bmiStore';
-import {
-  EnterParametersForm,
-  ToggleHasExtraWeight,
-} from '~/features/bmiCalculator/enterParameters';
+import { FactBlock, ScreenHeader, useBmiStore } from '~/entities/bmi';
+import { EnterParametersForm } from '~/features/bmiCalculator/enterParameters';
+import { ToggleHasExtraWeight } from '~/features/bmiCalculator/toggleHasExtraWeight';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
-
-import { FactBlock } from './ui/FactBlock';
-import { ScreenHeader } from './ui/ScreenHeader';
 
 type EnterParametersScreenProps = {
   onNext: () => void;
