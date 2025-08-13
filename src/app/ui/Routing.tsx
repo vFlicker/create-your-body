@@ -2,6 +2,10 @@ import { JSX } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { BeginPage } from '~/pages/begin';
+import {
+  BmiCalculatorPage,
+  BmiCalculatorQuizPage,
+} from '~/pages/bmiCalculator';
 import { CommunicationPage } from '~/pages/communication';
 import { DashboardPage, LearningPage } from '~/pages/dashboard';
 import { FoodCategoriesPage, FoodPage } from '~/pages/food';
@@ -10,10 +14,6 @@ import {
   LectureWeekPage,
   LectureWeeksPage,
 } from '~/pages/lectures';
-import {
-  MacrosCalculatorPage,
-  MacrosCalculatorQuizPage,
-} from '~/pages/macrosCalculator';
 import {
   CreateMeasurementsPage,
   EditMeasurementsPage,
@@ -49,15 +49,15 @@ export function Routing(): JSX.Element {
         <Route path={AppRoute.Quiz} element={<QuizPage />} />
         <Route path={AppRoute.QuizResult} element={<QuizResultPage />} />
 
-        {/* Macros Calculator */}
+        {/* Bmi Calculator */}
         <Route
-          path={AppRoute.MacrosCalculator}
-          element={<MacrosCalculatorPage />}
+          path={AppRoute.BmiCalculator}
+          element={<BmiCalculatorPage />}
         />
 
         <Route
-          path={AppRoute.MacrosCalculatorQuiz}
-          element={<MacrosCalculatorQuizPage />}
+          path={AppRoute.BmiCalculatorQuiz}
+          element={<BmiCalculatorQuizPage />}
         />
 
         {/* Dashboard */}

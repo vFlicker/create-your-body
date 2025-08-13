@@ -3,20 +3,20 @@ import { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { CloseAppButton } from '~/features/CloseAppButton';
-import backgroundImageSrc from '~/shared/assets/img/macros-calculator-bg.png';
+import backgroundImageSrc from '~/shared/assets/img/bmi-calculator-bg.png';
 import ClockStopWatchIcon from '~/shared/assets/svg/clock-stopwatch.svg?react';
 import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/atoms/Button';
 
-export function MacrosCalculatorPage(): JSX.Element {
+export function BmiCalculatorPage(): JSX.Element {
   const navigate = useNavigate();
 
   const handleStartCalculation = () => {
-    navigate(AppRoute.MacrosCalculatorQuiz);
+    navigate(AppRoute.BmiCalculatorQuiz);
   };
 
   return (
-    <StyledMacrosCalculatorPage>
+    <StyledBmiCalculatorPage>
       <StyledHeader>
         <StyledCloseAppButton />
       </StyledHeader>
@@ -44,13 +44,13 @@ export function MacrosCalculatorPage(): JSX.Element {
           Начать расчёт
         </Button>
       </StyledContent>
-    </StyledMacrosCalculatorPage>
+    </StyledBmiCalculatorPage>
   );
 }
 
 const backgroundImage = `url("${backgroundImageSrc}")`;
 
-const StyledMacrosCalculatorPage = styled.div`
+const StyledBmiCalculatorPage = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;

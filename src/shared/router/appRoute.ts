@@ -18,9 +18,9 @@ export const enum AppRoute {
   Quiz = '/quiz',
   QuizResult = '/quiz-result',
 
-  // Macros calculator
-  MacrosCalculator = '/macros-calculator',
-  MacrosCalculatorQuiz = '/macros-calculator/quiz',
+  // Bmi calculator
+  BmiCalculator = '/bmi-calculator',
+  BmiCalculatorQuiz = '/bmi-calculator/quiz',
 
   // User routes
   Profile = '/profile',

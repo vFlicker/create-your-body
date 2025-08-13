@@ -9,7 +9,7 @@ import { StepProgressBar } from '~/shared/ui/molecules/StepProgressBar';
 import { EnterParametersScreen } from './screens/EnterParametersScreen';
 import { ParametersResultScreen } from './screens/ParametersResultScreen';
 
-export function MacrosCalculatorQuizPage(): JSX.Element {
+export function BmiCalculatorQuizPage(): JSX.Element {
   const [step, setStep] = useState(2);
 
   const handleBackClick = () => {
@@ -32,7 +32,7 @@ export function MacrosCalculatorQuizPage(): JSX.Element {
   ];
 
   return (
-    <StyledMacrosCalculatorQuizPage>
+    <StyledBmiCalculatorQuizPage>
       <StyledHeader>
         <NavButton
           text="Назад"
@@ -55,11 +55,11 @@ export function MacrosCalculatorQuizPage(): JSX.Element {
 
         {screens[step - 1]}
       </StyledContent>
-    </StyledMacrosCalculatorQuizPage>
+    </StyledBmiCalculatorQuizPage>
   );
 }
 
-const StyledMacrosCalculatorQuizPage = styled.div`
+const StyledBmiCalculatorQuizPage = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
