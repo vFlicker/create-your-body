@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
+import { BmiCard } from '~/entities/bmi';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
 
@@ -34,6 +35,8 @@ export function ParametersResultScreen({
           BMR составляет <span>60-75%</span> от общих затрат энергии в сутки.
           Мозг потребляет около <span>20%</span> всей энергии!
         </FactBlock>
+
+        <BmiCard height={1.74} weight={64} />
 
         <StyledActions>
           <Button color="neutral" onClick={onBack}>
