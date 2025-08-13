@@ -10,7 +10,7 @@ import { EnterParametersScreen } from './screens/EnterParametersScreen';
 import { ParametersResultScreen } from './screens/ParametersResultScreen';
 
 export function BmiCalculatorQuizPage(): JSX.Element {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
 
   const handleBackClick = () => {
     if (step > 1) setStep((prevStep) => prevStep - 1);

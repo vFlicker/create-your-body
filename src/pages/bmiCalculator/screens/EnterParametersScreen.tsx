@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
+import { EnterParametersForm } from '~/features/bmiCalculator/enterParameters';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
 
@@ -22,6 +23,8 @@ export function EnterParametersScreen({
       />
 
       <StyledMainWrapper>
+        <EnterParametersForm />
+
         <FactBlock>
           Мужчины обычно имеют базовый обмен веществ выше на <span>10-15%</span>{' '}
           из-за большей мышечной массы
