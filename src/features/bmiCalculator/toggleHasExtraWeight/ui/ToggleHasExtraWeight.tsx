@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 
 import { useBmiStore } from '~/entities/bmi/model/bmiStore';
-import { ToggleCheckbox } from '~/shared/ui/molecules/ToggleCheckbox';
+import { ToggleCheckbox } from '~/shared/ui/molecules/checkboxes/ToggleCheckbox';
 
 export function ToggleHasExtraWeight(): JSX.Element {
   const { form, setForm } = useBmiStore();

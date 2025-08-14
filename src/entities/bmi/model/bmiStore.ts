@@ -6,6 +6,7 @@ type BmiStore = {
     height?: number;
     weight?: number;
     hasExtraWeight: boolean;
+    activityCoefficient?: number;
   };
 
   setForm: (form: BmiStore['form']) => void;
@@ -17,6 +18,7 @@ export const useBmiStore = create<BmiStore>()(
       height: undefined,
       weight: undefined,
       hasExtraWeight: false,
+      activityCoefficient: undefined,
     },
     setForm: (form) =>
       set((state) => {

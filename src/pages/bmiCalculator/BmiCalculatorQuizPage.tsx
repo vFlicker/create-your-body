@@ -6,11 +6,12 @@ import closeIconSrc from '~/shared/assets/svg/close.svg';
 import { NavButton } from '~/shared/ui/molecules/buttons/NavButton';
 import { StepProgressBar } from '~/shared/ui/molecules/StepProgressBar';
 
+import { ActivityScreenScreen } from './screens/ActivityScreen';
 import { EnterParametersScreen } from './screens/EnterParametersScreen';
 import { ParametersResultScreen } from './screens/ParametersResultScreen';
 
 export function BmiCalculatorQuizPage(): JSX.Element {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(3);
 
   const handleBackClick = () => {
     if (step > 1) setStep((prevStep) => prevStep - 1);
@@ -26,6 +27,11 @@ export function BmiCalculatorQuizPage(): JSX.Element {
     <EnterParametersScreen key="enter-parameters" onNext={handleNextClick} />,
     <ParametersResultScreen
       key="parameters-result"
+      onBack={handleBackClick}
+      onNext={handleNextClick}
+    />,
+    <ActivityScreenScreen
+      key="activity-screen"
       onBack={handleBackClick}
       onNext={handleNextClick}
     />,
