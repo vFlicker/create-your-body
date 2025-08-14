@@ -4,3 +4,5 @@ export const enum BmiStatus {
   Overweight = 'overweight',
   Obese = 'obese',
 }
+
+export type Goal = 'weight loss' | 'maintenance' | 'weight gain';

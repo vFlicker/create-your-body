@@ -20,14 +20,15 @@ export function CardSelect({
   return (
     <StyledLabel checked={checked}>
       <StyledInput type={type} {...props} />
-      <StyledSelectMark />
-      <StyledContent>
-        <StyledTextWrapper>
+      <StyledContentWrapper>
+        <StyledContent>
+          <StyledSelectMark />
           <StyledTitle>{title}</StyledTitle>
-          {subtitle && <StyledSubtitle>{subtitle}</StyledSubtitle>}
-        </StyledTextWrapper>
-        {badge && <StyledBadge>{badge}</StyledBadge>}
-      </StyledContent>
+          {badge && <StyledBadge>{badge}</StyledBadge>}
+        </StyledContent>
+
+        {subtitle && <StyledSubtitle>{subtitle}</StyledSubtitle>}
+      </StyledContentWrapper>
     </StyledLabel>
   );
 }
@@ -57,12 +58,6 @@ const StyledSelectMark = styled.span`
   background-color: #d0cfd9;
 `;
 
-const StyledTextWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
 const StyledTitle = styled.h3`
   color: #403c77;
   font-size: 14px;
@@ -71,6 +66,8 @@ const StyledTitle = styled.h3`
 `;
 
 const StyledSubtitle = styled.p`
+  padding-left: 24px;
+
   color: #403c77;
   font-size: 11px;
   font-weight: 500;
@@ -81,6 +78,7 @@ const StyledBadge = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-left: auto;
 
   padding: 6px 10px;
   border-radius: 50px;
@@ -93,18 +91,25 @@ const StyledBadge = styled.span`
   background-color: #e6e3f8;
 `;
 
+const StyledContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1;
+`;
+
 const StyledContent = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
+  align-items: center;
+  gap: 8px;
   flex-grow: 1;
 `;
 
 const StyledLabel = styled.label<{ checked: boolean }>`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 8px;
+  min-height: 76px;
 
   padding: 12px 12px 14px 12px;
   border-width: 2px;

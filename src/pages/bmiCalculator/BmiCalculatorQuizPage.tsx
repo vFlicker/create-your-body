@@ -8,10 +8,11 @@ import { StepProgressBar } from '~/shared/ui/molecules/StepProgressBar';
 
 import { ActivityScreenScreen } from './screens/ActivityScreen';
 import { EnterParametersScreen } from './screens/EnterParametersScreen';
+import { GoalScreen } from './screens/GoalScreen';
 import { ParametersResultScreen } from './screens/ParametersResultScreen';
 
 export function BmiCalculatorQuizPage(): JSX.Element {
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(1);
 
   const handleBackClick = () => {
     if (step > 1) setStep((prevStep) => prevStep - 1);
@@ -32,6 +33,11 @@ export function BmiCalculatorQuizPage(): JSX.Element {
     />,
     <ActivityScreenScreen
       key="activity-screen"
+      onBack={handleBackClick}
+      onNext={handleNextClick}
+    />,
+    <GoalScreen
+      key="goal-screen"
       onBack={handleBackClick}
       onNext={handleNextClick}
     />,

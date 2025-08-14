@@ -1,31 +1,33 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { ScreenHeader } from '~/entities/bmi';
-import { ChooseActivityForm } from '~/features/bmiCalculator/chooseActivity';
+import { FactBlock, ScreenHeader } from '~/entities/bmi';
+import { ChooseGoalForm } from '~/features/bmiCalculator/chooseGoal';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
 
-type ActivityScreenScreenProps = {
+type GoalScreenProps = {
   onNext: () => void;
   onBack: () => void;
 };
 
-export function ActivityScreenScreen({
-  onNext,
-  onBack,
-}: ActivityScreenScreenProps): JSX.Element {
+export function GoalScreen({ onNext, onBack }: GoalScreenProps): JSX.Element {
   return (
-    <StyledActivityScreenWrapper>
+    <StyledGoalScreenWrapper>
       <ScreenHeader
-        title="Укажите вашу активность"
-        subtitle="⚡️ Рассчитываем суточную норму"
+        title="Выберите вашу цель"
+        subtitle="🎯️ Определяем итоговую калорийность рациона"
       />
 
       <StyledMainWrapper>
-        <ChooseActivityForm />
+        <ChooseGoalForm />
 
         <StyledFooter>
+          <FactBlock>
+            <span>10 000</span> шагов сжигают примерно <span>300-400</span>{' '}
+            ккал, в зависимости от вашего веса!
+          </FactBlock>
+
           <StyledActions>
             <Button color="neutral" onClick={onBack}>
               Назад
@@ -36,11 +38,11 @@ export function ActivityScreenScreen({
           </StyledActions>
         </StyledFooter>
       </StyledMainWrapper>
-    </StyledActivityScreenWrapper>
+    </StyledGoalScreenWrapper>
   );
 }
 
-const StyledActivityScreenWrapper = styled.div`
+const StyledGoalScreenWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
