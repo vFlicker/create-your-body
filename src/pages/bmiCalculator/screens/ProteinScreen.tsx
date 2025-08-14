@@ -1,31 +1,36 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { ScreenHeader } from '~/entities/bmi';
-import { ChooseActivityForm } from '~/features/bmiCalculator/chooseActivity';
+import { FactBlock, ScreenHeader } from '~/entities/bmi';
+import { StatCard } from '~/entities/bmi/ui/StatCard';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
 
-type ActivityScreenProps = {
+type ProteinScreenProps = {
   onNext: () => void;
   onBack: () => void;
 };
 
-export function ActivityScreen({
+export function ProteinScreen({
   onNext,
   onBack,
-}: ActivityScreenProps): JSX.Element {
+}: ProteinScreenProps): JSX.Element {
   return (
     <StyledActivityScreenWrapper>
       <ScreenHeader
-        title="Укажите вашу активность"
-        subtitle="⚡️ Рассчитываем суточную норму"
+        title="Выберите норму белка"
+        subtitle="⚖️ Определяем ваш идеальный баланс БЖУ"
       />
 
       <StyledMainWrapper>
-        <ChooseActivityForm />
+        <StatCard />
 
         <StyledFooter>
+          <FactBlock>
+            Белки имеют наибольший термический эффект — на их переваривание
+            тратится до 30% калорий!
+          </FactBlock>
+
           <StyledActions>
             <Button color="neutral" onClick={onBack}>
               Назад

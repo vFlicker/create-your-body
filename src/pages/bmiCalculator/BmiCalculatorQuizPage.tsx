@@ -6,13 +6,14 @@ import closeIconSrc from '~/shared/assets/svg/close.svg';
 import { NavButton } from '~/shared/ui/molecules/buttons/NavButton';
 import { StepProgressBar } from '~/shared/ui/molecules/StepProgressBar';
 
-import { ActivityScreenScreen } from './screens/ActivityScreen';
+import { ActivityScreen } from './screens/ActivityScreen';
 import { EnterParametersScreen } from './screens/EnterParametersScreen';
 import { GoalScreen } from './screens/GoalScreen';
 import { ParametersResultScreen } from './screens/ParametersResultScreen';
+import { ProteinScreen } from './screens/ProteinScreen';
 
 export function BmiCalculatorQuizPage(): JSX.Element {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(5);
 
   const handleBackClick = () => {
     if (step > 1) setStep((prevStep) => prevStep - 1);
@@ -31,13 +32,18 @@ export function BmiCalculatorQuizPage(): JSX.Element {
       onBack={handleBackClick}
       onNext={handleNextClick}
     />,
-    <ActivityScreenScreen
+    <ActivityScreen
       key="activity-screen"
       onBack={handleBackClick}
       onNext={handleNextClick}
     />,
     <GoalScreen
       key="goal-screen"
+      onBack={handleBackClick}
+      onNext={handleNextClick}
+    />,
+    <ProteinScreen
+      key="protein-screen"
       onBack={handleBackClick}
       onNext={handleNextClick}
     />,
