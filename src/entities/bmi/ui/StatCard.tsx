@@ -1,9 +1,23 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
+const gradients = {
+  minVeryVeryBad:
+    'linear-gradient(108deg, #ff9d3c 6.67%, #fb8ea6 55.35%, #7a66ff 104.03%, #8877fc 201.4%)',
+  minVeryBad:
+    'linear-gradient(105deg, #FFAA3C -26.22%, #FB8EA6 29.46%, #7A66FF 85.14%, #8877FC 196.51%)',
+  minBad:
+    'linear-gradient(109deg, #FFAA3C -30.74%, #FB8EA6 12.59%, #7A66FF 55.93%, #8877FC 142.6%)',
+  normal: 'linear-gradient(108deg, #7A66FF 24.52%, #8877FC 74.93%)',
+  maxBad:
+    'linear-gradient(208deg, #FA5858 -17.26%, #7A66FF 67.66%, #8877FC 152.58%)',
+  maxVeryBad:
+    'linear-gradient(197deg, #FA5858 15.4%, #7A66FF 102.1%, #8877FC 188.8%)',
+};
+
 export function StatCard(): JSX.Element {
   return (
-    <StyledStatCardWrapper>
+    <StyledStatCardWrapper gradient={gradients.maxVeryBad}>
       <StyledContent>
         <StyledTitle>Ваш уровень белка (0,4 г/кг веса)</StyledTitle>
         <StyledValue>⚠️ 40 г</StyledValue>
@@ -21,7 +35,7 @@ export function StatCard(): JSX.Element {
   );
 }
 
-const StyledStatCardWrapper = styled.div`
+const StyledStatCardWrapper = styled.div<{ gradient: string }>`
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -31,13 +45,7 @@ const StyledStatCardWrapper = styled.div`
 
   color: #ffffff;
 
-  background-image: linear-gradient(
-    105deg,
-    #ffaa3c -26.22%,
-    #fb8ea6 29.46%,
-    #7a66ff 85.14%,
-    #8877fc 196.51%
-  );
+  background-image: ${({ gradient }) => gradient};
 `;
 
 const StyledContent = styled.div`
