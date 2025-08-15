@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
-import { JSX } from 'react';
+import { JSX, useState } from 'react';
 
-import { FactBlock, ScreenHeader } from '~/entities/bmi';
-import { StatCard } from '~/entities/bmi/ui/StatCard';
+import { FactBlock, ScreenHeader, StatCard } from '~/entities/bmi';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
+import { RangeSelect } from '~/shared/ui/molecules/RangeSelect';
 
 type ProteinScreenProps = {
   onNext: () => void;
@@ -15,6 +15,8 @@ export function ProteinScreen({
   onNext,
   onBack,
 }: ProteinScreenProps): JSX.Element {
+  const [proteinValue, setProteinValue] = useState(1);
+
   return (
     <StyledActivityScreenWrapper>
       <ScreenHeader
@@ -24,6 +26,23 @@ export function ProteinScreen({
 
       <StyledMainWrapper>
         <StatCard />
+
+        <div>value: {proteinValue}</div>
+
+        <RangeSelect
+          min={0.5}
+          max={2.5}
+          step={0.1}
+          labels={[
+            { value: 0, text: 'Тяни вправо' },
+            { value: 1.2, text: '1.2 г/кг', description: 'Минимум' },
+            { value: 1.6, text: '1.6 г/кг', description: 'Норма' },
+            { value: 2.0, text: '2.0 г/кг', description: 'Спорт' },
+            { value: 2.5, text: '2.5 г/кг', description: 'Максимум' },
+          ]}
+          value={proteinValue}
+          onChange={setProteinValue}
+        />
 
         <StyledFooter>
           <FactBlock>
