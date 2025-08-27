@@ -6,48 +6,45 @@ import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
 import { RangeSelect } from '~/shared/ui/molecules/RangeSelect';
 
-type ProteinScreenProps = {
+type FatScreenProps = {
   onNext: () => void;
   onBack: () => void;
 };
 
-export function ProteinScreen({
-  onNext,
-  onBack,
-}: ProteinScreenProps): JSX.Element {
-  const [proteinValue, setProteinValue] = useState(1);
+export function FatScreen({ onNext, onBack }: FatScreenProps): JSX.Element {
+  const [fatValue, setFatValue] = useState(0);
 
   return (
     <StyledActivityScreenWrapper>
       <ScreenHeader
-        title="Выберите норму белка"
-        subtitle="⚖️ Определяем ваш идеальный баланс БЖУ"
+        title="Выберите норму жиров"
+        subtitle="⚖️ Определяем ваш идеальный баланс БЖУ "
       />
 
       <StyledMainWrapper>
         <StatCard />
 
-        <div>value: {proteinValue}</div>
+        <div>value: {fatValue}</div>
 
         <RangeSelect
-          min={0.5}
-          max={2.5}
+          min={0}
+          max={1.5}
           step={0.1}
           labels={[
-            { value: 0, text: 'Тяни вправо' },
-            { value: 1.2, text: '1,2 г/кг', description: 'Минимум' },
-            { value: 1.6, text: '1,6 г/кг', description: 'Норма' },
-            { value: 2.0, text: '2,0 г/кг', description: 'Спорт' },
-            { value: 2.5, text: '2,5 г/кг', description: 'Максимум' },
+            { value: 0, text: '0 г' },
+            { value: 0.7, text: '0,7 г/кг', description: 'Минимум' },
+            { value: 1.0, text: '1,0 г/кг', description: 'Норма' },
+            { value: 1.4, text: '1,4 г/кг', description: 'Высокий' },
+            { value: 1.5, text: '1,5 г/кг', description: 'Максимум' },
           ]}
-          value={proteinValue}
-          onChange={setProteinValue}
+          value={fatValue}
+          onChange={setFatValue}
         />
 
         <StyledFooter>
           <FactBlock>
-            Белки имеют наибольший термический эффект — на их переваривание
-            тратится до 30% калорий!
+            Холестерин из жиров — предшественник тестостерона. Недостаток жира
+            снижает либидо.
           </FactBlock>
 
           <StyledActions>

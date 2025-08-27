@@ -8,9 +8,11 @@ import { StepProgressBar } from '~/shared/ui/molecules/StepProgressBar';
 
 import { ActivityScreen } from './screens/ActivityScreen';
 import { EnterParametersScreen } from './screens/EnterParametersScreen';
+import { FatScreen } from './screens/FatScreen';
 import { GoalScreen } from './screens/GoalScreen';
 import { ParametersResultScreen } from './screens/ParametersResultScreen';
 import { ProteinScreen } from './screens/ProteinScreen';
+import { ResultScreen } from './screens/ResultScreen';
 
 export function BmiCalculatorQuizPage(): JSX.Element {
   const [step, setStep] = useState(5);
@@ -21,6 +23,14 @@ export function BmiCalculatorQuizPage(): JSX.Element {
 
   const handleNextClick = () => {
     setStep((prevStep) => prevStep + 1);
+  };
+
+  const handleRepeatClick = () => {
+    setStep(1);
+  };
+
+  const handleFinishClick = () => {
+    console.log('Finish clicked');
   };
 
   const isBackButtonActive = step > 1;
@@ -47,6 +57,16 @@ export function BmiCalculatorQuizPage(): JSX.Element {
       onBack={handleBackClick}
       onNext={handleNextClick}
     />,
+    <FatScreen
+      key="fat-screen"
+      onBack={handleBackClick}
+      onNext={handleNextClick}
+    />,
+    <ResultScreen
+      key="result-screen"
+      onRepeat={handleRepeatClick}
+      onFinish={handleFinishClick}
+    />,
   ];
 
   return (
@@ -68,7 +88,7 @@ export function BmiCalculatorQuizPage(): JSX.Element {
         <StyledStepProgressBar
           title="Базовый обмен"
           currentStep={step}
-          totalSteps={8}
+          totalSteps={screens.length}
         />
 
         {screens[step - 1]}
