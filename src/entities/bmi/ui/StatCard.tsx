@@ -1,41 +1,65 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-const gradients = {
-  minVeryVeryBad:
-    'linear-gradient(108deg, #ff9d3c 6.67%, #fb8ea6 55.35%, #7a66ff 104.03%, #8877fc 201.4%)',
-  minVeryBad:
-    'linear-gradient(105deg, #FFAA3C -26.22%, #FB8EA6 29.46%, #7A66FF 85.14%, #8877FC 196.51%)',
-  minBad:
-    'linear-gradient(109deg, #FFAA3C -30.74%, #FB8EA6 12.59%, #7A66FF 55.93%, #8877FC 142.6%)',
-  normal: 'linear-gradient(108deg, #7A66FF 24.52%, #8877FC 74.93%)',
-  maxBad:
-    'linear-gradient(208deg, #FA5858 -17.26%, #7A66FF 67.66%, #8877FC 152.58%)',
-  maxVeryBad:
-    'linear-gradient(197deg, #FA5858 15.4%, #7A66FF 102.1%, #8877FC 188.8%)',
+import { BmiRiskLevel } from '../bmiConfig';
+
+type StatCardProps = {
+  className?: string;
+  title: string;
+  valueEmoji: string;
+  value: number;
+  description: string;
+  calories: number;
+  percentage: number;
+  riskLevel: BmiRiskLevel;
 };
 
-export function StatCard(): JSX.Element {
+export function StatCard({
+  className,
+  calories,
+  description,
+  percentage,
+  riskLevel,
+  title,
+  valueEmoji,
+  value,
+}: StatCardProps): JSX.Element {
   return (
-    <StyledStatCardWrapper gradient={gradients.maxVeryBad}>
+    <StyledStatCardWrapper className={className} riskLevel={riskLevel}>
       <StyledContent>
-        <StyledTitle>Ваш уровень белка (0,4 г/кг веса)</StyledTitle>
-        <StyledValue>⚠️ 40 г</StyledValue>
-        <StyledDescription>
-          Крайне низкое потребление белка. Может привести к серьёзной потере
-          мышечной массы, слабости и проблемам с иммунитетом.
-        </StyledDescription>
+        <StyledTitle>{title}</StyledTitle>
+        <StyledValue>
+          {valueEmoji} {value} г
+        </StyledValue>
+        <StyledDescription>{description}</StyledDescription>
       </StyledContent>
 
       <StyledList>
-        <StyledItem>🔥 164 ккал</StyledItem>
-        <StyledItem>📊 11% от рациона</StyledItem>
+        <StyledItem>🔥 {calories} ккал</StyledItem>
+        <StyledItem>📊 {percentage}% от рациона</StyledItem>
       </StyledList>
     </StyledStatCardWrapper>
   );
 }
 
-const StyledStatCardWrapper = styled.div<{ gradient: string }>`
+const riskLevelGradient = {
+  [BmiRiskLevel.VeryLow]:
+    'linear-gradient(108deg, #FF9D3C 6.67%, #FB8EA6 55.35%, #7A66FF 104.03%, #8877FC 201.4%)',
+  [BmiRiskLevel.Low]:
+    'linear-gradient(105deg, #FFAA3C -26.22%, #FB8EA6 29.46%, #7A66FF 85.14%, #8877FC 196.51%)',
+  [BmiRiskLevel.BelowNormal]:
+    'linear-gradient(109deg, #FFAA3C -30.74%, #FB8EA6 12.59%, #7A66FF 55.93%, #8877FC 142.6%)',
+  [BmiRiskLevel.Normal]:
+    'linear-gradient(108deg, #7A66FF 24.52%, #8877FC 74.93%)',
+  [BmiRiskLevel.AboveNormal]:
+    'linear-gradient(108deg, #7A66FF 24.52%, #8877FC 74.93%)',
+  [BmiRiskLevel.High]:
+    'linear-gradient(208deg, #FA5858 -17.26%, #7A66FF 67.66%, #8877FC 152.58%)',
+  [BmiRiskLevel.VeryHigh]:
+    'linear-gradient(197deg, #FA5858 15.4%, #7A66FF 102.1%, #8877FC 188.8%)',
+};
+
+const StyledStatCardWrapper = styled.div<{ riskLevel: BmiRiskLevel }>`
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -45,7 +69,7 @@ const StyledStatCardWrapper = styled.div<{ gradient: string }>`
 
   color: #ffffff;
 
-  background-image: ${({ gradient }) => gradient};
+  background-image: ${({ riskLevel }) => riskLevelGradient[riskLevel]};
 `;
 
 const StyledContent = styled.div`

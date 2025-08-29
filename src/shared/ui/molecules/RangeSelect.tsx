@@ -148,6 +148,14 @@ const StyledLabel = styled.div`
     z-index: 2;
   }
 
+  &:first-child {
+    transform: translateX(0);
+
+    &:before {
+      left: 0;
+    }
+  }
+
   &:last-child {
     transform: translateX(-100%);
 

@@ -9,11 +9,12 @@ type ToggleCheckboxProps = ComponentProps<typeof StyledInput> & {
 
 export function ToggleCheckbox({
   label,
+  checked,
   ...props
 }: ToggleCheckboxProps): JSX.Element {
   return (
-    <StyledLabel>
-      <StyledInput type="checkbox" {...props} />
+    <StyledLabel active={!!checked}>
+      <StyledInput type="checkbox" checked={checked} {...props} />
       <StyledToggle>
         <StyledThumb />
       </StyledToggle>
@@ -55,16 +56,17 @@ const StyledToggle = styled.span`
 `;
 
 const StyledText = styled.span`
-  color: #403c77;
   font-size: 14px;
   font-weight: 700;
   line-height: 130%;
 `;
 
-const StyledLabel = styled.label`
+const StyledLabel = styled.label<{ active: boolean }>`
   display: flex;
   align-items: center;
   gap: 16px;
+
+  color: ${({ active }) => (active ? '#403c77' : 'rgba(64, 60, 119, 0.6)')};
 
   cursor: pointer;
   user-select: none;

@@ -9,7 +9,7 @@ export function ToggleHasExtraWeight(): JSX.Element {
   const { hasExtraWeight } = form;
 
   return (
-    <StyledCheckboxWrapper>
+    <StyledCheckboxWrapper active={hasExtraWeight}>
       <ToggleCheckbox
         label="Нет лишнего веса, хочу улучшать то, что есть"
         checked={hasExtraWeight}
@@ -22,7 +22,7 @@ export function ToggleHasExtraWeight(): JSX.Element {
   );
 }
 
-const StyledCheckboxWrapper = styled.div`
+const StyledCheckboxWrapper = styled.div<{ active: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -31,13 +31,14 @@ const StyledCheckboxWrapper = styled.div`
   padding: 12px;
   border-radius: 10px;
 
-  background-color: #f2f1f7;
+  color: ${({ active }) => (active ? '#403c77' : 'rgba(64, 60, 119, 0.6)')};
+
+  background-color: ${({ active }) => (active ? '#f2f1f7' : '#F2F2F2')};
 `;
 
 const StyledDescription = styled.p`
   padding-left: 62px;
 
-  color: #403c77;
   font-size: 12px;
   font-weight: 500;
   line-height: 130%;
