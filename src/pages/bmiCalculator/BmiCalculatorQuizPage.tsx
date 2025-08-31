@@ -15,7 +15,7 @@ import { ProteinScreen } from './screens/ProteinScreen';
 import { ResultScreen } from './screens/ResultScreen';
 
 export function BmiCalculatorQuizPage(): JSX.Element {
-  const [step, setStep] = useState(5);
+  const [step, setStep] = useState(1);
 
   const handleBackClick = () => {
     if (step > 1) setStep((prevStep) => prevStep - 1);
