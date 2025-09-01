@@ -1,0 +1,1 @@
+export { SelectFatScreen } from './SelectFatScreen';

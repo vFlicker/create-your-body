@@ -1,0 +1,1 @@
+export { SelectProteinScreen } from './SelectProteinScreen';

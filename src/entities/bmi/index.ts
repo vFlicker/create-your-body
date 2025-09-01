@@ -1,6 +1,4 @@
-export { BmiRiskLevel } from './bmiConfig';
-export { useBmiStore } from './model/bmiStore';
-export { calculateProteins } from './model/lib/calculateProteins';
+export { BmiRiskLevel } from './model/bmiRiskLevel';
 export { BmiCard } from './ui/bmiCard';
 export { Chip, ChipColor } from './ui/Chip';
 export { FactBlock } from './ui/FactBlock';

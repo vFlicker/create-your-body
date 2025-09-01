@@ -2,25 +2,22 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { calculateBmi } from '../../model/lib/calculateBmi';
 import { BmiCardStatus } from './bmiCardConfig';
 import { BMI_SCALE_CATEGORIES } from './bmiCardConfig';
 import { calculateBmiProgress, getBmiCategory } from './bmiCardLib';
 
 type BmiCardProps = {
-  weight: number;
-  height: number;
+  bmi: number;
 };
 
-export function BmiCard({ weight, height }: BmiCardProps): JSX.Element {
-  const bodyMassIndex = calculateBmi(weight, height);
-  const { status, text } = getBmiCategory(bodyMassIndex);
-  const progress = calculateBmiProgress(bodyMassIndex);
+export function BmiCard({ bmi }: BmiCardProps): JSX.Element {
+  const { status, text } = getBmiCategory(bmi);
+  const progress = calculateBmiProgress(bmi);
 
   return (
     <StyledBmiCardWrapper>
       <StyledCard type={status}>
-        <StyledValue>{bodyMassIndex.toFixed(1)}</StyledValue>
+        <StyledValue>{bmi.toFixed(1)}</StyledValue>
         <StyledText>{text}</StyledText>
       </StyledCard>
 

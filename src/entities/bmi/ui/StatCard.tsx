@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { BmiRiskLevel } from '../bmiConfig';
+import { BmiRiskLevel } from '../model/bmiRiskLevel';
 
 type StatCardProps = {
   className?: string;
