@@ -1,0 +1,1 @@
+export { ProteinScreen } from './ProteinScreen';

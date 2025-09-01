@@ -2,9 +2,10 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { BMI_CATEGORIES } from '../bmiConfig';
-import { calculateBmi, calculateBmiProgress, getBmiCategory } from '../bmiLib';
-import { BmiStatus } from '../bmiTypes';
+import { calculateBmi } from '../../model/lib/calculateBmi';
+import { BmiCardStatus } from './bmiCardConfig';
+import { BMI_SCALE_CATEGORIES } from './bmiCardConfig';
+import { calculateBmiProgress, getBmiCategory } from './bmiCardLib';
 
 type BmiCardProps = {
   weight: number;
@@ -28,7 +29,7 @@ export function BmiCard({ weight, height }: BmiCardProps): JSX.Element {
           <StyledMarker style={{ left: `calc(${progress}%)` }} />
         </StyledScaleBar>
         <StyledScaleLabels>
-          {BMI_CATEGORIES.map((label) => (
+          {BMI_SCALE_CATEGORIES.map((label) => (
             <StyledScaleLabel key={label}>{label}</StyledScaleLabel>
           ))}
         </StyledScaleLabels>
@@ -38,19 +39,19 @@ export function BmiCard({ weight, height }: BmiCardProps): JSX.Element {
 }
 
 const BmiStatusToCss = {
-  [BmiStatus.Underweight]: css`
+  [BmiCardStatus.Underweight]: css`
     --color-background: #e5f1ff;
     --color-value: #4199fd;
   `,
-  [BmiStatus.Normal]: css`
+  [BmiCardStatus.Normal]: css`
     --color-background: #d6f9d9;
     --color-value: #00b710;
   `,
-  [BmiStatus.Overweight]: css`
+  [BmiCardStatus.Overweight]: css`
     --color-background: #fdf1e1;
     --color-value: #eb7b42;
   `,
-  [BmiStatus.Obese]: css`
+  [BmiCardStatus.Obese]: css`
     --color-background: #fee4e4;
     --color-value: #e74c4c;
   `,
@@ -62,7 +63,7 @@ const StyledBmiCardWrapper = styled.div`
   gap: 16px;
 `;
 
-const StyledCard = styled.div<{ type: BmiStatus }>`
+const StyledCard = styled.div<{ type: BmiCardStatus }>`
   display: flex;
   flex-direction: column;
   align-items: center;

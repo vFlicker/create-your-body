@@ -12,7 +12,7 @@ export function ToggleHasExtraWeight(): JSX.Element {
     <StyledCheckboxWrapper active={hasExtraWeight}>
       <ToggleCheckbox
         label="Нет лишнего веса, хочу улучшать то, что есть"
-        checked={hasExtraWeight}
+        checked={!hasExtraWeight}
         onChange={() => setForm({ ...form, hasExtraWeight: !hasExtraWeight })}
       />
       <StyledDescription>

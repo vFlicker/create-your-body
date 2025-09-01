@@ -11,7 +11,7 @@ import { EnterParametersScreen } from './screens/EnterParametersScreen';
 import { FatScreen } from './screens/FatScreen';
 import { GoalScreen } from './screens/GoalScreen';
 import { ParametersResultScreen } from './screens/ParametersResultScreen';
-import { ProteinScreen } from './screens/ProteinScreen';
+import { ProteinScreen } from './screens/proteinScreen';
 import { ResultScreen } from './screens/ResultScreen';
 
 export function BmiCalculatorQuizPage(): JSX.Element {

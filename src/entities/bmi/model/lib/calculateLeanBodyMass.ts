@@ -1,35 +1,3 @@
-import { bmiCardConfig } from './bmiConfig';
-
-export const calculateBmi = (weight: number, height: number) => {
-  const heightInMeters = height / 100;
-  return weight / heightInMeters ** 2;
-};
-
-export const getBmiCategory = (bmi: number) => {
-  const category = bmiCardConfig.find(
-    ({ range }) => bmi >= range.min && bmi < range.max,
-  );
-
-  return category || bmiCardConfig[0];
-};
-
-export const calculateBmiProgress = (bmi: number) => {
-  const SHIFT = 10;
-
-  const totalRanges = bmiCardConfig.length;
-  const currentRangeIndex = bmiCardConfig.findIndex(
-    ({ range }) => bmi >= range.min && bmi < range.max,
-  );
-
-  if (currentRangeIndex === -1) return 0;
-
-  // Progress bar in range [SHIFT, 100 - SHIFT]
-  const progress =
-    SHIFT + (currentRangeIndex / (totalRanges - 1)) * (100 - 2 * SHIFT);
-
-  return progress;
-};
-
 const BMR_LEAN_MASS_PERCENTAGES = {
   highBMI: {
     male: { min: 0.6, max: 0.65 },
@@ -45,15 +13,10 @@ const BMR_LEAN_MASS_PERCENTAGES = {
   },
 };
 
-type LeanBodyMassResult = {
-  leanBodyMass: number;
-  fatPercent?: number;
-};
-
 const getLeanMassPercentForOverweight = (
   bmi: number,
   gender: 'male' | 'female',
-): number => {
+) => {
   let range = null;
 
   if (bmi >= 35) range = BMR_LEAN_MASS_PERCENTAGES.highBMI[gender];
@@ -67,7 +30,7 @@ const getLeanMassPercentForNormalWeight = (
   bmi: number,
   gender: 'male' | 'female',
   age: number,
-): { leanBodyMassPercent: number; fatPercent: number } => {
+) => {
   if (bmi < 18) {
     // Underweight
     const fatPercent = gender === 'male' ? 9 : 13;
@@ -94,7 +57,7 @@ export const calculateLeanBodyMass = (
   gender: 'male' | 'female',
   age: number,
   weight: number,
-): LeanBodyMassResult => {
+) => {
   let leanBodyMassPercent: number;
   let fatPercent: number | undefined;
 
@@ -111,39 +74,3 @@ export const calculateLeanBodyMass = (
     fatPercent,
   };
 };
-
-//  Расчёт BMR от полного веса (для сравнения) - формула Миффлина-Сан Жеора
-const foo = (
-  gender: 'male' | 'female',
-  age: number,
-  height: number,
-  weight: number,
-) => {
-  const result =
-    gender === 'male'
-      ? 10 * weight + 6.25 * height - 5 * age + 5
-      : 10 * weight + 6.25 * height - 5 * age - 161;
-
-  return Math.round(result);
-};
-
-function calculateBMR({
-  bmi,
-  gender,
-  age,
-  height,
-  weight,
-  leanBodyMass,
-}: {
-  bmi: number;
-  gender: 'male' | 'female';
-  age: number;
-  height: number;
-  weight: number;
-  leanBodyMass: number;
-}) {
-  const bmrFullWeight = foo(gender, age, height, weight);
-  const bmrLeanMass = foo(gender, age, height, leanBodyMass);
-  if (bmi >= 25) return bmrLeanMass;
-  else return bmrFullWeight;
-}

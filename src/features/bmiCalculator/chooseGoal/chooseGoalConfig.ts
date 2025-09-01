@@ -1,17 +1,17 @@
 export const chooseGoalRadios = [
   {
     title: '⬇ Похудение',
-    value: 'weight loss',
+    value: 'deficit',
     badge: 'Дефицит 10-20%',
   },
   {
     title: '⚖️ Поддержание',
-    value: 'maintenance',
+    value: 'maintain',
     badge: 'Без изменений',
   },
   {
     title: '⬆️ Набор массы',
-    value: 'weight gain',
+    value: 'surplus',
     badge: 'Избыток 10-20%',
   },
 ] as const;

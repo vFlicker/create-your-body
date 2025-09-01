@@ -1,0 +1,193 @@
+import styled from '@emotion/styled';
+import { JSX } from 'react';
+
+import {
+  Chip,
+  FactBlock,
+  ScreenHeader,
+  StatCard,
+  useBmiStore,
+} from '~/entities/bmi';
+import { calculateProteins } from '~/entities/bmi';
+import { calculateBmi } from '~/entities/bmi/model/lib/calculateBmi';
+import { calculateBmr } from '~/entities/bmi/model/lib/calculateBmr';
+import { calculateTargetCalories } from '~/entities/bmi/model/lib/calculateCalories';
+import { calculateLeanBodyMass } from '~/entities/bmi/model/lib/calculateLeanBodyMass';
+import { useUser } from '~/entities/user';
+import { SelectProteins } from '~/features/bmiCalculator/selectProteins';
+import { Color } from '~/shared/theme/colors';
+import { Button } from '~/shared/ui/atoms/Button';
+import { Loader } from '~/shared/ui/atoms/Loader';
+
+import { proteinRiskLevel } from './proteinScreenConfig';
+
+type ProteinScreenProps = {
+  onNext: () => void;
+  onBack: () => void;
+};
+
+const calculateAge = (bornDate: string) => {
+  const birthDate = new Date(bornDate);
+  const ageDiff = Date.now() - birthDate.getTime();
+  const ageDate = new Date(ageDiff);
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
+};
+
+export function ProteinScreen({
+  onNext,
+  onBack,
+}: ProteinScreenProps): JSX.Element {
+  const { form } = useBmiStore();
+  const { user, isUserPending } = useUser();
+
+  if (!user || isUserPending) {
+    return <Loader />;
+  }
+
+  const { proteinRatio } = form;
+
+  const { riskLevel, label, chipColor, valueEmoji, description } =
+    proteinRiskLevel.find(({ range }) => {
+      const [min, max] = range;
+      return min <= proteinRatio && max > proteinRatio;
+    }) ?? proteinRiskLevel[0];
+
+  const { proteinsInGrams, proteinsInKcal } = calculateProteins({
+    fullWeight: form.fullWeight!,
+    proteinCoefficient: proteinRatio,
+    hasExtraWeight: form.hasExtraWeight,
+    age: calculateAge(user.bornDate),
+    bmi: calculateBmi(form.fullWeight!, form.height!),
+    gender: user.sex,
+  });
+
+  const { leanBodyMass } = calculateLeanBodyMass(
+    calculateBmi(form.fullWeight!, form.height!),
+    user.sex,
+    calculateAge(user.bornDate),
+    form.fullWeight!,
+  );
+
+  const bmr = calculateBmr({
+    bmi: calculateBmi(form.fullWeight!, form.height!),
+    gender: user.sex,
+    age: calculateAge(user.bornDate),
+    height: form.height!,
+    weight: form.fullWeight!,
+    leanBodyMass: leanBodyMass,
+  });
+
+  const targetCalories = calculateTargetCalories(
+    form.activityCoefficient!,
+    bmr,
+    form.goal!,
+  );
+  const proteinKcalPercentage = Math.round(
+    (proteinsInKcal / targetCalories) * 100,
+  );
+
+  return (
+    <StyledActivityScreenWrapper>
+      <ScreenHeader
+        title="Выберите норму белка"
+        subtitle="⚖️ Определяем ваш идеальный баланс БЖУ"
+      />
+
+      <StyledMainWrapper>
+        <StyledTop>
+          <StyledTitle>Белки</StyledTitle>
+          <Chip color={chipColor}>{label}</Chip>
+        </StyledTop>
+
+        <SelectProteins />
+
+        <StatCard
+          title={`Ваш уровень белка (${proteinRatio} г/кг веса)`}
+          description={description}
+          riskLevel={riskLevel}
+          value={proteinsInGrams}
+          valueEmoji={valueEmoji}
+          calories={proteinsInKcal}
+          percentage={proteinKcalPercentage}
+        />
+
+        <StyledFooter>
+          <FactBlock>
+            Белки имеют наибольший термический эффект — на их переваривание
+            тратится до 30% калорий!
+          </FactBlock>
+
+          <StyledActions>
+            <Button color="neutral" onClick={onBack}>
+              Назад
+            </Button>
+            <Button color="accent" onClick={onNext}>
+              Далее
+            </Button>
+          </StyledActions>
+        </StyledFooter>
+      </StyledMainWrapper>
+    </StyledActivityScreenWrapper>
+  );
+}
+
+const StyledActivityScreenWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+`;
+
+const StyledMainWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 24px;
+
+  padding: 16px 16px 24px;
+  border-radius: 20px 20px 0 0;
+
+  background-color: ${Color.White};
+`;
+
+const StyledTop = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+const StyledTitle = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #0d0d0d;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 100%;
+
+  &::before {
+    content: '';
+
+    display: block;
+
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+
+    background-color: #4765fa;
+  }
+`;
+
+const StyledFooter = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+  gap: 20px;
+`;
+
+const StyledActions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+`;

@@ -16,7 +16,7 @@ export function EnterParametersScreen({
 }: EnterParametersScreenProps): JSX.Element {
   const { form } = useBmiStore();
 
-  const isDisabled = form.height === undefined || form.weight === undefined;
+  const isDisabled = form.height === undefined || form.fullWeight === undefined;
 
   return (
     <StyledEnterParametersScreenWrapper>

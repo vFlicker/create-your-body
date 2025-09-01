@@ -36,7 +36,7 @@ export function ParametersResultScreen({
 
       <StyledMainWrapper>
         <StyledTitle>Ваш индекс массы тела (ИМТ)</StyledTitle>
-        <BmiCard height={form.height!} weight={form.weight!} />
+        <BmiCard height={form.height!} weight={form.fullWeight!} />
 
         <StyledFooter>
           <FactBlock>

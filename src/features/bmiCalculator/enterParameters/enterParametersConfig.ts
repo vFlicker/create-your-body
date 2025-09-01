@@ -7,7 +7,7 @@ export const enterParametersInputs = [
     postfix: 'см',
   },
   {
-    name: 'weight',
+    name: 'fullWeight',
     label: 'Вес',
     type: 'number',
     inputMode: 'numeric',
