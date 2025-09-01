@@ -10,6 +10,16 @@ export type ProteinCalculationParams = {
   hasExtraWeight: boolean;
 };
 
+export type FatCalculationParams = {
+  age: number;
+  gender: 'male' | 'female';
+  height: number;
+  weight: number;
+  bmi: number;
+  fatCoefficient: number;
+  hasExtraWeight: boolean;
+};
+
 export type BmrCalculationParams = {
   age: number;
   gender: 'male' | 'female';

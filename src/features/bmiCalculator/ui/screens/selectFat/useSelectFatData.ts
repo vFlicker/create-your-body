@@ -6,11 +6,11 @@ import { useBmiCalculatorStore } from '../../../model/bmiCalculatorStore';
 import { calculateBmi } from '../../../model/lib/calculateBmi';
 import { calculateBmr } from '../../../model/lib/calculateBmr';
 import { calculateTargetCalories } from '../../../model/lib/calculateCalories';
+import { calculateFats } from '../../../model/lib/calculateFats';
 import { calculateLeanBodyMass } from '../../../model/lib/calculateLeanBodyMass';
-import { calculateProteins } from '../../../model/lib/calculateProteins';
-import { proteinRiskLevel } from './selectProteinConfig';
+import { fatRiskLevel } from './selectFatConfig';
 
-export const useSelectProteinData = () => {
+export const useSelectFatData = () => {
   const { form } = useBmiCalculatorStore();
   const { user, isUserPending } = useUser();
 
@@ -50,9 +50,9 @@ export const useSelectProteinData = () => {
       bmr,
     );
 
-    const proteins = calculateProteins({
+    const fats = calculateFats({
       weight: form.fullWeight,
-      proteinCoefficient: form.proteinRatio,
+      fatCoefficient: form.fatRatio,
       hasExtraWeight: form.hasExtraWeight,
       age,
       bmi,
@@ -60,19 +60,19 @@ export const useSelectProteinData = () => {
       height: form.height,
     });
 
-    const proteinKcalPercentage = Math.round(
-      (proteins.proteinsInKcal / targetCalories) * 100,
+    const fatKcalPercentage = Math.round(
+      (fats.fatsInKcal / targetCalories) * 100,
     );
 
     const riskLevelData =
-      proteinRiskLevel.find(({ range }) => {
+      fatRiskLevel.find(({ range }) => {
         const [min, max] = range;
-        return min <= form.proteinRatio && max > form.proteinRatio;
-      }) ?? proteinRiskLevel[0];
+        return min <= form.fatRatio && max > form.fatRatio;
+      }) ?? fatRiskLevel[0];
 
     return {
-      proteins,
-      proteinKcalPercentage,
+      fats,
+      fatKcalPercentage,
       riskLevelData,
       userAge: age,
       userBmi: bmi,

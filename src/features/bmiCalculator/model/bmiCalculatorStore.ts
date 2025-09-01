@@ -5,8 +5,9 @@ import { Goal } from './bmiCalculatorTypes';
 
 type BmiCalculatorStore = {
   form: {
-    proteinRatio: number;
     goal: Goal;
+    proteinRatio: number;
+    fatRatio: number;
     height?: number;
     fullWeight?: number;
     hasExtraWeight: boolean;
@@ -20,7 +21,8 @@ export const useBmiCalculatorStore = create<BmiCalculatorStore>()(
   immer((set) => ({
     form: {
       goal: 'maintain',
-      proteinRatio: 0.5,
+      proteinRatio: 0,
+      fatRatio: 0,
       height: undefined,
       fullWeight: undefined,
       hasExtraWeight: true,

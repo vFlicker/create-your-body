@@ -1,18 +1,14 @@
 import styled from '@emotion/styled';
-import { JSX, useState } from 'react';
+import { JSX } from 'react';
 
-import {
-  BmiRiskLevel,
-  Chip,
-  FactBlock,
-  ScreenHeader,
-  StatCard,
-} from '~/entities/bmi';
+import { Chip, FactBlock, ScreenHeader, StatCard } from '~/entities/bmi';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
+import { Loader } from '~/shared/ui/atoms/Loader';
 import { RangeSelect } from '~/shared/ui/molecules/RangeSelect';
 
-import { activityLevel, cardText } from './selectFatConfig';
+import { useBmiCalculatorStore } from '../../../model/bmiCalculatorStore';
+import { useSelectFatData } from './useSelectFatData';
 
 type SelectFatScreenProps = {
   onNext: () => void;
@@ -23,18 +19,17 @@ export function SelectFatScreen({
   onNext,
   onBack,
 }: SelectFatScreenProps): JSX.Element {
-  const [fatValue, setFatValue] = useState(0);
+  const { form, setForm } = useBmiCalculatorStore();
+  const { calculatedData, isLoading } = useSelectFatData();
 
-  const index = Math.min(
-    Math.max(
-      Math.round(((fatValue - 0) / (1.5 - 0)) * 6),
-      BmiRiskLevel.VeryLow,
-    ),
-    BmiRiskLevel.Normal,
-  ) as BmiRiskLevel;
+  if (isLoading || !calculatedData) {
+    return <Loader />;
+  }
 
-  const card = cardText.find((card) => card.riskLevel === index) ?? cardText[0];
+  const { fats, fatKcalPercentage, riskLevelData } = calculatedData;
 
+  const { riskLevel, label, chipColor, valueEmoji, description } =
+    riskLevelData;
   return (
     <StyledActivityScreenWrapper>
       <ScreenHeader
@@ -45,9 +40,7 @@ export function SelectFatScreen({
       <StyledMainWrapper>
         <StyledTop>
           <StyledTitle>Жиры</StyledTitle>
-          <Chip color={activityLevel[index].color}>
-            {activityLevel[index].label}
-          </Chip>
+          <Chip color={chipColor}>{label}</Chip>
         </StyledTop>
 
         <RangeSelect
@@ -61,18 +54,18 @@ export function SelectFatScreen({
             { value: 1.3, text: '1,3 г/кг', description: 'Высокий' },
             { value: 1.5, text: '1,5 г/кг', description: 'Максимум' },
           ]}
-          value={fatValue}
-          onChange={setFatValue}
+          value={form.fatRatio}
+          onChange={(value) => setForm({ ...form, fatRatio: value })}
         />
 
         <StatCard
-          title={`Ваш уровень белка (${fatValue} г/кг веса)`}
-          description={card.description}
-          riskLevel={index}
-          value={fatValue}
-          valueEmoji={card.valueEmoji}
-          calories={fatValue}
-          percentage={fatValue}
+          title={`Ваш уровень жиров (${form.fatRatio} г/кг веса)`}
+          description={description}
+          riskLevel={riskLevel}
+          value={fats.fatsInGrams}
+          valueEmoji={valueEmoji}
+          calories={fats.fatsInKcal}
+          percentage={fatKcalPercentage}
         />
 
         <StyledFooter>

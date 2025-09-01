@@ -45,11 +45,11 @@ export function SelectProteinScreen({
         </StyledTop>
 
         <RangeSelect
-          min={0.5}
+          min={0}
           max={2.5}
           step={0.1}
           labels={[
-            { value: 0.5, text: '0,5 г/кг' },
+            { value: 0, text: '0 г/кг' },
             { value: 1.2, text: '1,2 г/кг', description: 'Минимум' },
             { value: 1.6, text: '1,6 г/кг', description: 'Норма' },
             { value: 2.0, text: '2,0 г/кг', description: 'Спорт' },

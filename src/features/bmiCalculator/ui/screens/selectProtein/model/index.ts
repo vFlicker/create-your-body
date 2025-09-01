@@ -1,1 +1,0 @@
-export { useSelectProteinData } from '../useSelectProteinData';
