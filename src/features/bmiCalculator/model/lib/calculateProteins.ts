@@ -1,3 +1,4 @@
+import type { ProteinCalculationParams } from '../bmiCalculatorTypes';
 import { calculateLeanBodyMass } from './calculateLeanBodyMass';
 
 const calculateProteinsByFormula = (
@@ -12,27 +13,14 @@ const calculateProteinsByFormula = (
   };
 };
 
-export const calculateProteins = ({
-  fullWeight,
-  proteinCoefficient,
-  hasExtraWeight,
-  age,
-  bmi,
-  gender,
-}: {
-  fullWeight: number;
-  proteinCoefficient: number;
-  hasExtraWeight: boolean;
-  age: number;
-  bmi: number;
-  gender: 'male' | 'female';
-}) => {
+export const calculateProteins = (params: ProteinCalculationParams) => {
+  const { weight, proteinCoefficient, hasExtraWeight, age, bmi, gender } =
+    params;
+
   if (!hasExtraWeight) {
-    const result = calculateProteinsByFormula(fullWeight, proteinCoefficient);
-    return result;
+    return calculateProteinsByFormula(weight, proteinCoefficient);
   }
 
-  const { leanBodyMass } = calculateLeanBodyMass(bmi, gender, age, fullWeight);
-  const result = calculateProteinsByFormula(leanBodyMass, proteinCoefficient);
-  return result;
+  const { leanBodyMass } = calculateLeanBodyMass(bmi, gender, age, weight);
+  return calculateProteinsByFormula(leanBodyMass, proteinCoefficient);
 };

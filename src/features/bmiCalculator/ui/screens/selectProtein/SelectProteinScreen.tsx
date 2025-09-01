@@ -2,30 +2,17 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 
 import { Chip, FactBlock, ScreenHeader, StatCard } from '~/entities/bmi';
-import { useUser } from '~/entities/user';
-import { useBmiCalculatorStore } from '~/features/bmiCalculator/model/bmiCalculatorStore';
-import { calculateBmi } from '~/features/bmiCalculator/model/lib/calculateBmi';
-import { calculateBmr } from '~/features/bmiCalculator/model/lib/calculateBmr';
-import { calculateTargetCalories } from '~/features/bmiCalculator/model/lib/calculateCalories';
-import { calculateLeanBodyMass } from '~/features/bmiCalculator/model/lib/calculateLeanBodyMass';
-import { calculateProteins } from '~/features/bmiCalculator/model/lib/calculateProteins';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
 import { Loader } from '~/shared/ui/atoms/Loader';
 import { RangeSelect } from '~/shared/ui/molecules/RangeSelect';
 
-import { proteinRiskLevel } from './selectProteinScreenConfig';
+import { useBmiCalculatorStore } from '../../../model/bmiCalculatorStore';
+import { useSelectProteinData } from './useSelectProteinData';
 
 type SelectProteinScreenProps = {
   onNext: () => void;
   onBack: () => void;
-};
-
-const calculateAge = (bornDate: string) => {
-  const birthDate = new Date(bornDate);
-  const ageDiff = Date.now() - birthDate.getTime();
-  const ageDate = new Date(ageDiff);
-  return Math.abs(ageDate.getUTCFullYear() - 1970);
 };
 
 export function SelectProteinScreen({
@@ -33,53 +20,16 @@ export function SelectProteinScreen({
   onBack,
 }: SelectProteinScreenProps): JSX.Element {
   const { form, setForm } = useBmiCalculatorStore();
-  const { user, isUserPending } = useUser();
+  const { calculatedData, isLoading } = useSelectProteinData();
 
-  if (!user || isUserPending) {
+  if (isLoading || !calculatedData) {
     return <Loader />;
   }
 
-  const { proteinRatio } = form;
+  const { proteins, proteinKcalPercentage, riskLevelData } = calculatedData;
 
   const { riskLevel, label, chipColor, valueEmoji, description } =
-    proteinRiskLevel.find(({ range }) => {
-      const [min, max] = range;
-      return min <= proteinRatio && max > proteinRatio;
-    }) ?? proteinRiskLevel[0];
-
-  const { proteinsInGrams, proteinsInKcal } = calculateProteins({
-    fullWeight: form.fullWeight!,
-    proteinCoefficient: proteinRatio,
-    hasExtraWeight: form.hasExtraWeight,
-    age: calculateAge(user.bornDate),
-    bmi: calculateBmi(form.height!, form.fullWeight!),
-    gender: user.sex,
-  });
-
-  const { leanBodyMass } = calculateLeanBodyMass(
-    calculateBmi(form.height!, form.fullWeight!),
-    user.sex,
-    calculateAge(user.bornDate),
-    form.fullWeight!,
-  );
-
-  const bmr = calculateBmr({
-    bmi: calculateBmi(form.height!, form.fullWeight!),
-    gender: user.sex,
-    age: calculateAge(user.bornDate),
-    height: form.height!,
-    weight: form.fullWeight!,
-    leanBodyMass: leanBodyMass,
-  });
-
-  const targetCalories = calculateTargetCalories(
-    form.activityCoefficient!,
-    bmr,
-    form.goal!,
-  );
-  const proteinKcalPercentage = Math.round(
-    (proteinsInKcal / targetCalories) * 100,
-  );
+    riskLevelData;
 
   return (
     <StyledActivityScreenWrapper>
@@ -110,12 +60,12 @@ export function SelectProteinScreen({
         />
 
         <StatCard
-          title={`Ваш уровень белка (${proteinRatio} г/кг веса)`}
+          title={`Ваш уровень белка (${form.proteinRatio} г/кг веса)`}
           description={description}
           riskLevel={riskLevel}
-          value={proteinsInGrams}
+          value={proteins.proteinsInGrams}
           valueEmoji={valueEmoji}
-          calories={proteinsInKcal}
+          calories={proteins.proteinsInKcal}
           percentage={proteinKcalPercentage}
         />
 

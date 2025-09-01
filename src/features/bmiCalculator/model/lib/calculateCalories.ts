@@ -17,9 +17,9 @@ export const calculateTotalCalories = (
 };
 
 export const calculateTargetCalories = (
+  goal: Goal,
   activityCoefficient: number,
   bmr: number,
-  goal: Goal,
 ) => {
   const tdee = calculateTotalCalories(bmr, activityCoefficient);
   return Math.round(tdee * calorieCoefficient[goal]);

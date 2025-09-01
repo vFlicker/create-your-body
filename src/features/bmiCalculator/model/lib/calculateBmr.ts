@@ -1,3 +1,5 @@
+import type { BmrCalculationParams } from '../bmiCalculatorTypes';
+
 const calculateBaseBmr = (
   gender: 'male' | 'female',
   age: number,
@@ -19,16 +21,10 @@ export const calculateBmr = ({
   height,
   weight,
   leanBodyMass,
-}: {
-  bmi: number;
-  gender: 'male' | 'female';
-  age: number;
-  height: number;
-  weight: number;
-  leanBodyMass: number;
-}) => {
+}: BmrCalculationParams): number => {
   const bmrFullWeight = calculateBaseBmr(gender, age, height, weight);
   const bmrLeanMass = calculateBaseBmr(gender, age, height, leanBodyMass);
+
   if (bmi >= 25) return bmrLeanMass;
   return bmrFullWeight;
 };
