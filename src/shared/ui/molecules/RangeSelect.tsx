@@ -15,7 +15,8 @@ type RangeSelectProps = {
   step: number;
   value: number;
   labels: Label[];
-  onChange: (value: number) => void;
+  disabled?: boolean;
+  onChange?: (value: number) => void;
 };
 
 export function RangeSelect({
@@ -24,10 +25,11 @@ export function RangeSelect({
   step,
   value,
   labels,
+  disabled = false,
   onChange,
 }: RangeSelectProps): JSX.Element {
   const handleValueChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    onChange(+evt.target.value);
+    onChange?.(+evt.target.value);
   };
 
   return (
@@ -40,6 +42,7 @@ export function RangeSelect({
           step={step}
           value={value}
           onChange={handleValueChange}
+          disabled={disabled}
         />
       </StyledInputWrapper>
       <StyledLabelsWrapper>
@@ -58,7 +61,7 @@ export function RangeSelect({
   );
 }
 
-const StyledRangeWrapper = styled.div`
+const StyledRangeWrapper = styled.div<{ disabled?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -68,7 +71,7 @@ const StyledInputWrapper = styled.div`
   position: relative;
 `;
 
-const StyledInput = styled.input`
+const StyledInput = styled.input<{ disabled?: boolean }>`
   width: 100%;
   height: 8px;
 
@@ -88,7 +91,7 @@ const StyledInput = styled.input`
     width: 24px;
     height: 24px;
 
-    background-color: #7a66ff;
+    background-color: ${({ disabled }) => (disabled ? '#E9E9F0' : '#7a66ff')};
     border: 3px solid ${Color.White};
     border-radius: 50%;
     box-shadow: 0 0 0px 4px rgba(255, 255, 255, 1);
@@ -105,7 +108,7 @@ const StyledInput = styled.input`
     width: 24px;
     height: 24px;
 
-    background-color: #7a66ff;
+    background-color: ${({ disabled }) => (disabled ? '#E9E9F0' : '#7a66ff')};
     border: 3px solid ${Color.White};
     border-radius: 50%;
     box-shadow: 0 0 0px 4px rgba(255, 255, 255, 1);

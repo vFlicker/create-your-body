@@ -113,7 +113,7 @@ export function SaveResultScreen({
             { value: 6, text: '6+ г/кг', description: 'Высокий' },
           ]}
           value={carbs.carbsCoefficient}
-          onChange={() => {}}
+          disabled
         />
 
         <StyledFooter>

@@ -58,6 +58,7 @@ const StyledBmiCardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+  margin-bottom: 40px;
 `;
 
 const StyledCard = styled.div<{ type: BmiCardStatus }>`
