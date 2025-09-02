@@ -4,6 +4,7 @@ import { JSX } from 'react';
 import { Chip, FactBlock, ScreenHeader, StatCard } from '~/entities/bmi';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
+import { ColorfulDot } from '~/shared/ui/atoms/ColorfulDot';
 import { Loader } from '~/shared/ui/atoms/Loader';
 import { RangeSelect } from '~/shared/ui/molecules/RangeSelect';
 
@@ -39,7 +40,10 @@ export function SelectFatScreen({
 
       <StyledMainWrapper>
         <StyledTop>
-          <StyledTitle>Жиры</StyledTitle>
+          <StyledTitleWrapper>
+            <ColorfulDot circleColor="#ffbf2b" />
+            <span>Жиры</span>
+          </StyledTitleWrapper>
           <Chip color={chipColor}>{label}</Chip>
         </StyledTop>
 
@@ -112,7 +116,7 @@ const StyledTop = styled.div`
   gap: 12px;
 `;
 
-const StyledTitle = styled.div`
+const StyledTitleWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
@@ -121,18 +125,6 @@ const StyledTitle = styled.div`
   font-size: 16px;
   font-weight: 700;
   line-height: 100%;
-
-  &::before {
-    content: '';
-
-    display: block;
-
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-
-    background-color: #ffbf2b;
-  }
 `;
 
 const StyledFooter = styled.div`

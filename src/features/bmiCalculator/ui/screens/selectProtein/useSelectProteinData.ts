@@ -1,64 +1,19 @@
 import { useMemo } from 'react';
 
-import { calculateAge, useUser } from '~/entities/user';
-
 import { useBmiCalculatorStore } from '../../../model/bmiCalculatorStore';
-import { calculateBmi } from '../../../model/lib/calculateBmi';
-import { calculateBmr } from '../../../model/lib/calculateBmr';
-import { calculateTargetCalories } from '../../../model/lib/calculateCalories';
-import { calculateLeanBodyMass } from '../../../model/lib/calculateLeanBodyMass';
-import { calculateProteins } from '../../../model/lib/calculateProteins';
+import { useBmiCalculations } from '../../../model/useBmiCalculations';
 import { proteinRiskLevel } from './selectProteinConfig';
 
 export const useSelectProteinData = () => {
+  const { allCalculatedData, isLoading } = useBmiCalculations();
   const { form } = useBmiCalculatorStore();
-  const { user, isUserPending } = useUser();
 
   const calculatedData = useMemo(() => {
-    if (
-      !user ||
-      !form.height ||
-      !form.fullWeight ||
-      !form.activityCoefficient ||
-      !form.goal
-    ) {
+    if (!allCalculatedData) {
       return null;
     }
 
-    const age = calculateAge(user.bornDate);
-    const bmi = calculateBmi(form.height, form.fullWeight);
-
-    const { leanBodyMass } = calculateLeanBodyMass(
-      bmi,
-      user.sex,
-      age,
-      form.fullWeight,
-    );
-
-    const bmr = calculateBmr({
-      bmi,
-      gender: user.sex,
-      age,
-      height: form.height,
-      weight: form.fullWeight,
-      leanBodyMass,
-    });
-
-    const targetCalories = calculateTargetCalories(
-      form.goal,
-      form.activityCoefficient,
-      bmr,
-    );
-
-    const proteins = calculateProteins({
-      weight: form.fullWeight,
-      proteinCoefficient: form.proteinRatio,
-      hasExtraWeight: form.hasExtraWeight,
-      age,
-      bmi,
-      gender: user.sex,
-      height: form.height,
-    });
+    const { proteins, targetCalories } = allCalculatedData;
 
     const proteinKcalPercentage = Math.round(
       (proteins.proteinsInKcal / targetCalories) * 100,
@@ -74,16 +29,11 @@ export const useSelectProteinData = () => {
       proteins,
       proteinKcalPercentage,
       riskLevelData,
-      userAge: age,
-      userBmi: bmi,
-      leanBodyMass,
-      bmr,
-      targetCalories,
     };
-  }, [user, form]);
+  }, [allCalculatedData, form.proteinRatio]);
 
   return {
     calculatedData,
-    isLoading: isUserPending || !user,
+    isLoading,
   };
 };

@@ -52,12 +52,17 @@ const getLeanMassPercentForNormalWeight = (
   return { leanBodyMassPercent, fatPercent };
 };
 
-export const calculateLeanBodyMass = (
-  bmi: number,
-  gender: 'male' | 'female',
-  age: number,
-  weight: number,
-) => {
+export const calculateLeanBodyMass = ({
+  bmi,
+  gender,
+  age,
+  weight,
+}: {
+  bmi: number;
+  gender: 'male' | 'female';
+  age: number;
+  weight: number;
+}) => {
   let leanBodyMassPercent: number;
   let fatPercent: number | undefined;
 

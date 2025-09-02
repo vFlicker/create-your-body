@@ -2,10 +2,11 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 
 import { BmiCard, FactBlock, ResultCard, ScreenHeader } from '~/entities/bmi';
-import { useBmiCalculatorStore } from '~/features/bmiCalculator/model/bmiCalculatorStore';
-import { calculateBmi } from '~/features/bmiCalculator/model/lib/calculateBmi';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
+import { Loader } from '~/shared/ui/atoms/Loader';
+
+import { useBaseBmiCalculations } from '../../../model/useBaseBmiCalculations';
 
 type ParametersResultScreenProps = {
   onNext: () => void;
@@ -16,9 +17,11 @@ export function ParametersResultScreen({
   onNext,
   onBack,
 }: ParametersResultScreenProps): JSX.Element {
-  const { form } = useBmiCalculatorStore();
+  const { baseCalculatedData, isLoading } = useBaseBmiCalculations();
 
-  const bmi = calculateBmi(form.height!, form.fullWeight!);
+  if (!baseCalculatedData || isLoading) {
+    return <Loader />;
+  }
 
   return (
     <StyledParametersResultScreenWrapper>
@@ -34,7 +37,7 @@ export function ParametersResultScreen({
 
       <StyledMainWrapper>
         <StyledTitle>Ваш индекс массы тела (ИМТ)</StyledTitle>
-        <BmiCard bmi={bmi} />
+        <BmiCard bmi={baseCalculatedData.bmi} />
 
         <StyledFooter>
           <FactBlock>

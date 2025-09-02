@@ -8,6 +8,7 @@ export type ProteinCalculationParams = {
   bmi: number;
   proteinCoefficient: number;
   hasExtraWeight: boolean;
+  targetCalories: number;
 };
 
 export type FatCalculationParams = {
@@ -18,6 +19,18 @@ export type FatCalculationParams = {
   bmi: number;
   fatCoefficient: number;
   hasExtraWeight: boolean;
+  targetCalories: number;
+};
+
+export type CarbsCalculationParams = {
+  hasExtraWeight: boolean;
+  targetCalories: number;
+  proteinCalories: number;
+  fatCalories: number;
+  bmi: number;
+  gender: 'male' | 'female';
+  age: number;
+  weight: number;
 };
 
 export type BmrCalculationParams = {
