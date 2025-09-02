@@ -11,9 +11,9 @@ export const calculateCarbsByFormula = (
   const carbsInKcal = +carbsInGrams * 4;
 
   return {
-    carbsInGrams: +carbsInGrams.toFixed(1),
-    carbsInKcal: +carbsInKcal.toFixed(1),
-    carbsPercentFromTarget: +((carbsInKcal / targetCalories) * 100).toFixed(1),
+    carbsInGrams: Math.floor(carbsInGrams),
+    carbsInKcal: Math.floor(carbsInKcal),
+    carbsPercentFromTarget: Math.floor((carbsInKcal / targetCalories) * 100),
   };
 };
 

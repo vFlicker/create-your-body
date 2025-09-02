@@ -101,6 +101,8 @@ export function MeasurementsChart(): JSX.Element {
                 fillOpacity={1}
                 fill="url(#colorUv)"
                 dataKey={activeMeasurement}
+                isAnimationActive={false}
+                animationDuration={0}
                 dot={({ cx, cy, stroke }) => (
                   <circle cx={cx} cy={cy} r={5} fill={stroke} />
                 )}

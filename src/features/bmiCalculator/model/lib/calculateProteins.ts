@@ -10,12 +10,11 @@ const calculateProteinsByFormula = (
   const proteinsInKcal = proteinsInGrams * 4;
 
   return {
-    proteinsInGrams: +proteinsInGrams.toFixed(1),
-    proteinsInKcal: +proteinsInKcal.toFixed(1),
-    proteinsPercentFromTarget: +(
-      (proteinsInKcal / targetCalories) *
-      100
-    ).toFixed(1),
+    proteinsInGrams: Math.floor(proteinsInGrams),
+    proteinsInKcal: Math.floor(proteinsInKcal),
+    proteinsPercentFromTarget: Math.floor(
+      (proteinsInKcal / targetCalories) * 100,
+    ),
   };
 };
 

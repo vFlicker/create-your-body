@@ -10,9 +10,9 @@ const calculateFatsByFormula = (
   const fatsInKcal = fatsInGrams * 9;
 
   return {
-    fatsInGrams: +fatsInGrams.toFixed(1),
-    fatsInKcal: +fatsInKcal.toFixed(1),
-    fatsPercentFromTarget: +((fatsInKcal / targetCalories) * 100).toFixed(1),
+    fatsInGrams: Math.floor(fatsInGrams),
+    fatsInKcal: Math.floor(fatsInKcal),
+    fatsPercentFromTarget: Math.floor((fatsInKcal / targetCalories) * 100),
   };
 };
 

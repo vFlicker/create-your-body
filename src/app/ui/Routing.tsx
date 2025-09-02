@@ -50,10 +50,7 @@ export function Routing(): JSX.Element {
         <Route path={AppRoute.QuizResult} element={<QuizResultPage />} />
 
         {/* Bmi Calculator */}
-        <Route
-          path={AppRoute.BmiCalculator}
-          element={<BmiCalculatorPage />}
-        />
+        <Route path={AppRoute.BmiCalculator} element={<BmiCalculatorPage />} />
 
         <Route
           path={AppRoute.BmiCalculatorQuiz}

@@ -64,14 +64,14 @@ export function BmiStats({
           name="Жиры"
           percentage={fatsPercentFromTarget}
           valueInGrams={fatsInGrams}
-          color="#26C26F"
+          color="#ffbf2b"
         />
 
         <BmiStat
           name="Углеводы"
           percentage={carbsPercentFromTarget}
           valueInGrams={carbsInGrams}
-          color="#ffbf2b"
+          color="#26C26F"
         />
       </StyledBmiStatList>
     </StyledBmiStatsWrapper>

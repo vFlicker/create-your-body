@@ -33,7 +33,11 @@ export function SaveResultScreen({
     <StyledActivityScreenWrapper>
       <StyledMainWrapper>
         <StyledChartWrapper>
-          <BmiChart />
+          <BmiChart
+            proteinsPercentFromTarget={proteins.proteinsPercentFromTarget}
+            fatsPercentFromTarget={fats.fatsPercentFromTarget}
+            carbsPercentFromTarget={carbs.carbsPercentFromTarget}
+          />
           <BmiStats
             targetCalories={targetCalories}
             proteinsInGrams={proteins.proteinsInGrams}
