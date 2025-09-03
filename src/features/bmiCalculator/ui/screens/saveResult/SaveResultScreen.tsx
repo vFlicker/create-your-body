@@ -1,7 +1,18 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { BmiChart, BmiStats, FactBlock } from '~/entities/bmi';
+import {
+  BmiChart,
+  BmiStats,
+  caloriesRiskLevelConfig,
+  carbsRiskLevelConfig,
+  Chip,
+  FactBlock,
+  fatsRiskLevelConfig,
+  getRiskLevel,
+  proteinsRiskLevelConfig,
+  ShortStatCard,
+} from '~/entities/bmi';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
 import { ColorfulDot } from '~/shared/ui/atoms/ColorfulDot';
@@ -28,9 +39,20 @@ export function SaveResultScreen({
     return <Loader />;
   }
 
-  const { carbs, proteins, fats, targetCalories, bmi } = allCalculatedData;
+  const { carbs, proteins, fats, targetCalories, bmi, deficit } =
+    allCalculatedData;
 
   const deficitRangeLabels = getDeficitRangeSelectLabels(bmi);
+  const caloriesRiskLevel = getRiskLevel(
+    deficit.deficitPercentageFromTarget,
+    caloriesRiskLevelConfig,
+  );
+  const proteinsRiskLevel = getRiskLevel(
+    form.proteinRatio,
+    proteinsRiskLevelConfig,
+  );
+  const fatsRiskLevel = getRiskLevel(form.fatRatio, fatsRiskLevelConfig);
+  const carbsRiskLevel = getRiskLevel(carbs.carbsInGrams, carbsRiskLevelConfig);
 
   return (
     <StyledActivityScreenWrapper>
@@ -56,6 +78,10 @@ export function SaveResultScreen({
           <>
             <StyledTitle>Степень дефицита калорий</StyledTitle>
 
+            <Chip color="normal">
+              Дефицит {form.deficitPercent}% ({deficit.deficitCalories} ккал)
+            </Chip>
+
             <RangeSelect
               min={deficitRangeLabels[0].value}
               max={deficitRangeLabels[deficitRangeLabels.length - 1].value}
@@ -63,6 +89,15 @@ export function SaveResultScreen({
               labels={deficitRangeLabels}
               value={form.deficitPercent}
               onChange={(value) => setForm({ ...form, deficitPercent: value })}
+            />
+
+            <ShortStatCard
+              title={caloriesRiskLevel.label}
+              description={caloriesRiskLevel.getDescription(
+                deficit.deficitCalories,
+              )}
+              riskLevel={caloriesRiskLevel.riskLevel}
+              valueEmoji={caloriesRiskLevel.valueEmoji}
             />
           </>
         )}
@@ -90,6 +125,13 @@ export function SaveResultScreen({
           onChange={(value) => setForm({ ...form, proteinRatio: value })}
         />
 
+        <ShortStatCard
+          title={proteinsRiskLevel.label}
+          description={proteinsRiskLevel.getDescription()}
+          riskLevel={proteinsRiskLevel.riskLevel}
+          valueEmoji={proteinsRiskLevel.valueEmoji}
+        />
+
         <StyledTop>
           <StyledSubtitleWrapper>
             <ColorfulDot circleColor="#ffbf2b" />
@@ -111,6 +153,13 @@ export function SaveResultScreen({
           onChange={(value) => setForm({ ...form, fatRatio: value })}
         />
 
+        <ShortStatCard
+          title={fatsRiskLevel.label}
+          description={fatsRiskLevel.getDescription()}
+          riskLevel={fatsRiskLevel.riskLevel}
+          valueEmoji={fatsRiskLevel.valueEmoji}
+        />
+
         <StyledTop>
           <StyledSubtitleWrapper>
             <ColorfulDot circleColor="#26C26F" />
@@ -130,6 +179,13 @@ export function SaveResultScreen({
           ]}
           value={carbs.carbsCoefficient}
           disabled
+        />
+
+        <ShortStatCard
+          title={carbsRiskLevel.label}
+          description={carbsRiskLevel.getDescription()}
+          riskLevel={carbsRiskLevel.riskLevel}
+          valueEmoji={carbsRiskLevel.valueEmoji}
         />
 
         <StyledFooter>

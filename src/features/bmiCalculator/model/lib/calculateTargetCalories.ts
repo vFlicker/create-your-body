@@ -5,31 +5,23 @@ const calorieCoefficient = {
   surplus: 1.15,
 };
 
-const calculateTotalCalories = (bmr: number, activityCoefficient: number) => {
-  return bmr * activityCoefficient;
-};
-
 const calculateDeficitCoefficient = (deficitPercent: number) => {
   return (100 - deficitPercent) / 100;
 };
 
 export const calculateTargetCalories = ({
   goal,
-  activityCoefficient,
-  bmr,
+  totalCalories,
   deficitPercent,
 }: {
   goal: Goal;
-  activityCoefficient: number;
-  bmr: number;
+  totalCalories: number;
   deficitPercent: number;
 }) => {
-  const tdee = calculateTotalCalories(bmr, activityCoefficient);
-
   if (goal === 'deficit') {
     const deficitCoefficient = calculateDeficitCoefficient(deficitPercent);
-    return Math.round(tdee * deficitCoefficient);
+    return Math.round(totalCalories * deficitCoefficient);
   }
 
-  return Math.round(tdee * calorieCoefficient[goal]);
+  return Math.round(totalCalories * calorieCoefficient[goal]);
 };

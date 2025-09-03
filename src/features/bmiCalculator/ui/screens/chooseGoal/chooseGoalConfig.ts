@@ -2,7 +2,7 @@ export const chooseGoalRadios = [
   {
     title: '⬇ Похудение',
     value: 'deficit',
-    badge: 'Дефицит 10-20%',
+    badge: 'Дефицит 10-30%',
   },
   {
     title: '⚖️ Поддержание',

@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { BmiRiskLevel } from '../../model/bmiRiskLevel';
-import { riskLevelGradient } from './statCardConfig';
+import { riskLevelGradient } from '../lib/riskLevelGradient';
+import { BmiRiskLevel } from '../statCardTypes';
 
 type StatCardProps = {
   className?: string;

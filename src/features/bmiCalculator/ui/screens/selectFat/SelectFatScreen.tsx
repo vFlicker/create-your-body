@@ -1,7 +1,14 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { Chip, FactBlock, ScreenHeader, StatCard } from '~/entities/bmi';
+import {
+  Chip,
+  FactBlock,
+  fatsRiskLevelConfig,
+  getRiskLevel,
+  ScreenHeader,
+  StatCard,
+} from '~/entities/bmi';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
 import { ColorfulDot } from '~/shared/ui/atoms/ColorfulDot';
@@ -10,7 +17,6 @@ import { RangeSelect } from '~/shared/ui/molecules/RangeSelect';
 
 import { useBmiCalculatorStore } from '../../../model/bmiCalculatorStore';
 import { useBmiCalculations } from '../../../model/useBmiCalculations';
-import { getFatRiskLevel } from './selectFatLib';
 
 type SelectFatScreenProps = {
   onNext: () => void;
@@ -30,8 +36,8 @@ export function SelectFatScreen({
 
   const { fats } = allCalculatedData;
 
-  const { riskLevel, label, chipColor, valueEmoji, description } =
-    getFatRiskLevel(form.fatRatio);
+  const { riskLevel, label, chipColor, valueEmoji, getDescription } =
+    getRiskLevel(form.fatRatio, fatsRiskLevelConfig);
 
   return (
     <StyledActivityScreenWrapper>
@@ -66,7 +72,7 @@ export function SelectFatScreen({
 
         <StatCard
           title={`Ваш уровень жиров (${form.fatRatio} г/кг веса)`}
-          description={description}
+          description={getDescription()}
           riskLevel={riskLevel}
           value={fats.fatsInGrams}
           valueEmoji={valueEmoji}

@@ -2,9 +2,11 @@ import { useMemo } from 'react';
 
 import { useBmiCalculatorStore } from './bmiCalculatorStore';
 import { calculateCarbs } from './lib/calculateCarbs';
+import { calculateDeficit } from './lib/calculateDeficit';
 import { calculateFats } from './lib/calculateFats';
 import { calculateProteins } from './lib/calculateProteins';
 import { calculateTargetCalories } from './lib/calculateTargetCalories';
+import { calculateTotalCalories } from './lib/calculateTotalCalories';
 import { useBaseBmiCalculations } from './useBaseBmiCalculations';
 
 export const useBmiCalculations = () => {
@@ -24,11 +26,20 @@ export const useBmiCalculations = () => {
 
     const { age, bmi, bmr, gender } = baseCalculatedData;
 
+    const totalCalories = calculateTotalCalories({
+      bmr,
+      activityCoefficient: form.activityCoefficient,
+    });
+
     const targetCalories = calculateTargetCalories({
       goal: form.goal,
-      activityCoefficient: form.activityCoefficient,
-      bmr,
+      totalCalories,
       deficitPercent: form.deficitPercent,
+    });
+
+    const deficit = calculateDeficit({
+      totalCalories,
+      targetCalories,
     });
 
     const proteins = calculateProteins({
@@ -67,6 +78,7 @@ export const useBmiCalculations = () => {
     return {
       ...baseCalculatedData,
       targetCalories,
+      deficit,
       proteins,
       fats,
       carbs,

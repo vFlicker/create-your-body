@@ -1,13 +1,14 @@
-import { BmiRiskLevel, ChipColor } from '~/entities/bmi';
+import { ChipColor } from '../../Chip';
+import { BmiRiskLevel, RiskLevelConfig } from '../statCardTypes';
 
-const fatRiskLevel = [
+export const fatsRiskLevelConfig: RiskLevelConfig = [
   {
     range: [0, 0.5],
     riskLevel: BmiRiskLevel.VeryLow,
     label: 'Критически мало!',
     chipColor: ChipColor.Warning,
     valueEmoji: '⚠️',
-    description:
+    getDescription: () =>
       'Опасно низкое потребление жиров. Серьёзный риск гормональных нарушений и дефицита жирорастворимых витаминов.',
   },
   {
@@ -16,7 +17,7 @@ const fatRiskLevel = [
     label: 'Ниже минимума',
     chipColor: ChipColor.Warning,
     valueEmoji: '⚠️',
-    description:
+    getDescription: () =>
       'Недостаточно для нормальной выработки гормонов. Может привести к снижению тестостерона и проблемам с кожей.',
   },
   {
@@ -25,7 +26,7 @@ const fatRiskLevel = [
     label: 'Строгая диета, минимум для здоровья',
     chipColor: ChipColor.Normal,
     valueEmoji: '🥑',
-    description:
+    getDescription: () =>
       'Подходит для строгих диет, но лучше увеличить до 1.0 г/кг для оптимального гормонального баланса.',
   },
   {
@@ -34,7 +35,7 @@ const fatRiskLevel = [
     label: 'Сбалансированное питание, оптимум',
     chipColor: ChipColor.Normal,
     valueEmoji: '🥑',
-    description:
+    getDescription: () =>
       'Отлично! Обеспечивает нормальную выработку гормонов, усвоение витаминов и здоровье кожи. Золотая середина.',
   },
   {
@@ -43,7 +44,7 @@ const fatRiskLevel = [
     label: 'Любители жирной пищи, набор массы',
     chipColor: ChipColor.Normal,
     valueEmoji: '🥑',
-    description:
+    getDescription: () =>
       'Хорошо для тех, кто предпочитает жирную пищу или набирает массу. Может замедлить похудение из-за калорийности, но безопасно.',
   },
   {
@@ -52,16 +53,7 @@ const fatRiskLevel = [
     label: 'Кето-диета, очень высокожировое питание',
     chipColor: ChipColor.Attention,
     valueEmoji: '🥑',
-    description:
+    getDescription: () =>
       'Хорошо для тех, кто предпочитает жирную пищу или набирает массу. Может замедлить похудение из-за калорийности, но безопасно.',
   },
 ];
-
-export const getFatRiskLevel = (fatRatio: number) => {
-  const result = fatRiskLevel.find(({ range }) => {
-    const [min, max] = range;
-    return min <= fatRatio && max > fatRatio;
-  });
-
-  return result ?? fatRiskLevel[0];
-};

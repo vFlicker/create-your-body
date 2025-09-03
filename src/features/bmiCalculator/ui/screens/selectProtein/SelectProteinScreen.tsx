@@ -1,7 +1,14 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import { Chip, FactBlock, ScreenHeader, StatCard } from '~/entities/bmi';
+import {
+  Chip,
+  FactBlock,
+  getRiskLevel,
+  proteinsRiskLevelConfig,
+  ScreenHeader,
+  StatCard,
+} from '~/entities/bmi';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
 import { ColorfulDot } from '~/shared/ui/atoms/ColorfulDot';
@@ -10,7 +17,6 @@ import { RangeSelect } from '~/shared/ui/molecules/RangeSelect';
 
 import { useBmiCalculatorStore } from '../../../model/bmiCalculatorStore';
 import { useBmiCalculations } from '../../../model/useBmiCalculations';
-import { getProteinRiskLevel } from './selectProteinLib';
 
 type SelectProteinScreenProps = {
   onNext: () => void;
@@ -30,8 +36,8 @@ export function SelectProteinScreen({
 
   const { proteins } = allCalculatedData;
 
-  const { riskLevel, label, chipColor, valueEmoji, description } =
-    getProteinRiskLevel(form.proteinRatio);
+  const { riskLevel, label, chipColor, valueEmoji, getDescription } =
+    getRiskLevel(form.proteinRatio, proteinsRiskLevelConfig);
 
   return (
     <StyledActivityScreenWrapper>
@@ -66,7 +72,7 @@ export function SelectProteinScreen({
 
         <StatCard
           title={`Ваш уровень белка (${form.proteinRatio} г/кг веса)`}
-          description={description}
+          description={getDescription()}
           riskLevel={riskLevel}
           value={proteins.proteinsInGrams}
           valueEmoji={valueEmoji}

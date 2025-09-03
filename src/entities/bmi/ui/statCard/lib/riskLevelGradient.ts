@@ -1,4 +1,4 @@
-import { BmiRiskLevel } from '../../model/bmiRiskLevel';
+import { BmiRiskLevel } from '../statCardTypes';
 
 export const riskLevelGradient = {
   [BmiRiskLevel.VeryLow]:

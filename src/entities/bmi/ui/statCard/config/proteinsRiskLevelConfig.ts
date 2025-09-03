@@ -1,13 +1,14 @@
-import { BmiRiskLevel, ChipColor } from '~/entities/bmi';
+import { ChipColor } from '../../Chip';
+import { BmiRiskLevel, RiskLevelConfig } from '../statCardTypes';
 
-const proteinRiskLevel = [
+export const proteinsRiskLevelConfig: RiskLevelConfig = [
   {
     range: [0, 1.0],
     riskLevel: BmiRiskLevel.VeryLow,
     label: 'Критически мало!',
     chipColor: ChipColor.Warning,
     valueEmoji: '⚠️',
-    description:
+    getDescription: () =>
       'Крайне низкое потребление белка. Может привести к серьёзной потере мышечной массы, слабости и проблемам с иммунитетом.',
   },
   {
@@ -16,7 +17,7 @@ const proteinRiskLevel = [
     label: 'Ниже минимума',
     chipColor: ChipColor.Warning,
     valueEmoji: '⚠️',
-    description:
+    getDescription: () =>
       'Недостаточно для поддержания мышечной массы. Минимальная рекомендация ВОЗ — 1.2 г/кг для взрослых.',
   },
   {
@@ -25,7 +26,7 @@ const proteinRiskLevel = [
     label: 'Малоподвижный образ жизни, офисная работа',
     chipColor: ChipColor.Normal,
     valueEmoji: '🥚',
-    description:
+    getDescription: () =>
       'Подходит для малоподвижных людей без спортивных целей. Достаточно для поддержания базовых функций организма.',
   },
   {
@@ -34,7 +35,7 @@ const proteinRiskLevel = [
     label: 'Умеренная активность, поддержание формы',
     chipColor: ChipColor.Normal,
     valueEmoji: '🥚',
-    description:
+    getDescription: () =>
       'Отлично! Идеально для активных людей и тех, кто хочет поддерживать мышечную массу. Рекомендуется большинству.',
   },
   {
@@ -43,7 +44,7 @@ const proteinRiskLevel = [
     label: 'Регулярные тренировки, набор мышц',
     chipColor: ChipColor.Normal,
     valueEmoji: '🥚',
-    description:
+    getDescription: () =>
       'Хорошо для тех, кто активно тренируется. Поможет в восстановлении после тренировок и наборе мышечной массы.',
   },
   {
@@ -52,7 +53,7 @@ const proteinRiskLevel = [
     label: 'Интенсивный спорт, строгая диета',
     chipColor: ChipColor.Normal,
     valueEmoji: '🥚',
-    description:
+    getDescription: () =>
       'Подходит для интенсивно тренирующихся спортсменов и людей на строгой диете. Максимум для роста мышц.',
   },
   {
@@ -61,16 +62,7 @@ const proteinRiskLevel = [
     label: 'Избыточное потребление!',
     chipColor: ChipColor.Attention,
     valueEmoji: '⛔',
-    description:
+    getDescription: () =>
       'Более 2.5 г/кг не даёт дополнительных преимуществ и может создать нагрузку на почки. Лучше перераспределить калории.',
   },
 ];
-
-export const getProteinRiskLevel = (proteinRatio: number) => {
-  const result = proteinRiskLevel.find(({ range }) => {
-    const [min, max] = range;
-    return min <= proteinRatio && max > proteinRatio;
-  });
-
-  return result ?? proteinRiskLevel[0];
-};
