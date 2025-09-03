@@ -28,6 +28,7 @@ export const useBmiCalculations = () => {
       goal: form.goal,
       activityCoefficient: form.activityCoefficient,
       bmr,
+      deficitPercent: form.deficitPercent,
     });
 
     const proteins = calculateProteins({

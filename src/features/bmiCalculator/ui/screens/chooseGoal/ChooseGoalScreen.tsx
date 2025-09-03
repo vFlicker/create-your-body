@@ -37,7 +37,14 @@ export function ChooseGoalScreen({
               title={title}
               badge={badge}
               checked={value === form.goal}
-              onChange={() => setForm({ ...form, goal: value })}
+              onChange={() =>
+                setForm({
+                  ...form,
+                  goal: value,
+                  deficitPercent:
+                    value === 'deficit' ? 15 : form.deficitPercent,
+                })
+              }
             />
           ))}
         </StyledChooseActivityFormWrapper>

@@ -10,6 +10,7 @@ import { RangeSelect } from '~/shared/ui/molecules/RangeSelect';
 
 import { useBmiCalculatorStore } from '../../../model/bmiCalculatorStore';
 import { useBmiCalculations } from '../../../model/useBmiCalculations';
+import { getDeficitRangeSelectLabels } from './saveResultScreenLib';
 
 type SaveResultScreenProps = {
   onRepeat: () => void;
@@ -27,7 +28,9 @@ export function SaveResultScreen({
     return <Loader />;
   }
 
-  const { carbs, proteins, fats, targetCalories } = allCalculatedData;
+  const { carbs, proteins, fats, targetCalories, bmi } = allCalculatedData;
+
+  const deficitRangeLabels = getDeficitRangeSelectLabels(bmi);
 
   return (
     <StyledActivityScreenWrapper>
@@ -49,9 +52,22 @@ export function SaveResultScreen({
           />
         </StyledChartWrapper>
 
-        <StyledTitle>Степень дефицита калорий</StyledTitle>
+        {form.goal === 'deficit' && (
+          <>
+            <StyledTitle>Степень дефицита калорий</StyledTitle>
 
-        <hr />
+            <RangeSelect
+              min={deficitRangeLabels[0].value}
+              max={deficitRangeLabels[deficitRangeLabels.length - 1].value}
+              step={5}
+              labels={deficitRangeLabels}
+              value={form.deficitPercent}
+              onChange={(value) => setForm({ ...form, deficitPercent: value })}
+            />
+          </>
+        )}
+
+        <StyledSeparator />
 
         <StyledTop>
           <StyledSubtitleWrapper>
@@ -195,4 +211,10 @@ const StyledActions = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 10px;
+`;
+
+const StyledSeparator = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: #e2e2ea;
 `;

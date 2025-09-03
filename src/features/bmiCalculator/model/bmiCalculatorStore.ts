@@ -8,6 +8,7 @@ type BmiCalculatorStore = {
     goal: Goal;
     proteinRatio: number;
     fatRatio: number;
+    deficitPercent: number;
     height?: number;
     fullWeight?: number;
     hasExtraWeight: boolean;
@@ -23,6 +24,7 @@ export const useBmiCalculatorStore = create<BmiCalculatorStore>()(
       goal: 'maintain',
       proteinRatio: 0,
       fatRatio: 0,
+      deficitPercent: 0,
       height: undefined,
       fullWeight: undefined,
       hasExtraWeight: true,
