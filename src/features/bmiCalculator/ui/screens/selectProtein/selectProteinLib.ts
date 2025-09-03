@@ -1,6 +1,6 @@
 import { BmiRiskLevel, ChipColor } from '~/entities/bmi';
 
-export const proteinRiskLevel = [
+const proteinRiskLevel = [
   {
     range: [0, 1.0],
     riskLevel: BmiRiskLevel.VeryLow,
@@ -65,3 +65,12 @@ export const proteinRiskLevel = [
       'Более 2.5 г/кг не даёт дополнительных преимуществ и может создать нагрузку на почки. Лучше перераспределить калории.',
   },
 ];
+
+export const getProteinRiskLevel = (proteinRatio: number) => {
+  const result = proteinRiskLevel.find(({ range }) => {
+    const [min, max] = range;
+    return min <= proteinRatio && max > proteinRatio;
+  });
+
+  return result ?? proteinRiskLevel[0];
+};

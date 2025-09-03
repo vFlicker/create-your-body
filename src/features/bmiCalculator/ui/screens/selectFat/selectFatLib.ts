@@ -1,6 +1,6 @@
 import { BmiRiskLevel, ChipColor } from '~/entities/bmi';
 
-export const fatRiskLevel = [
+const fatRiskLevel = [
   {
     range: [0, 0.5],
     riskLevel: BmiRiskLevel.VeryLow,
@@ -26,7 +26,7 @@ export const fatRiskLevel = [
     chipColor: ChipColor.Normal,
     valueEmoji: '🥑',
     description:
-      'Минимальная норма. Подходит для строгих диет, но лучше увеличить до 1.0 г/кг для оптимального гормонального баланса.',
+      'Подходит для строгих диет, но лучше увеличить до 1.0 г/кг для оптимального гормонального баланса.',
   },
   {
     range: [0.9, 1.3],
@@ -56,3 +56,12 @@ export const fatRiskLevel = [
       'Хорошо для тех, кто предпочитает жирную пищу или набирает массу. Может замедлить похудение из-за калорийности, но безопасно.',
   },
 ];
+
+export const getFatRiskLevel = (fatRatio: number) => {
+  const result = fatRiskLevel.find(({ range }) => {
+    const [min, max] = range;
+    return min <= fatRatio && max > fatRatio;
+  });
+
+  return result ?? fatRiskLevel[0];
+};

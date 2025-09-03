@@ -9,7 +9,8 @@ import { Loader } from '~/shared/ui/atoms/Loader';
 import { RangeSelect } from '~/shared/ui/molecules/RangeSelect';
 
 import { useBmiCalculatorStore } from '../../../model/bmiCalculatorStore';
-import { useSelectFatData } from './useSelectFatData';
+import { useBmiCalculations } from '../../../model/useBmiCalculations';
+import { getFatRiskLevel } from './selectFatLib';
 
 type SelectFatScreenProps = {
   onNext: () => void;
@@ -21,16 +22,17 @@ export function SelectFatScreen({
   onBack,
 }: SelectFatScreenProps): JSX.Element {
   const { form, setForm } = useBmiCalculatorStore();
-  const { calculatedData, isLoading } = useSelectFatData();
+  const { allCalculatedData, isLoading } = useBmiCalculations();
 
-  if (isLoading || !calculatedData) {
+  if (!allCalculatedData || isLoading) {
     return <Loader />;
   }
 
-  const { fats, fatKcalPercentage, riskLevelData } = calculatedData;
+  const { fats } = allCalculatedData;
 
   const { riskLevel, label, chipColor, valueEmoji, description } =
-    riskLevelData;
+    getFatRiskLevel(form.fatRatio);
+
   return (
     <StyledActivityScreenWrapper>
       <ScreenHeader
@@ -69,7 +71,7 @@ export function SelectFatScreen({
           value={fats.fatsInGrams}
           valueEmoji={valueEmoji}
           calories={fats.fatsInKcal}
-          percentage={fatKcalPercentage}
+          percentage={fats.fatsPercentFromTarget}
         />
 
         <StyledFooter>

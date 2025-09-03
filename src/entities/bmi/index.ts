@@ -6,4 +6,5 @@ export { Chip, ChipColor } from './ui/Chip';
 export { FactBlock } from './ui/FactBlock';
 export { ResultCard } from './ui/ResultCard';
 export { ScreenHeader } from './ui/ScreenHeader';
-export { StatCard } from './ui/StatCard';
+export { ShortStatCard } from './ui/statCard/ShortStatCard';
+export { StatCard } from './ui/statCard/StatCard';

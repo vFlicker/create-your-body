@@ -9,7 +9,8 @@ import { Loader } from '~/shared/ui/atoms/Loader';
 import { RangeSelect } from '~/shared/ui/molecules/RangeSelect';
 
 import { useBmiCalculatorStore } from '../../../model/bmiCalculatorStore';
-import { useSelectProteinData } from './useSelectProteinData';
+import { useBmiCalculations } from '../../../model/useBmiCalculations';
+import { getProteinRiskLevel } from './selectProteinLib';
 
 type SelectProteinScreenProps = {
   onNext: () => void;
@@ -21,16 +22,16 @@ export function SelectProteinScreen({
   onBack,
 }: SelectProteinScreenProps): JSX.Element {
   const { form, setForm } = useBmiCalculatorStore();
-  const { calculatedData, isLoading } = useSelectProteinData();
+  const { allCalculatedData, isLoading } = useBmiCalculations();
 
-  if (isLoading || !calculatedData) {
+  if (!allCalculatedData || isLoading) {
     return <Loader />;
   }
 
-  const { proteins, proteinKcalPercentage, riskLevelData } = calculatedData;
+  const { proteins } = allCalculatedData;
 
   const { riskLevel, label, chipColor, valueEmoji, description } =
-    riskLevelData;
+    getProteinRiskLevel(form.proteinRatio);
 
   return (
     <StyledActivityScreenWrapper>
@@ -70,7 +71,7 @@ export function SelectProteinScreen({
           value={proteins.proteinsInGrams}
           valueEmoji={valueEmoji}
           calories={proteins.proteinsInKcal}
-          percentage={proteinKcalPercentage}
+          percentage={proteins.proteinsPercentFromTarget}
         />
 
         <StyledFooter>
