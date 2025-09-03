@@ -1,13 +1,13 @@
 export const calculateDeficit = ({
-  totalCalories,
+  bmiSum,
   targetCalories,
 }: {
-  totalCalories: number;
+  bmiSum: number;
   targetCalories: number;
 }) => {
-  const deficitCalories = Math.round(totalCalories - targetCalories);
-
+  const deficitCalories = Math.round(bmiSum - targetCalories);
   const deficitPercentageFromTarget = (deficitCalories / targetCalories) * 100;
+
   return {
     deficitCalories,
     deficitPercentageFromTarget,

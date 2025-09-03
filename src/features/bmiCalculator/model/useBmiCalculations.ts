@@ -37,11 +37,6 @@ export const useBmiCalculations = () => {
       deficitPercent: form.deficitPercent,
     });
 
-    const deficit = calculateDeficit({
-      totalCalories,
-      targetCalories,
-    });
-
     const proteins = calculateProteins({
       weight: form.fullWeight,
       height: form.height,
@@ -75,14 +70,27 @@ export const useBmiCalculations = () => {
       targetCalories,
     });
 
-    return {
+    const bmiSum =
+      proteins.proteinsInKcal + fats.fatsInKcal + carbs.carbsInKcal;
+
+    const deficit = calculateDeficit({
+      bmiSum,
+      targetCalories,
+    });
+
+    const calculationResults = {
       ...baseCalculatedData,
       targetCalories,
       deficit,
       proteins,
       fats,
       carbs,
+      totalCalories,
     };
+
+    console.log({ calculationResults });
+
+    return calculationResults;
   }, [baseCalculatedData, form]);
 
   return {
