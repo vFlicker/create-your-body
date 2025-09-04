@@ -29,6 +29,7 @@ export function SelectProteinScreen({
 }: SelectProteinScreenProps): JSX.Element {
   const { form, setForm } = useBmiCalculatorStore();
   const { allCalculatedData, isLoading } = useBmiCalculations();
+  const canClickNext = form.proteinRatio > 0.9;
 
   if (!allCalculatedData || isLoading) {
     return <Loader />;
@@ -56,11 +57,10 @@ export function SelectProteinScreen({
         </StyledTop>
 
         <RangeSelect
-          min={0}
+          min={0.9}
           max={2.5}
           step={0.1}
           labels={[
-            { value: 0, text: '0 г/кг' },
             { value: 1.2, text: '1,2 г/кг', description: 'Минимум' },
             { value: 1.6, text: '1,6 г/кг', description: 'Норма' },
             { value: 2.0, text: '2,0 г/кг', description: 'Спорт' },
@@ -90,7 +90,7 @@ export function SelectProteinScreen({
             <Button color="neutral" onClick={onBack}>
               Назад
             </Button>
-            <Button color="accent" onClick={onNext}>
+            <Button color="accent" disabled={!canClickNext} onClick={onNext}>
               Далее
             </Button>
           </StyledActions>

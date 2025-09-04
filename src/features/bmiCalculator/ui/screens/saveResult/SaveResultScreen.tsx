@@ -147,7 +147,6 @@ export function SaveResultScreen({
           labels={[
             { value: 0.7, text: '0,7 г/кг', description: 'Минимум' },
             { value: 1.0, text: '1,0 г/кг', description: 'Норма' },
-            { value: 1.3, text: '1,3 г/кг', description: 'Высокий' },
             { value: 1.5, text: '1,5 г/кг', description: 'Максимум' },
           ]}
           value={form.fatRatio}

@@ -29,6 +29,7 @@ export function SelectFatScreen({
 }: SelectFatScreenProps): JSX.Element {
   const { form, setForm } = useBmiCalculatorStore();
   const { allCalculatedData, isLoading } = useBmiCalculations();
+  const canClickNext = form.fatRatio > 0.4;
 
   if (!allCalculatedData || isLoading) {
     return <Loader />;
@@ -56,14 +57,12 @@ export function SelectFatScreen({
         </StyledTop>
 
         <RangeSelect
-          min={0}
+          min={0.4}
           max={1.5}
           step={0.1}
           labels={[
-            { value: 0, text: '0 г' },
             { value: 0.7, text: '0,7 г/кг', description: 'Минимум' },
             { value: 1.0, text: '1,0 г/кг', description: 'Норма' },
-            { value: 1.3, text: '1,3 г/кг', description: 'Высокий' },
             { value: 1.5, text: '1,5 г/кг', description: 'Максимум' },
           ]}
           value={form.fatRatio}
@@ -90,7 +89,7 @@ export function SelectFatScreen({
             <Button color="neutral" onClick={onBack}>
               Назад
             </Button>
-            <Button color="accent" onClick={onNext}>
+            <Button color="accent" disabled={!canClickNext} onClick={onNext}>
               Далее
             </Button>
           </StyledActions>

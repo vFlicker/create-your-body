@@ -22,8 +22,8 @@ export const useBmiCalculatorStore = create<BmiCalculatorStore>()(
   immer((set) => ({
     form: {
       goal: 'maintain',
-      proteinRatio: 0,
-      fatRatio: 0,
+      proteinRatio: 0.9,
+      fatRatio: 0.4,
       deficitPercent: 0,
       height: undefined,
       fullWeight: undefined,
