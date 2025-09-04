@@ -28,7 +28,7 @@ export const useBmiCalculatorStore = create<BmiCalculatorStore>()(
       height: undefined,
       fullWeight: undefined,
       hasExtraWeight: true,
-      activityCoefficient: undefined,
+      activityCoefficient: 1.2,
     },
     setForm: (form) =>
       set((state) => {
