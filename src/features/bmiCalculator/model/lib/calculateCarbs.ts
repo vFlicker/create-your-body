@@ -8,7 +8,7 @@ export const calculateCarbsByFormula = (
 ) => {
   const remainingCalories = targetCalories - proteinCalories - fatCalories;
   const carbsInGrams = Math.max(30, remainingCalories / 4);
-  const carbsInKcal = +carbsInGrams * 4;
+  const carbsInKcal = carbsInGrams * 4;
 
   return {
     carbsInGrams: Math.floor(carbsInGrams),

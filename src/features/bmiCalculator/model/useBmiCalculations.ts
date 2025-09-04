@@ -76,6 +76,7 @@ export const useBmiCalculations = () => {
     const deficit = calculateDeficit({
       bmiSum,
       targetCalories,
+      totalCalories,
     });
 
     const calculationResults = {
@@ -87,8 +88,6 @@ export const useBmiCalculations = () => {
       carbs,
       totalCalories,
     };
-
-    console.log({ calculationResults });
 
     return calculationResults;
   }, [baseCalculatedData, form]);

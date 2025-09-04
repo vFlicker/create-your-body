@@ -44,7 +44,7 @@ export function SaveResultScreen({
 
   const deficitRangeLabels = getDeficitRangeSelectLabels(bmi);
   const caloriesRiskLevel = getRiskLevel(
-    deficit.deficitPercentageFromTarget,
+    deficit.deviationFromTarget,
     caloriesRiskLevelConfig,
   );
   const proteinsRiskLevel = getRiskLevel(
@@ -79,7 +79,8 @@ export function SaveResultScreen({
             <StyledTitle>Степень дефицита калорий</StyledTitle>
 
             <Chip color="normal">
-              Дефицит {form.deficitPercent}% ({deficit.deficitCalories} ккал)
+              Дефицит {form.deficitPercent}% (
+              {deficit.deficitPercentageFromTarget} ккал)
             </Chip>
 
             <RangeSelect
@@ -94,7 +95,7 @@ export function SaveResultScreen({
             <ShortStatCard
               title={caloriesRiskLevel.label}
               description={caloriesRiskLevel.getDescription(
-                deficit.deficitCalories,
+                deficit.deviationFromTarget,
               )}
               riskLevel={caloriesRiskLevel.riskLevel}
               valueEmoji={caloriesRiskLevel.valueEmoji}
