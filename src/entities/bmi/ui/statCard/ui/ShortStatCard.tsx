@@ -9,6 +9,7 @@ type ShortStatCardProps = {
   title: string;
   valueEmoji: string;
   description: string;
+  value: number;
   riskLevel: BmiRiskLevel;
 };
 
@@ -17,14 +18,16 @@ export function ShortStatCard({
   description,
   riskLevel,
   title,
+  value,
   valueEmoji,
 }: ShortStatCardProps): JSX.Element {
   return (
     <StyledShortStatCardWrapper className={className} riskLevel={riskLevel}>
       <StyledContent>
-        <StyledTitle>
-          {valueEmoji} {title}
-        </StyledTitle>
+        <StyledTitle>{title}</StyledTitle>
+        <StyledValue>
+          {valueEmoji} {value} г
+        </StyledValue>
         <StyledDescription>{description}</StyledDescription>
       </StyledContent>
     </StyledShortStatCardWrapper>
@@ -54,6 +57,13 @@ const StyledTitle = styled.h3`
   font-size: 13px;
   font-weight: 700;
   line-height: 130%;
+`;
+
+const StyledValue = styled.span`
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 130%;
+  letter-spacing: -0.11px;
 `;
 
 const StyledDescription = styled.p`

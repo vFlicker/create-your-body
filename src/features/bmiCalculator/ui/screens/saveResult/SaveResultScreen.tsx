@@ -99,6 +99,7 @@ export function SaveResultScreen({
               )}
               riskLevel={caloriesRiskLevel.riskLevel}
               valueEmoji={caloriesRiskLevel.valueEmoji}
+              value={deficit.deficitPercentageFromTarget}
             />
           </>
         )}
@@ -131,6 +132,7 @@ export function SaveResultScreen({
           description={proteinsRiskLevel.getDescription()}
           riskLevel={proteinsRiskLevel.riskLevel}
           valueEmoji={proteinsRiskLevel.valueEmoji}
+          value={proteins.proteinsInGrams}
         />
 
         <StyledTop>
@@ -158,6 +160,7 @@ export function SaveResultScreen({
           description={fatsRiskLevel.getDescription()}
           riskLevel={fatsRiskLevel.riskLevel}
           valueEmoji={fatsRiskLevel.valueEmoji}
+          value={fats.fatsInGrams}
         />
 
         <StyledTop>
@@ -186,6 +189,7 @@ export function SaveResultScreen({
           description={carbsRiskLevel.getDescription()}
           riskLevel={carbsRiskLevel.riskLevel}
           valueEmoji={carbsRiskLevel.valueEmoji}
+          value={carbs.carbsInGrams}
         />
 
         <StyledFooter>
