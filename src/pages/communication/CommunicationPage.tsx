@@ -21,12 +21,12 @@ export function CommunicationPage(): JSX.Element {
       />
     );
 
-  const secondSteam = user.subscriptions.find((sub) => sub.stream === 2);
   const thirdSteam = user.subscriptions.find((sub) => sub.stream === 3);
+  const fourthSteam = user.subscriptions.find((sub) => sub.stream === 4);
 
-  const firstSteamIsPro = secondSteam && secondSteam.plan === 'Pro';
-  const secondSteamIsPro = thirdSteam && thirdSteam.plan === 'Pro';
-  const isPro = firstSteamIsPro || secondSteamIsPro;
+  const isThirdSteamPro = thirdSteam && thirdSteam.plan === 'Pro';
+  const isFourthSteamPro = fourthSteam && fourthSteam.plan === 'Pro';
+  const isPro = isThirdSteamPro || isFourthSteamPro;
 
   return (
     <CommonPageLayout title="Общение и поддержка" iconSrc={chatIconSrc}>
@@ -39,12 +39,12 @@ export function CommunicationPage(): JSX.Element {
         {isPro && (
           <>
             <OpenTgLinkButton
-              username="+dSvGTqfGPBo4MWY6"
+              username="+W7DOsFM7QBhjMjgy"
               buttonText="Чат в Telegram"
               iconSrc={chatIconSrc}
             />
             <OpenTgLinkButton
-              username="+TEHjfwqW4GFiM2M6"
+              username="+qjt6LLKQBso3ODFi"
               buttonText="Инфо канал"
               iconSrc={channelIconSrc}
             />

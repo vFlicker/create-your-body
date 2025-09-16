@@ -19,13 +19,13 @@ type CardData = {
 export const getTitleCards = (subscriptions: Subscription[]) => {
   const pageContainersData: CardData[] = [];
 
-  const secondSteam = subscriptions.find((sub) => sub.stream === 2);
   const thirdSteam = subscriptions.find((sub) => sub.stream === 3);
+  const fourthSteam = subscriptions.find((sub) => sub.stream === 4);
 
-  const secondSteamIsPro = secondSteam && secondSteam.plan === 'Pro';
-  const thirdSteamIsPro = thirdSteam && thirdSteam.plan === 'Pro';
-  const secondSteamBase = secondSteam && secondSteam.plan === 'Base';
-  const thirdSteamBase = thirdSteam && thirdSteam.plan === 'Base';
+  const isThirdSteamPro = thirdSteam && thirdSteam.plan === 'Pro';
+  const isFourthSteamPro = fourthSteam && fourthSteam.plan === 'Pro';
+  const isThirdSteamBase = thirdSteam && thirdSteam.plan === 'Base';
+  const isFourthSteamBase = fourthSteam && fourthSteam.plan === 'Base';
 
   // Always open
   pageContainersData.push({
@@ -36,7 +36,7 @@ export const getTitleCards = (subscriptions: Subscription[]) => {
     isHighlight: true,
   });
 
-  if (secondSteamIsPro) {
+  if (isThirdSteamPro) {
     // All open
     pageContainersData.push(
       {
@@ -68,39 +68,76 @@ export const getTitleCards = (subscriptions: Subscription[]) => {
         isHighlight: false,
       },
     );
-  } else if (thirdSteamIsPro) {
-    // all open
+  } else if (isThirdSteamBase && isFourthSteamPro) {
     pageContainersData.push(
       {
-        to: AppRoute.TrainingCategories,
         title: 'Тренировки',
         iconSrc: musculesIconSrc,
         disabled: false,
+        to: AppRoute.TrainingCategories,
         isHighlight: false,
       },
       {
-        to: AppRoute.FoodCategories,
         title: 'Питание',
         iconSrc: foodIconSrc,
         disabled: false,
+        to: AppRoute.FoodCategories,
         isHighlight: false,
       },
       {
         to: AppRoute.LectureWeeks,
         title: 'Лекции',
         iconSrc: bookIconSrc,
-        disabled: false,
+        labelText: 'Доступно с 29 сентября',
+        disabled: true,
         isHighlight: false,
       },
       {
         to: AppRoute.RecipeCategories,
         title: 'Рецепты',
         iconSrc: recipesIconSrc,
-        disabled: false,
+        labelText: 'Доступно с 29 сентября',
+        disabled: true,
         isHighlight: false,
       },
     );
-  } else if (secondSteamBase) {
+  } else if (isFourthSteamPro) {
+    // all open 29 сентября
+    pageContainersData.push(
+      {
+        to: AppRoute.TrainingCategories,
+        title: 'Тренировки',
+        iconSrc: musculesIconSrc,
+        labelText: 'Доступно с 29 сентября',
+        disabled: true,
+        isHighlight: false,
+      },
+      {
+        to: AppRoute.FoodCategories,
+        title: 'Питание',
+        iconSrc: foodIconSrc,
+        labelText: 'Доступно с 29 сентября',
+        disabled: true,
+        isHighlight: false,
+      },
+      {
+        to: AppRoute.LectureWeeks,
+        title: 'Лекции',
+        iconSrc: bookIconSrc,
+        labelText: 'Доступно с 29 сентября',
+        disabled: true,
+        isHighlight: false,
+      },
+      {
+        to: AppRoute.RecipeCategories,
+        title: 'Рецепты',
+        iconSrc: recipesIconSrc,
+        labelText: 'Доступно с 29 сентября',
+        disabled: true,
+        isHighlight: false,
+      },
+    );
+  } else if (isThirdSteamBase) {
     // lectures and recipes -- buy, else access
     pageContainersData.push(
       {
@@ -134,21 +171,23 @@ export const getTitleCards = (subscriptions: Subscription[]) => {
         isHighlight: false,
       },
     );
-  } else if (thirdSteamBase) {
-    // lectures and recipes -- buy, else '12 июля'
+  } else if (isFourthSteamBase) {
+    // lectures and recipes -- buy, else '29 сентября'
     pageContainersData.push(
       {
         to: AppRoute.TrainingCategories,
         title: 'Тренировки',
         iconSrc: musculesIconSrc,
-        disabled: false,
+        labelText: 'Доступно с 29 сентября',
+        disabled: true,
         isHighlight: false,
       },
       {
         to: AppRoute.FoodCategories,
         title: 'Питание',
         iconSrc: foodIconSrc,
-        disabled: false,
+        labelText: 'Доступно с 29 сентября',
+        disabled: true,
         isHighlight: false,
       },
       {
