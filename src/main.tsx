@@ -2,6 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import { AppWithProviders } from './app';
+import { userSession } from './shared/libs/userSession';
 import { ErrorBoundary } from './shared/ui/molecules/errorBoundary';
 
 // Set the viewport height property for dynamic viewport height support
@@ -26,6 +27,8 @@ window.addEventListener('error', (evt) => {
   fetch('https://cybapp.ru/v2/api/client/log', {
     method: 'POST',
     body: JSON.stringify({
+      type: 'error',
+      token: userSession.getCurrentUser(),
       error: evt.message,
       stack: evt.error?.stack,
       userAgent: navigator.userAgent,
@@ -40,6 +43,8 @@ window.addEventListener('unhandledrejection', (evt) => {
   fetch('https://cybapp.ru/v2/api/client/log', {
     method: 'POST',
     body: JSON.stringify({
+      type: 'unhandledrejection',
+      token: userSession.getCurrentUser(),
       error: evt.reason?.message || 'Unhandled rejection',
       stack: evt.reason?.stack,
       userAgent: navigator.userAgent,
