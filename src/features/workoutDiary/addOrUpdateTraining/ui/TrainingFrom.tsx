@@ -169,7 +169,11 @@ export function TrainingFrom({
                   openModal(
                     <Modal onClose={handleCloseModal}>
                       <ApproachesForm
+                        key={exercise.id}
                         exerciseId={exercise.id}
+                        exerciseType={
+                          exercise.type === 'cardio' ? 'cardio' : 'approaches'
+                        }
                         exerciseName={exercise.name}
                       />
                     </Modal>,

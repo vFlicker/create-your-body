@@ -56,7 +56,7 @@ export function AddExerciseForm(): JSX.Element {
                   value={value}
                   type="checkbox"
                   checked={isExerciseSelected(value)}
-                  onChange={() => toggleExercise(id, value)}
+                  onChange={() => toggleExercise(id, name, value)}
                 />
               ))}
             </RadioGroup>

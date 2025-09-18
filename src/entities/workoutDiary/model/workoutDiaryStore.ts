@@ -4,11 +4,13 @@ import { immer } from 'zustand/middleware/immer';
 type Approach = {
   repetitions?: number;
   weight?: number;
+  minutes?: number;
 };
 
 type Exercise = {
   id: number;
   name: string;
+  type: string;
   approaches: Approach[];
 };
 
@@ -28,9 +30,17 @@ type WorkoutDiaryStore = {
   setTrainingFromExisting: (training: Training) => void;
 
   // Exercise actions
-  addExercise: (exerciseId: number, exerciseName: string) => void;
+  addExercise: (
+    exerciseId: number,
+    exerciseType: string,
+    exerciseName: string,
+  ) => void;
   removeExercise: (exerciseName: string) => void;
-  toggleExercise: (exerciseId: number, exerciseName: string) => void;
+  toggleExercise: (
+    exerciseId: number,
+    exerciseType: string,
+    exerciseName: string,
+  ) => void;
 
   // Approach actions
   createApproach: (exerciseName: string, data?: Approach) => void;
@@ -73,11 +83,16 @@ export const useWorkoutDiaryStore = create<WorkoutDiaryStore>()(
     },
 
     // Exercise actions
-    addExercise: (exerciseId: number, exerciseName: string) => {
+    addExercise: (
+      exerciseId: number,
+      exerciseType: string,
+      exerciseName: string,
+    ) => {
       set((state) => {
         state.training.exercises.push({
           id: exerciseId,
           name: exerciseName,
+          type: exerciseType,
           approaches: [],
         });
       });
@@ -95,7 +110,11 @@ export const useWorkoutDiaryStore = create<WorkoutDiaryStore>()(
       });
     },
 
-    toggleExercise: (exerciseId: number, exerciseName: string) => {
+    toggleExercise: (
+      exerciseId: number,
+      exerciseType: string,
+      exerciseName: string,
+    ) => {
       const { training, removeExercise, addExercise } = get();
 
       const exerciseExists = training.exercises.some(
@@ -105,7 +124,7 @@ export const useWorkoutDiaryStore = create<WorkoutDiaryStore>()(
       if (exerciseExists) {
         removeExercise(exerciseName);
       } else {
-        addExercise(exerciseId, exerciseName);
+        addExercise(exerciseId, exerciseType, exerciseName);
       }
     },
 

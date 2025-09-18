@@ -8,17 +8,19 @@ import { approachesInputs } from '../addApproachesConfig';
 import { RemoveApproachButton } from './RemoveApproachButton';
 
 type UpdateApproachFormProps = {
+  exerciseType: 'cardio' | 'approaches';
   exerciseName: string;
 };
 
 export function UpdateApproachForm({
+  exerciseType,
   exerciseName,
 }: UpdateApproachFormProps): JSX.Element {
   const { getExerciseByName, updateApproach } = useWorkoutDiaryStore();
 
   const handleUpdateApproach = (
     approachIndex: number,
-    field: 'repetitions' | 'weight',
+    field: 'repetitions' | 'weight' | 'minutes',
     value: string,
   ) => {
     const numericValue = Number(value) || 0;
@@ -37,7 +39,7 @@ export function UpdateApproachForm({
             <StyledApproachNumber>{index + 1}</StyledApproachNumber>
 
             <StyledInputsWrapper>
-              {approachesInputs.map(({ name, ...inputProps }) => (
+              {approachesInputs[exerciseType].map(({ name, ...inputProps }) => (
                 <Input2
                   key={name}
                   {...inputProps}

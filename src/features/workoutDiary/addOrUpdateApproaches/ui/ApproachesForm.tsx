@@ -12,11 +12,13 @@ import { UpdateApproachForm } from './UpdateApproachForm';
 
 type ApproachesFormProps = {
   exerciseId: number;
+  exerciseType: 'cardio' | 'approaches';
   exerciseName: string;
 };
 
 export function ApproachesForm({
   exerciseId,
+  exerciseType,
   exerciseName,
 }: ApproachesFormProps): JSX.Element {
   const { closeModal } = useModalStore();
@@ -28,7 +30,10 @@ export function ApproachesForm({
   } = useWorkoutDiaryStore();
 
   const createApproachHandler = () => {
-    if (selectedApproachFromHistory.repetitions !== undefined) {
+    if (
+      selectedApproachFromHistory.repetitions !== undefined ||
+      selectedApproachFromHistory.minutes !== undefined
+    ) {
       createApproach(exerciseName, selectedApproachFromHistory);
       clearSelectedApproachFromHistory();
     }
@@ -43,8 +48,14 @@ export function ApproachesForm({
     <StyledAddApproachesFormWrapper>
       <StyledTitle>{exerciseName}</StyledTitle>
 
-      <UpdateApproachForm exerciseName={exerciseName} />
-      <AddApproachesForm exerciseName={exerciseName} />
+      <UpdateApproachForm
+        exerciseType={exerciseType}
+        exerciseName={exerciseName}
+      />
+      <AddApproachesForm
+        exerciseType={exerciseType}
+        exerciseName={exerciseName}
+      />
       <StyledApproachesHistory exerciseId={exerciseId} />
 
       <StyledFooter>

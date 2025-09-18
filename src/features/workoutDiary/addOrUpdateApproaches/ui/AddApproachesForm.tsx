@@ -8,10 +8,12 @@ import { Input2 } from '~/shared/ui/molecules/inputs/Input2';
 import { approachesInputs } from '../addApproachesConfig';
 
 type AddApproachesFormProps = {
+  exerciseType: 'cardio' | 'approaches';
   exerciseName: string;
 };
 
 export function AddApproachesForm({
+  exerciseType,
   exerciseName,
 }: AddApproachesFormProps): JSX.Element {
   const {
@@ -22,7 +24,10 @@ export function AddApproachesForm({
   } = useWorkoutDiaryStore();
 
   const handleCreateApproach = () => {
-    if (selectedApproachFromHistory.repetitions !== undefined) {
+    if (
+      selectedApproachFromHistory.repetitions !== undefined ||
+      selectedApproachFromHistory.minutes !== undefined
+    ) {
       createApproach(exerciseName, selectedApproachFromHistory);
       clearSelectedApproachFromHistory();
     }
@@ -36,14 +41,15 @@ export function AddApproachesForm({
   };
 
   const isAddApproachButtonDisabled =
-    selectedApproachFromHistory.repetitions === undefined;
+    selectedApproachFromHistory.repetitions === undefined &&
+    selectedApproachFromHistory.minutes === undefined;
 
   return (
     <StyledApproachRow>
       <StyledApproachNumber>-</StyledApproachNumber>
 
       <StyledInputsWrapper>
-        {approachesInputs.map(({ name, ...inputProps }) => (
+        {approachesInputs[exerciseType].map(({ name, ...inputProps }) => (
           <Input2
             key={name}
             {...inputProps}

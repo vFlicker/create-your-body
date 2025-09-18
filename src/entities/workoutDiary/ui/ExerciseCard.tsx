@@ -7,7 +7,7 @@ type ExerciseCardProps = {
   className?: string;
   title: string;
   positionNumber: number;
-  approaches?: { repetitions?: number; weight?: number }[];
+  approaches?: { repetitions?: number; weight?: number; minutes?: number }[];
   onEdit: () => void;
 };
 
@@ -40,9 +40,10 @@ export function ExerciseCard({
 
         {hasApproaches && (
           <StyledApproachList>
-            {approaches?.map(({ repetitions, weight }, index) => (
+            {approaches?.map(({ repetitions, weight, minutes }, index) => (
               <StyledApproachItem key={index}>
-                <StyledText>{repetitions}</StyledText>
+                {minutes && <StyledText>{minutes} мин</StyledText>}
+                {repetitions && <StyledText>{repetitions}</StyledText>}
                 {weight && <StyledText>{weight} кг</StyledText>}
               </StyledApproachItem>
             ))}
