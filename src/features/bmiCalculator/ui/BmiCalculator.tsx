@@ -2,8 +2,8 @@ import styled from '@emotion/styled';
 import { JSX, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { CloseAppButton } from '~/features/CloseAppButton';
 import backIconSrc from '~/shared/assets/svg/back.svg';
-import closeIconSrc from '~/shared/assets/svg/close.svg';
 import { AppRoute } from '~/shared/router';
 import { NavButton } from '~/shared/ui/molecules/buttons/NavButton';
 import { StepProgressBar } from '~/shared/ui/molecules/StepProgressBar';
@@ -85,7 +85,7 @@ export function BmiCalculator(): JSX.Element {
 
         <StyledPageTitle>Тренажёр по подбору КБЖУ</StyledPageTitle>
 
-        <NavButton iconSrc={closeIconSrc} onClick={handleBackClick} />
+        <CloseAppButton />
       </StyledHeader>
 
       <StyledContent>

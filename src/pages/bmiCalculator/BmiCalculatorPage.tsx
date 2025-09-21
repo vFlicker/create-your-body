@@ -67,6 +67,7 @@ const StyledHeader = styled.div`
   justify-content: flex-end;
   padding: 16px;
 `;
+
 const StyledCloseAppButton = styled(CloseAppButton)`
   color: #ffffff;
   background-color: #ffffff14;
