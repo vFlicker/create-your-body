@@ -36,7 +36,7 @@ export function ChooseActivityScreen({
               name="activity"
               title={title}
               subtitle={subtitle}
-              badge={badge.toString()}
+              badge={badge.toFixed(2)}
               checked={badge === form.activityCoefficient}
               onChange={() => setForm({ ...form, activityCoefficient: badge })}
             />

@@ -1,6 +1,6 @@
 import type { BmrCalculationParams } from '../bmiCalculatorTypes';
 
-const calculateBaseBmr = (
+export const calculateBaseBmr = (
   gender: 'male' | 'female',
   age: number,
   height: number,

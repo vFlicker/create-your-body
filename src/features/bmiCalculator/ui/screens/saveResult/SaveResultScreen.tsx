@@ -130,6 +130,7 @@ export function SaveResultScreen({
               riskLevel={caloriesRiskLevel.riskLevel}
               valueEmoji={caloriesRiskLevel.valueEmoji}
               value={deficit.deficitPercentageFromTarget}
+              measurementUnit="ккал"
             />
           </>
         )}
@@ -301,10 +302,17 @@ const StyledFooter = styled.div`
 `;
 
 const StyledActions = styled.div`
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 40px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
+
+  z-index: 2;
 `;
 
 const StyledSeparator = styled.div`

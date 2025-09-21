@@ -4,7 +4,7 @@ import { calculateAge, useUser } from '~/entities/user';
 
 import { useBmiCalculatorStore } from './bmiCalculatorStore';
 import { calculateBmi } from './lib/calculateBmi';
-import { calculateBmr } from './lib/calculateBmr';
+import { calculateBaseBmr, calculateBmr } from './lib/calculateBmr';
 import { calculateLeanBodyMass } from './lib/calculateLeanBodyMass';
 
 export const useBaseBmiCalculations = () => {
@@ -26,6 +26,13 @@ export const useBaseBmiCalculations = () => {
       weight: form.fullWeight,
     });
 
+    const fullWeight = calculateBaseBmr(
+      user.sex,
+      age,
+      form.height,
+      form.fullWeight,
+    );
+
     const bmr = calculateBmr({
       bmi,
       gender: user.sex,
@@ -38,6 +45,7 @@ export const useBaseBmiCalculations = () => {
     return {
       age,
       gender: user.sex,
+      fullWeight,
       bmi,
       bmr,
     };

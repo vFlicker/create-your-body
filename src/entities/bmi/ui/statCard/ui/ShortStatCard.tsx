@@ -11,6 +11,7 @@ type ShortStatCardProps = {
   description: string;
   value: number;
   riskLevel: BmiRiskLevel;
+  measurementUnit?: string;
 };
 
 export function ShortStatCard({
@@ -20,13 +21,14 @@ export function ShortStatCard({
   title,
   value,
   valueEmoji,
+  measurementUnit = 'г',
 }: ShortStatCardProps): JSX.Element {
   return (
     <StyledShortStatCardWrapper className={className} riskLevel={riskLevel}>
       <StyledContent>
         <StyledTitle>{title}</StyledTitle>
         <StyledValue>
-          {valueEmoji} {value} г
+          {valueEmoji} {value} {measurementUnit}
         </StyledValue>
         <StyledDescription>{description}</StyledDescription>
       </StyledContent>

@@ -29,7 +29,7 @@ export function ParametersResultScreen({
         element={
           <ResultCard
             title="Ваш базовый обмен веществ"
-            indicator={`🔥 ${baseCalculatedData.bmr} ккал`}
+            indicator={`🔥 ${baseCalculatedData.fullWeight} ккал`}
             description="Это количество энергии, которое ваше тело тратит в покое (дыхание, работа органов)"
           />
         }
