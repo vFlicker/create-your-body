@@ -22,7 +22,7 @@ export function BmiResultCard({
   onClick,
 }: BmiResultCardProps): JSX.Element {
   return (
-    <StyledBmiResultCardWrapper className={className}>
+    <StyledBmiResultCardWrapper className={className} onClick={onClick}>
       <StyledNutrients>
         <StyledNutrientWrapper>
           <StyledIconWrapper>
@@ -54,14 +54,14 @@ export function BmiResultCard({
           </StyledNutrient>
         </StyledNutrientList>
       </StyledNutrients>
-      <StyledButton onClick={onClick}>Пересчитать</StyledButton>
+      <StyledButton>Пересчитать</StyledButton>
     </StyledBmiResultCardWrapper>
   );
 }
 
 const backgroundImage = `url("${backgroundImageSrc}")`;
 
-const StyledBmiResultCardWrapper = styled.div`
+const StyledBmiResultCardWrapper = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -155,7 +155,7 @@ const StyledNutrientLabel = styled.div`
   text-transform: uppercase;
 `;
 
-const StyledButton = styled.button`
+const StyledButton = styled.div`
   padding: 11px 13px;
   border-radius: 16px;
 

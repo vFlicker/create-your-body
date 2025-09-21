@@ -259,7 +259,7 @@ const StyledMainWrapper = styled.div`
   flex-grow: 1;
   gap: 24px;
 
-  padding: 16px 16px 24px;
+  padding: 16px 16px 104px;
   border-radius: 20px 20px 0 0;
 
   background-color: ${Color.White};

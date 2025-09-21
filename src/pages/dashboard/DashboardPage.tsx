@@ -38,8 +38,8 @@ export function DashboardPage(): JSX.Element {
 
         {hasAccess && (
           <StyledWidgetListWrapper>
-            <BmiWidget />
             <HealthTrackerWidget />
+            <BmiWidget />
             <MeasurementsWidget />
             <WorkoutDiaryWidget />
           </StyledWidgetListWrapper>

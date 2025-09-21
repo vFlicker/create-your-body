@@ -26,8 +26,8 @@ export const caloriesRiskLevelConfig: RiskLevelConfig = [
     label: 'Точно в цели',
     chipColor: ChipColor.Normal,
     valueEmoji: '✅',
-    getDescription: (goal) =>
-      `Отлично! Калорийность соответствует вашей цели (${goal === 'deficit' ? 'дефицит для похудения' : goal === 'surplus' ? 'избыток для набора массы' : 'поддержание веса'}).`,
+    getDescription: () =>
+      'Отлично! Калорийность соответствует вашей цели (дефицит для похудения).',
   },
   {
     range: [10, 20],

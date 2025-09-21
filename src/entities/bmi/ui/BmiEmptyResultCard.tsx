@@ -15,14 +15,14 @@ export function BmiEmptyResultCard({
   onClick,
 }: BmiEmptyResultCardProps): JSX.Element {
   return (
-    <StyledBmiEmptyResultCardWrapper className={className}>
+    <StyledBmiEmptyResultCardWrapper className={className} onClick={onClick}>
       <StyledContent>
         <StyledTitle>⚡️ Интерактивный тренажёр по подбору КБЖУ</StyledTitle>
         <StyledTime>
           <ClockStopWatchIcon stroke="#CBFF52" /> <span>5 мин</span>
         </StyledTime>
       </StyledContent>
-      <StyledButton onClick={onClick}>
+      <StyledButton>
         <ChevronRightIcon stroke="#ffffff" />
       </StyledButton>
     </StyledBmiEmptyResultCardWrapper>
@@ -31,7 +31,7 @@ export function BmiEmptyResultCard({
 
 const backgroundImage = `url("${backgroundImageSrc}")`;
 
-const StyledBmiEmptyResultCardWrapper = styled.div`
+const StyledBmiEmptyResultCardWrapper = styled.button`
   position: relative;
 
   padding: 16px;
@@ -75,7 +75,7 @@ const StyledTime = styled.div`
   line-height: 14px;
 `;
 
-const StyledButton = styled.button`
+const StyledButton = styled.div`
   position: absolute;
   top: 0;
   right: 0;
