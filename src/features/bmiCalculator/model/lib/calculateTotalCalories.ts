@@ -5,5 +5,5 @@ export const calculateTotalCalories = ({
   bmr: number;
   activityCoefficient: number;
 }) => {
-  return bmr * activityCoefficient;
+  return Math.round(bmr * activityCoefficient);
 };

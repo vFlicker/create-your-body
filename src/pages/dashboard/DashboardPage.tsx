@@ -7,6 +7,7 @@ import { useUser } from '~/entities/user';
 import { ContinueWorkoutCard } from '~/features/training/continueWorkout';
 import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/atoms/Button';
+import { BmiWidget } from '~/widgets/BmiWidget';
 import { HealthTrackerWidget } from '~/widgets/HealthTrackerWidget';
 import { CommonPageLayout } from '~/widgets/layouts/CommonPageLayout';
 import { MeasurementsWidget } from '~/widgets/MeasurementsWidget';
@@ -48,6 +49,7 @@ export function DashboardPage(): JSX.Element {
             >
               Перейти к калькулятору ИМТ
             </Button>
+            <BmiWidget />
             <HealthTrackerWidget />
             <MeasurementsWidget />
             <WorkoutDiaryWidget />

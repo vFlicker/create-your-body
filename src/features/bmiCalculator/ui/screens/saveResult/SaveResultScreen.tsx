@@ -12,6 +12,7 @@ import {
   getRiskLevel,
   proteinsRiskLevelConfig,
   ShortStatCard,
+  useCreateBmi,
 } from '~/entities/bmi';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
@@ -35,12 +36,41 @@ export function SaveResultScreen({
   const { form, setForm } = useBmiCalculatorStore();
   const { allCalculatedData, isLoading } = useBmiCalculations();
 
+  const { createBmi, isCreateBmiPending } = useCreateBmi();
+
   if (!allCalculatedData || isLoading) {
     return <Loader />;
   }
 
-  const { carbs, proteins, fats, targetCalories, bmi, deficit } =
-    allCalculatedData;
+  const {
+    carbs,
+    proteins,
+    fats,
+    targetCalories,
+    bmi,
+    deficit,
+    bmr,
+    totalCalories,
+  } = allCalculatedData;
+
+  const handleFinishClick = async () => {
+    await createBmi({
+      dto: {
+        calories: targetCalories,
+        proteins: proteins.proteinsInGrams,
+        fats: fats.fatsInGrams,
+        carbs: carbs.carbsInGrams,
+        imt: bmi,
+        bmr,
+        tdee: totalCalories,
+        weight: form.fullWeight!,
+        height: form.height!,
+        deficit: form.deficitPercent,
+      },
+    });
+
+    onFinish();
+  };
 
   const deficitRangeLabels = getDeficitRangeSelectLabels(bmi);
   const caloriesRiskLevel = getRiskLevel(
@@ -202,7 +232,11 @@ export function SaveResultScreen({
             <Button color="neutral" onClick={onRepeat}>
               Пройти заново
             </Button>
-            <Button color="accent" onClick={onFinish}>
+            <Button
+              color="accent"
+              onClick={handleFinishClick}
+              disabled={isCreateBmiPending}
+            >
               Завершить
             </Button>
           </StyledActions>

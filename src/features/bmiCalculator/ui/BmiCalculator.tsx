@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
 import { JSX, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import backIconSrc from '~/shared/assets/svg/back.svg';
 import closeIconSrc from '~/shared/assets/svg/close.svg';
+import { AppRoute } from '~/shared/router';
 import { NavButton } from '~/shared/ui/molecules/buttons/NavButton';
 import { StepProgressBar } from '~/shared/ui/molecules/StepProgressBar';
 
@@ -17,6 +19,8 @@ import { SelectProteinScreen } from './screens/selectProtein';
 export function BmiCalculator(): JSX.Element {
   const [step, setStep] = useState(1);
 
+  const navigate = useNavigate();
+
   const handleBackClick = () => {
     if (step > 1) setStep((prevStep) => prevStep - 1);
   };
@@ -30,7 +34,7 @@ export function BmiCalculator(): JSX.Element {
   };
 
   const handleFinishClick = () => {
-    console.log('Finish clicked');
+    navigate(AppRoute.Dashboard);
   };
 
   const isBackButtonActive = step > 1;
