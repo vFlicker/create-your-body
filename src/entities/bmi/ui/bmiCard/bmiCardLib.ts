@@ -9,8 +9,6 @@ export const getBmiCategory = (bmi: number) => {
 };
 
 export const calculateBmiProgress = (bmi: number) => {
-  const SHIFT = 10;
-
   const totalRanges = bmiCardConfig.length;
   const currentRangeIndex = bmiCardConfig.findIndex(
     ({ range }) => bmi >= range.min && bmi < range.max,
@@ -18,9 +16,6 @@ export const calculateBmiProgress = (bmi: number) => {
 
   if (currentRangeIndex === -1) return 0;
 
-  // Progress bar in range [SHIFT, 100 - SHIFT]
-  const progress =
-    SHIFT + (currentRangeIndex / (totalRanges - 1)) * (100 - 2 * SHIFT);
-
+  const progress = (currentRangeIndex / (totalRanges - 1)) * 100;
   return progress;
 };
