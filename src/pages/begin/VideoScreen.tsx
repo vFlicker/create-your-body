@@ -1,31 +1,27 @@
 import styled from '@emotion/styled';
-import { JSX, useRef, useState } from 'react';
+import { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import checkIconSrc from '~/shared/assets/svg/check.svg';
-import beginVideoSrc from '~/shared/assets/video/begin.mp4';
+import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/atoms/Button';
-import { VideoPlayer } from '~/shared/ui/molecules/videoPlayer';
 
 export function VideoScreen(): JSX.Element {
-  const togglePlayRef = useRef<() => void>(() => {});
-
   const navigate = useNavigate();
-  const [isVideoEnded, setIsVideoEnded] = useState(false);
 
   const handleButtonClick = () => {
-    if (isVideoEnded) navigate('/dashboard');
-    else togglePlayRef.current(); // Toggle play/pause
+    navigate(AppRoute.Dashboard);
   };
 
   return (
     <StyledViewVideoModeWrapper>
       <StyledVideoInfo>
-        <VideoPlayer
-          togglePlayRef={togglePlayRef}
-          videoSrc={beginVideoSrc}
-          onVideoEnd={setIsVideoEnded}
+        <StyledVideo
+          src="https://kinescope.io/fmKGvenyUm6rNyy8rByazE"
+          allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
+          allowFullScreen
         />
+
         <StyledText>
           В этом видео я расскажу как подготовиться к старту программы'
         </StyledText>
@@ -35,7 +31,7 @@ export function VideoScreen(): JSX.Element {
         iconSrc={checkIconSrc}
         onClick={handleButtonClick}
       >
-        {isVideoEnded ? 'Завершить' : 'Начать'}
+        Завершить
       </Button>
     </StyledViewVideoModeWrapper>
   );
@@ -52,6 +48,19 @@ const StyledVideoInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
+`;
+
+const StyledVideo = styled.iframe`
+  height: 100%;
+  width: 100%;
+
+  border: none;
+  border-radius: 14px;
+
+  background-color: #000000;
+  aspect-ratio: 16 / 9;
+
+  overflow: hidden;
 `;
 
 const StyledText = styled.p`
