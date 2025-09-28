@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { useMeasurementsById } from '~/entities/measurement';
 import { EditMeasurementsForm } from '~/features/measurement/editMeasurements/';
-import { formatDateForView } from '~/shared/libs/format';
+import { formatDateToLocaleRu } from '~/shared/libs/format';
 import { UserPageLayout } from '~/widgets/layouts/UserPageLayout';
 
 export function EditMeasurementsPage(): JSX.Element {
@@ -23,7 +23,7 @@ export function EditMeasurementsPage(): JSX.Element {
       <StyledHeader>
         <StyledTitle>Отчет #{measurements.reportNumber}</StyledTitle>
         <StyledDate>
-          {formatDateForView(measurements?.createdAt || '')}
+          {formatDateToLocaleRu(measurements?.createdAt || '')}
         </StyledDate>
       </StyledHeader>
 

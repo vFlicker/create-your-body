@@ -1,0 +1,114 @@
+import { Pagination } from '~/shared/api';
+
+type Approaches = {
+  repetitions?: number;
+  weight?: number;
+};
+
+type Exercise = {
+  id: number;
+  name: string;
+  type: string;
+  approaches: Approaches[];
+};
+
+type WorkoutDiary = {
+  id: number;
+  userId: number;
+  name: string;
+  date: string;
+  exercises: Exercise[];
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type WorkoutReportGroupedByDate = {
+  weekStart: string;
+  weekEnd: string;
+  label: string;
+  trainings: {
+    id: number;
+    title: string;
+    exercisesCount: number;
+    date: string;
+  }[];
+};
+
+type Options = {
+  id: number;
+  value: string;
+};
+
+export type GetWorkoutReportResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    workoutDiary: WorkoutDiary;
+  };
+};
+
+export type GetWorkoutReportsResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    workoutDiaries: WorkoutDiary[];
+    pagination: Pagination;
+  };
+};
+
+export type GetWorkoutReportsGroupedByDateResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    workoutDiaries: WorkoutReportGroupedByDate[];
+    pagination: Pagination;
+  };
+};
+
+export type CreateWorkoutReportDto = {
+  name: string;
+  date: string;
+  exercises: Exercise[];
+};
+
+export type UpdateWorkoutReportDto = {
+  name: string;
+  date: string;
+  exercises: Exercise[];
+};
+
+export type RemoveWorkoutReportDto = {
+  id: number;
+};
+
+export type GetExercisesResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    exercises: {
+      label: string;
+      name: string;
+      options: Options[];
+    }[];
+  };
+};
+
+export type GetExerciseHistoryResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    history: {
+      id: number;
+      date: string;
+      sets: Approaches[];
+      workoutId: number;
+    }[];
+    pagination: {
+      page: number;
+      limit: number;
+      hasNextPage: boolean;
+      from: string;
+      to: string;
+    };
+  };
+};

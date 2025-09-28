@@ -3,12 +3,13 @@ import { ChangeEvent, JSX, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useUpdateUser, useUser } from '~/entities/user';
-import { ShowPrevPageButton } from '~/features/ShowPrevPageButton';
-import { formatDateForApi, formatDateForView } from '~/shared/libs/format';
+import backIconSrc from '~/shared/assets/svg/back.svg';
+import { formatDateForApi, formatDateToLocaleRu } from '~/shared/libs/format';
 import { AppRoute } from '~/shared/router';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
 import { Progress } from '~/shared/ui/atoms/Progress';
+import { NavButton } from '~/shared/ui/molecules/buttons/NavButton';
 
 import { quizData } from './quizData';
 import { isDateValid, validateName, validatePhone } from './quizValidators';
@@ -39,7 +40,7 @@ export function QuizPage(): JSX.Element {
     if (user) {
       setName(user.name || '');
       setTel(user.phone ? user.phone.replace(/\s/g, '') : '');
-      setBirthday(user.bornDate ? formatDateForView(user.bornDate) : '');
+      setBirthday(user.bornDate ? formatDateToLocaleRu(user.bornDate) : '');
     }
   }, [user]);
 
@@ -161,7 +162,7 @@ export function QuizPage(): JSX.Element {
     }
   };
 
-  const handleBack = () => {
+  const handleBackClick = () => {
     if (step > 1) {
       setTimeout(() => {
         setStep(step - 1);
@@ -255,7 +256,13 @@ export function QuizPage(): JSX.Element {
   return (
     <StyledQuizPage ref={formRef}>
       <StyledForBack>
-        {step !== 1 && <ShowPrevPageButton onClick={handleBack} />}
+        {step !== 1 && (
+          <NavButton
+            text="Назад"
+            iconSrc={backIconSrc}
+            onClick={handleBackClick}
+          />
+        )}
       </StyledForBack>
       <StyledTopPage isExpanded={step > 1}>
         <StyledTitleContainer>

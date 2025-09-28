@@ -16,7 +16,7 @@ type SubscriptionLabelConfig = {
 export const subscriptionLabelConfig: SubscriptionLabelConfig = {
   active: {
     statusText: 'Активна',
-    iconComponent: <CheckIcon stroke="#ffffff" />,
+    iconComponent: <CheckIcon stroke="#ffffff" strokeWidth="1.5" />,
   },
   expired: {
     statusText: 'Закончилась',

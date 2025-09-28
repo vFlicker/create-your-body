@@ -2,8 +2,9 @@ import styled from '@emotion/styled';
 import { Content } from '@radix-ui/react-dialog';
 import { JSX, MouseEvent } from 'react';
 
+import backIconSrc from '~/shared/assets/svg/back.svg';
 import { CloseButton } from '~/shared/ui/atoms/CloseButton';
-import { BackButton } from '~/shared/ui/molecules/BackButton';
+import { NavButton } from '~/shared/ui/molecules/buttons/NavButton';
 
 import { useModalStore } from '../model/modalStore';
 
@@ -35,10 +36,18 @@ export function Modal({ children, onBack, onClose }: ModalProps): JSX.Element {
   return (
     <StyledModalWrapper onClick={handleModalWrapperClick}>
       <StyledHeader>
-        {canGoBack && <BackButton onClick={handleBackButtonClick} />}
+        {canGoBack && (
+          <NavButton
+            text="Назад"
+            iconSrc={backIconSrc}
+            onClick={handleBackButtonClick}
+          />
+        )}
         <StyledCloseButton onClick={handleCloseButtonClick} />
       </StyledHeader>
-      <StyledContent>{children}</StyledContent>
+      <StyledContent>
+        <ModalContainer>{children}</ModalContainer>
+      </StyledContent>
     </StyledModalWrapper>
   );
 }
@@ -53,21 +62,31 @@ const StyledModalWrapper = styled(Content)`
   flex-direction: column;
 
   width: 100%;
-  height: 80%;
+  height: 80vh;
+  height: 80dvh;
   border-radius: 20px 20px 0 0;
+
+  overflow: hidden;
+  z-index: 20;
 
   background-color: #ffffff;
 
-  z-index: 20;
+  /* iOS Safari flicking fix */
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+
+  @supports (-webkit-touch-callout: none) {
+    height: calc(80 * var(--vh, 1vh));
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
 `;
 
 const StyledHeader = styled.div`
   display: flex;
   width: 100%;
   padding: 16px;
-  border-radius: 20px 20px 0 0;
 
-  background-color: #ffffff;
   z-index: 2;
 `;
 
@@ -76,6 +95,15 @@ const StyledCloseButton = styled(CloseButton)`
 `;
 
 const StyledContent = styled.div`
-  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  padding: 16px 16px 0;
+
   overflow-y: auto;
+`;
+
+const ModalContainer = styled.div`
+  padding-bottom: 32px;
 `;

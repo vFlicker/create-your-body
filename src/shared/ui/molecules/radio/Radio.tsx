@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { ComponentProps, JSX } from 'react';
 
-import { Color } from '~/shared/theme/colors';
+import CheckIcon from '~/shared/assets/svg/check-2.svg?react';
 
 type RadioProps = ComponentProps<typeof StyledInput> & {
   label: string;
@@ -11,47 +11,50 @@ export function Radio({ label, ...props }: RadioProps): JSX.Element {
   return (
     <StyledLabel>
       <StyledInput type="radio" {...props} />
-      <span>{label}</span>
+      <StyledMark>
+        <CheckIcon stroke="#ffffff" strokeWidth="2" />
+      </StyledMark>
+      {label}
     </StyledLabel>
   );
 }
 
 const StyledInput = styled.input`
   position: absolute;
-  height: 0;
-  width: 0;
   opacity: 0;
-  cursor: pointer;
+  width: 0;
+  height: 0;
+`;
 
-  &:checked + span {
-    color: ${Color.White};
-    background-color: ${Color.Violet_200};
+const StyledMark = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 20px;
+  height: 20px;
+
+  border: 2px solid #bab8c6;
+  border-radius: 50%;
+
+  svg {
+    width: 14px;
+    height: 14px;
   }
 `;
 
 const StyledLabel = styled.label`
-  position: relative;
-
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  gap: 12px;
 
-  color: ${Color.Black_400};
-  font-size: 16px;
-  font-weight: 600;
+  color: #0d0d0d;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 100%;
 
-  user-select: none;
-  cursor: pointer;
-
-  span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    min-width: 78px;
-    min-height: 48px;
-    padding: 14px 28px;
-    border-radius: 50px;
-
-    background-color: ${Color.Black_50};
+  ${StyledInput}:checked + ${StyledMark} {
+    border-color: #a799ff;
+    background-color: #a799ff;
   }
 `;

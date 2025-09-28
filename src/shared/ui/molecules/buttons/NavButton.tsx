@@ -1,22 +1,31 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import backIconSrc from '~/shared/assets/svg/back.svg';
 import { Color } from '~/shared/theme/colors';
 
 type BackButtonProps = {
   className?: string;
+  text?: string;
+  iconSrc?: string;
+  disabled?: boolean;
   onClick?: () => void;
 };
 
-export function BackButton({
+export function NavButton({
   className,
+  iconSrc,
+  text,
+  disabled,
   onClick,
 }: BackButtonProps): JSX.Element {
   return (
-    <StyledBackButton className={className} onClick={onClick}>
-      <img src={backIconSrc} />
-      Назад
+    <StyledBackButton
+      className={className}
+      disabled={disabled}
+      onClick={onClick}
+    >
+      {iconSrc && <StyledIcon src={iconSrc} />}
+      {text}
     </StyledBackButton>
   );
 }
@@ -37,4 +46,13 @@ const StyledBackButton = styled.button`
   background-color: ${Color.Black_100};
 
   z-index: 2;
+
+  &:disabled {
+    opacity: 0.5;
+  }
+`;
+
+const StyledIcon = styled.img`
+  width: 20px;
+  height: 20px;
 `;

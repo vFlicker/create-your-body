@@ -1,16 +1,19 @@
 import styled from '@emotion/styled';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { JSX } from 'react';
+import { JSX, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { useUpdateUser, useUser } from '~/entities/user';
-import { formatDateForApi, formatDateForView } from '~/shared/libs/format';
+import { formatDateForApi, formatDateToLocaleRu } from '~/shared/libs/format';
 import { showTelegramAlert } from '~/shared/libs/telegram';
 import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/atoms/Button';
-import { Input } from '~/shared/ui/molecules/Input';
-import { Radio, RadioGroup } from '~/shared/ui/molecules/radio';
+import { Input } from '~/shared/ui/molecules/inputs/Input';
+import {
+  RadioButton,
+  RadioButtonGroup,
+} from '~/shared/ui/molecules/radioButton';
 
 import { EditProfile, editProfileSchema } from '../models/editProfileSchema';
 
@@ -33,19 +36,25 @@ export function EditProfileForm({
   const { updateUser, isUpdateUserLoading } = useUpdateUser();
 
   const {
+    formState: { errors },
     register,
     control,
     handleSubmit,
-    formState: { errors },
+    reset,
   } = useForm<EditProfile>({
     resolver: zodResolver(editProfileSchema),
-    defaultValues: {
-      name: user?.name || '',
-      bornDate: formatDateForView(user?.bornDate || ''),
-      sex: user?.sex,
-      phone: user?.phone || '+7',
-    },
   });
+
+  useEffect(() => {
+    if (user) {
+      reset({
+        name: user.name,
+        bornDate: formatDateToLocaleRu(user.bornDate || ''),
+        sex: user.sex,
+        phone: user.phone || '+7',
+      });
+    }
+  }, [user, reset]);
 
   const onSubmit = async ({ bornDate, ...rest }: EditProfile) => {
     try {
@@ -85,9 +94,13 @@ export function EditProfileForm({
           name="sex"
           control={control}
           render={({ field: { name, value: selectedValue, onChange } }) => (
-            <RadioGroup label="Пол" name={name} error={errors.sex?.message}>
+            <RadioButtonGroup
+              label="Пол"
+              name={name}
+              error={errors.sex?.message}
+            >
               {GENDER_OPTIONS.map(({ label, value }) => (
-                <Radio
+                <RadioButton
                   key={label}
                   label={label}
                   value={value}
@@ -95,7 +108,7 @@ export function EditProfileForm({
                   onChange={onChange}
                 />
               ))}
-            </RadioGroup>
+            </RadioButtonGroup>
           )}
         />
 

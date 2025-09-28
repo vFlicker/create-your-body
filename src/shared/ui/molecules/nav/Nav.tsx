@@ -69,6 +69,6 @@ const StyledNavWrapper = styled.div`
 const StyledNavMenu = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 14px 20px 22px;
+  padding: 16px 20px 32px;
   width: 100%;
 `;

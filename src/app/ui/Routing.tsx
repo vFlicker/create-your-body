@@ -2,6 +2,10 @@ import { JSX } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { BeginPage } from '~/pages/begin';
+import {
+  BmiCalculatorPage,
+  BmiCalculatorQuizPage,
+} from '~/pages/bmiCalculator';
 import { CommunicationPage } from '~/pages/communication';
 import { DashboardPage, LearningPage } from '~/pages/dashboard';
 import { FoodCategoriesPage, FoodPage } from '~/pages/food';
@@ -31,6 +35,7 @@ import {
   TrainingWarmupPage,
 } from '~/pages/training';
 import { ProfileEditPage, ProfilePage, SubscriptionsPage } from '~/pages/user';
+import { WorkoutDiaryPage } from '~/pages/workoutDiary';
 import { AppRoute } from '~/shared/router';
 
 export function Routing(): JSX.Element {
@@ -44,6 +49,14 @@ export function Routing(): JSX.Element {
         <Route path={AppRoute.Quiz} element={<QuizPage />} />
         <Route path={AppRoute.QuizResult} element={<QuizResultPage />} />
 
+        {/* Bmi Calculator */}
+        <Route path={AppRoute.BmiCalculator} element={<BmiCalculatorPage />} />
+
+        <Route
+          path={AppRoute.BmiCalculatorQuiz}
+          element={<BmiCalculatorQuizPage />}
+        />
+
         {/* Dashboard */}
         <Route path={AppRoute.Dashboard} element={<DashboardPage />} />
         <Route path={AppRoute.Learning} element={<LearningPage />} />
@@ -55,6 +68,9 @@ export function Routing(): JSX.Element {
         <Route path={AppRoute.Profile} element={<ProfilePage />} />
         <Route path={AppRoute.ProfileEdit} element={<ProfileEditPage />} />
         <Route path={AppRoute.Subscriptions} element={<SubscriptionsPage />} />
+
+        {/* Workout Diary */}
+        <Route path={AppRoute.WorkoutDiary} element={<WorkoutDiaryPage />} />
 
         {/* Measurements */}
         <Route path={AppRoute.Measurements} element={<MeasurementsPage />} />

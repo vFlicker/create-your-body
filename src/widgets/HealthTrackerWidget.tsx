@@ -3,11 +3,11 @@ import { isToday } from 'date-fns';
 import { JSX, useState } from 'react';
 
 import { DailyReportCard } from '~/entities/dailyReport';
-import { useModalStore } from '~/entities/modal';
+import { Modal, useModalStore } from '~/entities/modal';
 import { CreateDailyReportForm } from '~/features/dailyReport/createDailyReport';
 import { EditDailyReportForm } from '~/features/dailyReport/editDailyReport';
 import { ShowDailyReportHistory } from '~/features/dailyReport/showDailyReportHistory';
-import { formatDateForView } from '~/shared/libs/format';
+import { formatDateToLocaleRu } from '~/shared/libs/format';
 import { HorizontalDatePicker } from '~/shared/ui/molecules/HorizontalDatePicker';
 
 export function HealthTrackerWidget(): JSX.Element {
@@ -18,16 +18,24 @@ export function HealthTrackerWidget(): JSX.Element {
   // We should use the handlers here
   // because ShowDailyReportHistory feature can't include another feature
   const handleCreateReportClick = (date: Date) => {
-    openModal(<CreateDailyReportForm date={date} onFormSubmit={closeModal} />);
+    openModal(
+      <Modal>
+        <CreateDailyReportForm date={date} onFormSubmit={closeModal} />
+      </Modal>,
+    );
   };
 
   const handleUpdateReportClick = (id: number) => {
-    openModal(<EditDailyReportForm reportId={id} onFormSubmit={closeModal} />);
+    openModal(
+      <Modal>
+        <EditDailyReportForm reportId={id} onFormSubmit={closeModal} />
+      </Modal>,
+    );
   };
 
   const title = isToday(selectedDate)
     ? 'Сегодня'
-    : formatDateForView(selectedDate);
+    : formatDateToLocaleRu(selectedDate);
 
   return (
     <StyledHealthTrackerWrapper>

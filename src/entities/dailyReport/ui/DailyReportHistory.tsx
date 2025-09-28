@@ -3,7 +3,7 @@ import { isToday } from 'date-fns';
 import { JSX } from 'react';
 
 import EditIcon from '~/shared/assets/svg/pencil.svg?react';
-import { formatDateForView } from '~/shared/libs/format';
+import { formatDateToLocaleRu } from '~/shared/libs/format';
 import { Loader } from '~/shared/ui/atoms/Loader';
 
 import { useDailyReports } from '../api/useDailyReports';
@@ -31,7 +31,7 @@ export function DailyReportHistory({
       {reportWithoutToday.map(({ id, date, ...props }) => (
         <StyledDailyReportCardWrapper key={id}>
           <StyledDailyReportCardHeader>
-            <StyledTitle>{formatDateForView(date)}</StyledTitle>
+            <StyledTitle>{formatDateToLocaleRu(date)}</StyledTitle>
             <StyledEditButton onClick={() => onEditReportClick(id)}>
               Изменить
               <EditIcon stroke="#8B8B9F" />

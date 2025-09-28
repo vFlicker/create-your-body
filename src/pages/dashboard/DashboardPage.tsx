@@ -4,9 +4,11 @@ import { JSX } from 'react';
 import { hasActiveSubscription } from '~/entities/subscription';
 import { useUser } from '~/entities/user';
 import { ContinueWorkoutCard } from '~/features/training/continueWorkout';
+import { BmiWidget } from '~/widgets/BmiWidget';
 import { HealthTrackerWidget } from '~/widgets/HealthTrackerWidget';
 import { CommonPageLayout } from '~/widgets/layouts/CommonPageLayout';
 import { MeasurementsWidget } from '~/widgets/MeasurementsWidget';
+import { WorkoutDiaryWidget } from '~/widgets/WorkoutDiaryWidget';
 
 import { NoAccessMessage } from './ui/NoAccessMessage';
 
@@ -37,7 +39,9 @@ export function DashboardPage(): JSX.Element {
         {hasAccess && (
           <StyledWidgetListWrapper>
             <HealthTrackerWidget />
+            <BmiWidget />
             <MeasurementsWidget />
+            <WorkoutDiaryWidget />
           </StyledWidgetListWrapper>
         )}
       </StyledContentWrapper>

@@ -8,7 +8,7 @@ import { useCreateMeasurements } from '~/entities/measurement';
 import { showTelegramAlert } from '~/shared/libs/telegram';
 import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/atoms/Button';
-import { Input } from '~/shared/ui/molecules/Input';
+import { Input } from '~/shared/ui/molecules/inputs/Input';
 
 import { measurementsInputs } from '../../measurementsConfig';
 import {

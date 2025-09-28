@@ -3,10 +3,9 @@ import { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { MeasurementsChart } from '~/entities/measurement';
-import PlusIcon from '~/shared/assets/svg/plus.svg?react';
 import { AppRoute } from '~/shared/router';
 import { Button } from '~/shared/ui/atoms/Button';
-import { IconButton } from '~/shared/ui/atoms/IconButton';
+import { AddButton } from '~/shared/ui/molecules/buttons/AddButton';
 
 export function MeasurementsWidget(): JSX.Element {
   const navigate = useNavigate();
@@ -23,12 +22,7 @@ export function MeasurementsWidget(): JSX.Element {
         >
           Перейти к замерам
         </Button>
-        <StyledCreateMeasurementButton
-          color="accent"
-          iconComponent={<PlusIcon stroke="#ffffff" />}
-          isActive
-          onClick={() => navigate(AppRoute.CreateMeasurements)}
-        />
+        <AddButton onClick={() => navigate(AppRoute.CreateMeasurements)} />
       </StyledMeasurementsActionWrapper>
     </StyledMeasurementsWidget>
   );
@@ -54,11 +48,4 @@ const StyledMeasurementsActionWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-`;
-
-const StyledCreateMeasurementButton = styled(IconButton)`
-  button {
-    width: 54px;
-    height: 54px;
-  }
 `;

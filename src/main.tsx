@@ -1,13 +1,26 @@
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import { AppWithProviders } from './app';
 import { userSession } from './shared/libs/userSession';
 import { ErrorBoundary } from './shared/ui/molecules/errorBoundary';
 
+// Set the viewport height property for dynamic viewport height support
+const setVhProperty = () => {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+};
+
+setVhProperty();
+window.addEventListener('resize', setVhProperty);
+window.addEventListener('orientationchange', setVhProperty);
+
 createRoot(document.getElementById('root')!).render(
-  <ErrorBoundary>
-    <AppWithProviders />
-  </ErrorBoundary>,
+  <StrictMode>
+    <ErrorBoundary>
+      <AppWithProviders />
+    </ErrorBoundary>
+  </StrictMode>,
 );
 
 window.addEventListener('error', (evt) => {

@@ -5,7 +5,7 @@ import addIconSrc from '../../assets/svg/photo-none.svg';
 import { showTelegramAlert } from '../../libs/telegram';
 import { Color } from '../../theme/colors';
 import { Loader } from '../atoms/Loader';
-import { EditButton } from './EditButton';
+import { EditButton } from './buttons/EditButton';
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 

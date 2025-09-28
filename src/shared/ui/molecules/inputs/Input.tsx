@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { ComponentProps, JSX } from 'react';
 
-import { ErrorText } from '../atoms/ErrorText';
+import { ErrorText } from '../../atoms/ErrorText';
 
 type InputProps = ComponentProps<typeof StyledInput> & {
   label: string;
@@ -69,7 +69,6 @@ const StyledInput = styled.input`
 
   &:disabled {
     opacity: 0.5;
-    cursor: not-allowed;
   }
 `;
 

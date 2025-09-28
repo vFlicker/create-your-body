@@ -1,23 +1,20 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
-import PencilIcon from '../../assets/svg/pencil.svg?react';
-import { IconButton } from '../atoms/IconButton';
+import TrashIcon from '../../../assets/svg/trash.svg?react';
+import { IconButton } from '../../atoms/IconButton';
 
-type EditButtonProps = {
-  className?: string;
-  onClick: () => void;
-};
+type RemoveButtonProps = JSX.IntrinsicElements['button'];
 
-export function EditButton({
+export function RemoveButton({
   className,
   onClick,
-}: EditButtonProps): JSX.Element {
+}: RemoveButtonProps): JSX.Element {
   return (
     <StyledIconButton
       className={className}
       color="secondary"
-      iconComponent={<PencilIcon stroke="#867EBD" />}
+      iconComponent={<TrashIcon stroke="#F65C5C" />}
       onClick={onClick}
     />
   );
@@ -33,7 +30,7 @@ const StyledIconButton = styled(IconButton)`
     height: 26px;
     border-radius: 6px;
 
-    background-color: #f0f0f6;
+    background-color: #feebeb;
   }
 
   svg,

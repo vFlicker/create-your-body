@@ -1,0 +1,1 @@
+export { ParametersResultScreen } from './ParametersResultScreen';

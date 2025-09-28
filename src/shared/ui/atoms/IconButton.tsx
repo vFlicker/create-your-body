@@ -6,15 +6,12 @@ import lockIconSrc from '~/shared/assets/svg/lock.svg';
 import { Color } from '~/shared/theme/colors';
 
 type IconButtonProps = {
-  className?: string;
   iconSrc?: string;
   iconComponent?: JSX.Element;
   color: `${IconButtonColor}`;
   text?: string;
   isActive?: boolean;
-  disabled?: boolean;
-  onClick?: () => void;
-};
+} & JSX.IntrinsicElements['button'];
 
 type StyledIconButtonProps = Pick<
   IconButtonProps,
@@ -34,16 +31,11 @@ export function IconButton({
   color,
   isActive = false,
   disabled = false,
-  onClick,
+  ...props
 }: IconButtonProps): JSX.Element {
   return (
     <StyledIconButtonWrapper className={className}>
-      <StyledIconButton
-        isActive={isActive}
-        disabled={disabled}
-        color={color}
-        onClick={onClick}
-      >
+      <StyledIconButton isActive={isActive} color={color} {...props}>
         {iconSrc && <StyledIcon src={disabled ? lockIconSrc : iconSrc} />}
         {iconComponent}
       </StyledIconButton>
