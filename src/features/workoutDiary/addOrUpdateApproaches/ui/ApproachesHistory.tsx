@@ -10,19 +10,31 @@ import { Loader } from '~/shared/ui/atoms/Loader';
 type ApproachesHistoryProps = {
   className?: string;
   exerciseId: number;
+  exerciseType: 'cardio' | 'approaches';
 };
 
 export function ApproachesHistory({
   className,
   exerciseId,
+  exerciseType,
 }: ApproachesHistoryProps): JSX.Element {
   const { approachesHistory, isApproachesHistoryPending } =
     useApproachesHistory(exerciseId);
 
   const { setSelectedApproachFromHistory } = useWorkoutDiaryStore();
 
-  const handleApproachClick = (repetitions?: number, weight?: number) => {
-    setSelectedApproachFromHistory({ repetitions, weight });
+  const handleApproachClick = (
+    repetitions?: number,
+    weight?: number,
+    minutes?: number,
+  ) => {
+    if (exerciseType === 'approaches') {
+      setSelectedApproachFromHistory({ repetitions, weight });
+    }
+
+    if (exerciseType === 'cardio') {
+      setSelectedApproachFromHistory({ minutes });
+    }
   };
 
   if (!approachesHistory || isApproachesHistoryPending) return <Loader />;
@@ -33,15 +45,23 @@ export function ApproachesHistory({
 
       {approachesHistory.history.map((approachesDay) => (
         <StyledDaysList key={approachesDay.id}>
-          {approachesDay.sets.map(({ repetitions, weight }, index) => (
+          {approachesDay.sets.map(({ repetitions, weight, minutes }, index) => (
             <StyledDaysItem
               key={index}
-              onClick={() => handleApproachClick(repetitions, weight)}
+              onClick={() => handleApproachClick(repetitions, weight, minutes)}
             >
               <StyledApproach>#{index + 1}</StyledApproach>
-              <StyledText>
-                {weight} кг x {repetitions} повт.
-              </StyledText>
+
+              {exerciseType === 'approaches' && (
+                <StyledText>
+                  {weight} кг x {repetitions} повт.
+                </StyledText>
+              )}
+
+              {exerciseType === 'cardio' && (
+                <StyledText>{minutes} мин.</StyledText>
+              )}
+
               <StyledDate>{approachesDay.date}</StyledDate>
             </StyledDaysItem>
           ))}

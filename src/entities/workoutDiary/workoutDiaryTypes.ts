@@ -3,6 +3,7 @@ import { Pagination } from '~/shared/api';
 type Approaches = {
   repetitions?: number;
   weight?: number;
+  minutes?: number;
 };
 
 type Exercise = {

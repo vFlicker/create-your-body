@@ -56,7 +56,10 @@ export function ApproachesForm({
         exerciseType={exerciseType}
         exerciseName={exerciseName}
       />
-      <StyledApproachesHistory exerciseId={exerciseId} />
+      <StyledApproachesHistory
+        exerciseType={exerciseType}
+        exerciseId={exerciseId}
+      />
 
       <StyledFooter>
         <RemoveAllApproachButton exerciseName={exerciseName} />
