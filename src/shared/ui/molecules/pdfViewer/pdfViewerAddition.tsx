@@ -35,8 +35,8 @@ export const pdfViewerAddition: Record<string, JSX.Element> = {
       Как рассчитать свое КБЖУ(подробное видео)
       <br />
       <br />
-      <StyledPdfViewerLink href="https://cloud.mail.ru/public/xghf/QTxissgf7">
-        https://cloud.mail.ru/public/xghf/QTxissgf7
+      <StyledPdfViewerLink href="https://disk.yandex.ru/i/dfpjB5Lx--YSgg">
+        https://disk.yandex.ru/i/dfpjB5Lx--YSgg
       </StyledPdfViewerLink>
     </StyledPdfViewerText>
   ),
