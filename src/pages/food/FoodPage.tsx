@@ -31,6 +31,7 @@ export function FoodPage(): JSX.Element {
       <PdfViewer
         isLoading={isNutritionPlanLoading}
         pdfSrc={nutritionPlan.data.pdfUrl}
+        pdfId={nutritionPlan.data.id}
       />
     </CommonPageLayout>
   );
