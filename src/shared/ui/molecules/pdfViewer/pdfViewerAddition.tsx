@@ -45,8 +45,8 @@ export const pdfViewerAddition: Record<string, JSX.Element> = {
       Как подогнать свое кбжу:
       <br />
       <br />
-      <StyledPdfViewerLink href="https://cloud.mail.ru/public/WHsZ/WKY7Egu4P">
-        https://cloud.mail.ru/public/WHsZ/WKY7Egu4P
+      <StyledPdfViewerLink href="https://disk.yandex.ru/d/FKgY_VHQNjVgeA">
+        https://disk.yandex.ru/d/FKgY_VHQNjVgeA
       </StyledPdfViewerLink>
     </StyledPdfViewerText>
   ),
