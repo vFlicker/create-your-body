@@ -22,7 +22,7 @@ export const getNavConfig = (hasAccess: boolean): NavItem[] => [
   {
     to: AppRoute.WorkoutDiary,
     iconSrc: musclesIconSrc,
-    text: 'Тренировки',
+    text: 'Дневник',
     disabled: !hasAccess,
   },
 

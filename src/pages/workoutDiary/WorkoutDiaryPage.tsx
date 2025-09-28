@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
+import { Link } from 'react-router-dom';
 
 import { Dialog, Modal, useModalStore } from '~/entities/modal';
 import {
@@ -9,6 +10,7 @@ import {
 } from '~/entities/workoutDiary';
 import { TrainingFrom } from '~/features/workoutDiary/addOrUpdateTraining';
 import { RemoveTraining } from '~/features/workoutDiary/removeTraining';
+import { AppRoute } from '~/shared/router';
 import { AddButton } from '~/shared/ui/molecules/buttons/AddButton';
 import { UserPageLayout } from '~/widgets/layouts/UserPageLayout';
 
@@ -71,7 +73,9 @@ export function WorkoutDiaryPage(): JSX.Element {
 
         {!hasWorkoutReports && (
           <StyledSubTitle>
-            Здесь пока ничего нет. Добавьте первую тренировку
+            Это раздел для ведения дневника своих тренировок. Здесь ты сможешь
+            фиксировать свои подходы и веса. Раздел с видео тренировок находится
+            в <StyledLink to={AppRoute.Learning}>«Обучении»</StyledLink>.
           </StyledSubTitle>
         )}
 
@@ -125,6 +129,11 @@ const StyledSubTitle = styled.div`
   font-size: 12px;
   font-weight: 500;
   line-height: 120%;
+`;
+
+const StyledLink = styled(Link)`
+  color: #4e33ff;
+  text-decoration: underline;
 `;
 
 const StyledTrainingList = styled.div`
