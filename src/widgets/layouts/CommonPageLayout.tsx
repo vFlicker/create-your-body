@@ -3,6 +3,7 @@ import { JSX, PropsWithChildren } from 'react';
 
 import { StreamsInfo, UserMeta } from '~/entities/user';
 import { CloseAppButton } from '~/features/CloseAppButton';
+import { ShowPrevPageButton } from '~/features/ShowPrevPageButton';
 import { Color } from '~/shared/theme/colors';
 import { Loader } from '~/shared/ui/atoms/Loader';
 import { Nav } from '~/shared/ui/molecules/nav';
@@ -30,6 +31,7 @@ export function CommonPageLayout({
   return (
     <StyledPageWrapper>
       <StyledButtonsWrapper>
+        {hasBackButton && <ShowPrevPageButton />}
         {hasBackButton && <CloseAppButton />}
       </StyledButtonsWrapper>
 
@@ -72,7 +74,7 @@ const StyledButtonsWrapper = styled.div`
   padding: 16px;
 
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
   width: 100%;
 `;
 

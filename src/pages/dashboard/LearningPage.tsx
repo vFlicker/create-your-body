@@ -24,11 +24,7 @@ export function LearningPage(): JSX.Element {
   const pageContainersData = getTitleCards(user.subscriptions);
 
   return (
-    <CommonPageLayout
-      title="Обучение"
-      hasStreamInfo={true}
-      hasBackButton={false}
-    >
+    <CommonPageLayout title="Обучение" hasStreamInfo={true}>
       <StyledContentWrapper>
         <StyledDashboardList>
           {pageContainersData.map(({ title, to, ...props }) => (
