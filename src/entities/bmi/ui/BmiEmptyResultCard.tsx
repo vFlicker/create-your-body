@@ -60,6 +60,7 @@ const StyledContent = styled.div`
 `;
 
 const StyledTitle = styled.h2`
+  text-align: left;
   font-size: 16px;
   font-weight: 700;
   line-height: 130%;
@@ -79,6 +80,10 @@ const StyledButton = styled.div`
   position: absolute;
   top: 0;
   right: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   width: 60px;
   height: 100%;
