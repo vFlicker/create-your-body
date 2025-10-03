@@ -2,10 +2,10 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 
 import { FactBlock, ScreenHeader } from '~/entities/bmi';
-import { useBmiCalculatorStore } from '~/features/bmiCalculator/model/bmiCalculatorStore';
 import { Color } from '~/shared/theme/colors';
 import { Button } from '~/shared/ui/atoms/Button';
 
+import { useBmiCalculatorStore } from '../../../model/bmiCalculatorStore';
 import { EnterParametersForm } from './EnterParametersForm';
 import { ToggleHasExtraWeight } from './ToggleHasExtraWeight';
 
