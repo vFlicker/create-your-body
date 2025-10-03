@@ -1,6 +1,6 @@
 import { httpClient } from '~/shared/api';
 
-import { CreateBmiDto, GetBmiResponse } from '../bmiTypes';
+import { CreateBmiDto, CreatePersonalBmi, GetBmiResponse } from '../bmiTypes';
 
 export const bmiApiService = {
   createBmi: async ({ dto }: { dto: CreateBmiDto }) => {
@@ -12,6 +12,19 @@ export const bmiApiService = {
       return data;
     } catch (error) {
       console.error('Error creating BMI entry:', error);
+      throw error;
+    }
+  },
+
+  createPersonalBmi: async ({ dto }: { dto: CreatePersonalBmi }) => {
+    try {
+      const { data } = await httpClient.patch(
+        '/v2/api/client/user/nutrition-plan',
+        dto,
+      );
+      return data;
+    } catch (error) {
+      console.error('Error creating personal BMI entry:', error);
       throw error;
     }
   },

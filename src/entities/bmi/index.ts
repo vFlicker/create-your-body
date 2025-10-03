@@ -1,5 +1,6 @@
 export { useBmi } from './api/useBmi';
 export { useCreateBmi } from './api/useCreateBmi';
+export { useCreatePersonalBmi } from './api/useCreatePersonalBmi';
 export { BmiCard } from './ui/bmiCard';
 export { BmiChart } from './ui/BmiChart';
 export { BmiEmptyResultCard } from './ui/BmiEmptyResultCard';

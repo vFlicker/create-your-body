@@ -20,6 +20,13 @@ export type CreateBmiDto = {
   deficit: number;
 };
 
+export type CreatePersonalBmi = {
+  calories: number;
+  proteins: number;
+  fats: number;
+  carbs: number;
+};
+
 export type GetBmiResponse = {
   success: boolean;
   message: string;
