@@ -21,7 +21,7 @@ jobs:
         run: npm install
 
       - name: Build project
-        run: npm run build
+        run: npm run build:dev
 
       - name: Deploy to testfront (Prepare directory)
         uses: appleboy/ssh-action@master

@@ -19,8 +19,26 @@ function App(): JSX.Element {
     return <Loader />;
   }
 
+  const isDev = import.meta.env.VITE_BASE_PATH === '/testapp/';
+
   return (
     <>
+      {isDev && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            zIndex: 9999,
+            backgroundColor: 'tomato',
+            color: 'white',
+            padding: '2px 8px',
+            fontSize: 12,
+          }}
+        >
+          DEV MOD
+        </div>
+      )}
       <Routing />
       <ModalHost />
     </>

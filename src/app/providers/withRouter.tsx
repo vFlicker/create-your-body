@@ -3,10 +3,12 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { ScrollToTop } from '~/shared/router';
 
+const BASE_NAME = import.meta.env.VITE_BASE_PATH || '/';
+
 const withRouter = (Component: ComponentType): ComponentType => {
   function WithRouter(): JSX.Element {
     return (
-      <BrowserRouter>
+      <BrowserRouter basename={BASE_NAME}>
         <ScrollToTop />
         <Component />
       </BrowserRouter>
