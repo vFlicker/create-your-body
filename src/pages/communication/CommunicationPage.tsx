@@ -21,11 +21,11 @@ export function CommunicationPage(): JSX.Element {
       />
     );
 
-  const thirdSteam = user.subscriptions.find((sub) => sub.stream === 3);
-  const fourthSteam = user.subscriptions.find((sub) => sub.stream === 4);
+  const steam4 = user.subscriptions.find((sub) => sub.stream === 4);
+  const steam2025 = user.subscriptions.find((sub) => sub.stream === 2025);
 
-  const isThirdSteamPro = thirdSteam && thirdSteam.plan === 'Pro';
-  const isFourthSteamPro = fourthSteam && fourthSteam.plan === 'Pro';
+  const isThirdSteamPro = steam4 && steam4.plan === 'Pro';
+  const isFourthSteamPro = steam2025 && steam2025.plan === 'Pro';
   const isPro = isThirdSteamPro || isFourthSteamPro;
 
   return (
@@ -39,12 +39,12 @@ export function CommunicationPage(): JSX.Element {
         {isPro && (
           <>
             <OpenTgLinkButton
-              username="+W7DOsFM7QBhjMjgy"
+              username="+Bsc0EGGK5JMxYmMy"
               buttonText="Чат в Telegram"
               iconSrc={chatIconSrc}
             />
             <OpenTgLinkButton
-              username="+qjt6LLKQBso3ODFi"
+              username="+CvD6vn0jlYs0ZTFi"
               buttonText="Инфо канал"
               iconSrc={channelIconSrc}
             />

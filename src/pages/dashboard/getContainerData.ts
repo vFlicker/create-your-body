@@ -19,13 +19,12 @@ type CardData = {
 export const getTitleCards = (subscriptions: Subscription[]) => {
   const pageContainersData: CardData[] = [];
 
-  const thirdSteam = subscriptions.find((sub) => sub.stream === 3);
-  const fourthSteam = subscriptions.find((sub) => sub.stream === 4);
+  const steam4 = subscriptions.find((sub) => sub.stream === 4);
+  const steam2025 = subscriptions.find((sub) => sub.stream === 2025);
 
-  const isThirdSteamPro = thirdSteam && thirdSteam.plan === 'Pro';
-  const isFourthSteamPro = fourthSteam && fourthSteam.plan === 'Pro';
-  const isThirdSteamBase = thirdSteam && thirdSteam.plan === 'Base';
-  const isFourthSteamBase = fourthSteam && fourthSteam.plan === 'Base';
+  const isSteam4Base = steam4 && steam4.plan === 'Base';
+  const isSteam4Pro = steam4 && steam4.plan === 'Pro';
+  const isSteam2025Pro = steam2025 && steam2025.plan === 'Pro';
 
   // Always open
   pageContainersData.push({
@@ -36,7 +35,7 @@ export const getTitleCards = (subscriptions: Subscription[]) => {
     isHighlight: true,
   });
 
-  if (isThirdSteamPro) {
+  if (isSteam4Pro) {
     // All open
     pageContainersData.push(
       {
@@ -68,7 +67,7 @@ export const getTitleCards = (subscriptions: Subscription[]) => {
         isHighlight: false,
       },
     );
-  } else if (isFourthSteamPro) {
+  } else if (isSteam2025Pro) {
     // all open
     pageContainersData.push(
       {
@@ -100,42 +99,8 @@ export const getTitleCards = (subscriptions: Subscription[]) => {
         isHighlight: false,
       },
     );
-  } else if (isThirdSteamBase) {
+  } else if (isSteam4Base) {
     // lectures and recipes -- buy, else access
-    pageContainersData.push(
-      {
-        to: AppRoute.TrainingCategories,
-        title: 'Тренировки',
-        iconSrc: musculesIconSrc,
-        disabled: false,
-        isHighlight: false,
-      },
-      {
-        to: AppRoute.FoodCategories,
-        title: 'Питание',
-        iconSrc: foodIconSrc,
-        disabled: false,
-        isHighlight: false,
-      },
-      {
-        to: AppRoute.LectureWeeks,
-        title: 'Лекции',
-        iconSrc: bookIconSrc,
-        disabled: true,
-        labelText: 'Доступно в PRO',
-        isHighlight: false,
-      },
-      {
-        to: AppRoute.RecipeCategories,
-        title: 'Рецепты',
-        iconSrc: recipesIconSrc,
-        disabled: true,
-        labelText: 'Доступно в PRO',
-        isHighlight: false,
-      },
-    );
-  } else if (isFourthSteamBase) {
-    // lectures and recipes -- buy, else '29 сентября'
     pageContainersData.push(
       {
         to: AppRoute.TrainingCategories,
