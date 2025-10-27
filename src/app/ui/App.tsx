@@ -4,7 +4,7 @@ import { ModalHost } from '~/entities/modal';
 import { useUser } from '~/entities/user';
 import { Loader } from '~/shared/ui/atoms/Loader';
 
-import { useInitUserStream } from '../hooks/useInitUserStream';
+import { useStreamStateInitializer } from '../hooks/useStreamStateInitializer';
 import { useTelegramInit } from '../hooks/useTelegramInit';
 import { withProviders } from '../providers';
 import { Routing } from './Routing';
@@ -13,7 +13,7 @@ function App(): JSX.Element {
   const isTgInitialized = useTelegramInit();
   const { user, isUserPending } = useUser({ enabled: isTgInitialized });
 
-  useInitUserStream(user);
+  useStreamStateInitializer(user);
 
   if (!isTgInitialized || !user || isUserPending) {
     return <Loader />;

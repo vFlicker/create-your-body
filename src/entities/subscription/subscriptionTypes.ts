@@ -6,7 +6,7 @@ export type Subscription = {
   expiresAt: string;
   orderNumber: string | null;
   orderId: string;
-  status: 'active' | 'expired' | 'cancelled' | 'pre';
+  status: 'active' | 'pre' | 'cancelled' | 'expired';
   stream: number;
   createdAt: string;
 };

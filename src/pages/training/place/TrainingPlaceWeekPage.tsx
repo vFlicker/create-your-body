@@ -19,12 +19,12 @@ export function TrainingPlaceWeekPage(): JSX.Element {
   const { type, week } = useParams<{ type: TrainingPlace; week: string }>();
 
   const { user } = useUser();
-  const { stream } = useStreamStore();
+  const { selectedStream } = useStreamStore();
 
   const { trainingsByWeek, isTrainingsByWeekPending } = useTrainingsByWeek({
     // TODO: fix the payload
     level: user?.level === 'Новичок' ? 'noob' : 'pro',
-    stream: stream!,
+    stream: selectedStream!,
     type: type!,
     week: +week!,
   });

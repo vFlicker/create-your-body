@@ -17,8 +17,10 @@ export function TrainingPlaceWeeksPage(): JSX.Element {
   const navigate = useNavigate();
   const { type } = useParams<{ type: TrainingPlace }>();
 
-  const { stream } = useStreamStore();
-  const { trainingWeeks, isTrainingWeeksPending } = useTrainingWeeks(stream!);
+  const { selectedStream } = useStreamStore();
+  const { trainingWeeks, isTrainingWeeksPending } = useTrainingWeeks(
+    selectedStream!,
+  );
 
   const handleWeekSelect = (week: number) => {
     navigate(`${AppRoute.TrainingPlace}/${type}/${week}`);

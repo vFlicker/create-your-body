@@ -1,4 +1,4 @@
-import { Subscription } from '~/entities/user/userTypes';
+import { Subscription } from '~/entities/subscription';
 import bookIconSrc from '~/shared/assets/svg/book.svg';
 import foodIconSrc from '~/shared/assets/svg/food.svg';
 import healthIconSrc from '~/shared/assets/svg/health.svg';

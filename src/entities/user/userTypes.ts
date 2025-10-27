@@ -1,3 +1,5 @@
+import type { Subscription } from '~/entities/subscription/subscriptionTypes';
+
 export type User = {
   bornDate: string;
   createdAt: string;
@@ -14,19 +16,6 @@ export type User = {
   subscriptions: Subscription[];
   tgId: number;
   userpic: string | null;
-};
-
-export type Subscription = {
-  id: number;
-  userId: number;
-  plan: string;
-  startedAt: string;
-  expiresAt: string;
-  orderNumber: string | null;
-  orderId: string | null;
-  status: string;
-  stream: number;
-  createdAt: string;
 };
 
 export type GetUserResponse = {

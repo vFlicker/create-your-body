@@ -1,4 +1,4 @@
-import { Subscription } from '../user/userTypes';
+import { Subscription } from './subscriptionTypes';
 
 export const hasActiveSubscription = (
   subscriptions: Subscription[],
@@ -6,6 +6,11 @@ export const hasActiveSubscription = (
   return subscriptions.some(
     (sub) => sub.status === 'active' || sub.status === 'pre',
   );
+};
+
+export const isSubscriptionActive = (subscription: Subscription): boolean => {
+  const { status } = subscription;
+  return status === 'active' || status === 'pre';
 };
 
 export const formatSubscriptionDateRange = (
