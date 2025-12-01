@@ -66,6 +66,7 @@ const StyledTitleCardWrapper = styled.div<StyledTitleCardWrapperProps>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 10px;
 
   min-height: 110px;
   padding: ${({ isFullWidthImage }) => (isFullWidthImage ? '10px' : '16px')};

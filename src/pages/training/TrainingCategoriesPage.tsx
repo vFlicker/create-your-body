@@ -45,7 +45,6 @@ export function TrainingCategoriesPage(): JSX.Element {
   return (
     <CommonPageLayout
       title="Тренировки"
-      hasStreamInfo={true}
       iconSrc={musclesIconSrc}
       action={<SelectStream />}
       isLoading={false}

@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { JSX, PropsWithChildren } from 'react';
 
-import { StreamsInfo, UserMeta } from '~/entities/user';
+import { UserMeta } from '~/entities/user';
 import { CloseAppButton } from '~/features/CloseAppButton';
 import { ShowPrevPageButton } from '~/features/ShowPrevPageButton';
 import { Color } from '~/shared/theme/colors';
@@ -12,7 +12,6 @@ type CommonPageLayoutProps = PropsWithChildren<{
   title: string;
   hasBackButton?: boolean;
   isLoading?: boolean;
-  hasStreamInfo?: boolean;
   iconSrc?: string;
   action?: JSX.Element;
   component?: JSX.Element;
@@ -22,7 +21,6 @@ export function CommonPageLayout({
   title,
   isLoading,
   hasBackButton = true,
-  hasStreamInfo = false,
   iconSrc,
   action,
   component,
@@ -39,7 +37,6 @@ export function CommonPageLayout({
         <StyledHeader>
           <StyledUserMetaWrapper>
             <UserMeta view="level" />
-            {hasStreamInfo && <StreamsInfo />}
           </StyledUserMetaWrapper>
           <StyledTitleSectionWrapper>
             <StyledTitleWrapper>

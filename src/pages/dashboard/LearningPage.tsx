@@ -2,29 +2,25 @@ import styled from '@emotion/styled';
 import { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useUser } from '~/entities/user';
+import { useStreamStore, useUser } from '~/entities/user';
+import { SelectStream } from '~/features/SelectStream';
 import { TitleCard } from '~/shared/ui/molecules/TitleCard';
 import { CommonPageLayout } from '~/widgets/layouts/CommonPageLayout';
 
-import { getTitleCards } from './getContainerData';
+import { getTitleCards } from './getTitleCards';
 
 export function LearningPage(): JSX.Element {
   const navigate = useNavigate();
   const { user, isUserPending } = useUser();
+  const { selectedStream } = useStreamStore();
 
   if (!user || isUserPending)
-    return (
-      <CommonPageLayout
-        title="Обучение"
-        hasStreamInfo={true}
-        isLoading={isUserPending}
-      />
-    );
+    return <CommonPageLayout title="Обучение" isLoading={isUserPending} />;
 
-  const pageContainersData = getTitleCards(user.subscriptions);
+  const pageContainersData = getTitleCards(user.subscriptions, selectedStream);
 
   return (
-    <CommonPageLayout title="Обучение" hasStreamInfo={true}>
+    <CommonPageLayout title="Обучение" action={<SelectStream />}>
       <StyledContentWrapper>
         <StyledDashboardList>
           {pageContainersData.map(({ title, to, ...props }) => (

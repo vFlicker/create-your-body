@@ -16,17 +16,12 @@ type CardData = {
   labelIconSrc?: string;
 };
 
-export const getTitleCards = (subscriptions: Subscription[]) => {
+export const getTitleCards = (
+  subscriptions: Subscription[],
+  selectedStream: number | null,
+) => {
   const pageContainersData: CardData[] = [];
 
-  const steam4 = subscriptions.find((sub) => sub.stream === 4);
-  const steam2025 = subscriptions.find((sub) => sub.stream === 2025);
-
-  const isSteam4Base = steam4 && steam4.plan === 'Base';
-  const isSteam4Pro = steam4 && steam4.plan === 'Pro';
-  const isSteam2025Pro = steam2025 && steam2025.plan === 'Pro';
-
-  // Always open
   pageContainersData.push({
     to: AppRoute.Begin,
     title: 'Введение',
@@ -35,8 +30,12 @@ export const getTitleCards = (subscriptions: Subscription[]) => {
     isHighlight: true,
   });
 
-  if (isSteam4Pro) {
-    // All open
+  const subscription = subscriptions.find(
+    ({ stream }) => stream === selectedStream,
+  );
+  if (!subscription) return pageContainersData;
+
+  if (subscription.plan === 'Pro') {
     pageContainersData.push(
       {
         to: AppRoute.TrainingCategories,
@@ -67,40 +66,9 @@ export const getTitleCards = (subscriptions: Subscription[]) => {
         isHighlight: false,
       },
     );
-  } else if (isSteam2025Pro) {
-    // all open
-    pageContainersData.push(
-      {
-        to: AppRoute.TrainingCategories,
-        title: 'Тренировки',
-        iconSrc: musculesIconSrc,
-        disabled: false,
-        isHighlight: false,
-      },
-      {
-        to: AppRoute.FoodCategories,
-        title: 'Питание',
-        iconSrc: foodIconSrc,
-        disabled: false,
-        isHighlight: false,
-      },
-      {
-        to: AppRoute.LectureWeeks,
-        title: 'Лекции',
-        iconSrc: bookIconSrc,
-        disabled: false,
-        isHighlight: false,
-      },
-      {
-        to: AppRoute.RecipeCategories,
-        title: 'Рецепты',
-        iconSrc: recipesIconSrc,
-        disabled: false,
-        isHighlight: false,
-      },
-    );
-  } else if (isSteam4Base) {
-    // lectures and recipes -- buy, else access
+  }
+
+  if (subscription.plan === 'Base') {
     pageContainersData.push(
       {
         to: AppRoute.TrainingCategories,

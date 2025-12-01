@@ -17,11 +17,7 @@ export function DashboardPage(): JSX.Element {
 
   if (!user || isUserPending)
     return (
-      <CommonPageLayout
-        title="Добро пожаловать!"
-        hasStreamInfo={true}
-        isLoading={isUserPending}
-      />
+      <CommonPageLayout title="Добро пожаловать!" isLoading={isUserPending} />
     );
 
   const hasAccess = hasActiveSubscription(user.subscriptions);
@@ -29,7 +25,6 @@ export function DashboardPage(): JSX.Element {
   return (
     <CommonPageLayout
       title={`Привет, ${user.name}!`}
-      hasStreamInfo={true}
       hasBackButton={false}
       component={hasAccess ? <ContinueWorkoutCard /> : <></>}
     >
