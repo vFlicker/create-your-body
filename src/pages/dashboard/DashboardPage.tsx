@@ -5,6 +5,7 @@ import { hasActiveSubscription } from '~/entities/subscription';
 import { useUser } from '~/entities/user';
 import { ContinueWorkoutCard } from '~/features/training/continueWorkout';
 import { BmiWidget } from '~/widgets/BmiWidget';
+import { CompulsiveEatingWidget } from '~/widgets/CompulsiveEatingWidget';
 import { HealthTrackerWidget } from '~/widgets/HealthTrackerWidget';
 import { CommonPageLayout } from '~/widgets/layouts/CommonPageLayout';
 import { MeasurementsWidget } from '~/widgets/MeasurementsWidget';
@@ -35,6 +36,7 @@ export function DashboardPage(): JSX.Element {
           <StyledWidgetListWrapper>
             <HealthTrackerWidget />
             <BmiWidget />
+            <CompulsiveEatingWidget />
             <MeasurementsWidget />
             <WorkoutDiaryWidget />
           </StyledWidgetListWrapper>
