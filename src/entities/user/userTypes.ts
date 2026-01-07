@@ -16,6 +16,7 @@ export type User = {
   subscriptions: Subscription[];
   tgId: number;
   userpic: string | null;
+  viewedIntroVideo: boolean;
 };
 
 export type GetUserResponse = {
@@ -30,6 +31,7 @@ export type UpdateUserDto = {
   sex?: string;
   level?: string;
   phone?: string;
+  viewedIntroVideo?: boolean;
 };
 
 export type UpdateVideoProgressDto = {

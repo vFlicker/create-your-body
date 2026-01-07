@@ -9,6 +9,7 @@ import { CompulsiveEatingWidget } from '~/widgets/CompulsiveEatingWidget';
 import { HealthTrackerWidget } from '~/widgets/HealthTrackerWidget';
 import { CommonPageLayout } from '~/widgets/layouts/CommonPageLayout';
 import { MeasurementsWidget } from '~/widgets/MeasurementsWidget';
+import { ShowIntroVideoWidget } from '~/widgets/ShowIntroVideoWidget';
 import { WorkoutDiaryWidget } from '~/widgets/WorkoutDiaryWidget';
 
 import { NoAccessMessage } from './ui/NoAccessMessage';
@@ -21,7 +22,8 @@ export function DashboardPage(): JSX.Element {
       <CommonPageLayout title="Добро пожаловать!" isLoading={isUserPending} />
     );
 
-  const hasAccess = hasActiveSubscription(user.subscriptions);
+  // const hasAccess = hasActiveSubscription(user.subscriptions);
+  const hasAccess = true;
 
   return (
     <CommonPageLayout
@@ -39,6 +41,9 @@ export function DashboardPage(): JSX.Element {
             <CompulsiveEatingWidget />
             <MeasurementsWidget />
             <WorkoutDiaryWidget />
+            <ShowIntroVideoWidget
+              hasWatchedIntroVideo={user.viewedIntroVideo}
+            />
           </StyledWidgetListWrapper>
         )}
       </StyledContentWrapper>

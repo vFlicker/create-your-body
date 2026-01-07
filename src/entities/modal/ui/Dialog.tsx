@@ -5,15 +5,19 @@ import { JSX, MouseEvent } from 'react';
 type DialogProps = {
   children: JSX.Element;
   onClose?: () => void;
+  className?: string;
 };
 
-export function Dialog({ children }: DialogProps): JSX.Element {
+export function Dialog({ className, children }: DialogProps): JSX.Element {
   const handleModalWrapperClick = (evt: MouseEvent<HTMLDivElement>) => {
     evt.stopPropagation();
   };
 
   return (
-    <StyledDialogWrapper onClick={handleModalWrapperClick}>
+    <StyledDialogWrapper
+      className={className}
+      onClick={handleModalWrapperClick}
+    >
       <StyledContent>{children}</StyledContent>
     </StyledDialogWrapper>
   );
