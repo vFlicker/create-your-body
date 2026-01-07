@@ -22,6 +22,11 @@ export const getTitleCards = (
 ) => {
   const pageContainersData: CardData[] = [];
 
+  const steam5 = subscriptions.find((sub) => sub.stream === 5);
+
+  const isSteam5Base = steam5?.plan === 'Base';
+  const isSteam5Pro = steam5?.plan === 'Pro';
+
   pageContainersData.push({
     to: AppRoute.Begin,
     title: 'Введение',
@@ -41,28 +46,32 @@ export const getTitleCards = (
         to: AppRoute.TrainingCategories,
         title: 'Тренировки',
         iconSrc: musculesIconSrc,
-        disabled: false,
+        labelText: isSteam5Pro ? 'Доступно с 24 января' : undefined,
+        disabled: isSteam5Pro ? true : false,
         isHighlight: false,
       },
       {
         to: AppRoute.FoodCategories,
         title: 'Питание',
         iconSrc: foodIconSrc,
-        disabled: false,
+        labelText: isSteam5Pro ? 'Доступно с 24 января' : undefined,
+        disabled: isSteam5Pro ? true : false,
         isHighlight: false,
       },
       {
         to: AppRoute.LectureWeeks,
         title: 'Лекции',
         iconSrc: bookIconSrc,
-        disabled: false,
+        labelText: isSteam5Pro ? 'Доступно с 24 января' : undefined,
+        disabled: isSteam5Pro ? true : false,
         isHighlight: false,
       },
       {
         to: AppRoute.RecipeCategories,
         title: 'Рецепты',
         iconSrc: recipesIconSrc,
-        disabled: false,
+        labelText: isSteam5Pro ? 'Доступно с 24 января' : undefined,
+        disabled: isSteam5Pro ? true : false,
         isHighlight: false,
       },
     );
@@ -74,14 +83,16 @@ export const getTitleCards = (
         to: AppRoute.TrainingCategories,
         title: 'Тренировки',
         iconSrc: musculesIconSrc,
-        disabled: false,
+        labelText: isSteam5Base ? 'Доступно с 24 января' : undefined,
+        disabled: isSteam5Base ? true : false,
         isHighlight: false,
       },
       {
         to: AppRoute.FoodCategories,
         title: 'Питание',
         iconSrc: foodIconSrc,
-        disabled: false,
+        labelText: isSteam5Base ? 'Доступно с 24 января' : undefined,
+        disabled: isSteam5Base ? true : false,
         isHighlight: false,
       },
       {
