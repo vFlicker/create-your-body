@@ -1,7 +1,8 @@
-import { JSX, useEffect } from 'react';
+import { JSX, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import backIconSrc from '~/shared/assets/svg/back.svg';
+import { usePersistentBackNavigation } from '~/shared/router';
 import { NavButton } from '~/shared/ui/molecules/buttons/NavButton';
 
 const PREVIOUS_PAGE = -1;
@@ -16,8 +17,15 @@ export function ShowPrevPageButton({
   onClick,
 }: ShowPrevPageButtonProps): JSX.Element {
   const navigate = useNavigate();
+  const { goBack } = usePersistentBackNavigation();
 
-  const defaultOnClick = () => navigate(PREVIOUS_PAGE);
+  const defaultOnClick = useCallback(() => {
+    const didGoBack = goBack();
+    if (!didGoBack) {
+      navigate(PREVIOUS_PAGE);
+    }
+  }, [goBack, navigate]);
+
   const handleClick = onClick || defaultOnClick;
 
   useEffect(() => {

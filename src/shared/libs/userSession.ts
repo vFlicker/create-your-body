@@ -2,7 +2,7 @@ type UserSession = {
   userQuery: string;
 };
 
-const USER_SESSION_KEY_NAME = 'create-user-body';
+const USER_SESSION_KEY_NAME = 'cyb:userSession';
 
 export const userSession = {
   getCurrentUser: (): UserSession | null => {
