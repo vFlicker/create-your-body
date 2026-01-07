@@ -86,7 +86,7 @@ export function ShowIntroVideoWidget({
             allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
             allowFullScreen
           />
-          <Button
+          <StyledButton
             color="accent"
             onClick={() => {
               shouldRevealHintRef.current = !hasWatchedIntroRef.current;
@@ -94,7 +94,7 @@ export function ShowIntroVideoWidget({
             }}
           >
             Я посмотрела
-          </Button>
+          </StyledButton>
         </StyledDialogContent>
       </StyledDialog>,
       {
@@ -132,8 +132,7 @@ export function ShowIntroVideoWidget({
 
 const StyledDialog = styled(Dialog)`
   width: 100%;
-  max-width: 90vw;
-  height: max-content;
+  height: 100%;
 `;
 
 const StyledShowIntroVideoWidget = styled.div`
@@ -147,6 +146,7 @@ const StyledDialogContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+  height: 100%;
 `;
 
 const StyledTitle = styled.h2`
@@ -156,7 +156,6 @@ const StyledTitle = styled.h2`
 `;
 
 const StyledVideo = styled.iframe`
-  height: 100%;
   width: 100%;
 
   border: none;
@@ -184,5 +183,9 @@ const StyledHint = styled.div`
   font-weight: 500;
   line-height: 140%;
 
-  background-color: rgba(255, 76, 76, 0.6);
+  background-color: rgba(127, 76, 255, 0.6);
+`;
+
+const StyledButton = styled(Button)`
+  margin-top: auto;
 `;
