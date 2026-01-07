@@ -1,6 +1,6 @@
 import { PersistedNavigationHistory } from './persistedNavigationHistoryTypes';
 
-const STORAGE_KEY = 'cyb:navigationHistory:v1';
+const STORAGE_KEY = 'cyb:navigationHistory:v2';
 
 let pendingGotoIndex: number | null = null;
 
