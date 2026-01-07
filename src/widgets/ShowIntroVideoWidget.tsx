@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import { JSX } from 'react';
+import { JSX, useCallback, useEffect, useRef, useState } from 'react';
 
 import { Dialog, useModalStore } from '~/entities/modal';
-// import { useUpdateUser } from '~/entities/user';
+import { useUpdateUser } from '~/entities/user';
 import { Button } from '~/shared/ui/atoms/Button';
 
 type ShowIntroVideoWidgetProps = {
@@ -13,9 +13,70 @@ export function ShowIntroVideoWidget({
   hasWatchedIntroVideo,
 }: ShowIntroVideoWidgetProps): JSX.Element {
   const { openModal, closeModal } = useModalStore();
-  // const { updateUser } = useUpdateUser();
 
-  const handleButtonClick = () => {
+  const widgetRef = useRef<HTMLDivElement>(null);
+  const shouldRevealHintRef = useRef(false);
+  const hasWatchedIntroRef = useRef(hasWatchedIntroVideo);
+  const hasAutoOpenedRef = useRef(false);
+  const revealTimeoutRef = useRef<number>(5000);
+  const [isHintVisible, setIsHintVisible] = useState(false);
+
+  const { updateUser } = useUpdateUser();
+
+  useEffect(() => {
+    hasWatchedIntroRef.current = hasWatchedIntroVideo;
+  }, [hasWatchedIntroVideo]);
+
+  useEffect(() => {
+    if (!isHintVisible) return;
+
+    const timeoutId = window.setTimeout(() => {
+      setIsHintVisible(false);
+    }, 5000);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [isHintVisible]);
+
+  useEffect(() => {
+    return () => {
+      if (revealTimeoutRef.current) {
+        window.clearTimeout(revealTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const handleModalClose = useCallback(() => {
+    if (!shouldRevealHintRef.current) return;
+
+    updateUser({ dto: { viewedIntroVideo: true } });
+
+    shouldRevealHintRef.current = false;
+
+    if (revealTimeoutRef.current) {
+      window.clearTimeout(revealTimeoutRef.current);
+    }
+
+    setIsHintVisible(false);
+
+    revealTimeoutRef.current = window.setTimeout(() => {
+      widgetRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+      setIsHintVisible(true);
+    }, 0);
+
+    if (!hasWatchedIntroRef.current) {
+      hasWatchedIntroRef.current = true;
+    }
+  }, []);
+
+  const openIntroModal = useCallback(() => {
+    const shouldReveal = !hasWatchedIntroRef.current;
+    shouldRevealHintRef.current = shouldReveal;
+
     openModal(
       <StyledDialog>
         <StyledDialogContent>
@@ -25,25 +86,44 @@ export function ShowIntroVideoWidget({
             allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
             allowFullScreen
           />
-          <Button color="accent" onClick={closeModal}>
+          <Button
+            color="accent"
+            onClick={() => {
+              shouldRevealHintRef.current = !hasWatchedIntroRef.current;
+              closeModal();
+            }}
+          >
             Я посмотрела
           </Button>
         </StyledDialogContent>
       </StyledDialog>,
       {
-        onClose: async () => {
-          // if (hasWatchedIntroVideo) return;
-          // await updateUser({ dto: { viewedIntroVideo: true } });
-          console.log({ hasWatchedIntroVideo });
-        },
+        onClose: handleModalClose,
       },
     );
-  };
+  }, [closeModal, handleModalClose, openModal]);
+
+  useEffect(() => {
+    if (hasWatchedIntroVideo) {
+      hasAutoOpenedRef.current = false;
+      return;
+    }
+
+    if (hasAutoOpenedRef.current) return;
+
+    hasAutoOpenedRef.current = true;
+    openIntroModal();
+  }, [hasWatchedIntroVideo, openIntroModal]);
 
   return (
-    <StyledShowIntroVideoWidget>
+    <StyledShowIntroVideoWidget ref={widgetRef}>
+      {isHintVisible && (
+        <StyledHint role="status" aria-live="polite">
+          Если снова понадобится инструкция - она тут, внизу на главной
+        </StyledHint>
+      )}
       <StyledTitle>Инструкция по приложению</StyledTitle>
-      <Button color="accent" variant="outlined" onClick={handleButtonClick}>
+      <Button color="accent" variant="outlined" onClick={openIntroModal}>
         Просмотреть
       </Button>
     </StyledShowIntroVideoWidget>
@@ -60,6 +140,7 @@ const StyledShowIntroVideoWidget = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  padding-bottom: 10px;
 `;
 
 const StyledDialogContent = styled.div`
@@ -85,4 +166,23 @@ const StyledVideo = styled.iframe`
   aspect-ratio: 16 / 9;
 
   overflow: hidden;
+`;
+
+const StyledHint = styled.div`
+  position: fixed;
+  right: 20px;
+  bottom: 120px;
+
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  padding: 10px 16px;
+  border-radius: 14px;
+
+  color: #1b1b1f;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 140%;
+
+  background-color: rgba(255, 76, 76, 0.6);
 `;

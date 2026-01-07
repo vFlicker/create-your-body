@@ -22,8 +22,7 @@ export function DashboardPage(): JSX.Element {
       <CommonPageLayout title="Добро пожаловать!" isLoading={isUserPending} />
     );
 
-  // const hasAccess = hasActiveSubscription(user.subscriptions);
-  const hasAccess = true;
+  const hasAccess = hasActiveSubscription(user.subscriptions);
 
   return (
     <CommonPageLayout
