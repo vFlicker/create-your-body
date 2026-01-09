@@ -15,6 +15,8 @@ const createHttpClient = (): AxiosInstance => {
 
     if (currentUserSession && config.headers) {
       config.headers['x-telegram-init'] = currentUserSession.userQuery;
+      // config.headers['x-dev-mode'] = 'true';
+      // config.headers['x-dev-mode-tg-id'] = '476040746';
     }
 
     return config;
