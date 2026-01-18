@@ -69,6 +69,10 @@ export function SelectFatScreen({
           onChange={(value) => setForm({ ...form, fatRatio: value })}
         />
 
+        {form.hasExtraWeight && (
+          <Chip color="normal">Считаем от сухой массы тела</Chip>
+        )}
+
         <StatCard
           title={`Ваш уровень жиров (${form.fatRatio} г/кг веса)`}
           description={getDescription()}

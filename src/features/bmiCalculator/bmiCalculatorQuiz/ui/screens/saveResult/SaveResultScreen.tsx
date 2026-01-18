@@ -107,15 +107,12 @@ export function SaveResultScreen({
 
         {form.hasExtraWeight && (
           <StyledLeanMassInfo>
-            <span>ℹ️</span>
-            <div>
-              <strong>Расчёт от сухой массы тела</strong>
-              <p>
-                БЖУ рассчитаны от сухой массы ({leanBodyMass} кг), а не от
-                полного веса ({form.fullWeight} кг). Это более точный расчёт при
-                наличии лишнего веса.
-              </p>
-            </div>
+            <strong>Расчёт от сухой массы тела</strong>
+            <p>
+              БЖУ рассчитаны от сухой массы ({leanBodyMass} кг), а не от полного
+              веса ({form.fullWeight} кг). Это более точный расчёт при наличии
+              лишнего веса.
+            </p>
           </StyledLeanMassInfo>
         )}
 
@@ -338,21 +335,11 @@ const StyledSeparator = styled.div`
 
 const StyledLeanMassInfo = styled.div`
   display: flex;
-  gap: 12px;
+  flex-direction: column;
+  gap: 4px;
   padding: 12px;
   border-radius: 12px;
   background-color: #f0f0f6;
-
-  span {
-    font-size: 20px;
-    flex-shrink: 0;
-  }
-
-  div {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
 
   strong {
     font-size: 14px;
