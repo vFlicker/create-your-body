@@ -7,10 +7,16 @@ import { useBmiCalculatorStore } from '../../../model/bmiCalculatorStore';
 import { enterParametersInputs } from './enterParametersConfig';
 
 export function EnterParametersForm(): JSX.Element {
-  const { form, setForm } = useBmiCalculatorStore();
+  const { form, setForm, setBodyParameter } = useBmiCalculatorStore();
 
   const handleInputChange = (name: string, value: string) => {
-    setForm({ ...form, [name]: value ? Number(value) : undefined });
+    const numValue = value ? Number(value) : undefined;
+
+    if (name === 'height' || name === 'fullWeight') {
+      setBodyParameter(name, numValue);
+    } else {
+      setForm({ ...form, [name]: numValue });
+    }
   };
 
   return (

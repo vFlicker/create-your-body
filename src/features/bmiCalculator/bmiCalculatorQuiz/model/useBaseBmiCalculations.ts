@@ -48,6 +48,7 @@ export const useBaseBmiCalculations = () => {
       fullWeight,
       bmi,
       bmr,
+      leanBodyMass: Math.round(leanBodyMass),
     };
   }, [user, form.height, form.fullWeight]);
 

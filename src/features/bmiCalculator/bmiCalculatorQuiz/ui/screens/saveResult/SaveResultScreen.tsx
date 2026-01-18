@@ -51,6 +51,7 @@ export function SaveResultScreen({
     deficit,
     bmr,
     totalCalories,
+    leanBodyMass,
   } = allCalculatedData;
 
   const handleFinishClick = async () => {
@@ -103,6 +104,20 @@ export function SaveResultScreen({
             carbsPercentFromTarget={carbs.carbsPercentFromTarget}
           />
         </StyledChartWrapper>
+
+        {form.hasExtraWeight && (
+          <StyledLeanMassInfo>
+            <span>ℹ️</span>
+            <div>
+              <strong>Расчёт от сухой массы тела</strong>
+              <p>
+                БЖУ рассчитаны от сухой массы ({leanBodyMass} кг), а не от
+                полного веса ({form.fullWeight} кг). Это более точный расчёт при
+                наличии лишнего веса.
+              </p>
+            </div>
+          </StyledLeanMassInfo>
+        )}
 
         {form.goal === 'deficit' && (
           <>
@@ -319,4 +334,37 @@ const StyledSeparator = styled.div`
   width: 100%;
   height: 1px;
   background-color: #e2e2ea;
+`;
+
+const StyledLeanMassInfo = styled.div`
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background-color: #f0f0f6;
+
+  span {
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  strong {
+    font-size: 14px;
+    font-weight: 600;
+    color: #403c77;
+  }
+
+  p {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 140%;
+    color: #666;
+    margin: 0;
+  }
 `;

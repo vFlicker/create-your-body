@@ -2,20 +2,31 @@ import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 
 import { Goal } from './bmiCalculatorTypes';
+import { calculateBmi } from './lib/calculateBmi';
+
+type BmiCalculatorForm = {
+  goal: Goal;
+  proteinRatio: number;
+  fatRatio: number;
+  deficitPercent: number;
+  height?: number;
+  fullWeight?: number;
+  hasExtraWeight: boolean;
+  activityCoefficient?: number;
+};
 
 type BmiCalculatorStore = {
-  form: {
-    goal: Goal;
-    proteinRatio: number;
-    fatRatio: number;
-    deficitPercent: number;
-    height?: number;
-    fullWeight?: number;
-    hasExtraWeight: boolean;
-    activityCoefficient?: number;
-  };
+  form: BmiCalculatorForm;
+  setForm: (form: BmiCalculatorForm) => void;
+  setBodyParameter: (name: 'height' | 'fullWeight', value?: number) => void;
+};
 
-  setForm: (form: BmiCalculatorStore['form']) => void;
+const shouldHaveExtraWeight = (height?: number, weight?: number): boolean | null => {
+  if (!height || !weight || weight < 10 || height < 100) {
+    return null;
+  }
+  const bmi = calculateBmi({ height, weight });
+  return bmi >= 25;
 };
 
 export const useBmiCalculatorStore = create<BmiCalculatorStore>()(
@@ -33,6 +44,18 @@ export const useBmiCalculatorStore = create<BmiCalculatorStore>()(
     setForm: (form) =>
       set((state) => {
         state.form = form;
+      }),
+    setBodyParameter: (name, value) =>
+      set((state) => {
+        state.form[name] = value;
+
+        const height = name === 'height' ? value : state.form.height;
+        const weight = name === 'fullWeight' ? value : state.form.fullWeight;
+        const extraWeight = shouldHaveExtraWeight(height, weight);
+
+        if (extraWeight !== null) {
+          state.form.hasExtraWeight = extraWeight;
+        }
       }),
   })),
 );

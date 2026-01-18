@@ -26,3 +26,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Claude documentation
+.claude/
+CLAUDE.md
