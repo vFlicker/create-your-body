@@ -70,6 +70,10 @@ export function SelectProteinScreen({
           onChange={(value) => setForm({ ...form, proteinRatio: value })}
         />
 
+        {form.hasExtraWeight && (
+          <Chip color="normal">Считаем от сухой массы тела</Chip>
+        )}
+
         <StatCard
           title={`Ваш уровень белка (${form.proteinRatio} г/кг веса)`}
           description={getDescription()}
