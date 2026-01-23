@@ -16,6 +16,10 @@ export function CloseAppButton({
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!Telegram.WebApp.isVersionAtLeast('6.1')) {
+      return;
+    }
+
     const tgBackButton = Telegram.WebApp.BackButton;
     tgBackButton.show();
 

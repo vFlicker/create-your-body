@@ -30,7 +30,35 @@ const StyledOverlay = styled(Overlay)`
   position: fixed;
   inset: 0;
 
-  background-color: rgba(0, 0, 0, 0.15);
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 
   z-index: 10;
+
+  &[data-state='open'] {
+    animation: overlayFadeIn 0.2s ease-out;
+  }
+
+  &[data-state='closed'] {
+    animation: overlayFadeOut 0.15s ease-in;
+  }
+
+  @keyframes overlayFadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes overlayFadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
 `;

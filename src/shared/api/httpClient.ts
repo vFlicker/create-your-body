@@ -3,10 +3,11 @@ import axios, { AxiosInstance } from 'axios';
 import { userSession } from '../libs/userSession';
 
 export const BASE_API_URL = 'https://cybapp.ru';
+export const CMS2_API_URL = 'https://admin.cybapp.ru/api';
 
-const createHttpClient = (): AxiosInstance => {
+export const createHttpClient = (baseURL: string): AxiosInstance => {
   const api = axios.create({
-    baseURL: BASE_API_URL,
+    baseURL,
     headers: { 'Content-Type': 'application/json' },
   });
 
@@ -25,4 +26,4 @@ const createHttpClient = (): AxiosInstance => {
   return api;
 };
 
-export const httpClient = createHttpClient();
+export const httpClient = createHttpClient(BASE_API_URL);

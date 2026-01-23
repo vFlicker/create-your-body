@@ -1,3 +1,4 @@
+import type { PopupNotification } from '~/entities/popupNotification';
 import type { Subscription } from '~/entities/subscription/subscriptionTypes';
 
 export type User = {
@@ -17,6 +18,7 @@ export type User = {
   tgId: number;
   userpic: string | null;
   viewedIntroVideo: boolean;
+  popupNotifications?: PopupNotification[];
 };
 
 export type GetUserResponse = {

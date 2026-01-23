@@ -29,6 +29,10 @@ export function ShowPrevPageButton({
   const handleClick = onClick || defaultOnClick;
 
   useEffect(() => {
+    if (!Telegram.WebApp.isVersionAtLeast('6.1')) {
+      return;
+    }
+
     const tgBackButton = Telegram.WebApp.BackButton;
     tgBackButton.show();
     tgBackButton.onClick(handleClick);

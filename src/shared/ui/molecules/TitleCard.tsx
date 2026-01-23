@@ -14,6 +14,7 @@ type TitleCardProps = {
   disabled?: boolean;
   labelText?: string;
   labelIconSrc?: string;
+  badgeText?: string;
   onClick: () => void;
 };
 
@@ -29,6 +30,7 @@ export function TitleCard({
   subTitle,
   labelText,
   labelIconSrc,
+  badgeText,
   isHighlight = false,
   isFullWidthImage = false,
   disabled = false,
@@ -46,28 +48,28 @@ export function TitleCard({
       isFullWidthImage={isFullWidthImage}
       onClick={handleClick}
     >
-      <StyledHeader>
-        <StyledImage src={iconSrc} isFullWith={isFullWidthImage} />
-        <StyledTitle>{title}</StyledTitle>
-        {subTitle && <StyledSubTitle>{subTitle}</StyledSubTitle>}
-      </StyledHeader>
+      {badgeText && <StyledBadge>{badgeText}</StyledBadge>}
 
-      {labelText && (
-        <StyledLabel>
-          {labelIconSrc && <StyledLabelIcon src={labelIconSrc} />}
-          {labelText}
-        </StyledLabel>
-      )}
+      <StyledContent $disabled={disabled}>
+        <StyledHeader>
+          <StyledImage src={iconSrc} isFullWith={isFullWidthImage} />
+          <StyledTitle>{title}</StyledTitle>
+          {subTitle && <StyledSubTitle>{subTitle}</StyledSubTitle>}
+        </StyledHeader>
+
+        {labelText && (
+          <StyledLabel>
+            {labelIconSrc && <StyledLabelIcon src={labelIconSrc} />}
+            {labelText}
+          </StyledLabel>
+        )}
+      </StyledContent>
     </StyledTitleCardWrapper>
   );
 }
 
 const StyledTitleCardWrapper = styled.div<StyledTitleCardWrapperProps>`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 10px;
-
+  position: relative;
   min-height: 110px;
   padding: ${({ isFullWidthImage }) => (isFullWidthImage ? '10px' : '16px')};
   border: 1px solid;
@@ -78,7 +80,36 @@ const StyledTitleCardWrapper = styled.div<StyledTitleCardWrapperProps>`
   background-color: ${({ isHighlight }) =>
     isHighlight ? Color.Violet_100 : '#fafafa'};
 
-  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
+`;
+
+const StyledContent = styled.div<{ $disabled: boolean }>`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  height: 100%;
+  opacity: ${({ $disabled }) => ($disabled ? 0.5 : 1)};
+`;
+
+const StyledBadge = styled.span`
+  position: absolute;
+  top: -6px;
+  right: -6px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 8px;
+  border-radius: 45px;
+
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 10px;
+  white-space: nowrap;
+
+  background-color: ${Color.Violet_500};
 `;
 
 const ImageCss = {
