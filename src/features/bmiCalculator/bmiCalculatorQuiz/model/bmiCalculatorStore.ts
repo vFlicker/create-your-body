@@ -21,7 +21,10 @@ type BmiCalculatorStore = {
   setBodyParameter: (name: 'height' | 'fullWeight', value?: number) => void;
 };
 
-const shouldHaveExtraWeight = (height?: number, weight?: number): boolean | null => {
+const shouldHaveExtraWeight = (
+  height?: number,
+  weight?: number,
+): boolean | null => {
   if (!height || !weight || weight < 10 || height < 100) {
     return null;
   }

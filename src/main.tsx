@@ -5,6 +5,18 @@ import { AppWithProviders } from './app';
 import { userSession } from './shared/libs/userSession';
 import { ErrorBoundary } from './shared/ui/molecules/errorBoundary';
 
+// Fix incorrect base path in URL (redirect /testerapp/ or wrong /testapp/ to correct path)
+const expectedBasePath = import.meta.env.VITE_BASE_PATH || '/';
+const currentPath = window.location.pathname;
+
+if (expectedBasePath === '/') {
+  // Production: redirect any /testapp/ or /testerapp/ to root
+  if (currentPath.startsWith('/testapp') || currentPath.startsWith('/testerapp')) {
+    const newPath = currentPath.replace(/^\/(testapp|testerapp)/, '');
+    window.location.replace(newPath || '/');
+  }
+}
+
 // Set the viewport height property for dynamic viewport height support
 const setVhProperty = () => {
   const vh = window.innerHeight * 0.01;

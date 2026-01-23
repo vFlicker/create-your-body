@@ -103,8 +103,8 @@ export function MeasurementsChart(): JSX.Element {
                 dataKey={activeMeasurement}
                 isAnimationActive={false}
                 animationDuration={0}
-                dot={({ cx, cy, stroke }) => (
-                  <circle cx={cx} cy={cy} r={5} fill={stroke} />
+                dot={({ cx, cy, stroke, index }) => (
+                  <circle key={index} cx={cx} cy={cy} r={5} fill={stroke} />
                 )}
                 activeDot={false}
               />

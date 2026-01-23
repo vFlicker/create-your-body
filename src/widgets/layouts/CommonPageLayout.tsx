@@ -15,6 +15,7 @@ type CommonPageLayoutProps = PropsWithChildren<{
   iconSrc?: string;
   action?: JSX.Element;
   component?: JSX.Element;
+  breadcrumbs?: JSX.Element;
 }>;
 
 export function CommonPageLayout({
@@ -24,6 +25,7 @@ export function CommonPageLayout({
   iconSrc,
   action,
   component,
+  breadcrumbs,
   children,
 }: CommonPageLayoutProps): JSX.Element {
   return (
@@ -38,6 +40,7 @@ export function CommonPageLayout({
           <StyledUserMetaWrapper>
             <UserMeta view="level" />
           </StyledUserMetaWrapper>
+          {breadcrumbs}
           <StyledTitleSectionWrapper>
             <StyledTitleWrapper>
               {iconSrc && <StyledIcon src={iconSrc} />}

@@ -10,6 +10,11 @@ import { CommunicationPage } from '~/pages/communication';
 import { DashboardPage, LearningPage } from '~/pages/dashboard';
 import { FoodCategoriesPage, FoodPage } from '~/pages/food';
 import {
+  LearningFolderPage,
+  LearningLessonPage,
+  LearningProductPage,
+} from '~/pages/learning';
+import {
   LectureDetailsPage,
   LectureWeekPage,
   LectureWeeksPage,
@@ -60,6 +65,18 @@ export function Routing(): JSX.Element {
         {/* Dashboard */}
         <Route path={AppRoute.Dashboard} element={<DashboardPage />} />
         <Route path={AppRoute.Learning} element={<LearningPage />} />
+        <Route
+          path={AppRoute.LearningProduct}
+          element={<LearningProductPage />}
+        />
+        <Route
+          path={AppRoute.LearningFolder}
+          element={<LearningFolderPage />}
+        />
+        <Route
+          path={AppRoute.LearningLesson}
+          element={<LearningLessonPage />}
+        />
 
         {/* Begin */}
         <Route path={AppRoute.Begin} element={<BeginPage />} />

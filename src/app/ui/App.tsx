@@ -3,6 +3,7 @@ import { JSX } from 'react';
 import { ModalHost } from '~/entities/modal';
 import { useUser } from '~/entities/user';
 import { Loader } from '~/shared/ui/atoms/Loader';
+import { usePopupNotifications } from '~/widgets/popupNotification';
 
 import { useStreamStateInitializer } from '../hooks/useStreamStateInitializer';
 import { useTelegramInit } from '../hooks/useTelegramInit';
@@ -14,6 +15,7 @@ function App(): JSX.Element {
   const { user, isUserPending } = useUser({ enabled: isTgInitialized });
 
   useStreamStateInitializer(user);
+  usePopupNotifications();
 
   if (!isTgInitialized || !user || isUserPending) {
     return <Loader />;

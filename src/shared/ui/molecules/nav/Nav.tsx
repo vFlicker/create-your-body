@@ -32,7 +32,10 @@ export function Nav({ className }: NavProps): JSX.Element | null {
           const isActive = pathname === to || pathname.startsWith(`${to}/`);
 
           const handleNavItemClick = () => {
-            if (disabled || isActive) return;
+            if (disabled) return;
+            // Если уже на главной странице раздела - ничего не делаем
+            if (pathname === to) return;
+            // Переходим на главную страницу раздела (даже если внутри раздела)
             if (to) navigate(to);
           };
 
@@ -63,7 +66,7 @@ const StyledNavWrapper = styled.div`
 
   background-color: ${Color.White};
   border: 1px solid ${Color.Black_100};
-  z-index: 2;
+  z-index: 20;
 `;
 
 const StyledNavMenu = styled.div`
