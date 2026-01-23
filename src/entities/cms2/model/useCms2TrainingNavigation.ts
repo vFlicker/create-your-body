@@ -91,11 +91,11 @@ export function useCms2TrainingNavigation({
   const handleLessonClick = (lesson: Cms2ContentNode) => {
     if (lesson.type === 'lesson') {
       navigate(
-        AppRoute.Learning2Lesson.replace(':lessonId', String(lesson.id)),
+        AppRoute.LearningLesson.replace(':lessonId', String(lesson.id)),
       );
     } else {
       navigate(
-        AppRoute.Learning2Folder.replace(':folderId', String(lesson.id)),
+        AppRoute.LearningFolder.replace(':folderId', String(lesson.id)),
       );
     }
   };

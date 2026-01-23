@@ -33,12 +33,6 @@ export const getNavConfig = (hasAccess: boolean): NavItem[] => [
     disabled: !hasAccess,
   },
   {
-    to: AppRoute.Learning2,
-    iconSrc: bookOpenIconSrc,
-    text: 'Обучение [2]',
-    disabled: !hasAccess,
-  },
-  {
     to: AppRoute.Communication,
     iconSrc: messageChatOpenIconSrc,
     text: 'Общение',

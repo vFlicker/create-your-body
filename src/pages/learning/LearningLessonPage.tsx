@@ -17,7 +17,7 @@ import { LessonStepTabs } from '~/shared/ui/molecules/LessonStepTabs';
 import { Cms2Breadcrumbs } from '~/widgets/cms2';
 import { CommonPageLayout } from '~/widgets/layouts/CommonPageLayout';
 
-export function Learning2LessonPage(): JSX.Element {
+export function LearningLessonPage(): JSX.Element {
   const navigate = useNavigate();
   const { goBack } = usePersistentBackNavigation();
   const { lessonId } = useParams<{ lessonId: string }>();

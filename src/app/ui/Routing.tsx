@@ -7,13 +7,13 @@ import {
   BmiCalculatorQuizPage,
 } from '~/pages/bmiCalculator';
 import { CommunicationPage } from '~/pages/communication';
-import { DashboardPage, Learning2Page, LearningPage } from '~/pages/dashboard';
+import { DashboardPage, LearningPage } from '~/pages/dashboard';
 import { FoodCategoriesPage, FoodPage } from '~/pages/food';
 import {
-  Learning2FolderPage,
-  Learning2LessonPage,
-  Learning2ProductPage,
-} from '~/pages/learning2';
+  LearningFolderPage,
+  LearningLessonPage,
+  LearningProductPage,
+} from '~/pages/learning';
 import {
   LectureDetailsPage,
   LectureWeekPage,
@@ -65,18 +65,17 @@ export function Routing(): JSX.Element {
         {/* Dashboard */}
         <Route path={AppRoute.Dashboard} element={<DashboardPage />} />
         <Route path={AppRoute.Learning} element={<LearningPage />} />
-        <Route path={AppRoute.Learning2} element={<Learning2Page />} />
         <Route
-          path={AppRoute.Learning2Product}
-          element={<Learning2ProductPage />}
+          path={AppRoute.LearningProduct}
+          element={<LearningProductPage />}
         />
         <Route
-          path={AppRoute.Learning2Folder}
-          element={<Learning2FolderPage />}
+          path={AppRoute.LearningFolder}
+          element={<LearningFolderPage />}
         />
         <Route
-          path={AppRoute.Learning2Lesson}
-          element={<Learning2LessonPage />}
+          path={AppRoute.LearningLesson}
+          element={<LearningLessonPage />}
         />
 
         {/* Begin */}

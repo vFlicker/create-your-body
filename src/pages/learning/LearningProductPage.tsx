@@ -11,7 +11,7 @@ import { AppRoute } from '~/shared/router';
 import { TitleCard } from '~/shared/ui/molecules/TitleCard';
 import { CommonPageLayout } from '~/widgets/layouts/CommonPageLayout';
 
-export function Learning2ProductPage(): JSX.Element {
+export function LearningProductPage(): JSX.Element {
   const navigate = useNavigate();
   const { productId } = useParams<{ productId: string }>();
   const { productContent, isProductContentPending } = useCms2ProductContent(
@@ -23,11 +23,11 @@ export function Learning2ProductPage(): JSX.Element {
   }
 
   const handleFolderClick = (folderId: number) => {
-    navigate(AppRoute.Learning2Folder.replace(':folderId', String(folderId)));
+    navigate(AppRoute.LearningFolder.replace(':folderId', String(folderId)));
   };
 
   const handleLessonClick = (lessonId: number) => {
-    navigate(AppRoute.Learning2Lesson.replace(':lessonId', String(lessonId)));
+    navigate(AppRoute.LearningLesson.replace(':lessonId', String(lessonId)));
   };
 
   return (

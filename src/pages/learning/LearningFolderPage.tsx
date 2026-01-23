@@ -8,7 +8,7 @@ import { Cms2NodeCard } from '~/shared/ui/molecules/Cms2NodeCard';
 import { Cms2Breadcrumbs, Cms2TrainingNavigator } from '~/widgets/cms2';
 import { CommonPageLayout } from '~/widgets/layouts/CommonPageLayout';
 
-export function Learning2FolderPage(): JSX.Element {
+export function LearningFolderPage(): JSX.Element {
   const navigate = useNavigate();
   const { folderId } = useParams<{ folderId: string }>();
   const { folder, isFolderPending } = useCms2Folder(Number(folderId));
@@ -37,11 +37,11 @@ export function Learning2FolderPage(): JSX.Element {
   }
 
   const handleFolderClick = (id: number) => {
-    navigate(AppRoute.Learning2Folder.replace(':folderId', String(id)));
+    navigate(AppRoute.LearningFolder.replace(':folderId', String(id)));
   };
 
   const handleLessonClick = (id: number) => {
-    navigate(AppRoute.Learning2Lesson.replace(':lessonId', String(id)));
+    navigate(AppRoute.LearningLesson.replace(':lessonId', String(id)));
   };
 
   // Show TrainingNavigator for folders with weeks

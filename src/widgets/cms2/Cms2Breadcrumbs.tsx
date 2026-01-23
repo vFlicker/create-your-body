@@ -26,17 +26,17 @@ export function Cms2Breadcrumbs({
   const handleClick = (item: Cms2BreadcrumbItem | null) => {
     if (!item) {
       // Root "Обучение" click - go to learning page
-      navigate(AppRoute.Learning2);
+      navigate(AppRoute.Learning);
       return;
     }
     if (item.type === 'product') {
       navigate(
-        AppRoute.Learning2Product.replace(':productId', String(item.id)),
+        AppRoute.LearningProduct.replace(':productId', String(item.id)),
       );
     } else if (item.type === 'folder') {
-      navigate(AppRoute.Learning2Folder.replace(':folderId', String(item.id)));
+      navigate(AppRoute.LearningFolder.replace(':folderId', String(item.id)));
     } else if (item.type === 'lesson') {
-      navigate(AppRoute.Learning2Lesson.replace(':lessonId', String(item.id)));
+      navigate(AppRoute.LearningLesson.replace(':lessonId', String(item.id)));
     }
   };
 
