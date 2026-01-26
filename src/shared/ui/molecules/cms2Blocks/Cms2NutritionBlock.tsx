@@ -17,7 +17,7 @@ export function Cms2NutritionBlock({
 }: Cms2NutritionBlockProps): JSX.Element {
   return (
     <StyledNutritionBlock>
-      <StyledTitle>Пищевая ценность (на 100г)</StyledTitle>
+      <StyledTitle>Пищевая ценность</StyledTitle>
       <StyledNutritionList>
         <NutritionItem label="Калории" value={`${per100g.calories} ккал`} />
         <NutritionItem label="Белки" value={`${per100g.protein} г`} />

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Content } from '@radix-ui/react-dialog';
+import { Content, Description, Title } from '@radix-ui/react-dialog';
 import { JSX, MouseEvent } from 'react';
 
 import type { PopupNotification } from '~/entities/popupNotification';
@@ -33,6 +33,10 @@ export function PopupNotificationModal({
 
     return (
       <StyledSheetWrapper onClick={handleModalClick}>
+        <StyledVisuallyHidden>
+          <Title>{title}</Title>
+          <Description>Уведомление</Description>
+        </StyledVisuallyHidden>
         <StyledSheetContent>
           {hasMedia && (
             <StyledMediaWrapper>
@@ -69,26 +73,34 @@ export function PopupNotificationModal({
 
   return (
     <StyledFullscreenWrapper onClick={handleModalClick}>
+      <StyledVisuallyHidden>
+        <Title>{title}</Title>
+        <Description>Уведомление</Description>
+      </StyledVisuallyHidden>
       <StyledFullscreenInner>
-        {media && media.items.length > 0 && (
-          <ImageCarousel items={media.items} />
-        )}
-        <StyledContentInner>
-          <StyledTitle>{title}</StyledTitle>
-          <Cms2ContentRenderer nodes={blocks} />
-        </StyledContentInner>
-        <StyledButtonsContainer>
-          {buttons.map((button, index) => (
-            <NotificationButton
-              key={index}
-              buttonStyle={button.style}
-              isLink={button.action.type === 'url'}
-              onClick={() => onAction(button.action)}
-            >
-              {button.text}
-            </NotificationButton>
-          ))}
-        </StyledButtonsContainer>
+        <StyledFullscreenScrollArea>
+          {media && media.items.length > 0 && (
+            <ImageCarousel items={media.items} />
+          )}
+          <StyledFullscreenContent>
+            <StyledTitle>{title}</StyledTitle>
+            <Cms2ContentRenderer nodes={blocks} />
+          </StyledFullscreenContent>
+        </StyledFullscreenScrollArea>
+        <StyledFullscreenButtonsWrapper>
+          <StyledFullscreenButtonsContainer>
+            {buttons.map((button, index) => (
+              <NotificationButton
+                key={index}
+                buttonStyle={button.style}
+                isLink={button.action.type === 'url'}
+                onClick={() => onAction(button.action)}
+              >
+                {button.text}
+              </NotificationButton>
+            ))}
+          </StyledFullscreenButtonsContainer>
+        </StyledFullscreenButtonsWrapper>
       </StyledFullscreenInner>
     </StyledFullscreenWrapper>
   );
@@ -143,6 +155,19 @@ function ExternalLinkIcon(): JSX.Element {
   );
 }
 
+// Accessibility - visually hidden but available for screen readers
+const StyledVisuallyHidden = styled.span`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+`;
+
 // Fullscreen mode styles (dismissible: false)
 const StyledFullscreenWrapper = styled(Content)`
   position: fixed;
@@ -184,12 +209,44 @@ const StyledFullscreenWrapper = styled(Content)`
 `;
 
 const StyledFullscreenInner = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
   max-width: 500px;
   margin: 0 auto;
   width: 100%;
+`;
+
+const StyledFullscreenScrollArea = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 140px;
+`;
+
+const StyledFullscreenContent = styled.div`
+  padding: 16px 20px 0;
+`;
+
+const StyledFullscreenButtonsWrapper = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 30%
+  );
+  padding-top: 40px;
+`;
+
+const StyledFullscreenButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 20px 32px;
+  background-color: #ffffff;
 `;
 
 // Sheet mode styles (dismissible: true)
