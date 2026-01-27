@@ -76,11 +76,11 @@ export class ErrorBoundary extends Component<Props, State> {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'center',
-            height: '100vh',
-            padding: '10px',
-
+            justifyContent: this.state.showLog ? 'flex-start' : 'center',
+            minHeight: '100vh',
+            padding: '20px 10px',
             textAlign: 'center',
+            boxSizing: 'border-box',
           }}
         >
           <h2> Что-то пошло не так</h2>
