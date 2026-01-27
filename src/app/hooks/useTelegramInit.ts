@@ -11,6 +11,14 @@ export const useTelegramInit = (): boolean => {
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
+    if (Telegram && Telegram.WebApp) {
+      const { WebApp } = Telegram;
+
+      WebApp.ready();
+      WebApp.expand();
+      WebApp.disableVerticalSwipes();
+    }
+
     if (!IS_PRODUCTION) {
       userSession.setCurrentUser({
         userQuery: MOCK_USER_QUERY,
@@ -20,13 +28,7 @@ export const useTelegramInit = (): boolean => {
     }
 
     if (Telegram && Telegram.WebApp) {
-      const { WebApp } = Telegram;
-
-      WebApp.ready();
-      WebApp.expand();
-      WebApp.disableVerticalSwipes();
-
-      const { initData } = WebApp;
+      const { initData } = Telegram.WebApp;
 
       userSession.setCurrentUser({
         userQuery: initData,
