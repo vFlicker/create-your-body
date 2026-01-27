@@ -98,7 +98,13 @@ const StyledFullscreenButton = styled.button`
 
 const StyledFullscreenWrapper = styled.div`
   position: fixed;
-  inset: 0;
+  top: calc(
+    var(--tg-safe-area-inset-top, 0px) +
+      var(--tg-content-safe-area-inset-top, 0px)
+  );
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 9999;
   background: #000;
   display: flex;
