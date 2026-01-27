@@ -2,10 +2,8 @@ import { useEffect, useState } from 'react';
 
 import { userSession } from '~/shared/libs/userSession';
 
-const IS_PRODUCTION = import.meta.env.VITE_BASE_PATH === '/';
-
-const MOCK_USER_QUERY =
-  'query_id=AAGuywgKAAAAAK7LCAr1H57M&user=%7B%22id%22%3A168348590%2C%22first_name%22%3A%22Lev%22%2C%22last_name%22%3A%22Pavlov%22%2C%22username%22%3A%22levpavloff%22%2C%22language_code%22%3A%22ru%22%2C%22is_premium%22%3Atrue%2C%22allows_write_to_pm%22%3Atrue%2C%22photo_url%22%3A%22https%3A%5C%2F%5C%2Ft.me%5C%2Fi%5C%2Fuserpic%5C%2F320%5C%2FOJ_pF8TyYOKha5J9CwCS_OymrNa4T6kx-m783OvRK6Y.svg%22%7D&auth_date=1769192597&signature=p4QtRI5-wju2UYl-j7XRpsvkFZLwO1uJ91ixT7VyeqV2x5-xHuZVcgwabyiAJZaZHqA6T4db9AZeHzJ4R_z-Ag&hash=dcf3acad2e60ae60230c00956d504fec20de1017da143fa31ad3edec4b56656b';
+// const MOCK_USER_QUERY =
+//   'query_id=AAHeQjUqAgAAAN5CNSphXg-_&user=%7B%22id%22%3A5003100894%2C%22first_name%22%3A%22Vladyslav%22%2C%22last_name%22%3A%22Sliusar%22%2C%22username%22%3A%22vFlicker%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%2C%22photo_url%22%3A%22https%3A%5C%2F%5C%2Ft.me%5C%2Fi%5C%2Fuserpic%5C%2F320%5C%2FuDnD8SAXAvwYTy_EsnWuicjYOryNK03zY2-bxDXnzn9GogyZmGEjYaD9xuNa7Glc.svg%22%7D&auth_date=1746115559&signature=ntEo5NStvuDC5iFb5eL7h0PToBCPu4wDPPT3SdmZMLmqG-UpGS7n98k4rE0B0D6hqvgS9kucLOcU85wfymuvBw&hash=372c96f818d87bff896af566daa37b9115d3bf90d8da1d93c49281284448b4d6';
 
 export const useTelegramInit = (): boolean => {
   const [isInitialized, setIsInitialized] = useState(false);
@@ -17,21 +15,11 @@ export const useTelegramInit = (): boolean => {
       WebApp.ready();
       WebApp.expand();
       WebApp.disableVerticalSwipes();
-    }
 
-    if (!IS_PRODUCTION) {
-      userSession.setCurrentUser({
-        userQuery: MOCK_USER_QUERY,
-      });
-      setIsInitialized(true);
-      return;
-    }
-
-    if (Telegram && Telegram.WebApp) {
-      const { initData } = Telegram.WebApp;
+      const { initData } = WebApp;
 
       userSession.setCurrentUser({
-        userQuery: initData,
+        userQuery: initData, // || MOCK_USER_QUERY,
       });
     }
 
