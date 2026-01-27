@@ -41,6 +41,7 @@ window.addEventListener('error', (evt) => {
     body: JSON.stringify({
       type: 'error',
       token: userSession.getCurrentUser(),
+      initData: Telegram?.WebApp?.initData,
       error: evt.message,
       stack: evt.error?.stack,
       userAgent: navigator.userAgent,
@@ -57,6 +58,7 @@ window.addEventListener('unhandledrejection', (evt) => {
     body: JSON.stringify({
       type: 'unhandledrejection',
       token: userSession.getCurrentUser(),
+      initData: Telegram?.WebApp?.initData,
       error: evt.reason?.message || 'Unhandled rejection',
       stack: evt.reason?.stack,
       userAgent: navigator.userAgent,

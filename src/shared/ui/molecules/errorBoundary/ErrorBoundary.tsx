@@ -10,12 +10,13 @@ type State = {
   hasError: boolean;
   error: Error | null;
   errorInfo: ErrorInfo | null;
+  copied: boolean;
 };
 
 export class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { hasError: false, error: null, errorInfo: null };
+    this.state = { hasError: false, error: null, errorInfo: null, copied: false };
   }
 
   static getDerivedStateFromError(error: Error) {
@@ -23,7 +24,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    this.setState({ error, errorInfo });
+    this.setState({ error, errorInfo, copied: false });
 
     try {
       fetch('https://cybapp.ru/v2/api/client/log', {
@@ -42,6 +43,36 @@ export class ErrorBoundary extends Component<Props, State> {
       console.warn('Failed to log error', evt);
     }
   }
+
+  copyLog = async () => {
+    const { error, errorInfo } = this.state;
+    const initData = Telegram?.WebApp?.initData || 'не получен';
+
+    const log = [
+      '=== Лог ошибки ===',
+      `Ошибка: ${error?.toString() || 'неизвестно'}`,
+      `Stack: ${error?.stack || 'нет'}`,
+      `Component Stack: ${errorInfo?.componentStack || 'нет'}`,
+      `InitData: ${initData}`,
+      `UserAgent: ${navigator.userAgent}`,
+      `Время: ${new Date().toISOString()}`,
+    ].join('\n\n');
+
+    try {
+      await navigator.clipboard.writeText(log);
+      this.setState({ copied: true });
+      setTimeout(() => this.setState({ copied: false }), 2000);
+    } catch {
+      const textArea = document.createElement('textarea');
+      textArea.value = log;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      this.setState({ copied: true });
+      setTimeout(() => this.setState({ copied: false }), 2000);
+    }
+  };
 
   render() {
     if (this.state.hasError) {
@@ -71,6 +102,22 @@ export class ErrorBoundary extends Component<Props, State> {
               @zabotaCYB
             </a>
           </p>
+          <button
+            onClick={this.copyLog}
+            style={{
+              marginTop: '16px',
+              padding: '12px 24px',
+              fontSize: '14px',
+              fontWeight: 500,
+              color: '#fff',
+              backgroundColor: this.state.copied ? '#4CAF50' : '#6C5DD3',
+              border: 'none',
+              borderRadius: '12px',
+              cursor: 'pointer',
+            }}
+          >
+            {this.state.copied ? 'Скопировано!' : 'Скопировать лог'}
+          </button>
         </div>
       );
     }

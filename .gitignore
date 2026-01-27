@@ -31,3 +31,4 @@ dist-ssr
 # Claude documentation
 .claude/
 CLAUDE.md
+CHANGELOG.md
