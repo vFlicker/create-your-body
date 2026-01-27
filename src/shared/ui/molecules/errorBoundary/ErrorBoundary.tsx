@@ -11,12 +11,13 @@ type State = {
   error: Error | null;
   errorInfo: ErrorInfo | null;
   copied: boolean;
+  showLog: boolean;
 };
 
 export class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { hasError: false, error: null, errorInfo: null, copied: false };
+    this.state = { hasError: false, error: null, errorInfo: null, copied: false, showLog: false };
   }
 
   static getDerivedStateFromError(error: Error) {
@@ -44,11 +45,11 @@ export class ErrorBoundary extends Component<Props, State> {
     }
   }
 
-  copyLog = async () => {
+  getLogText = () => {
     const { error, errorInfo } = this.state;
     const initData = Telegram?.WebApp?.initData || 'не получен';
 
-    const log = [
+    return [
       '=== Лог ошибки ===',
       `Ошибка: ${error?.toString() || 'неизвестно'}`,
       `Stack: ${error?.stack || 'нет'}`,
@@ -57,21 +58,14 @@ export class ErrorBoundary extends Component<Props, State> {
       `UserAgent: ${navigator.userAgent}`,
       `Время: ${new Date().toISOString()}`,
     ].join('\n\n');
+  };
 
-    try {
-      await navigator.clipboard.writeText(log);
-      this.setState({ copied: true });
-      setTimeout(() => this.setState({ copied: false }), 2000);
-    } catch {
-      const textArea = document.createElement('textarea');
-      textArea.value = log;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
-      this.setState({ copied: true });
-      setTimeout(() => this.setState({ copied: false }), 2000);
-    }
+  toggleLog = () => {
+    this.setState((prev) => ({ showLog: !prev.showLog }));
+  };
+
+  selectAll = (e: React.FocusEvent<HTMLTextAreaElement>) => {
+    e.target.select();
   };
 
   render() {
@@ -103,21 +97,44 @@ export class ErrorBoundary extends Component<Props, State> {
             </a>
           </p>
           <button
-            onClick={this.copyLog}
+            onClick={this.toggleLog}
             style={{
               marginTop: '16px',
               padding: '12px 24px',
               fontSize: '14px',
               fontWeight: 500,
               color: '#fff',
-              backgroundColor: this.state.copied ? '#4CAF50' : '#6C5DD3',
+              backgroundColor: '#6C5DD3',
               border: 'none',
               borderRadius: '12px',
               cursor: 'pointer',
             }}
           >
-            {this.state.copied ? 'Скопировано!' : 'Скопировать лог'}
+            {this.state.showLog ? 'Скрыть лог' : 'Показать лог'}
           </button>
+          {this.state.showLog && (
+            <>
+              <p style={{ marginTop: '12px', fontSize: '12px', color: '#666' }}>
+                Нажмите на текст и скопируйте:
+              </p>
+              <textarea
+                readOnly
+                value={this.getLogText()}
+                onFocus={this.selectAll}
+                style={{
+                  width: '100%',
+                  height: '200px',
+                  marginTop: '8px',
+                  padding: '12px',
+                  fontSize: '11px',
+                  fontFamily: 'monospace',
+                  border: '1px solid #ddd',
+                  borderRadius: '8px',
+                  resize: 'none',
+                }}
+              />
+            </>
+          )}
         </div>
       );
     }
