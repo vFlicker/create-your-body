@@ -142,10 +142,8 @@ export function AddToDiaryModal({
   const hasExistingExercises = existingExercises.length > 0;
 
   return (
-    <Modal>
+    <Modal fullScreen title="Добавить в дневник">
       <StyledModalContent>
-        <StyledTitle>Добавить в дневник</StyledTitle>
-
         <HorizontalDatePicker
           selectedDate={selectedDate}
           onDateChange={setSelectedDate}
@@ -190,13 +188,16 @@ export function AddToDiaryModal({
           ))}
         </StyledExercisesList>
 
-        <Button
-          color="accent"
-          onClick={handleSubmit}
-          disabled={isAddFromProgramPending}
-        >
-          {isAddFromProgramPending ? 'Добавление...' : 'Добавить в дневник'}
-        </Button>
+        <StyledButtonWrapper>
+          <StyledFadeOverlay />
+          <Button
+            color="accent"
+            onClick={handleSubmit}
+            disabled={isAddFromProgramPending}
+          >
+            {isAddFromProgramPending ? 'Сохранение...' : 'Сохранить в дневник'}
+          </Button>
+        </StyledButtonWrapper>
       </StyledModalContent>
     </Modal>
   );
@@ -206,15 +207,7 @@ const StyledModalContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-`;
-
-const StyledTitle = styled.h2`
-  margin: 0;
-
-  color: #0d0d0d;
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 120%;
+  padding-bottom: 100px;
 `;
 
 const StyledLoadingText = styled.div`
@@ -265,4 +258,27 @@ const StyledExercisesList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+`;
+
+const StyledButtonWrapper = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  padding: 16px;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+
+  background-color: #ffffff;
+`;
+
+const StyledFadeOverlay = styled.div`
+  position: absolute;
+  top: -40px;
+  left: 0;
+  right: 0;
+  height: 40px;
+
+  background: linear-gradient(to bottom, transparent, #ffffff);
+  pointer-events: none;
 `;
