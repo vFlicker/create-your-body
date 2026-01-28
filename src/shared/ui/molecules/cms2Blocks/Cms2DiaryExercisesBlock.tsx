@@ -44,7 +44,7 @@ export function Cms2DiaryExercisesBlock({
 
   return (
     <StyledWrapper>
-      <Button
+      <StyledButton
         color="accent"
         variant={isAdded ? 'outlined' : 'filled'}
         onClick={handleClick}
@@ -52,12 +52,16 @@ export function Cms2DiaryExercisesBlock({
       >
         {isAdded
           ? 'Добавлено в дневник'
-          : `Добавить в дневник (${exercises.length})`}
-      </Button>
+          : `Добавить упражнения в дневник (${exercises.length})`}
+      </StyledButton>
     </StyledWrapper>
   );
 }
 
 const StyledWrapper = styled.div`
   margin-top: 8px;
+`;
+
+const StyledButton = styled(Button)`
+  font-size: 14px;
 `;

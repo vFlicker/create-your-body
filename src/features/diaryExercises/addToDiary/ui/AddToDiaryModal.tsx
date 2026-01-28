@@ -191,15 +191,13 @@ export function AddToDiaryModal({
 
         <StyledButtonWrapper>
           <StyledFadeOverlay />
-          <StyledSubmitButton
+          <Button
             color="accent"
             onClick={handleSubmit}
             disabled={isAddFromProgramPending}
           >
-            {isAddFromProgramPending
-              ? 'Сохранение...'
-              : 'Добавить упражнения в дневник'}
-          </StyledSubmitButton>
+            {isAddFromProgramPending ? 'Сохранение...' : 'Сохранить в дневник'}
+          </Button>
         </StyledButtonWrapper>
       </StyledModalContent>
     </Modal>
@@ -210,7 +208,7 @@ const StyledModalContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding-bottom: 100px;
+  padding-bottom: 120px;
 `;
 
 const StyledLoadingText = styled.div`
@@ -284,8 +282,4 @@ const StyledFadeOverlay = styled.div`
 
   background: linear-gradient(to bottom, transparent, #ffffff);
   pointer-events: none;
-`;
-
-const StyledSubmitButton = styled(Button)`
-  font-size: 14px;
 `;
