@@ -1,6 +1,7 @@
 import { JSX } from 'react';
 
 import { ModalHost } from '~/entities/modal';
+import { ToastHost } from '~/entities/toast';
 import { useUser } from '~/entities/user';
 import { Loader } from '~/shared/ui/atoms/Loader';
 import { usePopupNotifications } from '~/widgets/popupNotification';
@@ -43,6 +44,7 @@ function App(): JSX.Element {
       )}
       <Routing />
       <ModalHost />
+      <ToastHost />
     </>
   );
 }

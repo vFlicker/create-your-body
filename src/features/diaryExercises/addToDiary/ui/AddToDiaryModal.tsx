@@ -3,8 +3,8 @@ import { format } from 'date-fns';
 import { JSX, useState } from 'react';
 
 import { Modal, useModalStore } from '~/entities/modal';
+import { useToastStore } from '~/entities/toast';
 import { useAddFromProgram, useProgramWorkout } from '~/entities/workoutDiary';
-import { showTelegramAlert } from '~/shared/libs/telegram';
 import { Button } from '~/shared/ui/atoms/Button';
 import { HorizontalDatePicker } from '~/shared/ui/molecules/HorizontalDatePicker';
 
@@ -41,6 +41,7 @@ export function AddToDiaryModal({
   onSuccess,
 }: AddToDiaryModalProps): JSX.Element {
   const closeAll = useModalStore((store) => store.closeAll);
+  const showToast = useToastStore((store) => store.showToast);
   const { addFromProgram, isAddFromProgramPending } = useAddFromProgram();
 
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -129,11 +130,11 @@ export function AddToDiaryModal({
         },
       });
 
-      showTelegramAlert('Упражнения добавлены в дневник');
       onSuccess();
       closeAll();
+      showToast('Упражнения добавлены в дневник');
     } catch {
-      showTelegramAlert('Не удалось добавить упражнения');
+      showToast('Не удалось добавить упражнения', 'error');
       refetchProgramWorkout();
     }
   };
@@ -190,13 +191,15 @@ export function AddToDiaryModal({
 
         <StyledButtonWrapper>
           <StyledFadeOverlay />
-          <Button
+          <StyledSubmitButton
             color="accent"
             onClick={handleSubmit}
             disabled={isAddFromProgramPending}
           >
-            {isAddFromProgramPending ? 'Сохранение...' : 'Сохранить в дневник'}
-          </Button>
+            {isAddFromProgramPending
+              ? 'Сохранение...'
+              : 'Добавить упражнения в дневник'}
+          </StyledSubmitButton>
         </StyledButtonWrapper>
       </StyledModalContent>
     </Modal>
@@ -281,4 +284,8 @@ const StyledFadeOverlay = styled.div`
 
   background: linear-gradient(to bottom, transparent, #ffffff);
   pointer-events: none;
+`;
+
+const StyledSubmitButton = styled(Button)`
+  font-size: 14px;
 `;
