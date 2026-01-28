@@ -97,11 +97,24 @@ const StyledModalWrapper = styled(Content)`
 `;
 
 const StyledHeader = styled.div`
+  position: relative;
   display: flex;
   width: 100%;
   padding: 16px;
 
   z-index: 2;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -24px;
+    left: 0;
+    right: 0;
+    height: 24px;
+
+    background: linear-gradient(to bottom, #ffffff, transparent);
+    pointer-events: none;
+  }
 `;
 
 const StyledCloseButton = styled(CloseButton)`
