@@ -123,7 +123,7 @@ export const workoutDiaryApiService = {
   addFromProgram: async ({ dto }: { dto: AddFromProgramDto }) => {
     try {
       const { data } = await httpClient.post<AddFromProgramResponse>(
-        '/v2/api/client/user/workout-diary/from-program',
+        '/v2/api/diary/from-program',
         dto,
       );
       return data;
@@ -140,7 +140,7 @@ export const workoutDiaryApiService = {
         params.date = date;
       }
       const { data } = await httpClient.get<GetProgramWorkoutResponse>(
-        '/v2/api/client/user/workout-diary/program-workout',
+        '/v2/api/diary/program-workout',
         { params },
       );
       return data.data;
