@@ -75,7 +75,7 @@ function Cms2NodeRenderer({ node }: Cms2NodeRendererProps): JSX.Element | null {
     case 'cookingStepsBlock':
       return <Cms2CookingStepsBlock steps={node.attrs.steps} />;
 
-    case 'diaryExercisesBlock':
+    case 'diaryExercises':
       return <Cms2DiaryExercisesBlock exercises={node.attrs.exercises} />;
 
     case 'orderedList':

@@ -219,7 +219,7 @@ export type TipTapHardBreak = {
 };
 
 export type TipTapDiaryExercisesBlock = {
-  type: 'diaryExercisesBlock';
+  type: 'diaryExercises';
   attrs: {
     exercises: {
       exerciseId: number;
