@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { Content, Title } from '@radix-ui/react-dialog';
-import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 import { JSX, MouseEvent } from 'react';
 
 import backIconSrc from '~/shared/assets/svg/back.svg';
@@ -46,13 +45,9 @@ export function Modal({
 
   return (
     <Wrapper onClick={handleModalWrapperClick}>
-      {title ? (
-        <StyledTitle>{title}</StyledTitle>
-      ) : (
-        <VisuallyHidden.Root>
-          <Title>Модальное окно</Title>
-        </VisuallyHidden.Root>
-      )}
+      <StyledVisuallyHiddenTitle>
+        {title || 'Модальное окно'}
+      </StyledVisuallyHiddenTitle>
       <StyledHeader>
         {canGoBack && (
           <NavButton
@@ -157,7 +152,7 @@ const StyledFullScreenModalWrapper = styled(Content)`
   }
 `;
 
-const StyledTitle = styled(Title)`
+const StyledVisuallyHiddenTitle = styled(Title)`
   position: absolute;
   width: 1px;
   height: 1px;
