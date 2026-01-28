@@ -1,9 +1,12 @@
 import { httpClient } from '~/shared/api/httpClient';
 
 import {
+  AddFromProgramDto,
+  AddFromProgramResponse,
   CreateWorkoutReportDto,
   GetExerciseHistoryResponse,
   GetExercisesResponse,
+  GetProgramWorkoutResponse,
   GetWorkoutReportResponse,
   GetWorkoutReportsGroupedByDateResponse,
   GetWorkoutReportsResponse,
@@ -113,6 +116,36 @@ export const workoutDiaryApiService = {
       return data.data;
     } catch (error) {
       console.error('Error fetching exercise history:', error);
+      throw error;
+    }
+  },
+
+  addFromProgram: async ({ dto }: { dto: AddFromProgramDto }) => {
+    try {
+      const { data } = await httpClient.post<AddFromProgramResponse>(
+        '/v2/api/client/user/workout-diary/from-program',
+        dto,
+      );
+      return data;
+    } catch (error) {
+      console.error('Error adding exercises from program:', error);
+      throw error;
+    }
+  },
+
+  getProgramWorkout: async (productId: number, date?: string) => {
+    try {
+      const params: { productId: number; date?: string } = { productId };
+      if (date) {
+        params.date = date;
+      }
+      const { data } = await httpClient.get<GetProgramWorkoutResponse>(
+        '/v2/api/client/user/workout-diary/program-workout',
+        { params },
+      );
+      return data.data;
+    } catch (error) {
+      console.error('Error fetching program workout:', error);
       throw error;
     }
   },

@@ -1,5 +1,7 @@
+export { useAddFromProgram } from './api/useAddFromProgram';
 export { useApproachesHistory } from './api/useApproachesHistory';
 export { useCreateWorkoutReport } from './api/useCreateWorkoutReport';
+export { useProgramWorkout } from './api/useProgramWorkout';
 export { useRemoveWorkoutReport } from './api/useRemoveWorkoutReport';
 export { useUpdateWorkoutReport } from './api/useUpdateWorkoutReport';
 export { useWorkoutReport } from './api/useWorkoutReport';

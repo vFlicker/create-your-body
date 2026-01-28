@@ -103,7 +103,8 @@ export type TipTapNode =
   | TipTapOrderedList
   | TipTapBulletList
   | TipTapListItem
-  | TipTapHardBreak;
+  | TipTapHardBreak
+  | TipTapDiaryExercisesBlock;
 
 export type TipTapParagraph = {
   type: 'paragraph';
@@ -215,6 +216,19 @@ export type TipTapListItem = {
 
 export type TipTapHardBreak = {
   type: 'hardBreak';
+};
+
+export type TipTapDiaryExercisesBlock = {
+  type: 'diaryExercisesBlock';
+  attrs: {
+    exercises: {
+      exerciseId: number;
+      exerciseName: string;
+      sets: number;
+      reps: number;
+      weight: number;
+    }[];
+  };
 };
 
 // Lesson response

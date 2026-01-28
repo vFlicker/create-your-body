@@ -3,6 +3,7 @@ import { JSX } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import {
+  useCms2Breadcrumbs,
   useCms2Lesson,
   useCms2Progress,
   useLessonPageState,
@@ -11,7 +12,10 @@ import {
 } from '~/entities/cms2';
 import { usePersistentBackNavigation } from '~/shared/router';
 import { Button } from '~/shared/ui/atoms/Button';
-import { Cms2ContentRenderer } from '~/shared/ui/molecules/cms2Blocks';
+import {
+  Cms2ContentContext,
+  Cms2ContentRenderer,
+} from '~/shared/ui/molecules/cms2Blocks';
 import { LessonStepNavigation } from '~/shared/ui/molecules/LessonStepNavigation';
 import { LessonStepTabs } from '~/shared/ui/molecules/LessonStepTabs';
 import { Cms2Breadcrumbs } from '~/widgets/cms2';
@@ -25,8 +29,11 @@ export function LearningLessonPage(): JSX.Element {
 
   const { lesson, isLessonPending } = useCms2Lesson(nodeId);
   const { progress } = useCms2Progress(nodeId);
+  const { breadcrumbs } = useCms2Breadcrumbs(nodeId);
   const { markPageComplete } = useMarkPageComplete();
   const { markLessonComplete } = useMarkLessonComplete();
+
+  const productId = breadcrumbs.find((item) => item.type === 'product')?.id;
 
   const {
     currentPageIndex,
@@ -116,7 +123,9 @@ export function LearningLessonPage(): JSX.Element {
           onSelect={handlePageSelect}
         />
 
-        <Cms2ContentRenderer nodes={tipTapNodes} />
+        <Cms2ContentContext.Provider value={{ productId }}>
+          <Cms2ContentRenderer nodes={tipTapNodes} />
+        </Cms2ContentContext.Provider>
 
         <StyledFinishWrapper>
           {isLastPage && (
@@ -136,7 +145,9 @@ export function LearningLessonPage(): JSX.Element {
       breadcrumbs={<Cms2Breadcrumbs nodeId={nodeId} />}
     >
       <StyledContentWrapper hasBottomNav={hasMultiplePages}>
-        <Cms2ContentRenderer nodes={tipTapNodes} />
+        <Cms2ContentContext.Provider value={{ productId }}>
+          <Cms2ContentRenderer nodes={tipTapNodes} />
+        </Cms2ContentContext.Provider>
 
         {!hasMultiplePages && (
           <StyledSinglePageFinish>
