@@ -11,7 +11,10 @@ const currentPath = window.location.pathname;
 
 if (expectedBasePath === '/') {
   // Production: redirect any /testapp/ or /testerapp/ to root
-  if (currentPath.startsWith('/testapp') || currentPath.startsWith('/testerapp')) {
+  if (
+    currentPath.startsWith('/testapp') ||
+    currentPath.startsWith('/testerapp')
+  ) {
     const newPath = currentPath.replace(/^\/(testapp|testerapp)/, '');
     window.location.replace(newPath || '/');
   }

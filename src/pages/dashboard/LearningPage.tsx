@@ -21,9 +21,7 @@ export function LearningPage(): JSX.Element {
   }
 
   const handleProductClick = (productId: number) => {
-    navigate(
-      AppRoute.LearningProduct.replace(':productId', String(productId)),
-    );
+    navigate(AppRoute.LearningProduct.replace(':productId', String(productId)));
   };
 
   // Deduplicate products by id (user may have multiple subscriptions for same product)

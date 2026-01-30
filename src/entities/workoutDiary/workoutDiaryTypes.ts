@@ -113,3 +113,46 @@ export type GetExerciseHistoryResponse = {
     };
   };
 };
+
+export type AddFromProgramDto = {
+  productId: number;
+  date: string;
+  exercises: {
+    exerciseId: number;
+    sets: { weight: number; reps: number }[];
+  }[];
+};
+
+export type AddFromProgramResponse = {
+  success: boolean;
+  data: {
+    workoutId: number;
+    workoutName: string;
+    addedExercises: number;
+  };
+};
+
+export type ProgramWorkoutExercise = {
+  id: number;
+  name: string;
+  approaches: Approaches[];
+  type: string;
+};
+
+export type ProgramWorkout = {
+  id: number;
+  name: string;
+  date: string;
+  exercises: ProgramWorkoutExercise[];
+};
+
+export type GetProgramWorkoutResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    workout: ProgramWorkout | null;
+    productId: number;
+    productTitle: string;
+    date: string;
+  };
+};

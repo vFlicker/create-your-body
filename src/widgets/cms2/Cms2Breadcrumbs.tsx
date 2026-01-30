@@ -30,9 +30,7 @@ export function Cms2Breadcrumbs({
       return;
     }
     if (item.type === 'product') {
-      navigate(
-        AppRoute.LearningProduct.replace(':productId', String(item.id)),
-      );
+      navigate(AppRoute.LearningProduct.replace(':productId', String(item.id)));
     } else if (item.type === 'folder') {
       navigate(AppRoute.LearningFolder.replace(':folderId', String(item.id)));
     } else if (item.type === 'lesson') {

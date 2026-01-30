@@ -36,9 +36,7 @@ export const loadPersistedNavigationHistory =
       const stored = JSON.parse(raw) as PersistedNavigationHistory;
 
       // Filter out invalid entries and sanitize paths
-      const validEntries = stored.entries
-        .filter(isValidPath)
-        .map(sanitizePath);
+      const validEntries = stored.entries.filter(isValidPath).map(sanitizePath);
 
       if (validEntries.length === 0) {
         return null;

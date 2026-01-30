@@ -90,13 +90,9 @@ export function useCms2TrainingNavigation({
 
   const handleLessonClick = (lesson: Cms2ContentNode) => {
     if (lesson.type === 'lesson') {
-      navigate(
-        AppRoute.LearningLesson.replace(':lessonId', String(lesson.id)),
-      );
+      navigate(AppRoute.LearningLesson.replace(':lessonId', String(lesson.id)));
     } else {
-      navigate(
-        AppRoute.LearningFolder.replace(':folderId', String(lesson.id)),
-      );
+      navigate(AppRoute.LearningFolder.replace(':folderId', String(lesson.id)));
     }
   };
 

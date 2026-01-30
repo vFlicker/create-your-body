@@ -5,6 +5,7 @@ import type { TipTapNode } from '~/entities/cms2';
 import { PdfViewer } from '~/shared/ui/molecules/pdfViewer';
 
 import { Cms2CookingStepsBlock } from './Cms2CookingStepsBlock';
+import { Cms2DiaryExercisesBlock } from './Cms2DiaryExercisesBlock';
 import { Cms2DividerBlock } from './Cms2DividerBlock';
 import { Cms2ImageBlock } from './Cms2ImageBlock';
 import { Cms2IngredientsBlock } from './Cms2IngredientsBlock';
@@ -73,6 +74,9 @@ function Cms2NodeRenderer({ node }: Cms2NodeRendererProps): JSX.Element | null {
 
     case 'cookingStepsBlock':
       return <Cms2CookingStepsBlock steps={node.attrs.steps} />;
+
+    case 'diaryExercises':
+      return <Cms2DiaryExercisesBlock exercises={node.attrs.exercises} />;
 
     case 'orderedList':
     case 'bulletList':

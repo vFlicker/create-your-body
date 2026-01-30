@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Content } from '@radix-ui/react-dialog';
+import { Content, Title } from '@radix-ui/react-dialog';
 import { JSX, MouseEvent } from 'react';
 
 type DialogProps = {
@@ -18,6 +18,7 @@ export function Dialog({ className, children }: DialogProps): JSX.Element {
       className={className}
       onClick={handleModalWrapperClick}
     >
+      <StyledVisuallyHiddenTitle>Диалог</StyledVisuallyHiddenTitle>
       <StyledContent>{children}</StyledContent>
     </StyledDialogWrapper>
   );
@@ -51,4 +52,16 @@ const StyledContent = styled.div`
   background-color: #ffffff;
 
   overflow-y: auto;
+`;
+
+const StyledVisuallyHiddenTitle = styled(Title)`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 `;
