@@ -7,7 +7,7 @@ import { useDailyReports, useUpdateDailyReport } from '~/entities/dailyReport';
 import { showTelegramAlert } from '~/shared/libs/telegram';
 import { Button } from '~/shared/ui/atoms/Button';
 import { ErrorText } from '~/shared/ui/atoms/ErrorText';
-import { Input } from '~/shared/ui/molecules/inputs/Input';
+import { NumericInput } from '~/shared/ui/molecules/inputs/NumericInput';
 
 import { dailyReportInputs } from '../../dailyReportConfig';
 import {
@@ -56,16 +56,15 @@ export function EditDailyReportForm({
       <StyledTitle>Отчёт #{dailyReport?.reportNumber}</StyledTitle>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <StyledInputsWrapper>
-          {dailyReportInputs.map((inputsGroup) => {
+          {dailyReportInputs.map((inputsGroup, groupIndex) => {
             return (
-              <StyledInputsGroup columns={inputsGroup.length}>
-                {inputsGroup.map(({ label, name, inputMode, step, type }) => (
-                  <Input
+              <StyledInputsGroup key={groupIndex} columns={inputsGroup.length}>
+                {inputsGroup.map(({ label, name, postfix, decimals }) => (
+                  <NumericInput
                     key={name}
                     label={label}
-                    type={type}
-                    inputMode={inputMode}
-                    step={step}
+                    postfix={postfix}
+                    decimals={decimals}
                     placeholder="0"
                     {...register(name)}
                     error={errors[name]?.message}

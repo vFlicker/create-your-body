@@ -22,13 +22,13 @@ type Cms2DiaryExercisesBlockProps = {
 export function Cms2DiaryExercisesBlock({
   exercises,
 }: Cms2DiaryExercisesBlockProps): JSX.Element {
-  const { productId } = useCms2ContentContext();
+  const { productId, pageId } = useCms2ContentContext();
   const openModal = useModalStore((store) => store.openModal);
   const [isAdded, setIsAdded] = useState(false);
 
   const exercisesKey = useMemo(
-    () => exercises.map((e) => e.exerciseId).join(','),
-    [exercises],
+    () => `${pageId}-${exercises.map((e) => e.exerciseId).join(',')}`,
+    [pageId, exercises],
   );
 
   useEffect(() => {
