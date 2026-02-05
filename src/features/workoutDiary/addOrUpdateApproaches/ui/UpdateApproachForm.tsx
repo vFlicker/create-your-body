@@ -29,7 +29,13 @@ export function UpdateApproachForm({
     });
   };
 
-  const { approaches } = getExerciseByName(exerciseName);
+  const exercise = getExerciseByName(exerciseName);
+
+  if (!exercise) {
+    return <></>;
+  }
+
+  const { approaches } = exercise;
 
   return (
     <>
