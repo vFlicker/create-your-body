@@ -49,7 +49,8 @@ const StyledToast = styled.div<{ type: 'success' | 'error' }>`
   color: #ffffff;
   text-align: center;
 
-  background-color: ${({ type }) => (type === 'success' ? '#34c759' : '#ff3b30')};
+  background-color: ${({ type }) =>
+    type === 'success' ? '#34c759' : '#ff3b30'};
 
   animation: slideIn 0.3s ease-out;
   pointer-events: auto;

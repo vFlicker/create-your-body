@@ -7,7 +7,7 @@ import { Button } from '~/shared/ui/atoms/Button';
 
 import { AddApproachesForm } from './AddApproachesForm';
 import { ApproachesHistory } from './ApproachesHistory';
-import { RemoveAllApproachButton } from './RemoveAllApproachButton';
+import { RemoveExerciseButton } from './RemoveExerciseButton';
 import { UpdateApproachForm } from './UpdateApproachForm';
 
 type ApproachesFormProps = {
@@ -62,7 +62,7 @@ export function ApproachesForm({
       />
 
       <StyledFooter>
-        <RemoveAllApproachButton exerciseName={exerciseName} />
+        <RemoveExerciseButton exerciseName={exerciseName} />
         <StyledSaveButton color="accent" onClick={handleSaveClick}>
           Готово
         </StyledSaveButton>

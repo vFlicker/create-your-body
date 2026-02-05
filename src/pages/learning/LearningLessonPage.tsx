@@ -123,7 +123,9 @@ export function LearningLessonPage(): JSX.Element {
           onSelect={handlePageSelect}
         />
 
-        <Cms2ContentContext.Provider value={{ productId }}>
+        <Cms2ContentContext.Provider
+          value={{ productId, pageId: currentPage.id }}
+        >
           <Cms2ContentRenderer nodes={tipTapNodes} />
         </Cms2ContentContext.Provider>
 
@@ -145,7 +147,9 @@ export function LearningLessonPage(): JSX.Element {
       breadcrumbs={<Cms2Breadcrumbs nodeId={nodeId} />}
     >
       <StyledContentWrapper hasBottomNav={hasMultiplePages}>
-        <Cms2ContentContext.Provider value={{ productId }}>
+        <Cms2ContentContext.Provider
+          value={{ productId, pageId: currentPage.id }}
+        >
           <Cms2ContentRenderer nodes={tipTapNodes} />
         </Cms2ContentContext.Provider>
 

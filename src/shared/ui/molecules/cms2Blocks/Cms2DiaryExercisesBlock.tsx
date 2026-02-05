@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { JSX, useState } from 'react';
+import { JSX, useEffect, useMemo, useState } from 'react';
 
 import { useModalStore } from '~/entities/modal';
 import { AddToDiaryModal } from '~/features/diaryExercises';
@@ -22,9 +22,18 @@ type Cms2DiaryExercisesBlockProps = {
 export function Cms2DiaryExercisesBlock({
   exercises,
 }: Cms2DiaryExercisesBlockProps): JSX.Element {
-  const { productId } = useCms2ContentContext();
+  const { productId, pageId } = useCms2ContentContext();
   const openModal = useModalStore((store) => store.openModal);
   const [isAdded, setIsAdded] = useState(false);
+
+  const exercisesKey = useMemo(
+    () => `${pageId}-${exercises.map((e) => e.exerciseId).join(',')}`,
+    [pageId, exercises],
+  );
+
+  useEffect(() => {
+    setIsAdded(false);
+  }, [exercisesKey]);
 
   const handleClick = () => {
     if (!productId || isAdded) return;
