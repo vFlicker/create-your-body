@@ -41,7 +41,9 @@ export function Modal({
     closeModal();
   };
 
-  const Wrapper = fullScreen ? StyledFullScreenModalWrapper : StyledModalWrapper;
+  const Wrapper = fullScreen
+    ? StyledFullScreenModalWrapper
+    : StyledModalWrapper;
 
   return (
     <Wrapper onClick={handleModalWrapperClick}>
