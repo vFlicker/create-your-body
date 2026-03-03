@@ -3,7 +3,6 @@ import { JSX } from 'react';
 
 import { hasActiveSubscription } from '~/entities/subscription';
 import { useUser } from '~/entities/user';
-import { ContinueWorkoutCard } from '~/features/training/continueWorkout';
 import { BmiWidget } from '~/widgets/BmiWidget';
 import { CompulsiveEatingWidget } from '~/widgets/CompulsiveEatingWidget';
 import { HealthTrackerWidget } from '~/widgets/HealthTrackerWidget';
@@ -25,11 +24,7 @@ export function DashboardPage(): JSX.Element {
   const hasAccess = hasActiveSubscription(user.subscriptions);
 
   return (
-    <CommonPageLayout
-      title={`Привет, ${user.name}!`}
-      hasBackButton={false}
-      component={hasAccess ? <ContinueWorkoutCard /> : <></>}
-    >
+    <CommonPageLayout title={`Привет, ${user.name}!`} hasBackButton={false}>
       <StyledContentWrapper>
         {!hasAccess && <NoAccessMessage />}
 
