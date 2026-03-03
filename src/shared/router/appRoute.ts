@@ -33,29 +33,6 @@ export const enum AppRoute {
   // Workout diary
   WorkoutDiary = '/workout-diary',
 
-  // Training routes
-  TrainingCategories = '/training',
-  TrainingAbout = '/training/about',
-  TrainingWarmup = '/training/warmup',
-  TrainingPlace = '/training/place',
-  TrainingPlaceWeeks = '/training/place/:type',
-  TrainingPlaceWeek = '/training/place/:type/:week',
-  TrainingPlaceDetails = '/training/place/:type/:week/:id',
-
-  // Nutrition routes
-  FoodCategories = '/food',
-  Food = '/food/:categoryId',
-
-  // Lectures routes
-  LectureWeeks = '/lectures',
-  LectureWeek = '/lectures/:week',
-  LectureDetails = '/lectures/:week/:id',
-
-  // Recipes routes
-  RecipeCategories = '/recipes',
-  RecipeCategory = '/recipes/:category',
-  RecipeDetails = '/recipes/:category/:id',
-
   // Communication routes
   Communication = '/communication',
 }
