@@ -30,7 +30,7 @@ export const useTelegramInit = (): boolean => {
         const existingToken = userSession.getAccessToken();
         if (!existingToken) {
           try {
-            const response = await fetch(`${BASE_API_URL}/api/auth/telegram`, {
+            const response = await fetch(`${BASE_API_URL}/v2/api/auth/telegram`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ initData }),

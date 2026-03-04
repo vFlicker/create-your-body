@@ -51,7 +51,7 @@ export const createHttpClient = (baseURL: string): AxiosInstance => {
       if (
         error.response?.status === 401 &&
         !originalRequest._retry &&
-        !originalRequest.url?.includes('/api/auth/')
+        !originalRequest.url?.includes('/v2/api/auth/')
       ) {
         originalRequest._retry = true;
 
@@ -75,7 +75,7 @@ export const createHttpClient = (baseURL: string): AxiosInstance => {
         isRefreshing = true;
 
         try {
-          const { data } = await axios.post(`${baseURL}/api/auth/refresh`, {
+          const { data } = await axios.post(`${baseURL}/v2/api/auth/refresh`, {
             refreshToken,
           });
 
@@ -111,7 +111,7 @@ async function reAuthViaTelegram(api: AxiosInstance, originalRequest: any) {
       return Promise.reject(new Error('No auth method available'));
     }
 
-    const { data } = await axios.post(`${BASE_API_URL}/api/auth/telegram`, {
+    const { data } = await axios.post(`${BASE_API_URL}/v2/api/auth/telegram`, {
       initData,
     });
 
