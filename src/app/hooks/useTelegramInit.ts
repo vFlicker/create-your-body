@@ -20,30 +20,19 @@ export const useTelegramInit = (): boolean => {
 
         const { initData } = WebApp;
 
-        // Save initData for fallback
-        userSession.setCurrentUser({
-          ...userSession.getCurrentUser(),
-          userQuery: initData,
-        });
+        // Save initData for fallback header (x-telegram-init)
+        userSession.setInitData(initData);
 
-        // If we already have a valid access token, skip auth request
-        const existingToken = userSession.getAccessToken();
-        if (!existingToken) {
-          try {
-            const response = await fetch(`${BASE_API_URL}/v2/api/auth/telegram`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ initData }),
-            });
-
-            if (response.ok) {
-              const result = await response.json();
-              const { accessToken, refreshToken } = result.data;
-              userSession.setTokens(accessToken, refreshToken);
-            }
-          } catch {
-            // Auth failed — will fallback to initData via httpClient
-          }
+        // Authenticate via Telegram — server sets httpOnly cookies
+        try {
+          await fetch(`${BASE_API_URL}/v2/api/auth/telegram`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ initData }),
+          });
+        } catch {
+          // Auth failed — will fallback to initData via httpClient
         }
       }
 

@@ -6,14 +6,14 @@ export const BASE_API_URL = 'https://cybapp.ru';
 export const CMS2_API_URL = 'https://admin.cybapp.ru/api';
 
 let isRefreshing = false;
-let refreshSubscribers: ((token: string) => void)[] = [];
+let refreshSubscribers: (() => void)[] = [];
 
-function onTokenRefreshed(newToken: string) {
-  refreshSubscribers.forEach((cb) => cb(newToken));
+function onRefreshed() {
+  refreshSubscribers.forEach((cb) => cb());
   refreshSubscribers = [];
 }
 
-function addRefreshSubscriber(cb: (token: string) => void) {
+function addRefreshSubscriber(cb: () => void) {
   refreshSubscribers.push(cb);
 }
 
@@ -21,23 +21,19 @@ export const createHttpClient = (baseURL: string): AxiosInstance => {
   const api = axios.create({
     baseURL,
     headers: { 'Content-Type': 'application/json' },
+    withCredentials: true,
   });
 
   api.interceptors.request.use((config) => {
     const currentUserSession = userSession.getCurrentUser();
 
-    if (currentUserSession && config.headers) {
-      // JWT first, fallback to initData
-      if (currentUserSession.accessToken) {
-        config.headers['Authorization'] =
-          `Bearer ${currentUserSession.accessToken}`;
-      } else if (currentUserSession.userQuery) {
-        config.headers['x-telegram-init'] = currentUserSession.userQuery;
-      }
-
-      // config.headers['x-dev-mode'] = 'true';
-      // config.headers['x-dev-mode-tg-id'] = '476040746';
+    // initData as fallback header for legacy endpoints
+    if (currentUserSession?.userQuery && config.headers) {
+      config.headers['x-telegram-init'] = currentUserSession.userQuery;
     }
+
+    // config.headers['x-dev-mode'] = 'true';
+    // config.headers['x-dev-mode-tg-id'] = '476040746';
 
     return config;
   });
@@ -55,18 +51,9 @@ export const createHttpClient = (baseURL: string): AxiosInstance => {
       ) {
         originalRequest._retry = true;
 
-        const refreshToken = userSession.getRefreshToken();
-
-        if (!refreshToken) {
-          // No refresh token — try re-auth via initData
-          return reAuthViaTelegram(api, originalRequest);
-        }
-
         if (isRefreshing) {
           return new Promise((resolve) => {
-            addRefreshSubscriber((newToken: string) => {
-              originalRequest.headers['Authorization'] =
-                `Bearer ${newToken}`;
+            addRefreshSubscriber(() => {
               resolve(api(originalRequest));
             });
           });
@@ -75,16 +62,14 @@ export const createHttpClient = (baseURL: string): AxiosInstance => {
         isRefreshing = true;
 
         try {
-          const { data } = await axios.post(`${baseURL}/v2/api/auth/refresh`, {
-            refreshToken,
-          });
+          // Cookie flies automatically via withCredentials
+          await axios.post(
+            `${baseURL}/v2/api/auth/refresh`,
+            {},
+            { withCredentials: true },
+          );
 
-          const newAccessToken = data.data.accessToken;
-          userSession.setTokens(newAccessToken, refreshToken);
-          onTokenRefreshed(newAccessToken);
-
-          originalRequest.headers['Authorization'] =
-            `Bearer ${newAccessToken}`;
+          onRefreshed();
           return api(originalRequest);
         } catch {
           // Refresh failed — try re-auth via initData
@@ -111,14 +96,13 @@ async function reAuthViaTelegram(api: AxiosInstance, originalRequest: any) {
       return Promise.reject(new Error('No auth method available'));
     }
 
-    const { data } = await axios.post(`${BASE_API_URL}/v2/api/auth/telegram`, {
-      initData,
-    });
+    // Server sets httpOnly cookies in response
+    await axios.post(
+      `${BASE_API_URL}/v2/api/auth/telegram`,
+      { initData },
+      { withCredentials: true },
+    );
 
-    const { accessToken, refreshToken } = data.data;
-    userSession.setTokens(accessToken, refreshToken);
-
-    originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
     return api(originalRequest);
   } catch {
     return Promise.reject(new Error('Re-authentication failed'));
