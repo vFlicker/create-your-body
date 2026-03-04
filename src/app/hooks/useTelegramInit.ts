@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { userSession } from '~/shared/libs/userSession';
+import { BASE_API_URL } from '~/shared/api/httpClient';
 
 // const IS_PRODUCTION = import.meta.env.VITE_BASE_PATH === '/';
 
@@ -11,21 +12,47 @@ export const useTelegramInit = (): boolean => {
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    if (Telegram && Telegram.WebApp) {
-      const { WebApp } = Telegram;
+    const init = async () => {
+      if (Telegram && Telegram.WebApp) {
+        const { WebApp } = Telegram;
 
-      WebApp.ready();
-      WebApp.expand();
-      WebApp.disableVerticalSwipes();
+        WebApp.ready();
+        WebApp.expand();
+        WebApp.disableVerticalSwipes();
 
-      const { initData } = WebApp;
+        const { initData } = WebApp;
 
-      userSession.setCurrentUser({
-        userQuery: initData,
-      });
-    }
+        // Save initData for fallback
+        userSession.setCurrentUser({
+          ...userSession.getCurrentUser(),
+          userQuery: initData,
+        });
 
-    setIsInitialized(true);
+        // If we already have a valid access token, skip auth request
+        const existingToken = userSession.getAccessToken();
+        if (!existingToken) {
+          try {
+            const response = await fetch(`${BASE_API_URL}/api/auth/telegram`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ initData }),
+            });
+
+            if (response.ok) {
+              const result = await response.json();
+              const { accessToken, refreshToken } = result.data;
+              userSession.setTokens(accessToken, refreshToken);
+            }
+          } catch {
+            // Auth failed — will fallback to initData via httpClient
+          }
+        }
+      }
+
+      setIsInitialized(true);
+    };
+
+    init();
   }, []);
 
   return isInitialized;
