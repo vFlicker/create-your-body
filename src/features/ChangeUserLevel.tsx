@@ -23,6 +23,7 @@ export function ChangeUserLevel(): JSX.Element | null {
           <StyledButton
             key={index}
             isActive={user?.level === value}
+            level={value}
             onClick={() => handleSelectorClick(value)}
           >
             {value}
@@ -51,17 +52,22 @@ const StyledButtonsWrapper = styled.div`
   gap: 10px;
 `;
 
-const StyledButton = styled.button<{ isActive: boolean }>`
+const StyledButton = styled.button<{ isActive: boolean; level: string }>`
   width: 100%;
   padding: 17px 30px;
+  border: none;
   border-radius: 8px;
 
   color: ${({ isActive }) => (isActive ? Color.Black : Color.Black_300)};
   font-size: 16px;
   font-weight: 700;
 
-  background-color: ${({ isActive }) =>
-    isActive ? Color.Green_500 : Color.Black_50};
+  background-color: ${({ isActive, level }) =>
+    isActive
+      ? level === 'Профи'
+        ? Color.Violet_200
+        : Color.Green_500
+      : Color.Black_50};
 
   cursor: pointer;
 `;
