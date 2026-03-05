@@ -28,6 +28,7 @@ export function ChangeUserLevel(): JSX.Element | null {
 
     try {
       await updateUser({ dto: { level } });
+      showToast(`Уровень: ${level}`, 'success');
     } catch {
       queryClient.setQueryData(['current-user'], previousUser);
       showToast('Не удалось сменить уровень', 'error');
