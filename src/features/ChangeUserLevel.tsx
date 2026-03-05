@@ -1,22 +1,35 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
+
 import { useToastStore } from '~/entities/toast';
 import { useUpdateUser, useUser } from '~/entities/user';
+import { User } from '~/entities/user/userTypes';
 import { Color } from '~/shared/theme/colors';
 
-const VALUES = ['Новичок', 'Профи'];
+const VALUES = ['Новичок', 'Профи'] as const;
 
 export function ChangeUserLevel(): JSX.Element | null {
   const { user } = useUser();
 
   const { updateUser } = useUpdateUser();
+  const queryClient = useQueryClient();
   const showToast = useToastStore((s) => s.showToast);
 
   const handleSelectorClick = async (level: string) => {
+    if (user?.level === level) return;
+
+    const previousUser = queryClient.getQueryData<User>(['current-user']);
+
+    queryClient.setQueryData<User>(['current-user'], (old) =>
+      old ? { ...old, level: level as User['level'] } : old,
+    );
+
     try {
       await updateUser({ dto: { level } });
     } catch {
+      queryClient.setQueryData(['current-user'], previousUser);
       showToast('Не удалось сменить уровень', 'error');
     }
   };
