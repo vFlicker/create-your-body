@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { JSX } from 'react';
 
+import { useToastStore } from '~/entities/toast';
 import { useUpdateUser, useUser } from '~/entities/user';
 import { Color } from '~/shared/theme/colors';
 
@@ -10,9 +11,14 @@ export function ChangeUserLevel(): JSX.Element | null {
   const { user } = useUser();
 
   const { updateUser } = useUpdateUser();
+  const showToast = useToastStore((s) => s.showToast);
 
   const handleSelectorClick = async (level: string) => {
-    updateUser({ dto: { level } });
+    try {
+      await updateUser({ dto: { level } });
+    } catch {
+      showToast('Не удалось сменить уровень', 'error');
+    }
   };
 
   return (
